@@ -4,8 +4,8 @@ import { join } from 'path'
 import * as fs from 'fs/promises'
 import type { LLMApiRequest, LLMApiResponse, SuperAgentConfig, SuperAgentSession } from '../../shared/types'
 
-const SUPER_AGENT_CONFIG_PATH = join(homedir(), '.claudecodeui', 'superagent-config.json')
-const SUPER_AGENT_HISTORY_PATH = join(homedir(), '.claudecodeui', 'superagent-history.json')
+const SUPER_AGENT_CONFIG_PATH = join(homedir(), '.crest', 'superagent-config.json')
+const SUPER_AGENT_HISTORY_PATH = join(homedir(), '.crest', 'superagent-history.json')
 
 const DEFAULT_CONFIG: SuperAgentConfig = {
   groqApiKey: '',
@@ -19,7 +19,7 @@ const DEFAULT_CONFIG: SuperAgentConfig = {
 }
 
 async function ensureConfigDir(): Promise<void> {
-  const configDir = join(homedir(), '.claudecodeui')
+  const configDir = join(homedir(), '.crest')
   try {
     await fs.mkdir(configDir, { recursive: true })
   } catch {

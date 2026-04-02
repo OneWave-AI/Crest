@@ -24,7 +24,7 @@ import { useToast } from '../common/Toast'
 import type { Hive } from '../../../shared/types'
 
 // Icon map for hives
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const ICON_MAP: Record<string, React.ComponentType<{ size?: string | number; className?: string }>> = {
   Search: Eye,
   Zap: Zap,
   Paintbrush: Paintbrush,

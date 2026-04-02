@@ -10,11 +10,15 @@ interface Terminal {
   rows: number
   disposables: IDisposable[]
   webContentsId: number
+  cliProvider?: string        // 'claude' | 'codex' -- tracks which CLI is running
+  lastActivityTime: number    // timestamp of last output (for crash detection)
+  isClaudeRunning: boolean    // whether Claude CLI is active in this terminal
 }
 
 const terminals = new Map<string, Terminal>()
 const terminalOutputBuffers = new Map<string, string>()
 const MAX_OUTPUT_BUFFER = 50_000 // 50KB ring buffer per terminal
+const CLAUDE_CRASH_TIMEOUT = 120_000 // 2min with no output while Claude is "working" = likely crash
 let terminalCounter = 0
 let currentCwd = homedir()
 let handlersRegistered = false
@@ -48,7 +52,8 @@ export function registerTerminalHandlers(): void {
       ].join(':')
 
       // Strip env vars that prevent CLI tools from launching inside our terminal
-      const { CLAUDECODE, ...cleanEnv } = process.env
+      // CLAUDECODE and CLAUDE_CODE_ENTRYPOINT cause Claude to think it's nested
+      const { CLAUDECODE, CLAUDE_CODE_ENTRYPOINT, CLAUDE_CODE_SESSION, ...cleanEnv } = process.env
 
       const ptyProcess = pty.spawn(shell, [], {
         name: 'xterm-256color',
@@ -72,7 +77,9 @@ export function registerTerminalHandlers(): void {
         cols: cols || 80,
         rows: rows || 24,
         disposables,
-        webContentsId
+        webContentsId,
+        lastActivityTime: Date.now(),
+        isClaudeRunning: false,
       }
 
       terminals.set(id, terminal)
@@ -82,6 +89,19 @@ export function registerTerminalHandlers(): void {
 
       // Forward data to renderer and track in ring buffer
       const dataDisposable = ptyProcess.onData((data) => {
+        // Update activity timestamp
+        terminal.lastActivityTime = Date.now()
+
+        // Detect if Claude CLI just started or exited
+        if (/Claude Code v[\d.]+|▐▛███▜▌/.test(data)) {
+          terminal.isClaudeRunning = true
+          terminal.cliProvider = 'claude'
+        }
+        if (/codex>|Codex CLI/.test(data)) {
+          terminal.isClaudeRunning = true
+          terminal.cliProvider = 'codex'
+        }
+
         // Append to ring buffer
         const existing = terminalOutputBuffers.get(id) || ''
         const updated = existing + data
@@ -181,6 +201,43 @@ export function registerTerminalHandlers(): void {
       return allLines.slice(-lines).join('\n')
     }
     return buffer
+  })
+
+  // Send interrupt (Ctrl+C) to terminal -- essential for stopping Claude mid-operation
+  ipcMain.handle('terminal-interrupt', (_, terminalId: string) => {
+    const terminal = terminals.get(terminalId)
+    if (terminal) {
+      try {
+        terminal.pty.write('\x03') // Ctrl+C
+      } catch (error) {
+        console.error(`Failed to send interrupt to terminal ${terminalId}:`, error)
+      }
+    }
+  })
+
+  // Send Escape key -- useful for exiting plan mode, cancelling prompts
+  ipcMain.handle('terminal-send-escape', (_, terminalId: string) => {
+    const terminal = terminals.get(terminalId)
+    if (terminal) {
+      try {
+        terminal.pty.write('\x1b') // Escape
+      } catch (error) {
+        console.error(`Failed to send escape to terminal ${terminalId}:`, error)
+      }
+    }
+  })
+
+  // Get Claude CLI status for a terminal (crash detection, activity tracking)
+  ipcMain.handle('terminal-get-claude-status', (_, terminalId: string) => {
+    const terminal = terminals.get(terminalId)
+    if (!terminal) return null
+    const timeSinceActivity = Date.now() - terminal.lastActivityTime
+    return {
+      isClaudeRunning: terminal.isClaudeRunning,
+      cliProvider: terminal.cliProvider || null,
+      lastActivityMs: timeSinceActivity,
+      possibleCrash: terminal.isClaudeRunning && timeSinceActivity > CLAUDE_CRASH_TIMEOUT,
+    }
   })
 
   // Clean up all terminals when app quits

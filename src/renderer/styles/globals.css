@@ -798,3 +798,83 @@ select:focus-visible {
   border: 1px solid var(--accent-red);
   box-shadow: 0 0 10px var(--accent-red-glow), inset 0 0 10px rgba(204, 120, 92, 0.1);
 }
+
+/* ===========================================
+   CHAT UI STYLES
+   =========================================== */
+
+/* Allow text selection in conversation content */
+.chat-overlay .prose-cloud,
+.chat-overlay .conversation-selectable {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Prose overrides for markdown in chat */
+.prose-cloud {
+  color: #e0e0e0;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.prose-cloud p { margin: 0.25em 0; }
+.prose-cloud pre {
+  background: #141416;
+  border: 1px solid #2a2a2d;
+  border-radius: 10px;
+  padding: 0.75em 1em;
+  font-size: 12px;
+  overflow-x: auto;
+}
+.prose-cloud code {
+  background: rgba(204, 120, 92, 0.1);
+  color: #cc785c;
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.prose-cloud pre code { background: none; color: inherit; padding: 0; }
+.prose-cloud a { color: #cc785c; text-decoration: none; }
+.prose-cloud a:hover { text-decoration: underline; }
+.prose-cloud ul, .prose-cloud ol { padding-left: 1.2em; margin: 0.25em 0; }
+.prose-cloud li { margin: 0.1em 0; }
+.prose-cloud h1, .prose-cloud h2, .prose-cloud h3, .prose-cloud h4 {
+  margin: 0.5em 0 0.25em;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+.prose-cloud blockquote {
+  border-left: 3px solid rgba(204, 120, 92, 0.3);
+  padding-left: 0.75em;
+  color: #b0b0b0;
+  margin: 0.5em 0;
+}
+.prose-cloud table {
+  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+  font-size: 12px;
+}
+.prose-cloud th, .prose-cloud td {
+  border: 1px solid #2a2a2d;
+  padding: 0.4em 0.6em;
+  overflow-wrap: anywhere;
+}
+.prose-cloud th {
+  background: #242426;
+  font-weight: 600;
+}
+
+/* Chat bouncing dots */
+@keyframes chat-bounce-dot {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-4px); }
+}
+.animate-bounce-dot {
+  animation: chat-bounce-dot 1.2s ease-in-out infinite;
+}
+
+/* Chat textarea styles */
+.chat-overlay textarea { font-family: inherit; cursor: text; }
+.chat-overlay textarea:focus { outline: none; }
+.chat-overlay textarea::placeholder { color: #606060; }

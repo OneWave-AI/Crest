@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Use Cases - Claude Unleashed</title>
-  <meta name="description" content="Discover what you can build with Claude Unleashed. Use cases for developers and everyone else.">
+  <title>Use Cases - Crest</title>
+  <meta name="description" content="Discover what you can build with Crest. Use cases for developers and everyone else.">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -13,12 +13,13 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://claudecodeunleashed.com/use-cases">
-  <meta property="og:title" content="Use Cases - Claude Unleashed">
-  <meta property="og:description" content="From web development to spreadsheet automation. See what's possible with Claude Unleashed.">
+  <meta property="og:url" content="https://crestai.dev/use-cases">
+  <meta property="og:title" content="Use Cases - Crest">
+  <meta property="og:description" content="From web development to spreadsheet automation. See what's possible with Crest.">
+  <meta property="og:site_name" content="Crest">
 
   <meta name="theme-color" content="#FF4F18">
-  <link rel="canonical" href="https://claudecodeunleashed.com/use-cases">
+  <link rel="canonical" href="https://crestai.dev/use-cases">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,26 +91,35 @@
       <a href="index.html" class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-zinc-700 to-zinc-900 border border-white/10 flex items-center justify-center shadow-lg">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-            <path d="M6 8l4 4-4 4" stroke="#FACC15" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="13" y="14" width="5" height="8" rx="1" fill="#FACC15"/>
+            <defs>
+              <linearGradient id="crestGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#cc785c"/>
+                <stop offset="100%" stop-color="#e8956e"/>
+              </linearGradient>
+            </defs>
+            <path d="M3 14c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGrad)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M3 19c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGrad)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+            <circle cx="6" cy="8" r="1.2" fill="#e8956e"/>
+            <circle cx="12" cy="11" r="1.2" fill="#cc785c"/>
+            <circle cx="18" cy="8" r="1.2" fill="#e8956e"/>
           </svg>
         </div>
-        <span class="font-bold text-lg">Unleashed</span>
+        <span class="font-bold text-lg">Crest</span>
       </a>
 
       <div class="hidden lg:flex items-center gap-1 text-sm">
         <a href="features.html" class="nav-link">Features</a>
         <a href="docs.html" class="nav-link">Docs</a>
         <a href="use-cases.html" class="nav-link active">Use Cases</a>
-        <a href="why.html" class="nav-link">Why Unleashed?</a>
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed" class="nav-link flex items-center gap-2">
+        <a href="why.html" class="nav-link">Why Crest?</a>
+        <a href="https://github.com/OneWave-AI/Crest" class="nav-link flex items-center gap-2">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
         </a>
       </div>
 
       <div class="flex items-center gap-3">
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases" class="btn btn-primary">Download</a>
+        <a href="https://github.com/OneWave-AI/Crest/releases" class="btn btn-primary">Download</a>
         <button id="mobile-menu-btn" class="lg:hidden p-2 text-zinc-400 hover:text-white" aria-label="Menu">
           <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
@@ -122,7 +132,7 @@
         <a href="features.html" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">Features</a>
         <a href="docs.html" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">Docs</a>
         <a href="use-cases.html" class="block px-4 py-3 text-white bg-white/5 rounded-lg">Use Cases</a>
-        <a href="why.html" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">Why Unleashed?</a>
+        <a href="why.html" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">Why Crest?</a>
       </div>
     </div>
   </nav>
@@ -137,7 +147,7 @@
         What will <span class="gradient-text">you</span> build?
       </h1>
       <p class="text-xl text-zinc-400 max-w-2xl mx-auto fade-up stagger-1">
-        From full-stack web apps to automating spreadsheets. Claude Unleashed works the way you do.
+        From full-stack web apps to automating spreadsheets. Crest works the way you do.
       </p>
 
       <!-- Tab Switcher -->
@@ -477,9 +487,9 @@
   <section class="section">
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-4xl font-bold mb-6 fade-up">Ready to try it?</h2>
-      <p class="text-xl text-zinc-400 mb-8 fade-up stagger-1">Download Unleashed and start building today.</p>
+      <p class="text-xl text-zinc-400 mb-8 fade-up stagger-1">Download Crest and start building today.</p>
       <div class="flex flex-col sm:flex-row justify-center gap-4 fade-up stagger-2">
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases" class="btn btn-primary btn-xl">
+        <a href="https://github.com/OneWave-AI/Crest/releases" class="btn btn-primary btn-xl">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
           Download for macOS
         </a>
@@ -496,18 +506,27 @@
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-b from-zinc-700 to-zinc-900 border border-white/10 flex items-center justify-center">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
-            <path d="M6 8l4 4-4 4" stroke="#FACC15" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="13" y="14" width="5" height="8" rx="1" fill="#FACC15"/>
+            <defs>
+              <linearGradient id="crestGradFoot" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#cc785c"/>
+                <stop offset="100%" stop-color="#e8956e"/>
+              </linearGradient>
+            </defs>
+            <path d="M3 14c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGradFoot)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M3 19c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGradFoot)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+            <circle cx="6" cy="8" r="1.2" fill="#e8956e"/>
+            <circle cx="12" cy="11" r="1.2" fill="#cc785c"/>
+            <circle cx="18" cy="8" r="1.2" fill="#e8956e"/>
           </svg>
         </div>
-        <span class="font-semibold">Claude Unleashed</span>
+        <span class="font-semibold">Crest</span>
       </div>
       <p class="text-zinc-500 text-sm">Made by <a href="https://onewave-ai.com" class="text-zinc-400 hover:text-white transition-colors">OneWave AI</a></p>
       <div class="flex gap-6 text-sm text-zinc-500">
         <a href="features.html" class="hover:text-white transition-colors">Features</a>
         <a href="docs.html" class="hover:text-white transition-colors">Docs</a>
         <a href="use-cases.html" class="hover:text-white transition-colors">Use Cases</a>
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed" class="hover:text-white transition-colors">GitHub</a>
+        <a href="https://github.com/OneWave-AI/Crest" class="hover:text-white transition-colors">GitHub</a>
       </div>
     </div>
   </footer>

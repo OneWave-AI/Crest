@@ -11,6 +11,9 @@ const api: IpcApi = {
   getTerminals: () => ipcRenderer.invoke('get-terminals'),
   terminalSendText: (text, terminalId) => ipcRenderer.invoke('terminal-send-text', text, terminalId),
   terminalGetBuffer: (terminalId, lines) => ipcRenderer.invoke('terminal-get-buffer', terminalId, lines),
+  terminalInterrupt: (terminalId) => ipcRenderer.invoke('terminal-interrupt', terminalId),
+  terminalSendEscape: (terminalId) => ipcRenderer.invoke('terminal-send-escape', terminalId),
+  terminalGetClaudeStatus: (terminalId) => ipcRenderer.invoke('terminal-get-claude-status', terminalId),
   onTerminalData: (callback) => {
     // Support multiple listeners - each terminal can register its own
     const handler = (_: Electron.IpcRendererEvent, data: string, terminalId: string) => callback(data, terminalId)
@@ -26,6 +29,7 @@ const api: IpcApi = {
 
   // Files
   selectFolder: () => ipcRenderer.invoke('select-folder'),
+  selectFile: () => ipcRenderer.invoke('select-file'),
   getCwd: () => ipcRenderer.invoke('get-cwd'),
   setCwd: (path) => ipcRenderer.invoke('set-cwd', path),
   listDirectory: (path) => ipcRenderer.invoke('list-directory', path),
@@ -224,6 +228,16 @@ const api: IpcApi = {
     ipcRenderer.invoke('generate-session-context', projectPath, days),
   writeSessionContext: (projectPath: string, content: string) =>
     ipcRenderer.invoke('write-session-context', projectPath, content),
+
+  // Chat Mode
+  chatSendPrompt: (options: { sessionId: string; prompt: string; cwd: string; model?: string; resumeSessionId?: string }) =>
+    ipcRenderer.invoke('chat:send-prompt', options),
+  chatStop: (sessionId: string) => ipcRenderer.invoke('chat:stop', sessionId),
+  onChatStreamEvent: (callback: (sessionId: string, event: any) => void) => {
+    const handler = (_: Electron.IpcRendererEvent, sessionId: string, event: any) => callback(sessionId, event)
+    ipcRenderer.on('chat:stream-event', handler)
+    return () => ipcRenderer.removeListener('chat:stream-event', handler)
+  },
 
   // Legacy methods (backward compatibility)
   memoryGetContext: (projectPath: string) =>

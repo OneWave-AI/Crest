@@ -13,6 +13,7 @@ import {
   parseLLMDecision,
   isSemanticallyDuplicate,
   summarizeTerminalOutput,
+  parseClaudeCodeState,
   DANGEROUS_PATTERNS,
   type ClaudeStatus
 } from './agentUtils'
@@ -239,21 +240,59 @@ You're taking control of an existing conversation that was already in progress.
       const cleanBuffer = stripAnsi(outputBuffer)
       const currentCliProvider = cliProviderRef.current
 
+      // Parse Claude-specific state for rich awareness
+      const claudeState = currentCliProvider === 'claude' ? parseClaudeCodeState(cleanBuffer) : null
+
       // Update session stats from output
       const stats = parseStats(cleanBuffer)
       if (Object.keys(stats).length > 0) {
         store.updateSessionStats(stats)
       }
 
-      // Skip LLM entirely when Claude is working
+      // Check for CLI crash (no output for 2+ minutes while running)
+      if (currentCliProvider === 'claude') {
+        try {
+          const ptyStatus = await window.api.terminalGetClaudeStatus(store.activeTerminalId!)
+          if (ptyStatus?.possibleCrash) {
+            store.addLog('error', 'Claude CLI may have crashed (no output for 2min). Sending interrupt...')
+            await window.api.terminalInterrupt(store.activeTerminalId!)
+            processingRef.current = false
+            idleTimerRef.current = setTimeout(() => handleIdle(), 3000)
+            return
+          }
+        } catch { /* ignore if IPC not available */ }
+      }
+
+      // Auto-compact when context is running high
+      if (claudeState?.contextWarning && claudeState.contextPercent && claudeState.contextPercent >= 85) {
+        const status = detectClaudeStatus(cleanBuffer, currentCliProvider)
+        if (status === 'waiting') {
+          store.addLog('decision', `Context at ${claudeState.contextPercent}% — auto-compacting`)
+          await sendToTerminal('/compact')
+          processingRef.current = false
+          idleTimerRef.current = setTimeout(() => handleIdle(), 5000)
+          return
+        }
+      }
+
+      // Skip LLM entirely when Claude is working or streaming
       const status = detectClaudeStatus(cleanBuffer, currentCliProvider)
-      if (status === 'working') {
-        store.addLog('working', 'Claude is working, skipping LLM call')
+      if (status === 'working' || status === 'streaming') {
+        store.addLog('working', status === 'streaming' ? 'Claude is generating response' : 'Claude is working, skipping LLM call')
         const cfg = getStore().config
         const idleTimeout = (cfg?.idleTimeout || 5) * 1000
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
         idleTimerRef.current = setTimeout(() => handleIdle(), Math.min(idleTimeout, 8000))
         processingRef.current = false
+        return
+      }
+
+      // Handle Claude error states (rate limit, API errors)
+      if (status === 'error' && claudeState?.errorMessage) {
+        store.addLog('error', `Claude error detected: ${claudeState.errorMessage.slice(0, 80)}`)
+        // Wait and retry -- rate limits usually clear in 10-30s
+        processingRef.current = false
+        idleTimerRef.current = setTimeout(() => handleIdle(), 15000)
         return
       }
 

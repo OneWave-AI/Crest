@@ -6,7 +6,7 @@ import type { AppSettings, CustomTheme } from '../../shared/types'
 
 const SETTINGS_FILE = 'settings.json'
 // GitHub repo for update checks - change this to your actual repo
-const GITHUB_REPO = 'gabe/ClaudeCodeUI-V2'
+const GITHUB_REPO = 'OneWave-AI/Crest'
 
 function getSettingsPath(): string {
   return join(app.getPath('userData'), SETTINGS_FILE)
@@ -127,7 +127,7 @@ export function registerSettingsHandlers(): void {
     const settings = await loadSettings()
     const result = await dialog.showSaveDialog({
       title: 'Export Settings',
-      defaultPath: 'claudecodeui-settings.json',
+      defaultPath: 'crest-settings.json',
       filters: [{ name: 'JSON', extensions: ['json'] }]
     })
 
@@ -241,7 +241,7 @@ export function registerSettingsHandlers(): void {
           method: 'GET',
           url: `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`,
           headers: {
-            'User-Agent': 'ClaudeCodeUI',
+            'User-Agent': 'Crest',
             'Accept': 'application/vnd.github.v3+json'
           }
         })

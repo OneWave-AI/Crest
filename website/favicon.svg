@@ -1,76 +1,55 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
-    <!-- Pure black background -->
+    <!-- Dark background gradient -->
     <linearGradient id="bgDark" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#111111"/>
-      <stop offset="100%" style="stop-color:#000000"/>
+      <stop offset="0%" stop-color="#111111"/>
+      <stop offset="100%" stop-color="#000000"/>
     </linearGradient>
 
-    <!-- Rich gold gradient -->
-    <linearGradient id="gold" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFE14D"/>
-      <stop offset="30%" style="stop-color:#FFD700"/>
-      <stop offset="100%" style="stop-color:#CC9900"/>
+    <!-- Coral/orange accent gradient -->
+    <linearGradient id="coral" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#cc785c"/>
+      <stop offset="100%" stop-color="#e8956e"/>
     </linearGradient>
 
-    <!-- Intense gold glow -->
-    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="25" result="blur"/>
-      <feFlood flood-color="#FFD700" flood-opacity="0.7"/>
+    <!-- Soft glow filter -->
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood flood-color="#e8956e" flood-opacity="0.25"/>
       <feComposite in2="blur" operator="in"/>
       <feMerge>
         <feMergeNode/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-
-    <!-- Soft ambient glow -->
-    <radialGradient id="ambient" cx="50%" cy="45%" r="50%">
-      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:0.15"/>
-      <stop offset="70%" style="stop-color:#FFD700;stop-opacity:0.03"/>
-      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:0"/>
-    </radialGradient>
   </defs>
 
   <!-- Background -->
   <rect width="1024" height="1024" rx="220" fill="url(#bgDark)"/>
 
-  <!-- Subtle gold border -->
-  <rect width="1024" height="1024" rx="220" fill="none" stroke="url(#gold)" stroke-width="4" opacity="0.15"/>
-
-  <!-- Ambient glow -->
-  <rect width="1024" height="1024" rx="220" fill="url(#ambient)"/>
-
-  <!-- Large prompt symbol > -->
-  <text
-    x="220"
-    y="620"
-    font-family="SF Mono, Menlo, Monaco, Consolas, monospace"
-    font-size="400"
-    font-weight="700"
-    fill="url(#gold)"
-    filter="url(#glow)"
-  >&gt;</text>
-
-  <!-- Bold cursor block -->
-  <rect
-    x="580"
-    y="320"
-    width="180"
-    height="320"
-    rx="16"
-    fill="url(#gold)"
+  <!-- Main bold wave crest stroke - thicker for favicon legibility -->
+  <path
+    d="M 180 610
+       C 275 610, 350 580, 420 510
+       C 468 462, 495 395, 512 295
+       C 529 395, 556 462, 604 510
+       C 674 580, 749 610, 844 610"
+    fill="none"
+    stroke="url(#coral)"
+    stroke-width="58"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     filter="url(#glow)"
   />
 
-  <!-- Cursor shine/highlight -->
-  <rect
-    x="600"
-    y="340"
-    width="40"
-    height="160"
-    rx="8"
-    fill="#FFFFFF"
-    opacity="0.3"
-  />
+  <!-- Simplified dot trail for small sizes - fewer, bolder dots -->
+  <circle cx="280" cy="695" r="14" fill="#cc785c" opacity="0.3"/>
+  <circle cx="345" cy="678" r="18" fill="#d48464" opacity="0.4"/>
+  <circle cx="412" cy="648" r="22" fill="#dc906c" opacity="0.55"/>
+  <circle cx="468" cy="600" r="26" fill="#e4986e" opacity="0.7"/>
+  <circle cx="512" cy="545" r="28" fill="#e8956e" opacity="0.85"/>
+  <circle cx="556" cy="600" r="26" fill="#e4986e" opacity="0.7"/>
+  <circle cx="612" cy="648" r="22" fill="#dc906c" opacity="0.55"/>
+  <circle cx="679" cy="678" r="18" fill="#d48464" opacity="0.4"/>
+  <circle cx="744" cy="695" r="14" fill="#cc785c" opacity="0.3"/>
 </svg>

@@ -178,7 +178,7 @@ export const useSuperAgentStore = create<SuperAgentState>((set, get) => ({
       sessionStats: {
         ...state.sessionStats,
         ...Object.fromEntries(
-          Object.entries(stats).map(([k, v]) => [k, Math.max(v as number, (state.sessionStats as Record<string, number>)[k] || 0)])
+          Object.entries(stats).map(([k, v]) => [k, Math.max(v as number, (state.sessionStats as unknown as Record<string, number>)[k] || 0)])
         )
       }
     })),

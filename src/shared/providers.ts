@@ -1,5 +1,44 @@
 import type { CLIProvider, CLIProviderConfig } from './types'
 
+// Claude Code-specific patterns for parsing structured terminal output
+export const CLAUDE_PATTERNS = {
+  // Context window usage: "Context: 45.2k/200k tokens (23%)" or "87% context used"
+  contextUsage: /(?:Context|context)[\s:]+[\d.]+[km]?\s*\/\s*[\d.]+[km]?\s*(?:tokens?\s*)?\((\d+)%\)/i,
+  contextUsageAlt: /(\d+)%\s*(?:context|of context)\s*(?:used|remaining)/i,
+  // Active model detection: "Model: claude-opus-4-6" or "Opus 4.6 (1M context)"
+  activeModel: /(?:Model|model)[\s:]+(\S+)|(?:Opus|Sonnet|Haiku)\s+[\d.]+\s*\([^)]*\)/i,
+  // Plan mode indicators
+  planMode: /Plan mode|plan mode|📋\s*Plan|Planned steps/i,
+  planModeOff: /Work mode|Exited plan mode/i,
+  // Tool calls with file paths -- more specific than generic tool detection
+  toolCallRead: /Read\(([^)]+)\)/,
+  toolCallWrite: /Write\(([^)]+)\)/,
+  toolCallEdit: /Edit\(([^)]+)\)/,
+  toolCallBash: /Bash\(([^)]*)\)/,
+  toolCallAgent: /Agent\(([^)]*)\)/,
+  toolCallGlob: /Glob\(([^)]*)\)/,
+  toolCallGrep: /Grep\(([^)]*)\)/,
+  toolCallWebFetch: /WebFetch\(([^)]*)\)/,
+  toolCallWebSearch: /WebSearch\(([^)]*)\)/,
+  toolCallSkill: /Skill\(([^)]*)\)/,
+  // Slash commands
+  slashCommand: /^\/(?:model|compact|clear|help|memory|config|cost|doctor|login|logout|status|review|pr|commit|init|bug|mcp|vim|fast|permissions|terminal-setup|listen|ide)\b/m,
+  // Cost tracking: "$0.42 cost" or "Cost: $1.23"
+  costInfo: /\$[\d.]+\s*(?:cost|spent)|Cost[\s:]+\$[\d.]+/i,
+  // Session info
+  sessionStart: /Claude Code v[\d.]+|▐▛███▜▌|Opus|Sonnet|Haiku/,
+  // Error states
+  claudeError: /(?:API error|rate limit|overloaded|connection refused|ECONNREFUSED|timeout|504|529|Error:|ValidationError)/i,
+  // Compact mode suggestion
+  contextHigh: /context.*(?:8[5-9]|9\d|100)%|running low on context/i,
+  // Permission prompts specific to Claude
+  permissionPrompt: /Allow|Deny|Skip|Trust this project|approve this action/i,
+  // Streaming indicators (Claude outputs these while generating)
+  streaming: /⎿|├|│|╰|─/,
+  // Task/todo indicators
+  taskUpdate: /TaskCreate|TaskUpdate|TaskGet|TaskList|✅|☐|☑/,
+}
+
 export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
   claude: {
     id: 'claude',
@@ -28,8 +67,12 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
       /⠋|⠙|⠹|⠸|⠼|⠴|⠦|⠧|⠇|⠏/m,
       /^\s*(?:thinking|analyzing|searching|reading|writing|running|executing|loading|processing|building|compiling|installing|fetching|creating|updating|downloading)\b/im,
       /\[(?:thinking|analyzing|searching|reading|writing|running|executing|loading|processing|building|compiling|installing|fetching|creating|updating|downloading)\]/i,
-      /Tool:|Read\(|Write\(|Edit\(|Bash\(|Task\(|Glob\(|Grep\(|WebFetch\(|WebSearch\(/i,
-      /✓.*modules? transformed/i
+      /Tool:|Read\(|Write\(|Edit\(|Bash\(|Task\(|Glob\(|Grep\(|WebFetch\(|WebSearch\(|Agent\(|Skill\(/i,
+      /✓.*modules? transformed/i,
+      // Claude-specific streaming output structure
+      /⎿\s|├\s|│\s/,
+      // Claude thinking/tool execution
+      /Thinking\.\.\.|Searching\.\.\.|Reading\.\.\./i,
     ],
     waitingPatterns: [
       /❯[\s\x00-\x1f]*$/m,
@@ -40,7 +83,10 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
       /What would you like|How can I help|anything else|Do you want to/i,
       /Press Enter to continue/i,
       /\? \(Y\/n\)/i,
-      /✓ built in \d+/i
+      /✓ built in \d+/i,
+      // Claude-specific permission prompts
+      /Allow|Deny|Skip/,
+      /Trust this project/i,
     ]
   },
   codex: {

@@ -159,10 +159,26 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
       return
     }
 
+    // Re-map parallel tasks from old terminal IDs to current terminal IDs
+    // (terminal IDs may change if grid was auto-created)
+    let resolvedTasks: Record<string, string> | undefined
+    if (mode === 'parallel') {
+      const oldIds = Object.keys(parallelTasks).filter(id => parallelTasks[id]?.trim())
+      const taskValues = oldIds.map(id => parallelTasks[id].trim())
+      resolvedTasks = {}
+      terminalList.forEach(({ terminalId }, i) => {
+        // Map by index: first task → first terminal, etc.
+        if (i < taskValues.length) {
+          resolvedTasks![terminalId] = taskValues[i]
+        }
+        // Terminals without a specific task will use masterTask (handled in startOrchestrator)
+      })
+    }
+
     const success = await startOrchestrator({
       mode,
       masterTask: masterTask.trim() || 'Work on assigned tasks',
-      tasks: mode === 'parallel' ? parallelTasks : undefined,
+      tasks: resolvedTasks,
       terminalIds: terminalList,
       timeLimit,
       safetyLevel,

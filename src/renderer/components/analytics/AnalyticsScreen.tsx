@@ -1096,7 +1096,7 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
 
 // Reusable components
 function LargeStatCard({ icon: Icon, label, value, trend, color }: {
-  icon: React.ComponentType<{ className?: string; size?: number }>
+  icon: React.ComponentType<{ className?: string; size?: string | number }>
   label: string
   value: string | number
   trend?: number
@@ -1147,7 +1147,7 @@ function StatBox({ label, value, color }: { label: string; value: string | numbe
 }
 
 function InsightCard({ icon: Icon, label, value }: {
-  icon: React.ComponentType<{ className?: string; size?: number }>
+  icon: React.ComponentType<{ className?: string; size?: string | number }>
   label: string
   value: string
 }) {

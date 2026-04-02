@@ -334,11 +334,20 @@ export interface IpcApi {
   getTerminals: () => Promise<Terminal[]>
   terminalSendText: (text: string, terminalId: string) => Promise<void>
   terminalGetBuffer: (terminalId: string, lines?: number) => Promise<string>
+  terminalInterrupt: (terminalId: string) => Promise<void>
+  terminalSendEscape: (terminalId: string) => Promise<void>
+  terminalGetClaudeStatus: (terminalId: string) => Promise<{
+    isClaudeRunning: boolean
+    cliProvider: string | null
+    lastActivityMs: number
+    possibleCrash: boolean
+  } | null>
   onTerminalData: (callback: (data: string, terminalId: string) => void) => (() => void) | void
   onTerminalExit: (callback: (code: number, terminalId: string) => void) => (() => void) | void
 
   // Files
   selectFolder: () => Promise<string | null>
+  selectFile: () => Promise<{ path: string; name: string }[] | null>
   getCwd: () => Promise<string>
   setCwd: (path: string) => Promise<void>
   listDirectory: (path: string) => Promise<FileNode[]>
@@ -509,6 +518,11 @@ export interface IpcApi {
   memoryGetGlobalContext: (projectPath: string) => Promise<string>
   memoryClear: (projectPath: string) => Promise<{ success: boolean }>
   memoryListProjects: () => Promise<{ projectPath: string; hasMemory: boolean }[]>
+
+  // Chat Mode
+  chatSendPrompt: (options: { sessionId: string; prompt: string; cwd: string; model?: string; resumeSessionId?: string }) => Promise<void>
+  chatStop: (sessionId: string) => Promise<boolean>
+  onChatStreamEvent: (callback: (sessionId: string, event: any) => void) => () => void
 }
 
 // Memory types (CLAUDE.md based system)

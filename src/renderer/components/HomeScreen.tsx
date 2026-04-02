@@ -71,6 +71,7 @@ interface HomeScreenProps {
   onOpenHive?: () => void
   onOpenMemory?: () => void
   onOpenTeams?: () => void
+  onStartChat?: () => void
 }
 
 interface RecentProject {
@@ -122,7 +123,8 @@ export default function HomeScreen({
   onOpenAnalytics,
   onOpenHive,
   onOpenMemory,
-  onOpenTeams
+  onOpenTeams,
+  onStartChat
 }: HomeScreenProps) {
   // Get setCwd from store to keep it in sync when clicking projects
   const setCwd = useAppStore((state) => state.setCwd)
@@ -380,9 +382,7 @@ export default function HomeScreen({
         {/* Compact Hero */}
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold mb-3 tracking-tight">
-            <span className="text-white">Claude</span>
-            <span className="bg-gradient-to-r from-[#cc785c] to-[#e8956e] bg-clip-text text-transparent">Code</span>
-            <span className="text-gray-400 font-light ml-2">Unleashed</span>
+            <span className="bg-gradient-to-r from-[#cc785c] to-[#e8956e] bg-clip-text text-transparent">Crest</span>
           </h1>
           <p className="text-gray-400 text-sm max-w-md mx-auto">
             Your autonomous AI coding companion. Let Claude build, debug, and ship while you focus on what matters.
@@ -770,22 +770,22 @@ export default function HomeScreen({
               </button>
             </div>
 
-            {/* Start Blank Session - Premium */}
+            {/* Start Chat UI */}
             <button
               onClick={() => {
-                setIsStarting(true)
-                onStartSession()
+                if (onStartChat) onStartChat()
               }}
               disabled={claudeInstalled === false || isStarting}
-              className={`px-6 flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-300 border ${
+              className={`group/chat px-6 py-4 flex items-center justify-center gap-3 rounded-xl font-medium transition-all duration-300 border ${
                 claudeInstalled !== false && !isStarting
-                  ? 'bg-white/[0.03] hover:bg-white/[0.08] border-white/[0.1] hover:border-white/[0.2] text-gray-300 hover:text-white hover:scale-105 backdrop-blur-sm'
+                  ? 'bg-gradient-to-r from-[#cc785c]/10 to-[#cc785c]/5 hover:from-[#cc785c]/20 hover:to-[#cc785c]/10 border-[#cc785c]/20 hover:border-[#cc785c]/40 text-gray-200 hover:text-white hover:scale-[1.02] backdrop-blur-sm'
                   : 'bg-gray-800/30 text-gray-600 cursor-not-allowed border-transparent'
               }`}
-              title="Start without a project folder"
+              title="Start with Chat UI"
             >
-              <MessageSquare className="w-4 h-4" />
-              <span className="text-sm">Blank</span>
+              <MessageSquare className="w-5 h-5" />
+              <span className="text-base">Chat UI</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover/chat:translate-x-1 opacity-50" />
             </button>
           </div>
           <p className="text-center text-[11px] text-gray-600 mt-3">
@@ -926,7 +926,7 @@ export default function HomeScreen({
 
         {/* Footer */}
         <div className="text-center">
-          <span className="text-[11px] text-gray-700">Claude Code Unleashed • Built with <Rocket className="w-2.5 h-2.5 inline text-gray-400" /></span>
+          <span className="text-[11px] text-gray-700">Crest • Built with <Rocket className="w-2.5 h-2.5 inline text-gray-400" /></span>
         </div>
       </div>
 
@@ -997,7 +997,7 @@ function getToolIcon(name: string): typeof Terminal {
 
 // Stat Card Component
 function StatCard({ icon: Icon, label, value }: {
-  icon: React.ComponentType<{ className?: string; size?: number }>
+  icon: React.ComponentType<{ className?: string; size?: string | number }>
   label: string
   value: string | number
 }) {
@@ -1031,9 +1031,9 @@ const GeometricIcons: Record<string, ({ className }: { className?: string }) => 
       {/* Drop shadow */}
       <path d="M5 27C5 27 8 29 16 29C24 29 27 27 27 27" stroke="currentColor" strokeWidth="0.5" opacity="0.08" />
       {/* Back card - offset for depth */}
-      <rect x="7" y="3" width="20" height="17" rx="2.5" fill="currentColor" opacity="0.06" stroke="currentColor" strokeWidth="0.8" opacity="0.15" />
+      <rect x="7" y="3" width="20" height="17" rx="2.5" fill="currentColor" stroke="currentColor" strokeWidth="0.8" opacity="0.15" />
       {/* Middle card */}
-      <rect x="4.5" y="5.5" width="20" height="17" rx="2.5" fill="currentColor" opacity="0.08" stroke="currentColor" strokeWidth="0.8" opacity="0.2" />
+      <rect x="4.5" y="5.5" width="20" height="17" rx="2.5" fill="currentColor" stroke="currentColor" strokeWidth="0.8" opacity="0.2" />
       {/* Front folder - 3D face */}
       <path d="M3 12.5C3 11.12 4.12 10 5.5 10H10.5L13 12.5H24.5C25.88 12.5 27 13.62 27 15V24.5C27 25.88 25.88 27 24.5 27H5.5C4.12 27 3 25.88 3 24.5V12.5Z" fill="url(#proj-face)" stroke="currentColor" strokeWidth="1.3" />
       {/* Folder tab - lit from top */}
@@ -1044,7 +1044,7 @@ const GeometricIcons: Record<string, ({ className }: { className?: string }) => 
       {/* Inner shine band */}
       <rect x="6" y="15" width="19" height="1" rx="0.5" fill="currentColor" opacity="0.1" />
       {/* Embossed diamond detail */}
-      <path d="M14.5 20L16 18L17.5 20L16 22L14.5 20Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.6" opacity="0.3" />
+      <path d="M14.5 20L16 18L17.5 20L16 22L14.5 20Z" fill="currentColor" stroke="currentColor" strokeWidth="0.6" opacity="0.3" />
     </svg>
   ),
   tools: ({ className }: { className?: string }) => (

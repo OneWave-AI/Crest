@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Claude Unleashed - Code with Superpowers</title>
-  <meta name="description" content="Claude Unleashed is the premium desktop app for Claude Code and OpenAI Codex. Run both CLIs side by side, launch agent swarms, track sessions with analytics, and use 25+ skills—no terminal required.">
+  <title>Crest - Code with Superpowers</title>
+  <meta name="description" content="Crest is the premium desktop app for Claude Code and OpenAI Codex. Run both CLIs side by side, launch agent swarms, track sessions with analytics, and use 25+ skills—no terminal required.">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -13,22 +13,23 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://claudecodeunleashed.com/">
-  <meta property="og:title" content="Claude Unleashed - Code with Superpowers">
+  <meta property="og:url" content="https://crestai.dev/">
+  <meta property="og:title" content="Crest - Code with Superpowers">
   <meta property="og:description" content="The premium desktop app for Claude Code and OpenAI Codex. Run both CLIs side by side, launch agent swarms, track sessions, and access 25+ skills.">
-  <meta property="og:image" content="https://website-six-theta-50.vercel.app/dashboard.png">
+  <meta property="og:image" content="https://crestai.dev/dashboard.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Crest">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Claude Unleashed - Code with Superpowers">
+  <meta name="twitter:title" content="Crest - Code with Superpowers">
   <meta name="twitter:description" content="The premium desktop app for Claude Code and OpenAI Codex. Agent swarms, analytics, per-tab provider selection, and 25+ skills.">
-  <meta name="twitter:image" content="https://website-six-theta-50.vercel.app/dashboard.png">
+  <meta name="twitter:image" content="https://crestai.dev/dashboard.png">
 
   <meta name="theme-color" content="#FF4F18">
   <meta name="author" content="OneWave AI">
-  <link rel="canonical" href="https://claudecodeunleashed.com/">
+  <link rel="canonical" href="https://crestai.dev/">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,11 +66,20 @@
       <a href="#" class="flex items-center gap-3" onclick="window.scrollTo({top:0,behavior:'smooth'})">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-zinc-700 to-zinc-900 border border-white/10 flex items-center justify-center shadow-lg">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-            <path d="M6 8l4 4-4 4" stroke="#FACC15" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="13" y="14" width="5" height="8" rx="1" fill="#FACC15"/>
+            <defs>
+              <linearGradient id="crestGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#cc785c"/>
+                <stop offset="100%" stop-color="#e8956e"/>
+              </linearGradient>
+            </defs>
+            <path d="M3 14c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGrad)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M3 19c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGrad)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+            <circle cx="6" cy="8" r="1.2" fill="#e8956e"/>
+            <circle cx="12" cy="11" r="1.2" fill="#cc785c"/>
+            <circle cx="18" cy="8" r="1.2" fill="#e8956e"/>
           </svg>
         </div>
-        <span class="font-bold text-lg">Unleashed</span>
+        <span class="font-bold text-lg">Crest</span>
       </a>
 
       <!-- Desktop Nav -->
@@ -77,8 +87,8 @@
         <a href="features.html" class="nav-link">Features</a>
         <a href="docs.html" class="nav-link">Docs</a>
         <a href="use-cases.html" class="nav-link">Use Cases</a>
-        <a href="why.html" class="nav-link">Why Unleashed?</a>
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed" class="nav-link flex items-center gap-2">
+        <a href="why.html" class="nav-link">Why Crest?</a>
+        <a href="https://github.com/OneWave-AI/Crest" class="nav-link flex items-center gap-2">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
         </a>
@@ -86,11 +96,11 @@
 
       <!-- Right buttons -->
       <div class="flex items-center gap-3">
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 text-sm text-zinc-300 hover:bg-white/5 transition-colors">
+        <a href="https://github.com/OneWave-AI/Crest" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 text-sm text-zinc-300 hover:bg-white/5 transition-colors">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
           Star
         </a>
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases" class="btn btn-primary">
+        <a href="https://github.com/OneWave-AI/Crest/releases" class="btn btn-primary">
           Download
         </a>
         <!-- Mobile menu button -->
@@ -106,10 +116,10 @@
         <a href="features.html" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">Features</a>
         <a href="docs.html" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">Docs</a>
         <a href="use-cases.html" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">Use Cases</a>
-        <a href="why.html" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">Why Unleashed?</a>
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">GitHub</a>
+        <a href="why.html" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">Why Crest?</a>
+        <a href="https://github.com/OneWave-AI/Crest" class="block px-4 py-3 text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg">GitHub</a>
         <div class="pt-2">
-          <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases" class="block w-full px-4 py-3 bg-primary text-white text-center rounded-lg font-semibold">Download Free</a>
+          <a href="https://github.com/OneWave-AI/Crest/releases" class="block w-full px-4 py-3 bg-primary text-white text-center rounded-lg font-semibold">Download Free</a>
         </div>
       </div>
     </div>
@@ -144,21 +154,21 @@
       <!-- Headline -->
       <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 fade-up stagger-1 leading-[1.05]">
         AI Coding Agents.<br>
-        <span class="gradient-text">Unleashed.</span>
+        <span class="gradient-text">Crest.</span>
       </h1>
 
       <!-- Subhead -->
       <p class="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed fade-up stagger-2">
-        The best AI coding agents live in your terminal. Unleashed gives Claude Code and OpenAI Codex a native desktop app with per-tab provider selection, agent swarms, session analytics, and 25+ built-in skills. Run both side by side, 10x the workflow.
+        The best AI coding agents live in your terminal. Crest gives Claude Code and OpenAI Codex a native desktop app with per-tab provider selection, agent swarms, session analytics, and 25+ built-in skills. Run both side by side, 10x the workflow.
       </p>
 
       <!-- CTA Buttons -->
       <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6 fade-up stagger-3">
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases" class="btn btn-primary btn-xl glow-primary">
+        <a href="https://github.com/OneWave-AI/Crest/releases" class="btn btn-primary btn-xl glow-primary">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
           Download for macOS
         </a>
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases" class="btn btn-secondary btn-xl">
+        <a href="https://github.com/OneWave-AI/Crest/releases" class="btn btn-secondary btn-xl">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.504 0c-.155 0-.311.002-.465.006C7.622.069 3.67 2.754 1.727 6.619.168 9.782-.076 13.509.553 16.95c.251 1.374.63 2.717 1.144 3.998.098.245.202.486.31.725.012.027.023.055.036.082.048.111.097.221.148.33.089.19.18.378.276.564.083.161.169.319.257.477.032.058.065.115.098.173.073.127.147.252.223.377.04.065.081.129.122.193.083.13.167.258.253.385.043.064.086.127.13.19.065.092.131.183.198.273.095.127.191.252.29.376.026.032.051.065.077.097.1.122.202.242.306.36.09.101.18.2.273.298.052.056.105.11.158.165.096.098.193.194.291.289.06.058.12.115.181.171.089.082.179.162.269.241.074.065.148.128.223.191.075.063.15.125.227.185.091.072.183.142.276.21.054.04.108.08.163.119.12.085.241.167.364.247.023.015.045.031.068.046.135.087.271.171.409.252.019.011.037.023.056.034.145.084.291.164.439.241l.034.018c.158.081.317.159.478.232.036.016.073.032.109.048.128.056.257.11.387.16.062.025.125.048.188.071.112.041.224.08.337.117.076.025.152.049.229.072.1.03.2.058.301.084.088.023.177.045.266.065.088.02.176.039.265.056.099.019.198.036.298.052.077.012.154.024.232.034.114.014.228.026.343.036.062.005.124.011.186.015.129.009.258.015.388.019.043.001.086.003.13.004.155.003.31.004.466.004 5.427 0 10.032-3.414 11.754-8.195.862-2.394.987-5.071.356-7.59-.63-2.518-2.034-4.793-3.975-6.472C17.852 1.612 15.247.396 12.504 0z"/></svg>
           Linux / Chromebook
         </a>
@@ -167,7 +177,7 @@
         <span class="text-zinc-400">Chromebook users:</span> Enable Linux (Settings &rarr; Developers &rarr; Linux) first
       </p>
       <div class="flex justify-center gap-4 mb-12 fade-up stagger-3">
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed" class="btn btn-ghost text-sm">
+        <a href="https://github.com/OneWave-AI/Crest" class="btn btn-ghost text-sm">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           View on GitHub
         </a>
@@ -201,9 +211,9 @@
           <div class="w-3 h-3 rounded-full bg-red-500"></div>
           <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
           <div class="w-3 h-3 rounded-full bg-green-500"></div>
-          <span class="ml-4 text-xs text-zinc-500">Claude Unleashed</span>
+          <span class="ml-4 text-xs text-zinc-500">Crest</span>
         </div>
-        <img src="screenshots/split-providers.png" alt="Claude Code and OpenAI Codex running side by side in Claude Unleashed" class="w-full">
+        <img src="screenshots/split-providers.png" alt="Claude Code and OpenAI Codex running side by side in Crest" class="w-full">
       </div>
     </div>
   </section>
@@ -222,7 +232,7 @@
           <div class="step-connector"></div>
           <div class="step-number bg-primary/10 text-primary mx-auto">1</div>
           <h3 class="font-bold text-lg mb-3">Download & Open</h3>
-          <p class="text-sm text-zinc-400">One-click install. Point it at any project folder. Unleashed auto-detects Claude Code and Codex CLIs, your stack, and your settings&mdash;no config files needed.</p>
+          <p class="text-sm text-zinc-400">One-click install. Point it at any project folder. Crest auto-detects Claude Code and Codex CLIs, your stack, and your settings&mdash;no config files needed.</p>
         </div>
 
         <!-- Step 2 -->
@@ -248,7 +258,7 @@
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-4xl font-bold fade-up">Built for Builders</h2>
-        <p class="text-zinc-400 mt-4 max-w-2xl mx-auto fade-up stagger-1">Claude Code and Codex are incredible&mdash;but the terminal is a wall for most people. Unleashed tears it down. Whether you write code daily or have never opened a terminal, this is your way in.</p>
+        <p class="text-zinc-400 mt-4 max-w-2xl mx-auto fade-up stagger-1">Claude Code and Codex are incredible&mdash;but the terminal is a wall for most people. Crest tears it down. Whether you write code daily or have never opened a terminal, this is your way in.</p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8">
@@ -262,7 +272,7 @@
             <h3 class="text-2xl font-bold">For Developers</h3>
           </div>
 
-          <p class="text-zinc-400 mb-6">Your IDE stays open. Your terminal stays yours. Unleashed runs alongside your workflow&mdash;adding per-tab provider selection, agent swarms for parallel audits, visual git operations, MCP server management, and analytics you can't get from a CLI.</p>
+          <p class="text-zinc-400 mb-6">Your IDE stays open. Your terminal stays yours. Crest runs alongside your workflow&mdash;adding per-tab provider selection, agent swarms for parallel audits, visual git operations, MCP server management, and analytics you can't get from a CLI.</p>
 
           <ul class="space-y-3">
             <li class="flex items-center gap-3 text-sm">
@@ -334,7 +344,7 @@
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-4xl font-bold fade-up">Everything You Need</h2>
-        <p class="text-zinc-400 mt-4 max-w-2xl mx-auto fade-up stagger-1">Claude Code and OpenAI Codex are the best AI coding agents. Unleashed wraps them both in a native app so you can see what they're doing&mdash;and control them.</p>
+        <p class="text-zinc-400 mt-4 max-w-2xl mx-auto fade-up stagger-1">Claude Code and OpenAI Codex are the best AI coding agents. Crest wraps them both in a native app so you can see what they're doing&mdash;and control them.</p>
       </div>
 
       <!-- Feature Grid -->
@@ -435,7 +445,7 @@
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-bold fade-up">See It In Action</h2>
-        <p class="text-zinc-400 mt-4 fade-up stagger-1">Explore every corner of the Unleashed experience</p>
+        <p class="text-zinc-400 mt-4 fade-up stagger-1">Explore every corner of the Crest experience</p>
       </div>
 
       <!-- Tab Buttons -->
@@ -626,7 +636,7 @@
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-4xl font-bold fade-up">What You Can Build</h2>
-        <p class="text-zinc-400 mt-4 max-w-2xl mx-auto fade-up stagger-1">If you can describe it, AI can build it. Here's what people are using Unleashed for.</p>
+        <p class="text-zinc-400 mt-4 max-w-2xl mx-auto fade-up stagger-1">If you can describe it, AI can build it. Here's what people are using Crest for.</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">
@@ -636,7 +646,7 @@
             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
           </div>
           <h3 class="font-bold text-lg mb-2">Full-Stack Apps</h3>
-          <p class="text-sm text-zinc-400">Go from idea to deployed app. Unleashed handles the code, tests, git, and deployment&mdash;you just describe what you want.</p>
+          <p class="text-sm text-zinc-400">Go from idea to deployed app. Crest handles the code, tests, git, and deployment&mdash;you just describe what you want.</p>
         </div>
 
         <!-- Security Audits -->
@@ -697,14 +707,14 @@
   <section class="section section-depth">
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-4xl md:text-5xl font-bold mb-6 fade-up">Stop copy-pasting between your terminal and everything else.</h2>
-      <p class="text-xl text-zinc-400 mb-10 fade-up stagger-1">Unleashed is free, open source, and installs in under a minute. Give Claude Code and Codex the interface they deserve.</p>
+      <p class="text-xl text-zinc-400 mb-10 fade-up stagger-1">Crest is free, open source, and installs in under a minute. Give Claude Code and Codex the interface they deserve.</p>
 
       <div class="flex flex-col sm:flex-row justify-center gap-4 fade-up stagger-2">
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases" class="btn btn-primary btn-xl glow-primary">
+        <a href="https://github.com/OneWave-AI/Crest/releases" class="btn btn-primary btn-xl glow-primary">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
           Download Free
         </a>
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed" class="btn btn-secondary btn-xl">
+        <a href="https://github.com/OneWave-AI/Crest" class="btn btn-secondary btn-xl">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           View on GitHub
         </a>
@@ -721,18 +731,27 @@
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-b from-zinc-700 to-zinc-900 border border-white/10 flex items-center justify-center">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
-            <path d="M6 8l4 4-4 4" stroke="#FACC15" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="13" y="14" width="5" height="8" rx="1" fill="#FACC15"/>
+            <defs>
+              <linearGradient id="crestGradFoot" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#cc785c"/>
+                <stop offset="100%" stop-color="#e8956e"/>
+              </linearGradient>
+            </defs>
+            <path d="M3 14c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGradFoot)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M3 19c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGradFoot)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+            <circle cx="6" cy="8" r="1.2" fill="#e8956e"/>
+            <circle cx="12" cy="11" r="1.2" fill="#cc785c"/>
+            <circle cx="18" cy="8" r="1.2" fill="#e8956e"/>
           </svg>
         </div>
-        <span class="font-semibold">Claude Unleashed</span>
+        <span class="font-semibold">Crest</span>
       </div>
       <p class="text-zinc-500 text-sm">Made by <a href="https://onewave-ai.com" class="text-zinc-400 hover:text-white transition-colors">OneWave AI</a></p>
       <div class="flex gap-6 text-sm text-zinc-500">
         <a href="features.html" class="hover:text-white transition-colors">Features</a>
         <a href="docs.html" class="hover:text-white transition-colors">Docs</a>
         <a href="use-cases.html" class="hover:text-white transition-colors">Use Cases</a>
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed" class="hover:text-white transition-colors">GitHub</a>
+        <a href="https://github.com/OneWave-AI/Crest" class="hover:text-white transition-colors">GitHub</a>
       </div>
     </div>
   </footer>
@@ -742,8 +761,8 @@
     <div class="bg-surface/95 backdrop-blur-xl border-t border-white/10 px-4 py-3">
       <div class="max-w-6xl mx-auto flex items-center justify-between">
         <p class="text-sm text-zinc-400 hidden sm:block">Free & open source. Ready in 60 seconds.</p>
-        <a href="https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases" class="btn btn-primary text-sm">
-          Download Unleashed
+        <a href="https://github.com/OneWave-AI/Crest/releases" class="btn btn-primary text-sm">
+          Download Crest
         </a>
       </div>
     </div>

@@ -21,8 +21,10 @@ import MemoryPanelNatural from './components/memory/MemoryPanelNatural'
 import BackgroundAgentsPanel from './components/agents/BackgroundAgentsPanel'
 import RepoVisualization from './components/repo/RepoVisualization'
 import TeamsPanel from './components/teams/TeamsPanel'
+import ChatView from './components/chat/ChatView'
 
 type Screen = 'home' | 'terminal' | 'skills' | 'history' | 'analytics' | 'hive'
+type ViewMode = 'terminal' | 'chat'
 
 function App() {
   const [showSplash, setShowSplash] = useState(true)
@@ -40,6 +42,7 @@ function App() {
   const [repoVisualizationOpen, setRepoVisualizationOpen] = useState(false)
   const [teamsPanelOpen, setTeamsPanelOpen] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [viewMode, setViewMode] = useState<ViewMode>('terminal')
   const [activeTerminalId, setActiveTerminalId] = useState<string | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [allTerminalIds, setAllTerminalIds] = useState<Record<string, { tabId: string; panelId: string }>>({})
@@ -150,11 +153,13 @@ function App() {
           onOpenBackgroundAgents={() => setBackgroundAgentsPanelOpen(true)}
           onOpenRepoVisualization={() => setRepoVisualizationOpen(true)}
           onOpenTeams={() => setTeamsPanelOpen(true)}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
         />
 
         <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar - only on terminal screen, collapsible */}
-          {screen === 'terminal' && (
+          {/* Sidebar - only on terminal screen in terminal mode, collapsible */}
+          {screen === 'terminal' && viewMode === 'terminal' && (
             <div className={`relative flex-shrink-0 transition-all duration-200 ease-in-out ${sidebarOpen ? 'w-60' : 'w-0'}`}>
               <div className={`h-full overflow-hidden ${sidebarOpen ? 'w-60' : 'w-0'}`}>
                 <Sidebar
@@ -208,12 +213,21 @@ function App() {
                 onOpenHive={() => navigateTo('hive')}
                 onOpenMemory={() => setMemoryPanelOpen(true)}
                 onOpenTeams={() => setTeamsPanelOpen(true)}
+                onStartChat={() => {
+                  setViewMode('chat')
+                  navigateTo('terminal')
+                }}
               />
+            )}
+
+            {/* Chat View */}
+            {screen === 'terminal' && viewMode === 'chat' && (
+              <ChatView cwd={cwd} />
             )}
 
             {/* Terminal - always render once mounted, hide when not active to preserve session */}
             {terminalMounted && (
-              <div className={`${screen === 'terminal' ? 'contents' : 'hidden'}`}>
+              <div className={`${screen === 'terminal' && viewMode === 'terminal' ? 'contents' : 'hidden'}`}>
                 <TerminalWrapper
                   onTerminalData={handleTerminalData}
                   onTerminalIdChange={(terminalId) => {

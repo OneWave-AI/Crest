@@ -36,7 +36,7 @@ function createWindow(): void {
     minWidth: 800,
     minHeight: 600,
     show: false,
-    title: 'Claude Code Unleashed',
+    title: 'Crest',
     titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 15, y: 15 },
     backgroundColor: '#1a1a1a',
@@ -92,7 +92,7 @@ function createWindow(): void {
 
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.claudecodeui')
+  electronApp.setAppUserModelId('com.crest.app')
 
   // Register custom protocol to serve local files in preview
   protocol.handle('local-file', (request) => {

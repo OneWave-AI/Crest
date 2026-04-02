@@ -15,6 +15,7 @@ import {
   parseLLMDecision,
   isSemanticallyDuplicate,
   summarizeTerminalOutput,
+  parseClaudeCodeState,
 } from './agentUtils'
 
 // Per-terminal refs for timers and state
@@ -159,15 +160,25 @@ export function useOrchestrator() {
     // Add cross-terminal awareness for BOTH modes
     const otherTerminals = [...store.terminals.entries()]
       .filter(([id]) => id !== terminalId)
-      .map(([, t]) => {
+      .map(([id, t]) => {
         const lastLog = t.activityLog[t.activityLog.length - 1]
-        return `- "${t.task.slice(0, 80)}" [${t.status}]${lastLog ? ` (${lastLog.message.slice(0, 50)})` : ''}`
+        // Include Claude state if available (context %, model, tool in use)
+        let claudeInfo = ''
+        if (cliProviderRef.current === 'claude' && t.outputBuffer) {
+          const otherState = parseClaudeCodeState(stripAnsi(t.outputBuffer))
+          const parts: string[] = []
+          if (otherState.contextPercent !== null) parts.push(`ctx:${otherState.contextPercent}%`)
+          if (otherState.lastToolCall) parts.push(`tool:${otherState.lastToolCall.slice(0, 30)}`)
+          if (otherState.hasError) parts.push('ERROR')
+          if (parts.length) claudeInfo = ` {${parts.join(', ')}}`
+        }
+        return `- "${t.task.slice(0, 80)}" [${t.status}]${claudeInfo}${lastLog ? ` (${lastLog.message.slice(0, 50)})` : ''}`
       })
       .join('\n')
 
     if (otherTerminals) {
       const modeNote = store.mode === 'split'
-        ? 'These terminals are working on sub-tasks of the same project. Avoid duplicating their work.'
+        ? 'These terminals are working on sub-tasks of the same project. Avoid duplicating their work or editing the same files.'
         : 'These terminals are working on separate tasks. Avoid interfering with their files.'
       stateContext += `\n\n=== OTHER TERMINALS ===\n${otherTerminals}\n${modeNote}`
     }
@@ -233,10 +244,45 @@ export function useOrchestrator() {
         store.updateTerminalStats(terminalId, stats)
       }
 
-      // Skip LLM when working
+      // Parse Claude-specific state for richer awareness
+      const claudeState = currentCliProvider === 'claude' ? parseClaudeCodeState(cleanBuffer) : null
+
+      // Check for crash via main process (no output for 2+ minutes while "working")
+      if (currentCliProvider === 'claude') {
+        try {
+          const ptyStatus = await window.api.terminalGetClaudeStatus(terminalId)
+          if (ptyStatus?.possibleCrash) {
+            store.addTerminalLog(terminalId, 'error', 'Claude CLI may have crashed (no output for 2min). Sending interrupt...')
+            await window.api.terminalInterrupt(terminalId)
+            refs.processing = false
+            // Retry after a brief pause
+            refs.idleTimer = setTimeout(() => handleIdleForTerminal(terminalId), 3000)
+            return
+          }
+        } catch { /* ignore if IPC not available */ }
+      }
+
+      // Auto-compact when context is running high
+      if (claudeState?.contextWarning && claudeState.contextPercent && claudeState.contextPercent >= 85) {
+        const status = detectClaudeStatus(cleanBuffer, currentCliProvider)
+        if (status === 'waiting') {
+          store.addTerminalLog(terminalId, 'decision', `Context at ${claudeState.contextPercent}% — sending /compact`)
+          await sendToTerminal('/compact', terminalId)
+          refs.processing = false
+          refs.idleTimer = setTimeout(() => handleIdleForTerminal(terminalId), 5000)
+          return
+        }
+      }
+
+      // Log Claude errors if detected
+      if (claudeState?.hasError && claudeState.errorMessage) {
+        store.addTerminalLog(terminalId, 'error', `Claude error: ${claudeState.errorMessage.slice(0, 100)}`)
+      }
+
+      // Skip LLM when working or streaming
       const status = detectClaudeStatus(cleanBuffer, currentCliProvider)
-      if (status === 'working') {
-        store.addTerminalLog(terminalId, 'working', 'Claude is working, skipping LLM call')
+      if (status === 'working' || status === 'streaming') {
+        store.addTerminalLog(terminalId, 'working', status === 'streaming' ? 'Claude is generating response, skipping LLM call' : 'Claude is working, skipping LLM call')
         const idleTimeout = (store.config?.idleTimeout || 5) * 1000
         if (refs.idleTimer) clearTimeout(refs.idleTimer)
         refs.idleTimer = setTimeout(() => handleIdleForTerminal(terminalId), Math.min(idleTimeout, 8000))
@@ -471,47 +517,76 @@ export function useOrchestrator() {
     const model = prov === 'openai' ? cfg.openaiModel : cfg.groqModel
     if (!apiKey) return null
 
-    const systemPrompt = `You are a task decomposition assistant. Break down a master task into ${terminalCount} independent sub-tasks that can be worked on in parallel by separate CLI coding agents.
+    const systemPrompt = `You are a task decomposition assistant. You take a master task and break it into ${terminalCount} DISTINCT sub-tasks for parallel execution by separate Claude Code CLI terminals.
 
-Each sub-task should be:
-- Self-contained enough to work on independently
-- Specific and actionable
-- Roughly equal in scope
+RULES:
+- Each sub-task MUST be different -- never repeat the same task
+- Each sub-task should focus on a different aspect/area of the project
+- Each sub-task must be self-contained and actionable
+- Include enough context that each terminal can work independently
+- Tell each terminal what the OTHER terminals are working on so they avoid conflicts
+- Make tasks roughly equal in scope
 
-Respond ONLY with a JSON array of strings, one per terminal:
-["sub-task 1", "sub-task 2", ...]`
+GOOD examples of splitting "Build a todo app":
+["Build the backend API with Express: routes for CRUD operations on todos, database setup with SQLite. Other terminals handle frontend and testing.",
+ "Build the React frontend: todo list component, add/edit/delete UI, connect to the API on port 3000. Other terminals handle backend and testing.",
+ "Write tests for the todo app: unit tests for API routes, integration tests, and E2E tests. Wait for backend/frontend to be scaffolded first."]
 
-    const userMessage = `Break this task into ${terminalCount} parallel sub-tasks:\n\n${masterTask}`
+BAD example (all the same):
+["Build a todo app", "Build a todo app", "Build a todo app"]
 
-    try {
-      const response = await window.api.callLLMApi({
-        provider: prov,
-        apiKey,
-        model,
-        systemPrompt,
-        userPrompt: userMessage,
-        temperature: 0.3
-      })
+Respond ONLY with a valid JSON array of ${terminalCount} strings. No markdown, no explanation.`
 
-      if (response.success && response.content) {
-        try {
-          const tasks = JSON.parse(response.content)
-          if (Array.isArray(tasks) && tasks.length > 0) {
-            return tasks.map(String)
-          }
-        } catch {
-          // Try to extract JSON array from response
-          const match = response.content.match(/\[[\s\S]*\]/)
-          if (match) {
-            try {
-              const tasks = JSON.parse(match[0])
-              if (Array.isArray(tasks)) return tasks.map(String)
-            } catch { /* fall through */ }
+    const userMessage = `Break this master task into exactly ${terminalCount} distinct parallel sub-tasks:\n\n${masterTask}`
+
+    // Retry up to 2 times for more reliable decomposition
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const response = await window.api.callLLMApi({
+          provider: prov,
+          apiKey,
+          model,
+          systemPrompt,
+          userPrompt: userMessage,
+          temperature: attempt === 1 ? 0.3 : 0.5 // bump temp on retry for different output
+        })
+
+        if (response.success && response.content) {
+          const content = response.content.trim()
+          // Try direct JSON parse
+          try {
+            const tasks = JSON.parse(content)
+            if (Array.isArray(tasks) && tasks.length >= terminalCount) {
+              const result = tasks.slice(0, terminalCount).map(String)
+              // Verify tasks are actually different (not all the same)
+              const unique = new Set(result)
+              if (unique.size >= Math.ceil(terminalCount * 0.6)) return result
+              console.warn('[Orchestrator] LLM returned duplicate tasks, retrying...')
+              continue
+            }
+            if (Array.isArray(tasks) && tasks.length > 0) {
+              return tasks.map(String)
+            }
+          } catch {
+            // Try to extract JSON array from response (LLM sometimes wraps in markdown)
+            const match = content.match(/\[[\s\S]*?\]/)
+            if (match) {
+              try {
+                const tasks = JSON.parse(match[0])
+                if (Array.isArray(tasks) && tasks.length > 0) return tasks.map(String)
+              } catch { /* fall through */ }
+            }
           }
         }
+
+        if (attempt < 2) {
+          console.warn(`[Orchestrator] Decompose attempt ${attempt} failed, retrying...`)
+          await new Promise(r => setTimeout(r, 1000))
+        }
+      } catch (err) {
+        console.error(`[Orchestrator] Decompose attempt ${attempt} failed:`, err)
+        if (attempt < 2) await new Promise(r => setTimeout(r, 1000))
       }
-    } catch (err) {
-      console.error('[Orchestrator] Decompose failed:', err)
     }
     return null
   }, [])
@@ -598,10 +673,21 @@ Respond ONLY with a JSON array of strings, one per terminal:
       const subTasks = await decomposeTask(config.masterTask, config.terminalIds.length)
 
       if (!subTasks || subTasks.length === 0) {
-        store.addCoordinatorLog('error', 'Failed to decompose task. Using master task for all terminals.')
-        // Fall back to giving everyone the master task
-        for (const { terminalId, tabId, panelId } of config.terminalIds) {
-          store.addTerminal(terminalId, { tabId, panelId, task: config.masterTask, status: 'pending' })
+        store.addCoordinatorLog('error', 'Failed to decompose task. Creating numbered sub-tasks as fallback.')
+        // Instead of giving everyone the SAME task, create distinct sub-tasks
+        const fallbackAspects = [
+          'Focus on the core logic and main functionality',
+          'Focus on the UI/UX, styling, and user-facing components',
+          'Focus on tests, error handling, and edge cases',
+          'Focus on documentation, types, and code quality',
+          'Focus on performance optimization and cleanup',
+          'Focus on integration and connecting the pieces together'
+        ]
+        for (let i = 0; i < config.terminalIds.length; i++) {
+          const { terminalId, tabId, panelId } = config.terminalIds[i]
+          const aspect = fallbackAspects[i % fallbackAspects.length]
+          const fallbackTask = `${config.masterTask}\n\n${aspect}. This is terminal ${i + 1} of ${config.terminalIds.length} working on this task in parallel -- coordinate to avoid duplicate work.`
+          store.addTerminal(terminalId, { tabId, panelId, task: fallbackTask, status: 'pending' })
           const refs = getTerminalRefs(terminalId)
           refs.waitingForReady = true
           refs.taskSent = false

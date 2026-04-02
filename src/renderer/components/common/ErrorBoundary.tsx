@@ -91,7 +91,7 @@ ${errorInfo?.componentStack}
     `)
 
     // Open GitHub issue page (update URL as needed)
-    window.api?.openUrlExternal?.(`https://github.com/yourusername/ClaudeCodeUI/issues/new?title=${issueTitle}&body=${issueBody}`)
+    window.api?.openUrlExternal?.(`https://github.com/OneWave-AI/Crest/issues/new?title=${issueTitle}&body=${issueBody}`)
   }
 
   render() {

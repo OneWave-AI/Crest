@@ -15,6 +15,7 @@ import { registerMemoryHandlers } from './memory'
 import { registerBackgroundAgentHandlers } from './backgroundAgents'
 import { registerRepoAnalyzerHandlers } from './repoAnalyzer'
 import { registerTeamHandlers } from './teams'
+import { registerChatHandlers } from './chat'
 import type { CLIProvider } from '../../shared/types'
 import { CLI_PROVIDERS } from '../../shared/providers'
 
@@ -58,6 +59,9 @@ export function registerIpcHandlers(): void {
   // Teams handlers
   registerTeamHandlers()
 
+  // Chat handlers
+  registerChatHandlers()
+
   // Initialize settings (apply window opacity, etc.)
   initializeSettings()
 
@@ -83,6 +87,20 @@ export function registerIpcHandlers(): void {
       defaultPath: homedir()
     })
     return result.canceled ? null : result.filePaths[0]
+  })
+
+  // File picker for chat attachments
+  ipcMain.handle('select-file', async () => {
+    const result = await dialog.showOpenDialog({
+      properties: ['openFile', 'multiSelections'],
+      defaultPath: homedir()
+    })
+    if (result.canceled || result.filePaths.length === 0) return null
+    const { basename } = await import('path')
+    return result.filePaths.map(p => ({
+      path: p,
+      name: basename(p),
+    }))
   })
 
   // Generic CLI check (provider-aware)

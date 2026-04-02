@@ -1,76 +1,97 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
-    <!-- Pure black background -->
+    <!-- Dark background gradient -->
     <linearGradient id="bgDark" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#111111"/>
-      <stop offset="100%" style="stop-color:#000000"/>
+      <stop offset="0%" stop-color="#111111"/>
+      <stop offset="100%" stop-color="#000000"/>
     </linearGradient>
 
-    <!-- Rich gold gradient -->
-    <linearGradient id="gold" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFE14D"/>
-      <stop offset="30%" style="stop-color:#FFD700"/>
-      <stop offset="100%" style="stop-color:#CC9900"/>
+    <!-- Coral/orange accent gradient - horizontal -->
+    <linearGradient id="coral" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#cc785c"/>
+      <stop offset="100%" stop-color="#e8956e"/>
     </linearGradient>
 
-    <!-- Intense gold glow -->
-    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="25" result="blur"/>
-      <feFlood flood-color="#FFD700" flood-opacity="0.7"/>
+    <!-- Subtle ambient glow -->
+    <radialGradient id="ambient" cx="50%" cy="40%" r="40%">
+      <stop offset="0%" stop-color="#e8956e" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#cc785c" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Soft glow filter for the main wave stroke -->
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feFlood flood-color="#e8956e" flood-opacity="0.3"/>
       <feComposite in2="blur" operator="in"/>
       <feMerge>
         <feMergeNode/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-
-    <!-- Soft ambient glow -->
-    <radialGradient id="ambient" cx="50%" cy="45%" r="50%">
-      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:0.15"/>
-      <stop offset="70%" style="stop-color:#FFD700;stop-opacity:0.03"/>
-      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:0"/>
-    </radialGradient>
   </defs>
 
   <!-- Background -->
   <rect width="1024" height="1024" rx="220" fill="url(#bgDark)"/>
 
-  <!-- Subtle gold border -->
-  <rect width="1024" height="1024" rx="220" fill="none" stroke="url(#gold)" stroke-width="4" opacity="0.15"/>
-
   <!-- Ambient glow -->
   <rect width="1024" height="1024" rx="220" fill="url(#ambient)"/>
 
-  <!-- Large prompt symbol > -->
-  <text
-    x="220"
-    y="620"
-    font-family="SF Mono, Menlo, Monaco, Consolas, monospace"
-    font-size="400"
-    font-weight="700"
-    fill="url(#gold)"
-    filter="url(#glow)"
-  >&gt;</text>
-
-  <!-- Bold cursor block -->
-  <rect
-    x="580"
-    y="320"
-    width="180"
-    height="320"
-    rx="16"
-    fill="url(#gold)"
+  <!-- Main bold wave crest stroke -->
+  <path
+    d="M 195 600
+       C 280 600, 350 575, 415 515
+       C 465 468, 492 405, 512 310
+       C 532 405, 559 468, 609 515
+       C 674 575, 744 600, 829 600"
+    fill="none"
+    stroke="url(#coral)"
+    stroke-width="46"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     filter="url(#glow)"
   />
 
-  <!-- Cursor shine/highlight -->
-  <rect
-    x="600"
-    y="340"
-    width="40"
-    height="160"
-    rx="8"
-    fill="#FFFFFF"
-    opacity="0.3"
-  />
+  <!-- Dot trail underneath the wave - graduated dots flowing along a second wave curve -->
+  <!-- Dots get smaller and more transparent toward edges, like spray/particles -->
+
+  <!-- Far left dots - smallest, most transparent -->
+  <circle cx="195" cy="700" r="8" fill="#cc785c" opacity="0.15"/>
+  <circle cx="232" cy="697" r="9" fill="#cc785c" opacity="0.2"/>
+  <circle cx="270" cy="692" r="10" fill="#cc785c" opacity="0.25"/>
+
+  <!-- Left mid dots - growing -->
+  <circle cx="310" cy="684" r="12" fill="#d07e60" opacity="0.32"/>
+  <circle cx="348" cy="672" r="14" fill="#d48464" opacity="0.4"/>
+  <circle cx="385" cy="655" r="16" fill="#d88a68" opacity="0.48"/>
+
+  <!-- Center-left dots - larger -->
+  <circle cx="420" cy="633" r="18" fill="#dc906c" opacity="0.56"/>
+  <circle cx="452" cy="604" r="20" fill="#e0946e" opacity="0.65"/>
+  <circle cx="480" cy="568" r="22" fill="#e4986e" opacity="0.75"/>
+
+  <!-- Center peak dots - largest, most opaque -->
+  <circle cx="504" cy="525" r="24" fill="#e8956e" opacity="0.85"/>
+  <circle cx="520" cy="525" r="24" fill="#e8956e" opacity="0.85"/>
+
+  <!-- Center-right dots - mirror -->
+  <circle cx="544" cy="568" r="22" fill="#e4986e" opacity="0.75"/>
+  <circle cx="572" cy="604" r="20" fill="#e0946e" opacity="0.65"/>
+  <circle cx="604" cy="633" r="18" fill="#dc906c" opacity="0.56"/>
+
+  <!-- Right mid dots -->
+  <circle cx="639" cy="655" r="16" fill="#d88a68" opacity="0.48"/>
+  <circle cx="676" cy="672" r="14" fill="#d48464" opacity="0.4"/>
+  <circle cx="714" cy="684" r="12" fill="#d07e60" opacity="0.32"/>
+
+  <!-- Far right dots - smallest -->
+  <circle cx="754" cy="692" r="10" fill="#cc785c" opacity="0.25"/>
+  <circle cx="792" cy="697" r="9" fill="#cc785c" opacity="0.2"/>
+  <circle cx="829" cy="700" r="8" fill="#cc785c" opacity="0.15"/>
+
+  <!-- Sparse scatter dots above the wave - like ocean mist/spray -->
+  <circle cx="460" cy="350" r="5" fill="#e8956e" opacity="0.2"/>
+  <circle cx="512" cy="270" r="6" fill="#e8956e" opacity="0.25"/>
+  <circle cx="564" cy="350" r="5" fill="#e8956e" opacity="0.2"/>
+  <circle cx="490" cy="310" r="4" fill="#e8956e" opacity="0.15"/>
+  <circle cx="534" cy="310" r="4" fill="#e8956e" opacity="0.15"/>
 </svg>

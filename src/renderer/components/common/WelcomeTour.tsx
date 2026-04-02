@@ -29,7 +29,7 @@ interface TourStep {
 const TOUR_STEPS: TourStep[] = [
   {
     id: 'welcome',
-    title: 'Welcome to Claude Code UI',
+    title: 'Welcome to Crest',
     description: 'Your powerful AI-assisted development environment. Let us show you around and help you get the most out of your experience.',
     icon: Sparkles,
     position: 'center'

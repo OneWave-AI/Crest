@@ -37,6 +37,7 @@ import PreviewBar from './PreviewBar'
 import PlanPanel, { PlanItem } from './PlanPanel'
 import TaskTimeline, { TimelineAction, ActionType, ActionStatus } from './TaskTimeline'
 import VoiceInput from './VoiceInput'
+import { HybridChatView } from './HybridChatView'
 import { useAppStore } from '../../store'
 import { CLI_PROVIDERS } from '../../../shared/providers'
 import type { CLIProvider } from '../../../shared/types'
@@ -149,6 +150,17 @@ export default function TerminalWrapper({
   const [claudeStatus, setClaudeStatus] = useState<'working' | 'waiting' | 'idle'>('idle')
   const statusTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const statusBufferRef = useRef<string>('')
+
+  // Hybrid chat view toggle (per-panel)
+  const [chatViewPanels, setChatViewPanels] = useState<Set<string>>(new Set())
+  const toggleChatView = useCallback((panelId: string) => {
+    setChatViewPanels(prev => {
+      const next = new Set(prev)
+      if (next.has(panelId)) next.delete(panelId)
+      else next.add(panelId)
+      return next
+    })
+  }, [])
 
   // Plan/Work mode toggle
   const [claudeMode, setClaudeMode] = useState<'plan' | 'work'>('work')
@@ -1423,6 +1435,19 @@ export default function TerminalWrapper({
           <div className="flex items-center gap-1 flex-shrink-0 ml-2">
             {/* Plus Button with Menu */}
             <div className="relative" ref={showPlusMenu === panel.id ? plusMenuRef : null}>
+              {/* Chat view toggle */}
+              <button
+                onClick={() => toggleChatView(panel.id)}
+                className={`flex items-center px-2 py-1 rounded-md transition-all duration-150 ${
+                  chatViewPanels.has(panel.id)
+                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                    : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.06]'
+                }`}
+                title={chatViewPanels.has(panel.id) ? 'Switch to Terminal' : 'Switch to Chat View'}
+              >
+                {chatViewPanels.has(panel.id) ? <TerminalIcon size={13} /> : <Hash size={13} />}
+              </button>
+
               <button
                 onClick={() => setShowPlusMenu(showPlusMenu === panel.id ? null : panel.id)}
                 className={`flex items-center gap-1 px-2 py-1 rounded-md text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] transition-all duration-150 ${
@@ -1524,6 +1549,24 @@ export default function TerminalWrapper({
 
         {/* Panel Content */}
         <div className="flex-1 relative overflow-hidden">
+          {/* Hybrid Chat View overlay -- sits on top of terminal when toggled */}
+          {chatViewPanels.has(panel.id) && (() => {
+            const activeTermTab = panel.tabs.find(t => t.id === panel.activeTabId && t.type === 'terminal')
+            const activeTermRef = activeTermTab ? terminalRefs.current.get(activeTermTab.id) : null
+            const activeTermId = activeTermRef?.getTerminalId() || null
+            return activeTermId ? (
+              <div className="absolute inset-0 z-20">
+                <HybridChatView
+                  terminalId={activeTermId}
+                  claudeStatus={claudeStatus}
+                  onSendMessage={(text) => {
+                    window.api.terminalSendText(text, activeTermId)
+                  }}
+                />
+              </div>
+            ) : null
+          })()}
+
           {/* Render ALL terminal tabs to preserve state - show/hide based on active */}
           {panel.tabs.filter(tab => tab.type === 'terminal').map(tab => (
             <div

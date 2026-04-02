@@ -1426,19 +1426,33 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 <div className="text-center py-8">
                   {/* Logo */}
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2d2d2d] to-[#0a0a0a] mb-4 shadow-lg">
-                    <svg width="48" height="48" viewBox="0 0 512 512">
+                    <svg width="48" height="48" viewBox="0 0 80 44">
                       <defs>
-                        <linearGradient id="aboutLogoAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="aboutLogoAccent" x1="0" y1="0" x2="80" y2="44" gradientUnits="userSpaceOnUse">
                           <stop offset="0%" style={{ stopColor: '#cc785c' }} />
-                          <stop offset="100%" style={{ stopColor: '#a55d45' }} />
+                          <stop offset="100%" style={{ stopColor: '#e8956e' }} />
                         </linearGradient>
                       </defs>
-                      <path d="M152 172 L272 256 L152 340" fill="none" stroke="url(#aboutLogoAccent)" strokeWidth="40" strokeLinecap="round" strokeLinejoin="round" />
-                      <rect x="308" y="220" width="64" height="72" rx="10" fill="url(#aboutLogoAccent)" />
+                      {/* Wave crest made of dots */}
+                      <circle cx="4" cy="32" r="2.5" fill="url(#aboutLogoAccent)" opacity="0.5" />
+                      <circle cx="12" cy="26" r="2.8" fill="url(#aboutLogoAccent)" opacity="0.6" />
+                      <circle cx="21" cy="18" r="3.1" fill="url(#aboutLogoAccent)" opacity="0.7" />
+                      <circle cx="30" cy="10" r="3.4" fill="url(#aboutLogoAccent)" opacity="0.85" />
+                      <circle cx="40" cy="5" r="3.8" fill="url(#aboutLogoAccent)" opacity="1" />
+                      <circle cx="50" cy="10" r="3.4" fill="url(#aboutLogoAccent)" opacity="0.85" />
+                      <circle cx="59" cy="18" r="3.1" fill="url(#aboutLogoAccent)" opacity="0.7" />
+                      <circle cx="68" cy="26" r="2.8" fill="url(#aboutLogoAccent)" opacity="0.6" />
+                      <circle cx="76" cy="32" r="2.5" fill="url(#aboutLogoAccent)" opacity="0.5" />
+                      {/* Subtle secondary wave */}
+                      <circle cx="10" cy="40" r="1.8" fill="url(#aboutLogoAccent)" opacity="0.2" />
+                      <circle cx="25" cy="36" r="2" fill="url(#aboutLogoAccent)" opacity="0.25" />
+                      <circle cx="40" cy="34" r="2.2" fill="url(#aboutLogoAccent)" opacity="0.3" />
+                      <circle cx="55" cy="36" r="2" fill="url(#aboutLogoAccent)" opacity="0.25" />
+                      <circle cx="70" cy="40" r="1.8" fill="url(#aboutLogoAccent)" opacity="0.2" />
                     </svg>
                   </div>
-                  <h2 className="text-2xl font-bold text-white mb-1">ClaudeCodeUI</h2>
-                  <p className="text-gray-500 text-sm mb-4">Premium desktop GUI for Claude Code</p>
+                  <h2 className="text-2xl font-bold text-white mb-1">Crest</h2>
+                  <p className="text-gray-500 text-sm mb-4">The Premium Desktop Experience for AI Coding Agents</p>
                   <span className="inline-block px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400">
                     Version {appVersion}
                   </span>

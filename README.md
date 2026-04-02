@@ -1,10 +1,10 @@
-# Claude Code Unleashed
+# Crest
 
 **Code with Superpowers.**
 
 The premium native desktop experience for [Claude Code](https://github.com/anthropics/claude-code) and [OpenAI Codex](https://github.com/openai/codex). Multi-agent swarms, analytics, per-tab CLI provider selection, and a beautiful zero-config environment that lets you build faster—whether you're a developer or just getting started.
 
-[![Version](https://img.shields.io/badge/version-2.3.0-red)](https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases)
+[![Version](https://img.shields.io/badge/version-2.3.0-red)](https://github.com/OneWave-AI/Crest/releases)
 [![Made by OneWave AI](https://img.shields.io/badge/made%20by-OneWave--AI-orange)](https://onewave-ai.com)
 
 ## Screenshots
@@ -54,13 +54,13 @@ The premium native desktop experience for [Claude Code](https://github.com/anthr
 ## Who Is This For?
 
 ### For Developers
-Stop context switching. Unleashed gives you a native terminal environment that integrates directly with your existing toolchain.
+Stop context switching. Crest gives you a native terminal environment that integrates directly with your existing toolchain.
 - **Full Git Workflow**: Visual commit graphs, one-click PRs, and conflict resolution without leaving the app
 - **Multi-Agent Swarms**: Spin up specialized agents for testing, security, and refactoring to run in parallel
 - **Zero Config**: Auto-detects your dev server, linter, and package manager instantly
 
 ### For Everyone
-You don't need to be a coding expert to build amazing things. Unleashed translates your ideas into working software.
+You don't need to be a coding expert to build amazing things. Crest translates your ideas into working software.
 - **Natural Language**: Just describe what you want—"Make a landing page for my bakery"—and watch it happen
 - **Visual Feedback**: See your changes live as they happen in the built-in browser preview
 - **Automate Anything**: From organizing spreadsheets to scraping websites, let AI do the boring work
@@ -259,7 +259,7 @@ View documents directly in the app:
 
 ### From Release (Recommended)
 
-1. Go to [Releases](https://github.com/OneWave-AI/ClaudeCodeUnleashed/releases)
+1. Go to [Releases](https://github.com/OneWave-AI/Crest/releases)
 2. Download the appropriate installer for your platform:
    - macOS: `.dmg` (universal - works on Intel and Apple Silicon)
    - Windows: `.exe` installer
@@ -270,7 +270,7 @@ View documents directly in the app:
 Since the app is not signed with an Apple Developer certificate:
 
 1. **Download** the `.dmg` file from Releases
-2. **Open** the DMG and drag "ClaudeCodeUI" to Applications
+2. **Open** the DMG and drag "Crest" to Applications
 3. **First launch** - Right-click the app and select "Open"
 4. **Allow the app** in System Settings > Privacy & Security > "Open Anyway"
 5. The app will now launch normally
@@ -279,8 +279,8 @@ Since the app is not signed with an Apple Developer certificate:
 
 ```bash
 # Clone the repository
-git clone https://github.com/OneWave-AI/ClaudeCodeUnleashed.git
-cd ClaudeCodeUnleashed
+git clone https://github.com/OneWave-AI/Crest.git
+cd Crest
 
 # Install dependencies
 npm install
@@ -294,7 +294,7 @@ npm run build
 
 ## Usage
 
-1. **Launch**: Open ClaudeCodeUI - it checks for both Claude Code and Codex CLIs and offers to install
+1. **Launch**: Open Crest - it checks for both Claude Code and Codex CLIs and offers to install
 2. **Select Project**: Click "Open Project" or drag a folder
 3. **Start Session**: Click "Start Session" or press Cmd+Enter (launches your default CLI)
 4. **Add Provider Tabs**: Click "+" to open a new Claude Code or Codex tab
@@ -356,7 +356,7 @@ npx tsc --noEmit
 ## Project Structure
 
 ```
-ClaudeCodeUI-V2/
+Crest/
 ├── src/
 │   ├── main/              # Electron main process
 │   │   ├── index.ts       # Main entry

@@ -31,7 +31,9 @@ import {
   ListTodo,
   FolderTree,
   Users,
-  LayoutGrid
+  LayoutGrid,
+  Terminal as TerminalIcon,
+  MessageSquare
 } from 'lucide-react'
 
 // Custom Bee Icon for Swarm
@@ -91,6 +93,8 @@ interface HeaderProps {
   onOpenBackgroundAgents?: () => void
   onOpenRepoVisualization?: () => void
   onOpenTeams?: () => void
+  viewMode?: 'terminal' | 'chat'
+  onViewModeChange?: (mode: 'terminal' | 'chat') => void
 }
 
 export default function Header({
@@ -107,7 +111,9 @@ export default function Header({
   onOpenMemory,
   onOpenBackgroundAgents,
   onOpenRepoVisualization,
-  onOpenTeams
+  onOpenTeams,
+  viewMode = 'terminal',
+  onViewModeChange
 }: HeaderProps) {
   const folderName = cwd ? cwd.split('/').pop() : 'No folder'
   const [mcpCount, setMcpCount] = useState(0)
@@ -1127,6 +1133,37 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
           <Plug size={12} className={mcpCount > 0 ? 'text-green-400' : 'text-gray-500'} />
           <span className={`text-xs ${mcpCount > 0 ? 'text-green-400' : 'text-gray-500'}`}>{mcpCount}</span>
         </button>
+
+        {/* View Mode Toggle - only on terminal screen */}
+        {screen === 'terminal' && onViewModeChange && (
+          <div className="flex items-center rounded-lg border border-white/[0.06] overflow-hidden">
+            <button
+              onClick={() => onViewModeChange('terminal')}
+              className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${
+                viewMode === 'terminal'
+                  ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+              }`}
+              title="Terminal view"
+            >
+              <TerminalIcon size={12} />
+              <span>Terminal</span>
+            </button>
+            <div className="w-px h-4 bg-white/[0.06]" />
+            <button
+              onClick={() => onViewModeChange('chat')}
+              className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${
+                viewMode === 'chat'
+                  ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+              }`}
+              title="Chat view"
+            >
+              <MessageSquare size={12} />
+              <span>Chat</span>
+            </button>
+          </div>
+        )}
 
         {/* Search */}
         <button
