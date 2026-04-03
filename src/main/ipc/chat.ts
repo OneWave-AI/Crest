@@ -48,9 +48,7 @@ export function registerChatHandlers(): void {
     const args = [
       '-p',
       '--output-format', 'stream-json',
-      '--verbose',
       '--include-partial-messages',
-      '--no-session-persistence',
     ]
 
     if (model) {
@@ -66,6 +64,8 @@ export function registerChatHandlers(): void {
 
     const cleanEnv = { ...process.env }
     delete cleanEnv.CLAUDECODE
+    delete cleanEnv.CLAUDE_CODE_ENTRYPOINT
+    delete cleanEnv.CLAUDE_CODE_SESSION
     cleanEnv.FORCE_COLOR = '0'
     // Ensure PATH includes common install locations
     const home = homedir()
@@ -76,12 +76,22 @@ export function registerChatHandlers(): void {
     ]
     cleanEnv.PATH = [...extraPaths, cleanEnv.PATH].join(':')
 
-    console.log('[chat] binary:', claudeBin, 'args:', args.join(' '))
+    console.log('[chat] binary:', claudeBin)
+    console.log('[chat] args:', JSON.stringify(args))
+    console.log('[chat] cwd:', cwd)
     const proc = spawn(claudeBin, args, {
       cwd,
       env: cleanEnv,
     })
 
+    if (!proc.pid) {
+      console.error('[chat] FAILED to spawn process')
+      win.webContents.send('chat:stream-event', sessionId, {
+        type: 'error',
+        error: 'Failed to start Claude CLI. Is it installed?',
+      })
+      return
+    }
     console.log('[chat] process spawned, pid:', proc.pid)
     const session: ChatSession = { process: proc, buffer: '' }
     sessions.set(sessionId, session)
