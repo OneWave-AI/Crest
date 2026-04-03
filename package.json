@@ -3,7 +3,7 @@
   "version": "2.3.0",
   "description": "Crest - The Premium Desktop Experience for AI Coding Agents",
   "main": "./out/main/index.js",
-  "author": "Gabe",
+  "author": "OneWave AI",
   "license": "MIT",
   "scripts": {
     "dev": "electron-vite dev",
