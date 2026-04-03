@@ -1,55 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
-    <!-- Dark background gradient -->
-    <linearGradient id="bgDark" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#111111"/>
-      <stop offset="100%" stop-color="#000000"/>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f0f0f"/>
+      <stop offset="100%" stop-color="#050505"/>
     </linearGradient>
-
-    <!-- Coral/orange accent gradient -->
-    <linearGradient id="coral" x1="0%" y1="0%" x2="100%" y2="0%">
+    <linearGradient id="wave" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#cc785c"/>
-      <stop offset="100%" stop-color="#e8956e"/>
+      <stop offset="50%" stop-color="#e8956e"/>
+      <stop offset="100%" stop-color="#d4845f"/>
     </linearGradient>
-
-    <!-- Soft glow filter -->
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="10" result="blur"/>
-      <feFlood flood-color="#e8956e" flood-opacity="0.25"/>
-      <feComposite in2="blur" operator="in"/>
-      <feMerge>
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="1024" height="1024" rx="220" fill="url(#bgDark)"/>
+  <rect width="1024" height="1024" rx="224" fill="url(#bg)"/>
 
-  <!-- Main bold wave crest stroke - thicker for favicon legibility -->
+  <!-- Bold wave — thicker for small sizes -->
   <path
-    d="M 180 610
-       C 275 610, 350 580, 420 510
-       C 468 462, 495 395, 512 295
-       C 529 395, 556 462, 604 510
-       C 674 580, 749 610, 844 610"
+    d="M 165 590
+       C 250 590, 320 545, 385 465
+       C 435 400, 475 320, 512 245
+       C 549 320, 589 400, 639 465
+       C 704 545, 774 590, 859 590"
     fill="none"
-    stroke="url(#coral)"
-    stroke-width="58"
+    stroke="url(#wave)"
+    stroke-width="64"
     stroke-linecap="round"
     stroke-linejoin="round"
-    filter="url(#glow)"
   />
 
-  <!-- Simplified dot trail for small sizes - fewer, bolder dots -->
-  <circle cx="280" cy="695" r="14" fill="#cc785c" opacity="0.3"/>
-  <circle cx="345" cy="678" r="18" fill="#d48464" opacity="0.4"/>
-  <circle cx="412" cy="648" r="22" fill="#dc906c" opacity="0.55"/>
-  <circle cx="468" cy="600" r="26" fill="#e4986e" opacity="0.7"/>
-  <circle cx="512" cy="545" r="28" fill="#e8956e" opacity="0.85"/>
-  <circle cx="556" cy="600" r="26" fill="#e4986e" opacity="0.7"/>
-  <circle cx="612" cy="648" r="22" fill="#dc906c" opacity="0.55"/>
-  <circle cx="679" cy="678" r="18" fill="#d48464" opacity="0.4"/>
-  <circle cx="744" cy="695" r="14" fill="#cc785c" opacity="0.3"/>
+  <!-- Peak spray — 3 dots, larger for legibility -->
+  <circle cx="490" cy="200" r="14" fill="#e8956e" opacity="0.7"/>
+  <circle cx="512" cy="175" r="16" fill="#e8956e" opacity="0.5"/>
+  <circle cx="534" cy="200" r="14" fill="#e8956e" opacity="0.7"/>
 </svg>

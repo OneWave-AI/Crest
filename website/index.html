@@ -67,16 +67,15 @@
         <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-zinc-700 to-zinc-900 border border-white/10 flex items-center justify-center shadow-lg">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
             <defs>
-              <linearGradient id="crestGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#cc785c"/>
-                <stop offset="100%" stop-color="#e8956e"/>
+              <linearGradient id="navWave" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#cc785c"/>
+                <stop offset="1" stop-color="#e8956e"/>
               </linearGradient>
             </defs>
-            <path d="M3 14c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGrad)" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M3 19c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGrad)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-            <circle cx="6" cy="8" r="1.2" fill="#e8956e"/>
-            <circle cx="12" cy="11" r="1.2" fill="#cc785c"/>
-            <circle cx="18" cy="8" r="1.2" fill="#e8956e"/>
+            <path d="M2 16 C5 16 7 14 9 11 C10.5 8.5 11.5 6 12 4 C12.5 6 13.5 8.5 15 11 C17 14 19 16 22 16" stroke="url(#navWave)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <circle cx="11" cy="3" r="1" fill="#e8956e" opacity="0.6"/>
+            <circle cx="12" cy="2" r="1.2" fill="#e8956e" opacity="0.4"/>
+            <circle cx="13" cy="3" r="1" fill="#e8956e" opacity="0.6"/>
           </svg>
         </div>
         <span class="font-bold text-lg">Crest</span>
@@ -148,18 +147,18 @@
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-sm text-emerald-300 mb-8 fade-up">
         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        Open Source Desktop App for Claude Code & OpenAI Codex
+        Free and Open Source — Works with Claude Code and OpenAI Codex
       </div>
 
       <!-- Headline -->
       <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 fade-up stagger-1 leading-[1.05]">
-        AI Coding Agents.<br>
-        <span class="gradient-text">Crest.</span>
+        The Command Center for<br>
+        <span class="gradient-text">AI Coding Agents.</span>
       </h1>
 
       <!-- Subhead -->
       <p class="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed fade-up stagger-2">
-        The best AI coding agents live in your terminal. Crest gives Claude Code and OpenAI Codex a native desktop app with per-tab provider selection, agent swarms, session analytics, and 25+ built-in skills. Run both side by side, 10x the workflow.
+        Stop switching terminals. Crest splits your hardest problems across multiple AI agents working simultaneously&mdash;so you build in minutes what used to take hours.
       </p>
 
       <!-- CTA Buttons -->
@@ -231,23 +230,23 @@
         <div class="glass rounded-2xl p-8 text-center relative fade-up stagger-1">
           <div class="step-connector"></div>
           <div class="step-number bg-primary/10 text-primary mx-auto">1</div>
-          <h3 class="font-bold text-lg mb-3">Download & Open</h3>
-          <p class="text-sm text-zinc-400">One-click install. Point it at any project folder. Crest auto-detects Claude Code and Codex CLIs, your stack, and your settings&mdash;no config files needed.</p>
+          <h3 class="font-bold text-lg mb-3">Drop In</h3>
+          <p class="text-sm text-zinc-400">Zero config. Crest detects your CLIs, projects, and preferences the moment you open it. You are coding in seconds.</p>
         </div>
 
         <!-- Step 2 -->
         <div class="glass rounded-2xl p-8 text-center relative fade-up stagger-2">
           <div class="step-connector"></div>
           <div class="step-number bg-emerald-500/10 text-emerald-500 mx-auto">2</div>
-          <h3 class="font-bold text-lg mb-3">Talk, Don't Type Commands</h3>
-          <p class="text-sm text-zinc-400">Describe what you want in plain English. "Add authentication to my app." "Find security bugs." "Build me a landing page." Claude does the rest.</p>
+          <h3 class="font-bold text-lg mb-3">Orchestrate</h3>
+          <p class="text-sm text-zinc-400">Describe a complex task. The Orchestrator decomposes it and dispatches parallel agents&mdash;Claude, Codex, or both&mdash;across split terminals.</p>
         </div>
 
         <!-- Step 3 -->
         <div class="glass rounded-2xl p-8 text-center relative fade-up stagger-3">
           <div class="step-number bg-green-500/10 text-green-500 mx-auto">3</div>
-          <h3 class="font-bold text-lg mb-3">Watch It Build</h3>
-          <p class="text-sm text-zinc-400">See code changes in real time. Launch the orchestrator to split work across multiple agents, preview in the built-in browser, and ship when you're ready.</p>
+          <h3 class="font-bold text-lg mb-3">Ship</h3>
+          <p class="text-sm text-zinc-400">Watch agents coordinate in real time. Review diffs, preview in the built-in browser, and push&mdash;all without leaving Crest.</p>
         </div>
       </div>
     </div>
@@ -272,24 +271,24 @@
             <h3 class="text-2xl font-bold">For Developers</h3>
           </div>
 
-          <p class="text-zinc-400 mb-6">Your IDE stays open. Your terminal stays yours. Crest runs alongside your workflow&mdash;adding per-tab provider selection, agent swarms for parallel audits, visual git operations, MCP server management, and analytics you can't get from a CLI.</p>
+          <p class="text-zinc-400 mb-6">You already live in the terminal. Crest gives you the orchestration layer your CLI agents are missing.</p>
 
           <ul class="space-y-3">
             <li class="flex items-center gap-3 text-sm">
               <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <span>Claude Code & Codex side by side&mdash;each tab picks its provider</span>
+              <span>Switch between Claude and Codex per tab&mdash;use the right model for every task</span>
             </li>
             <li class="flex items-center gap-3 text-sm">
               <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <span>Multi-agent swarms&mdash;run specialized agents in parallel</span>
+              <span>Dispatch the Orchestrator to break complex work into parallel agent streams</span>
             </li>
             <li class="flex items-center gap-3 text-sm">
               <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <span>Full Git workflow with visual commit graphs</span>
+              <span>Monitor cost, token usage, and session history from a single analytics view</span>
             </li>
             <li class="flex items-center gap-3 text-sm">
               <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <span>One-click MCP server management</span>
+              <span>Built-in git workflow, file explorer, browser preview, and 25+ extensible skills</span>
             </li>
           </ul>
 
@@ -309,24 +308,24 @@
             <h3 class="text-2xl font-bold">For Everyone</h3>
           </div>
 
-          <p class="text-zinc-400 mb-6">You don't need to know what a terminal is. Describe what you want&mdash;"make a website for my bakery" or "organize this spreadsheet"&mdash;and watch AI build it in front of you. Live preview included.</p>
+          <p class="text-zinc-400 mb-6">No command line experience needed. Describe what you want to build and let Crest's agents handle the rest.</p>
 
           <ul class="space-y-3">
             <li class="flex items-center gap-3 text-sm">
               <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <span>Build landing pages with natural language</span>
+              <span>Super Agent runs autonomously with an outer LLM monitoring quality and progress</span>
             </li>
             <li class="flex items-center gap-3 text-sm">
               <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <span>Automate spreadsheets and data tasks</span>
+              <span>Zero config setup&mdash;open the app and start building immediately</span>
             </li>
             <li class="flex items-center gap-3 text-sm">
               <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <span>Web scraping and research automation</span>
+              <span>See live previews of your project without touching a terminal</span>
             </li>
             <li class="flex items-center gap-3 text-sm">
               <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <span>See live previews as Claude builds</span>
+              <span>Teach the AI how you like things done and it remembers for next time</span>
             </li>
           </ul>
 
@@ -343,8 +342,8 @@
   <section class="section">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold fade-up">Everything You Need</h2>
-        <p class="text-zinc-400 mt-4 max-w-2xl mx-auto fade-up stagger-1">Claude Code and OpenAI Codex are the best AI coding agents. Crest wraps them both in a native app so you can see what they're doing&mdash;and control them.</p>
+        <h2 class="text-3xl md:text-4xl font-bold fade-up">Built for the Way Agents Actually Work.</h2>
+        <p class="text-zinc-400 mt-4 max-w-2xl mx-auto fade-up stagger-1">Crest is not another wrapper. It is the orchestration layer, analytics dashboard, and coordination hub your AI workflow is missing.</p>
       </div>
 
       <!-- Feature Grid -->
@@ -706,8 +705,8 @@
   <!-- Final CTA -->
   <section class="section section-depth">
     <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-4xl md:text-5xl font-bold mb-6 fade-up">Stop copy-pasting between your terminal and everything else.</h2>
-      <p class="text-xl text-zinc-400 mb-10 fade-up stagger-1">Crest is free, open source, and installs in under a minute. Give Claude Code and Codex the interface they deserve.</p>
+      <h2 class="text-4xl md:text-5xl font-bold mb-6 fade-up">Stop Prompting. Start Orchestrating.</h2>
+      <p class="text-xl text-zinc-400 mb-10 fade-up stagger-1">Download Crest for free and put every AI coding agent you use under one roof. Open source. Zero config. Immediate results.</p>
 
       <div class="flex flex-col sm:flex-row justify-center gap-4 fade-up stagger-2">
         <a href="https://github.com/OneWave-AI/Crest/releases" class="btn btn-primary btn-xl glow-primary">
@@ -732,16 +731,15 @@
         <div class="w-8 h-8 rounded-lg bg-gradient-to-b from-zinc-700 to-zinc-900 border border-white/10 flex items-center justify-center">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
             <defs>
-              <linearGradient id="crestGradFoot" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#cc785c"/>
-                <stop offset="100%" stop-color="#e8956e"/>
+              <linearGradient id="footWave" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#cc785c"/>
+                <stop offset="1" stop-color="#e8956e"/>
               </linearGradient>
             </defs>
-            <path d="M3 14c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGradFoot)" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M3 19c2-3 4-6 6-6s3 3 6 3 4-3 6-3" stroke="url(#crestGradFoot)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-            <circle cx="6" cy="8" r="1.2" fill="#e8956e"/>
-            <circle cx="12" cy="11" r="1.2" fill="#cc785c"/>
-            <circle cx="18" cy="8" r="1.2" fill="#e8956e"/>
+            <path d="M2 16 C5 16 7 14 9 11 C10.5 8.5 11.5 6 12 4 C12.5 6 13.5 8.5 15 11 C17 14 19 16 22 16" stroke="url(#footWave)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <circle cx="11" cy="3" r="1" fill="#e8956e" opacity="0.6"/>
+            <circle cx="12" cy="2" r="1.2" fill="#e8956e" opacity="0.4"/>
+            <circle cx="13" cy="3" r="1" fill="#e8956e" opacity="0.6"/>
           </svg>
         </div>
         <span class="font-semibold">Crest</span>
