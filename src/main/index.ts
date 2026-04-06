@@ -13,8 +13,8 @@ protocol.registerSchemesAsPrivileged([
       standard: true,
       secure: true,
       supportFetchAPI: true,
-      bypassCSP: true,
-      corsEnabled: true,
+      bypassCSP: false,
+      corsEnabled: false,
       stream: true
     }
   }
@@ -95,9 +95,20 @@ app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.crest.app')
 
   // Register custom protocol to serve local files in preview
+  // Scoped to home directory to prevent serving arbitrary system files
   protocol.handle('local-file', (request) => {
     const filePath = decodeURIComponent(request.url.replace('local-file://', ''))
-    return net.fetch(pathToFileURL(filePath).toString())
+    const resolved = require('path').resolve(filePath)
+    const home = homedir()
+    if (!resolved.startsWith(home)) {
+      return new Response('Forbidden: path outside home directory', { status: 403 })
+    }
+    // Block sensitive files
+    const base = require('path').basename(resolved).toLowerCase()
+    if (base.startsWith('.env') || base === 'credentials.json' || base.endsWith('.pem') || base.endsWith('.key')) {
+      return new Response('Forbidden: sensitive file', { status: 403 })
+    }
+    return net.fetch(pathToFileURL(resolved).toString())
   })
 
   // Default open or close DevTools by F12 in development

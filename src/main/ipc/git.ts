@@ -1,11 +1,10 @@
 import { ipcMain } from 'electron'
-import { exec, execFile } from 'child_process'
+import { execFile } from 'child_process'
 import { promisify } from 'util'
 import * as path from 'path'
 import { getCwd } from './terminal'
 import type { GitFileStatusMap, GitFileStatusType } from '../../shared/types'
 
-const execAsync = promisify(exec)
 const execFileAsync = promisify(execFile)
 
 export interface GitStatus {
@@ -28,8 +27,8 @@ interface GitCommandResult {
   stderr: string
 }
 
-async function runGitCommand(command: string, cwd: string): Promise<string> {
-  const { stdout } = await execAsync(command, { cwd, maxBuffer: 10 * 1024 * 1024 })
+async function runGitCommand(args: string[], cwd: string): Promise<string> {
+  const { stdout } = await execFileAsync('git', args, { cwd, maxBuffer: 10 * 1024 * 1024 })
   return stdout.trim()
 }
 
@@ -123,15 +122,15 @@ export function registerGitHandlers(): void {
 
     try {
       // Check if we're in a git repo
-      await runGitCommand('git rev-parse --git-dir', cwd)
+      await runGitCommand(['rev-parse', '--git-dir'], cwd)
 
       // Get current branch
       let branch = 'HEAD'
       try {
-        branch = await runGitCommand('git branch --show-current', cwd)
+        branch = await runGitCommand(['branch', '--show-current'], cwd)
         if (!branch) {
           // Detached HEAD state
-          const shortSha = await runGitCommand('git rev-parse --short HEAD', cwd)
+          const shortSha = await runGitCommand(['rev-parse', '--short', 'HEAD'], cwd)
           branch = `detached:${shortSha}`
         }
       } catch {
@@ -143,7 +142,7 @@ export function registerGitHandlers(): void {
       let behind = 0
       try {
         const aheadBehind = await runGitCommand(
-          'git rev-list --left-right --count HEAD...@{upstream}',
+          ['rev-list', '--left-right', '--count', 'HEAD...@{upstream}'],
           cwd
         )
         const parts = aheadBehind.split(/\s+/)
@@ -159,7 +158,7 @@ export function registerGitHandlers(): void {
       let untracked = 0
 
       try {
-        const status = await runGitCommand('git status --porcelain', cwd)
+        const status = await runGitCommand(['status', '--porcelain'], cwd)
         const lines = status.split('\n').filter((line) => line.trim())
 
         for (const line of lines) {

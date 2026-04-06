@@ -522,6 +522,7 @@ export interface IpcApi {
   // Chat Mode
   chatSendPrompt: (options: { sessionId: string; prompt: string; cwd: string; model?: string; resumeSessionId?: string }) => Promise<void>
   chatStop: (sessionId: string) => Promise<boolean>
+  chatPermissionResponse: (sessionId: string, toolUseId: string, allowed: boolean) => Promise<boolean>
   onChatStreamEvent: (callback: (sessionId: string, event: any) => void) => () => void
 }
 

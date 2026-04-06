@@ -48,6 +48,7 @@ export function registerChatHandlers(): void {
     const args = [
       '-p',
       '--output-format', 'stream-json',
+      '--input-format', 'stream-json',
       '--include-partial-messages',
     ]
 
@@ -58,9 +59,6 @@ export function registerChatHandlers(): void {
     if (resumeSessionId) {
       args.push('--resume', resumeSessionId)
     }
-
-    // Prompt as positional argument (no -- separator needed)
-    args.push(prompt)
 
     const cleanEnv = { ...process.env }
     delete cleanEnv.CLAUDECODE
@@ -82,6 +80,7 @@ export function registerChatHandlers(): void {
     const proc = spawn(claudeBin, args, {
       cwd,
       env: cleanEnv,
+      stdio: ['pipe', 'pipe', 'pipe'],
     })
 
     if (!proc.pid) {
@@ -96,9 +95,15 @@ export function registerChatHandlers(): void {
     const session: ChatSession = { process: proc, buffer: '' }
     sessions.set(sessionId, session)
 
+    // Send the prompt via stdin as stream-json
+    const stdinMessage = JSON.stringify({
+      type: 'user_message',
+      content: prompt,
+    })
+    proc.stdin?.write(stdinMessage + '\n')
+
     proc.stdout?.on('data', (data: Buffer) => {
       const raw = data.toString()
-      console.log('[chat:stdout]', raw.substring(0, 200))
       session.buffer += raw
       // Process complete JSON lines
       const lines = session.buffer.split('\n')
@@ -113,10 +118,8 @@ export function registerChatHandlers(): void {
           const unwrapped = (event_data.type === 'stream_event' && event_data.event)
             ? event_data.event
             : event_data
-          console.log('[chat:event]', unwrapped.type, JSON.stringify(unwrapped).substring(0, 150))
           win.webContents.send('chat:stream-event', sessionId, unwrapped)
         } catch {
-          console.log('[chat:non-json]', trimmed.substring(0, 100))
           win.webContents.send('chat:stream-event', sessionId, {
             type: 'text',
             content: trimmed,
@@ -128,7 +131,6 @@ export function registerChatHandlers(): void {
     proc.stderr?.on('data', (data: Buffer) => {
       const text = data.toString().trim()
       if (!text) return
-      console.log('[chat:stderr]', text.substring(0, 200))
       // Whitelist known-safe stderr noise to suppress (everything else is a real error)
       const isSafeNoise = /^Connected to |^MCP |^Debugger |^Warning: .*(MCP|experimental|deprecated)/i.test(text)
         || /^\[MCP\]|^npm warn|^ExperimentalWarning/i.test(text)
@@ -169,6 +171,23 @@ export function registerChatHandlers(): void {
         error: err.message,
       })
     })
+  })
+
+  // Respond to a permission request from the Claude process
+  ipcMain.handle('chat:permission-response', async (_event, sessionId: string, toolUseId: string, allowed: boolean) => {
+    const session = sessions.get(sessionId)
+    if (!session?.process?.stdin?.writable) return false
+
+    const response = JSON.stringify({
+      type: 'permission_response',
+      permission: {
+        tool_use_id: toolUseId,
+        allowed,
+      },
+    })
+    console.log('[chat] sending permission response:', response)
+    session.process.stdin.write(response + '\n')
+    return true
   })
 
   ipcMain.handle('chat:stop', async (_event, sessionId: string) => {

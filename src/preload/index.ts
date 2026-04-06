@@ -233,6 +233,8 @@ const api: IpcApi = {
   chatSendPrompt: (options: { sessionId: string; prompt: string; cwd: string; model?: string; resumeSessionId?: string }) =>
     ipcRenderer.invoke('chat:send-prompt', options),
   chatStop: (sessionId: string) => ipcRenderer.invoke('chat:stop', sessionId),
+  chatPermissionResponse: (sessionId: string, toolUseId: string, allowed: boolean) =>
+    ipcRenderer.invoke('chat:permission-response', sessionId, toolUseId, allowed),
   onChatStreamEvent: (callback: (sessionId: string, event: any) => void) => {
     const handler = (_: Electron.IpcRendererEvent, sessionId: string, event: any) => callback(sessionId, event)
     ipcRenderer.on('chat:stream-event', handler)
