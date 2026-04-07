@@ -48,7 +48,6 @@ export function registerChatHandlers(): void {
     const args = [
       '-p',
       '--output-format', 'stream-json',
-      '--input-format', 'stream-json',
       '--include-partial-messages',
     ]
 
@@ -59,6 +58,9 @@ export function registerChatHandlers(): void {
     if (resumeSessionId) {
       args.push('--resume', resumeSessionId)
     }
+
+    // Prompt as positional argument
+    args.push('--', prompt)
 
     const cleanEnv = { ...process.env }
     delete cleanEnv.CLAUDECODE
@@ -95,12 +97,8 @@ export function registerChatHandlers(): void {
     const session: ChatSession = { process: proc, buffer: '' }
     sessions.set(sessionId, session)
 
-    // Send the prompt via stdin as stream-json
-    const stdinMessage = JSON.stringify({
-      type: 'user_message',
-      content: prompt,
-    })
-    proc.stdin?.write(stdinMessage + '\n')
+    // Close stdin so claude doesn't wait for input
+    proc.stdin?.end()
 
     proc.stdout?.on('data', (data: Buffer) => {
       const raw = data.toString()
