@@ -66,7 +66,7 @@ function App() {
     }
   }, [orchestratorRunning, orchestratorProcess, superAgentProcess])
 
-  // Initialize
+  // Initialize — also detect surviving PTYs from sleep/wake
   useEffect(() => {
     // Check both CLI providers' install status
     window.api.checkCliInstalled('claude').then(setClaudeCliInstalled).catch(() => setClaudeCliInstalled(false))
@@ -80,6 +80,18 @@ function App() {
       window.api.checkClaudeInstalled().then(setCliInstalled)
     })
     window.api.getCwd().then(setCwd)
+
+    // Check for surviving PTY sessions (e.g. after sleep/wake)
+    window.api.getTerminals().then((terminals) => {
+      if (terminals && terminals.length > 0) {
+        console.log('[App] Found surviving PTYs after wake:', terminals.length)
+        // Skip splash/welcome and go straight to terminal
+        setShowSplash(false)
+        setShowWelcome(false)
+        setTerminalMounted(true)
+        setScreen('terminal')
+      }
+    }).catch(() => {})
   }, [setCwd])
 
   // Cmd+B to toggle sidebar

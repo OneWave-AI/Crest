@@ -177,6 +177,98 @@ export default function TerminalWrapper({
   const dismissedHtmlFilesRef = useRef<Set<string>>(new Set())
   const lastHtmlDetectionTimeRef = useRef<number>(0)
 
+  // --- Layout persistence for sleep/wake restore ---
+  const LAYOUT_KEY = 'crest-terminal-layout'
+
+  // Track terminal IDs per tab for persistence
+  const terminalIdMapRef = useRef<Record<string, string>>({}) // tabId -> terminalId
+
+  // Save layout to localStorage whenever panels change
+  const saveLayout = useCallback((currentPanels: Panel[]) => {
+    try {
+      const layout = currentPanels.map((panel) => ({
+        id: panel.id,
+        activeTabId: panel.activeTabId,
+        tabs: panel.tabs.map((tab) => ({
+          id: tab.id,
+          name: tab.name,
+          type: tab.type,
+          cliProvider: tab.cliProvider,
+          terminalId: terminalIdMapRef.current[tab.id] || null,
+        })),
+      }))
+      localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout))
+    } catch {}
+  }, [])
+
+  // Try to restore layout from localStorage on mount
+  const [restoredLayout] = useState<Array<{
+    id: string
+    activeTabId: string
+    tabs: Array<{ id: string; name: string; type: string; cliProvider?: string; terminalId?: string | null }>
+  }> | null>(() => {
+    try {
+      const saved = localStorage.getItem(LAYOUT_KEY)
+      if (!saved) return null
+      return JSON.parse(saved)
+    } catch {
+      return null
+    }
+  })
+
+  // On mount, check for surviving PTYs and restore layout
+  useEffect(() => {
+    if (!restoredLayout) return
+
+    window.api.getTerminals().then((survivingIds: string[]) => {
+      if (!survivingIds || survivingIds.length === 0) return
+
+      const survivingSet = new Set(survivingIds)
+      // Check if any saved tabs match surviving PTYs
+      const hasMatch = restoredLayout.some((panel) =>
+        panel.tabs.some((tab) => tab.terminalId && survivingSet.has(tab.terminalId))
+      )
+      if (!hasMatch) return
+
+      console.log('[TerminalWrapper] Restoring layout with', survivingIds.length, 'surviving PTYs')
+
+      const restoredPanels: Panel[] = restoredLayout.map((savedPanel) => ({
+        id: savedPanel.id,
+        activeTabId: savedPanel.activeTabId,
+        tabs: savedPanel.tabs
+          .filter((tab) => tab.type === 'terminal' && tab.terminalId && survivingSet.has(tab.terminalId!))
+          .map((tab) => {
+            // Populate the terminalIdMap so Terminal gets the existing ID
+            if (tab.terminalId) {
+              terminalIdMapRef.current[tab.id] = tab.terminalId
+            }
+            return {
+              id: tab.id,
+              name: tab.name,
+              type: 'terminal' as const,
+              active: tab.id === savedPanel.activeTabId,
+              cliProvider: (tab.cliProvider || 'claude') as CLIProvider,
+            }
+          }),
+      })).filter((panel) => panel.tabs.length > 0)
+
+      if (restoredPanels.length > 0) {
+        // Ensure each panel has a valid activeTabId
+        for (const panel of restoredPanels) {
+          if (!panel.tabs.find((t) => t.id === panel.activeTabId)) {
+            panel.activeTabId = panel.tabs[0].id
+          }
+        }
+        setPanels(restoredPanels)
+      }
+    }).catch(() => {})
+  }, []) // Run once on mount
+
+  // Save layout whenever panels change
+  useEffect(() => {
+    saveLayout(panels)
+  }, [panels, saveLayout])
+
   // Drag state
   const [draggedTab, setDraggedTab] = useState<{ tabId: string; panelId: string } | null>(null)
   const [dropTarget, setDropTarget] = useState<{ panelId: string; position: 'tab' | 'left' | 'right' } | null>(null)
@@ -1578,9 +1670,13 @@ export default function TerminalWrapper({
                   if (ref) terminalRefs.current.set(tab.id, ref)
                 }}
                 cliProvider={tab.cliProvider}
+                existingTerminalId={terminalIdMapRef.current[tab.id] || undefined}
                 onResize={(cols, rows) => setTerminalSize({ cols, rows })}
                 onLocalhostDetected={handleLocalhostDetected}
                 onTerminalIdReady={(terminalId) => {
+                  // Track terminal ID for layout persistence
+                  terminalIdMapRef.current[tab.id] = terminalId
+                  saveLayout(panels)
                   // Notify parent of active terminal for left panel
                   if (panel.id === 'left' && tab.id === panel.activeTabId) onTerminalIdChange?.(terminalId)
                   // Always notify all terminal IDs for orchestrator

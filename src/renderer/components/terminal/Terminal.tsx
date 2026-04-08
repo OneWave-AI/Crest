@@ -184,6 +184,8 @@ interface TerminalProps {
   onTerminalData?: (data: string, terminalId: string) => void
   onTerminalIdReady?: (terminalId: string) => void
   cliProvider?: import('../../../shared/types').CLIProvider
+  /** If set, attach to this existing PTY instead of creating a new one (sleep/wake restore) */
+  existingTerminalId?: string
 }
 
 // Regex to detect localhost URLs
@@ -210,7 +212,7 @@ const applyHighlighting = (text: string, enabled: boolean): string => {
   return result
 }
 
-const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEnabled = false, zoomLevel = 100, highlightPatterns = false, onLocalhostDetected, onTerminalData, onTerminalIdReady, cliProvider: cliProviderProp }, ref) => {
+const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEnabled = false, zoomLevel = 100, highlightPatterns = false, onLocalhostDetected, onTerminalData, onTerminalIdReady, cliProvider: cliProviderProp, existingTerminalId }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const terminalRef = useRef<XTerm | null>(null)
   const fitAddonRef = useRef<FitAddon | null>(null)
@@ -541,63 +543,81 @@ const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEn
       }
     })
 
-    // Create terminal in main process
+    // Track whether we created the PTY (vs restoring) for cleanup
+    let createdPty = false
+
     const cols = terminal.cols
     const rows = terminal.rows
 
-    window.api.createTerminal(cols, rows).then(async (id) => {
-      terminalIdRef.current = id
-      setActiveTerminalId(id)
-      // Notify parent immediately when terminal ID is ready
-      onTerminalIdReady?.(id)
+    if (existingTerminalId) {
+      // --- RESTORE PATH: attach to surviving PTY from sleep/wake ---
+      terminalIdRef.current = existingTerminalId
+      setActiveTerminalId(existingTerminalId)
+      onTerminalIdReady?.(existingTerminalId)
 
-      // Load settings once for both provider and session context
-      const settings = await window.api.loadSettings()
-
-      // Use the provider prop if available, otherwise fall back to settings
-      let provider = cliProviderProp
-      if (!provider) {
-        provider = settings?.cliProvider || 'claude'
-      }
-      const config = CLI_PROVIDERS[provider]
-
-      // Generate session context if enabled (non-blocking — don't delay CLI launch)
-      if (settings?.sessionContextEnabled !== false) {
-        void (async () => {
-          try {
-            const cwd = await window.api.getCwd()
-            const days = settings?.sessionContextDays ?? 7
-            const context = await window.api.generateSessionContext(cwd, days)
-            if (context) {
-              await window.api.writeSessionContext(cwd, context)
-            }
-          } catch (err) {
-            console.error('Failed to generate session context:', err)
-          }
-        })()
-      }
-
-      // Check if CLI is installed before starting
-      try {
-        const isInstalled = await window.api.checkCliInstalled(provider)
-        if (isInstalled) {
-          // Start CLI
-          window.api.terminalInput(`${config.binaryName}\n`, id)
-        } else {
-          // Show message that CLI is not installed
-          terminal.writeln(`\x1b[33m${config.name} CLI is not installed.\x1b[0m`)
-          terminal.writeln(`Run \x1b[36m${config.installCommand}\x1b[0m to install it.`)
-          terminal.writeln('')
+      // Replay the output buffer so user sees previous content
+      window.api.terminalGetBuffer(existingTerminalId).then((buffer) => {
+        if (buffer) {
+          terminal.write(buffer)
+          terminal.scrollToBottom()
         }
-      } catch (err) {
-        console.error(`Failed to check ${config.name} installation:`, err)
-        // Try to start CLI anyway
-        window.api.terminalInput(`${config.binaryName}\n`, id)
-      }
-    }).catch((err) => {
-      console.error('Failed to create terminal:', err)
-      terminal.writeln(`\x1b[31mFailed to create terminal: ${err.message || 'Unknown error'}\x1b[0m`)
-    })
+      }).catch(() => {})
+
+      // Re-sync terminal size with the PTY
+      window.api.terminalResize(cols, rows, existingTerminalId).catch(() => {})
+
+      console.log('[Terminal] Restored existing PTY:', existingTerminalId)
+    } else {
+      // --- FRESH PATH: create new terminal ---
+      createdPty = true
+
+      window.api.createTerminal(cols, rows).then(async (id) => {
+        terminalIdRef.current = id
+        setActiveTerminalId(id)
+        onTerminalIdReady?.(id)
+
+        const settings = await window.api.loadSettings()
+
+        let provider = cliProviderProp
+        if (!provider) {
+          provider = settings?.cliProvider || 'claude'
+        }
+        const config = CLI_PROVIDERS[provider]
+
+        // Generate session context if enabled (non-blocking)
+        if (settings?.sessionContextEnabled !== false) {
+          void (async () => {
+            try {
+              const cwd = await window.api.getCwd()
+              const days = settings?.sessionContextDays ?? 7
+              const context = await window.api.generateSessionContext(cwd, days)
+              if (context) {
+                await window.api.writeSessionContext(cwd, context)
+              }
+            } catch (err) {
+              console.error('Failed to generate session context:', err)
+            }
+          })()
+        }
+
+        try {
+          const isInstalled = await window.api.checkCliInstalled(provider)
+          if (isInstalled) {
+            window.api.terminalInput(`${config.binaryName}\n`, id)
+          } else {
+            terminal.writeln(`\x1b[33m${config.name} CLI is not installed.\x1b[0m`)
+            terminal.writeln(`Run \x1b[36m${config.installCommand}\x1b[0m to install it.`)
+            terminal.writeln('')
+          }
+        } catch (err) {
+          console.error(`Failed to check ${config.name} installation:`, err)
+          window.api.terminalInput(`${config.binaryName}\n`, id)
+        }
+      }).catch((err) => {
+        console.error('Failed to create terminal:', err)
+        terminal.writeln(`\x1b[31mFailed to create terminal: ${err.message || 'Unknown error'}\x1b[0m`)
+      })
+    }
 
     // Handle user input - store disposable for cleanup
     const inputDisposable = terminal.onData((data) => {
@@ -619,14 +639,13 @@ const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEn
     resizeObserver.observe(containerRef.current)
 
     return () => {
-      // Clean up the data handler first
       cleanupDataHandler?.()
-      // Dispose xterm event listeners to prevent memory leaks
       scrollDisposable?.dispose()
       inputDisposable?.dispose()
       resizeObserver.disconnect()
       terminal.dispose()
-      if (terminalIdRef.current) {
+      // Only kill the PTY if we created it — don't kill restored sessions
+      if (createdPty && terminalIdRef.current) {
         window.api.stopTerminal(terminalIdRef.current)
       }
     }
