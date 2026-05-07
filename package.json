@@ -1,6 +1,6 @@
 {
   "name": "crest",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Crest - The Premium Desktop Experience for AI Coding Agents",
   "main": "./out/main/index.js",
   "author": "OneWave AI",
