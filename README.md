@@ -4,7 +4,7 @@
 
 The premium native desktop experience for [Claude Code](https://github.com/anthropics/claude-code) and [OpenAI Codex](https://github.com/openai/codex). Multi-agent swarms, analytics, per-tab CLI provider selection, and a beautiful zero-config environment that lets you build faster—whether you're a developer or just getting started.
 
-[![Version](https://img.shields.io/badge/version-2.3.0-red)](https://github.com/OneWave-AI/Crest/releases)
+[![Version](https://img.shields.io/badge/version-2.3.1-red)](https://github.com/OneWave-AI/Crest/releases)
 [![Made by OneWave AI](https://img.shields.io/badge/made%20by-OneWave--AI-orange)](https://onewave-ai.com)
 
 ## Screenshots
@@ -248,11 +248,11 @@ View documents directly in the app:
 ### System
 - **One-Click Setup**: Auto-install Claude Code CLI and/or Codex CLI if not present
 - **Nested Session Fix**: Strips `CLAUDECODE` env var so CLIs launch correctly from within the app
-- **Cross-Platform**: macOS, Windows, and Linux
+- **Platform**: macOS (Apple Silicon). Windows and Linux builds are not yet shipped — the source builds for both, but no signed/tested release artifacts are available today.
 
 ## Prerequisites
 
-- macOS, Windows, or Linux
+- macOS (Apple Silicon)
 - [Claude Code CLI](https://github.com/anthropics/claude-code) and/or [OpenAI Codex CLI](https://github.com/openai/codex) (auto-installs if missing)
 
 ## Installation
@@ -260,10 +260,7 @@ View documents directly in the app:
 ### From Release (Recommended)
 
 1. Go to [Releases](https://github.com/OneWave-AI/Crest/releases)
-2. Download the appropriate installer for your platform:
-   - macOS: `.dmg` (universal - works on Intel and Apple Silicon)
-   - Windows: `.exe` installer
-   - Linux: `.AppImage` or `.deb`
+2. Download `Crest-arm64.dmg` (Apple Silicon)
 
 #### macOS Installation
 
