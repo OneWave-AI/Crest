@@ -19,9 +19,11 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 - `SECURITY.md` describing how to report a vulnerability
 - `CONTRIBUTING.md` with dev setup and PR guidelines
 - This changelog
-- **HyperFrames starter skill** — auto-installs on first launch. Ask Claude
-  for "a video", "an animation", "a title card" and it scaffolds a HyperFrames
-  composition via `npx hyperframes`.
+- **HyperFrames starter skills** — auto-install on first launch:
+  - `hyperframes` — the core composition skill (scaffold, compose, render)
+  - `hyperframes-cli` — operator's manual for the `npx hyperframes` CLI
+  - `website-to-hyperframes` — turn any URL into a video (title + scroll + CTA)
+  - `hyperframes-media` — Kokoro TTS narration, Whisper captions, background-removal cutouts
 
 ## [2.3.1] – 2026-04-07
 
