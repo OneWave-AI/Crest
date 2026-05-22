@@ -17,7 +17,11 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 ### Added
 - Dependabot config (weekly npm grouped updates, monthly GitHub Actions)
 - `SECURITY.md` describing how to report a vulnerability
+- `CONTRIBUTING.md` with dev setup and PR guidelines
 - This changelog
+- **HyperFrames starter skill** — auto-installs on first launch. Ask Claude
+  for "a video", "an animation", "a title card" and it scaffolds a HyperFrames
+  composition via `npx hyperframes`.
 
 ## [2.3.1] – 2026-04-07
 
