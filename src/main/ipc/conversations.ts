@@ -26,7 +26,7 @@ async function savePinnedConversations(pinned: PinnedConversations): Promise<voi
 }
 
 // Convert project folder path to Claude's directory naming convention
-// /Users/gabe/project-name -> -Users-gabe-project-name
+// /Users/you/project-name -> -Users-you-project-name
 function pathToProjectDir(projectFolder: string): string {
   // If it already looks like a raw directory name (starts with -), return as-is
   if (projectFolder.startsWith('-')) {

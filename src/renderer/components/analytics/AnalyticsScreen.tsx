@@ -210,7 +210,7 @@ export default function AnalyticsScreen({ onBack }: AnalyticsScreenProps) {
               }
 
               // Create a readable project name from the path
-              // Handle paths like /Users/gabe/project or -Users-gabe-project
+              // Handle paths like /Users/you/project or -Users-you-project
               const projectName = getProjectName(conv.projectFolder)
 
               project = {
@@ -1196,10 +1196,10 @@ function formatRelativeTime(timestamp: number): string {
 }
 
 // Helper to create readable project names from folder paths
-// Handles both /Users/gabe/project and -Users-gabe-project formats
+// Handles both /Users/you/project and -Users-you-project formats
 function getProjectName(folder: string): string {
   // Normalize the path - handle dash-separated format from Claude
-  // e.g., "-Users-gabe-myproject" -> "/Users/gabe/myproject"
+  // e.g., "-Users-you-myproject" -> "/Users/you/myproject"
   let normalizedPath = folder
   if (folder.startsWith('-')) {
     normalizedPath = folder.replace(/-/g, '/')
@@ -1209,8 +1209,8 @@ function getProjectName(folder: string): string {
   const segments = normalizedPath.split('/').filter(Boolean)
 
   // If we have enough segments, return last 2 for context
-  // e.g., /Users/gabe/Code/myproject -> "Code/myproject"
-  // e.g., /Users/gabe/myproject -> "gabe/myproject"
+  // e.g., /Users/you/Code/myproject -> "Code/myproject"
+  // e.g., /Users/you/myproject -> "you/myproject"
   if (segments.length >= 2) {
     // Skip common base directories for cleaner names
     const skipDirs = ['Users', 'home', 'var', 'tmp', 'opt']

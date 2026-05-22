@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, protocol, net, dialog, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, protocol, net, dialog, ipcMain, session } from 'electron'
 import { join } from 'path'
 import { pathToFileURL } from 'url'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -93,6 +93,28 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.crest.app')
+
+  // Inject a Content Security Policy on renderer responses.
+  // 'unsafe-inline' on style is required by component libraries that inject styles at runtime.
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          "default-src 'self' local-file:; " +
+          "script-src 'self'; " +
+          "style-src 'self' 'unsafe-inline'; " +
+          "img-src 'self' data: blob: https: local-file:; " +
+          "media-src 'self' data: blob: https: local-file:; " +
+          "font-src 'self' data:; " +
+          "connect-src 'self' https: ws: wss:; " +
+          "object-src 'none'; " +
+          "base-uri 'self'; " +
+          "frame-ancestors 'none'"
+        ]
+      }
+    })
+  })
 
   // Register custom protocol to serve local files in preview
   // Scoped to home directory to prevent serving arbitrary system files
