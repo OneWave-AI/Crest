@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/renderer/**/*.{js,ts,jsx,tsx,html}'],
+  // src/shared is scanned too: provider configs carry their own accent classes,
+  // and a class that only ever appears there would otherwise be purged.
+  content: [
+    './src/renderer/**/*.{js,ts,jsx,tsx,html}',
+    './src/shared/**/*.{js,ts}'
+  ],
   theme: {
     extend: {
       colors: {

@@ -41,7 +41,7 @@ import VoiceInput from './VoiceInput'
 import { HybridChatView } from './HybridChatView'
 import { useAppStore } from '../../store'
 import { CLI_PROVIDERS } from '../../../shared/providers'
-import type { CLIProvider } from '../../../shared/types'
+import type { CLIProvider, CLIProviderConfig } from '../../../shared/types'
 
 interface Tab {
   id: string
@@ -1438,7 +1438,7 @@ export default function TerminalWrapper({
           /* Compact grid mode header */
           <div className="flex items-center justify-between px-2 py-0.5 bg-[#111111] border-b border-white/[0.06]">
             <div className="flex items-center gap-1.5">
-              <TerminalIcon size={9} className={panel.tabs[0]?.cliProvider === 'codex' ? 'text-emerald-400' : 'text-[#cc785c]'} />
+              <TerminalIcon size={9} className={CLI_PROVIDERS[panel.tabs[0]?.cliProvider ?? 'claude'].accentText} />
               <span className="text-[10px] font-medium text-gray-500">{panel.tabs[0]?.name || 'Terminal'}</span>
             </div>
             <div className="flex items-center gap-0.5">
@@ -1487,16 +1487,14 @@ export default function TerminalWrapper({
                 onDragEnd={handleDragEnd}
                 className={`group relative flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-150 flex-shrink-0 ${
                   isActive
-                    ? tab.cliProvider === 'codex'
-                      ? 'bg-emerald-500/10 text-emerald-400'
-                      : 'bg-[#cc785c]/10 text-[#cc785c]'
+                    ? `${CLI_PROVIDERS[tab.cliProvider ?? 'claude'].accentTint} ${CLI_PROVIDERS[tab.cliProvider ?? 'claude'].accentText}`
                     : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
                 } ${draggedTab?.tabId === tab.id ? 'opacity-50 scale-95' : ''}`}
               >
                 {/* Active tab accent */}
                 {isActive && (
                   <div className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full ${
-                    tab.cliProvider === 'codex' ? 'bg-emerald-400' : 'bg-[#cc785c]'
+                    CLI_PROVIDERS[tab.cliProvider ?? 'claude'].accentBg
                   }`} />
                 )}
                 <GripVertical
@@ -1556,20 +1554,20 @@ export default function TerminalWrapper({
               {showPlusMenu === panel.id && (
                 <div className="absolute top-full right-0 mt-1.5 w-48 bg-[#1a1a1a] border border-white/[0.08] rounded-lg shadow-2xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="p-1">
-                    <button
-                      onClick={() => addTab(panel.id, 'terminal', 'claude')}
-                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
-                    >
-                      <TerminalIcon size={14} className="text-[#cc785c]" />
-                      <span>Claude Code</span>
-                    </button>
-                    <button
-                      onClick={() => addTab(panel.id, 'terminal', 'codex')}
-                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
-                    >
-                      <TerminalIcon size={14} className="text-emerald-400" />
-                      <span>Codex</span>
-                    </button>
+                    {/* Every registered agent, so a panel can mix them. This
+                        used to list Claude and Codex only, which left Kimi (and
+                        any agent added later) reachable solely by changing the
+                        global default in Settings. */}
+                    {(Object.values(CLI_PROVIDERS) as CLIProviderConfig[]).map((p) => (
+                      <button
+                        key={p.id}
+                        onClick={() => addTab(panel.id, 'terminal', p.id)}
+                        className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
+                      >
+                        <TerminalIcon size={14} className={p.accentText} />
+                        <span>{p.name}</span>
+                      </button>
+                    ))}
                     <button
                       onClick={() => addTab(panel.id, 'browser')}
                       className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"

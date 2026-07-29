@@ -266,6 +266,14 @@ export interface CLIProviderConfig {
   localCommand?: string
   /** Why local is unavailable, shown as a tooltip on the disabled toggle. */
   localUnavailableReason?: string
+  /**
+   * Tailwind classes identifying this agent in tab chrome. Lives on the config
+   * so tab bars stay data-driven -- they previously hardcoded a codex-or-Claude
+   * binary, which left every other agent wearing Claude's colour.
+   */
+  accentText: string
+  accentBg: string
+  accentTint: string
 }
 
 export interface AppSettings {

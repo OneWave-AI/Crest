@@ -42,6 +42,9 @@ export const CLAUDE_PATTERNS = {
 export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
   claude: {
     id: 'claude',
+    accentText: 'text-[#cc785c]',
+    accentBg: 'bg-[#cc785c]',
+    accentTint: 'bg-[#cc785c]/10',
     name: 'Claude Code',
     binaryName: 'claude',
     installCommand: 'npm install -g @anthropic-ai/claude-code',
@@ -96,6 +99,9 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
   },
   codex: {
     id: 'codex',
+    accentText: 'text-emerald-400',
+    accentBg: 'bg-emerald-400',
+    accentTint: 'bg-emerald-500/10',
     name: 'Codex',
     binaryName: 'codex',
     installCommand: 'npm install -g @openai/codex',
@@ -139,6 +145,9 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
   },
   kimi: {
     id: 'kimi',
+    accentText: 'text-amber-400',
+    accentBg: 'bg-amber-400',
+    accentTint: 'bg-amber-500/10',
     name: 'Kimi Code',
     binaryName: 'kimi',
     // Kimi ships a native binary via its own installer, not npm. We do not pipe
@@ -189,6 +198,9 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
   },
   gemini: {
     id: 'gemini',
+    accentText: 'text-blue-400',
+    accentBg: 'bg-blue-400',
+    accentTint: 'bg-blue-500/10',
     name: 'Gemini CLI',
     binaryName: 'gemini',
     installCommand: 'npm install -g @google/gemini-cli',
