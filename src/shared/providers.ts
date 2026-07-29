@@ -115,11 +115,11 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
     defaultModel: 'gpt-5.3-codex',
     modelCommand: '/model',
     hasPlanMode: false,
-    // Codex reaches local models through a [model_providers.*] block in
-    // ~/.codex/config.toml rather than env vars. Not verified working yet, so
-    // the toggle stays disabled instead of failing at launch.
-    supportsLocal: false,
-    localUnavailableReason: 'Codex needs a model_providers entry in ~/.codex/config.toml -- not configured yet',
+    // Codex has native OSS-provider support (--oss --local-provider ollama).
+    // `codex-local` also forces model_reasoning_effort=none, because qwen3-coder
+    // 400s on thinking requests.
+    supportsLocal: true,
+    localCommand: 'codex-local',
     configDir: '.codex',
     promptChar: />\s*$/m,
     workingPatterns: [
@@ -162,11 +162,11 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
     // Kimi selects models with -m/--model at launch, not a slash command.
     modelCommand: '',
     hasPlanMode: true,
-    // Local would need an extra [providers.ollama] + [models."..."] pair in
-    // ~/.kimi-code/config.toml. The provider `type` enum is undocumented here,
-    // so this stays off rather than shipping a combo that fails at launch.
-    supportsLocal: false,
-    localUnavailableReason: 'Kimi needs an ollama provider block in ~/.kimi-code/config.toml -- not configured yet',
+    // Kimi needs an isolated KIMI_CODE_HOME for local runs: thinking is a global
+    // setting and must be off for local models. `kimi-local` regenerates that
+    // config per run so cloud Kimi in ~/.kimi-code is never modified.
+    supportsLocal: true,
+    localCommand: 'kimi-local',
     configDir: '.kimi-code',
     promptChar: />\s*$/m,
     // NOTE: tuned by eye against Kimi's TUI, not exhaustively verified. If
@@ -215,5 +215,5 @@ export function resolveLaunchCommand(
   const config = CLI_PROVIDERS[provider]
   if (runtime !== 'local' || !supportsLocalRuntime(provider)) return config.binaryName
   const command = config.localCommand as string
-  return localModel ? `CLAUDE_LOCAL_MODEL=${localModel} ${command}` : command
+  return localModel ? `CREST_LOCAL_MODEL=${localModel} ${command}` : command
 }

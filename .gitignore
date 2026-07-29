@@ -45,3 +45,8 @@ temp/
 
 # Claude Code session context
 .claude/rules/session-context.md
+
+# HyperFrames render output and thumbnail cache (58MB of intermediates;
+# the shipping cut lives at website/assets/media/crest-launch.mp4)
+video/**/out/
+video/**/.thumbnails/
