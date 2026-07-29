@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { LLMProvider, SafetyLevel, ActivityLogEntry, SuperAgentConfig } from '../../shared/types'
+import type { CLIProvider, LLMProvider, SafetyLevel, ActivityLogEntry, SuperAgentConfig } from '../../shared/types'
 
 export type OrchestratorMode = 'split' | 'parallel'
 
@@ -7,6 +7,14 @@ export interface TerminalAgentState {
   terminalId: string
   tabId: string
   panelId: string
+  /**
+   * Which CLI harness is actually running in this PTY. Per-terminal because a
+   * swarm can mix agents (Claude in one panel, Codex in the next) and every
+   * busy/idle decision is made with that agent's own prompt and status
+   * patterns -- a single global here silently parses one TUI with another's
+   * regexes.
+   */
+  cliProvider: CLIProvider
   task: string
   status: 'pending' | 'running' | 'idle' | 'completed' | 'error'
   outputBuffer: string
@@ -144,6 +152,7 @@ export const useOrchestratorStore = create<OrchestratorState>((set, get) => ({
       terminalId: id,
       tabId: state.tabId || '',
       panelId: state.panelId || '',
+      cliProvider: state.cliProvider || 'claude',
       task: state.task || '',
       status: 'pending',
       outputBuffer: '',

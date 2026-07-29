@@ -12,6 +12,7 @@ import SplashScreen from './components/SplashScreen'
 import WelcomeScreen from './components/WelcomeScreen'
 import { ToastProvider } from './components/common/Toast'
 import { useAppStore } from './store'
+import type { CLIProvider } from '../shared/types'
 import { SuperAgentModal, SuperAgentStatusBar } from './components/superagent'
 import { useSuperAgent } from './hooks/useSuperAgent'
 import { useOrchestrator } from './hooks/useOrchestrator'
@@ -48,7 +49,7 @@ function App() {
   const [viewMode, setViewMode] = useState<ViewMode>('terminal')
   const [activeTerminalId, setActiveTerminalId] = useState<string | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  const [allTerminalIds, setAllTerminalIds] = useState<Record<string, { tabId: string; panelId: string }>>({})
+  const [allTerminalIds, setAllTerminalIds] = useState<Record<string, { tabId: string; panelId: string; cliProvider: CLIProvider }>>({})
   const pendingSuperAgentOpen = useRef(false) // Flag to open modal when terminal is ready
   const terminalHandleRef = useRef<TerminalWrapperHandle | null>(null)
   const { cwd, setCwd } = useAppStore()

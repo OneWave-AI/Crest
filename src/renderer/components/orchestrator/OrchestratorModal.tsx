@@ -18,7 +18,8 @@ import {
 import { useOrchestrator } from '../../hooks/useOrchestrator'
 import { useSuperAgentStore } from '../../store/superAgentStore'
 import { useAppStore } from '../../store'
-import type { SafetyLevel, LLMProvider } from '../../../shared/types'
+import type { SafetyLevel, LLMProvider, CLIProvider } from '../../../shared/types'
+import { CLI_PROVIDERS } from '../../../shared/providers'
 import {
   SUPERVISOR_PROVIDERS,
   supervisorProviderIsConfigured,
@@ -28,7 +29,7 @@ import {
 interface OrchestratorModalProps {
   isOpen: boolean
   onClose: () => void
-  terminalMapping: Record<string, { tabId: string; panelId: string }>
+  terminalMapping: Record<string, { tabId: string; panelId: string; cliProvider: CLIProvider }>
   onStart: () => void
   onCreateGrid?: () => void
 }
@@ -94,7 +95,10 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
     }
     setIsDecomposing(true)
     setError(null)
-    const tasks = await decomposeTask(masterTask, splitTerminalCount)
+    const previewAgents = terminalIds
+      .slice(0, splitTerminalCount)
+      .map((id) => CLI_PROVIDERS[terminalMapping[id].cliProvider].name)
+    const tasks = await decomposeTask(masterTask, splitTerminalCount, previewAgents)
     if (tasks) {
       setDecomposedPreview(tasks)
     } else {
@@ -171,17 +175,16 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
 
     // Build terminal list from the latest mapping
     const latestMapping = terminalMappingRef.current
+    const toEntry = (terminalId: string) => ({
+      terminalId,
+      tabId: latestMapping[terminalId].tabId,
+      panelId: latestMapping[terminalId].panelId,
+      // Carried so the supervisor reads each PTY with its own agent's patterns.
+      cliProvider: latestMapping[terminalId].cliProvider
+    })
     const terminalList = mode === 'split'
-      ? currentTerminalIds.slice(0, splitTerminalCount).map(terminalId => ({
-          terminalId,
-          tabId: latestMapping[terminalId].tabId,
-          panelId: latestMapping[terminalId].panelId
-        }))
-      : currentTerminalIds.map(terminalId => ({
-          terminalId,
-          tabId: latestMapping[terminalId].tabId,
-          panelId: latestMapping[terminalId].panelId
-        }))
+      ? currentTerminalIds.slice(0, splitTerminalCount).map(toEntry)
+      : currentTerminalIds.map(toEntry)
 
     if (terminalList.length === 0) {
       setError('No terminals available. Open terminal tabs first.')
@@ -386,6 +389,11 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
                   {terminalIds.map((id, i) => (
                     <div key={id} className="flex gap-2 items-start">
                       <span className="text-xs text-blue-400 font-mono shrink-0 mt-2.5">T{i + 1}</span>
+                      {/* Which agent is live in this PTY -- a swarm can mix them,
+                          and the task you write should suit the agent. */}
+                      <span className="text-[10px] text-gray-500 shrink-0 mt-3 w-[68px] truncate" title={CLI_PROVIDERS[terminalMapping[id].cliProvider].name}>
+                        {CLI_PROVIDERS[terminalMapping[id].cliProvider].name}
+                      </span>
                       <input
                         type="text"
                         value={parallelTasks[id] || ''}

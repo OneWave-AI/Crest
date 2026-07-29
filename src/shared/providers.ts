@@ -186,6 +186,60 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
       /What would you like|How can I help|anything else|Do you want to/i,
       /Press Enter to continue/i
     ]
+  },
+  gemini: {
+    id: 'gemini',
+    name: 'Gemini CLI',
+    binaryName: 'gemini',
+    installCommand: 'npm install -g @google/gemini-cli',
+    installPackage: '@google/gemini-cli',
+    checkPaths: (home) => [
+      `${home}/.npm-global/bin/gemini`,
+      '/usr/local/bin/gemini',
+      '/opt/homebrew/bin/gemini',
+      `${home}/.local/bin/gemini`
+    ],
+    models: [
+      { id: 'gemini-3-pro', name: 'Gemini 3 Pro', desc: 'Most capable', color: 'text-blue-400', bg: 'bg-blue-500/10' },
+      { id: 'gemini-3-flash', name: 'Gemini 3 Flash', desc: 'Fast', color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+      { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', desc: 'Previous gen', color: 'text-[#cc785c]', bg: 'bg-[#cc785c]/10' },
+      { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', desc: 'Cheapest', color: 'text-amber-400', bg: 'bg-amber-500/10' }
+    ],
+    // The CLI's own DEFAULT_GEMINI_MODEL as of 0.23.0. Gemini 3 ids are
+    // recognised but gated on account access, so defaulting to them would fail
+    // for some users at launch rather than in the picker.
+    defaultModel: 'gemini-2.5-pro',
+    // Gemini's /model takes no argument -- it opens a picker dialog -- so the
+    // in-session switcher stays disabled rather than typing a broken command.
+    modelCommand: '',
+    hasPlanMode: false,
+    // No local runtime: Gemini CLI has no OSS-provider flag and no
+    // Anthropic/OpenAI-compatible base-url override, so there is nothing for a
+    // `gemini-local` wrapper to set. Cloud only until that changes upstream.
+    // Gemini is the first provider to exercise localUnavailableReason -- without
+    // it the disabled toggle renders an empty explanation.
+    supportsLocal: false,
+    localUnavailableReason: 'Gemini CLI has no local-model option -- it always talks to Google.',
+    configDir: '.gemini',
+    promptChar: />\s*$/m,
+    // NOTE: tuned by eye against Gemini's Ink TUI, same caveat as Kimi's.
+    workingPatterns: [
+      /\.\.\.\s*$/m,
+      /⠋|⠙|⠹|⠸|⠼|⠴|⠦|⠧|⠇|⠏/m,
+      /^\s*(?:thinking|analyzing|searching|reading|writing|running|executing|loading|processing|building|compiling|installing|fetching|creating|updating|downloading)\b/im,
+      /\[(?:thinking|analyzing|searching|reading|writing|running|executing|loading|processing|building|compiling|installing|fetching|creating|updating|downloading)\]/i,
+      /\b(?:ReadFile|WriteFile|Edit|Shell|SearchText|FindFiles|GoogleSearch|WebFetch)\s*\(/
+    ],
+    waitingPatterns: [
+      />\s*$/m,
+      /\(y\/n\)\s*$/im,
+      /\[Y\/n\]\s*$/im,
+      /\[y\/N\]\s*$/im,
+      /What would you like|How can I help|anything else|Do you want to/i,
+      /Press Enter to continue/i,
+      // Gemini's tool-approval dialog
+      /Allow execution|Apply this change|Yes, allow (?:once|always)/i
+    ]
   }
 }
 

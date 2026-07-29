@@ -67,7 +67,7 @@ export interface TerminalWrapperHandle {
 interface TerminalWrapperProps {
   onTerminalData?: (data: string, terminalId: string) => void
   onTerminalIdChange?: (terminalId: string | null) => void
-  onAllTerminalIdsChange?: (mapping: Record<string, { tabId: string; panelId: string }>) => void
+  onAllTerminalIdsChange?: (mapping: Record<string, { tabId: string; panelId: string; cliProvider: CLIProvider }>) => void
   onHandleReady?: (handle: TerminalWrapperHandle) => void
   previewUrl?: string | null
   onClosePreview?: () => void
@@ -1683,19 +1683,21 @@ export default function TerminalWrapper({
                   if (panel.id === 'left' && tab.id === panel.activeTabId) onTerminalIdChange?.(terminalId)
                   // Always notify all terminal IDs for orchestrator
                   if (onAllTerminalIdsChange) {
-                    const mapping: Record<string, { tabId: string; panelId: string }> = {}
-                    // Gather all known terminal IDs from refs
+                    const mapping: Record<string, { tabId: string; panelId: string; cliProvider: CLIProvider }> = {}
+                    // Gather all known terminal IDs from refs. Each tab carries
+                    // the agent it was launched with, so the orchestrator can
+                    // supervise a mixed swarm with the right patterns per PTY.
                     for (const p of panels) {
                       for (const t of p.tabs) {
                         if (t.type === 'terminal') {
                           const ref = terminalRefs.current.get(t.id)
                           const tid = ref?.getTerminalId()
-                          if (tid) mapping[tid] = { tabId: t.id, panelId: p.id }
+                          if (tid) mapping[tid] = { tabId: t.id, panelId: p.id, cliProvider: t.cliProvider ?? cliProvider }
                         }
                       }
                     }
                     // Add the current one too
-                    mapping[terminalId] = { tabId: tab.id, panelId: panel.id }
+                    mapping[terminalId] = { tabId: tab.id, panelId: panel.id, cliProvider: tab.cliProvider ?? cliProvider }
                     onAllTerminalIdsChange(mapping)
                   }
                 }}

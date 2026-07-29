@@ -101,9 +101,20 @@ export function useOrchestrator() {
   const coordinatorLog = useOrchestratorStore((s) => s.coordinatorLog)
   const decomposedTasks = useOrchestratorStore((s) => s.decomposedTasks)
 
+  // App-level provider is only the fallback for a terminal that was registered
+  // before per-terminal providers existed (or by a caller that omitted it).
   const cliProvider = useAppStore((s) => s.cliProvider)
   const cliProviderRef = useRef<CLIProvider>(cliProvider)
   useEffect(() => { cliProviderRef.current = cliProvider }, [cliProvider])
+
+  /**
+   * The agent running in one specific PTY. Every status/completion/fast-path
+   * decision must go through this rather than a single app-level provider, or a
+   * mixed swarm gets one agent's output parsed with another's patterns.
+   */
+  const providerFor = useCallback((terminalId: string): CLIProvider => {
+    return getStore().terminals.get(terminalId)?.cliProvider ?? cliProviderRef.current
+  }, [])
 
   // Per-terminal ref map
   const terminalRefsMap = useRef<Map<string, TerminalRefs>>(new Map())
@@ -165,11 +176,12 @@ export function useOrchestrator() {
     // Add cross-terminal awareness for BOTH modes
     const otherTerminals = [...store.terminals.entries()]
       .filter(([id]) => id !== terminalId)
-      .map(([id, t]) => {
+      .map(([, t]) => {
         const lastLog = t.activityLog[t.activityLog.length - 1]
-        // Include Claude state if available (context %, model, tool in use)
+        // Rich state is Claude-only parsing, so gate it on THAT terminal's
+        // agent, not on this one's or on a global.
         let claudeInfo = ''
-        if (cliProviderRef.current === 'claude' && t.outputBuffer) {
+        if (t.cliProvider === 'claude' && t.outputBuffer) {
           const otherState = parseClaudeCodeState(stripAnsi(t.outputBuffer))
           const parts: string[] = []
           if (otherState.contextPercent !== null) parts.push(`ctx:${otherState.contextPercent}%`)
@@ -177,7 +189,8 @@ export function useOrchestrator() {
           if (otherState.hasError) parts.push('ERROR')
           if (parts.length) claudeInfo = ` {${parts.join(', ')}}`
         }
-        return `- "${t.task.slice(0, 80)}" [${t.status}]${claudeInfo}${lastLog ? ` (${lastLog.message.slice(0, 50)})` : ''}`
+        const agentName = CLI_PROVIDERS[t.cliProvider].name
+        return `- [${agentName}] "${t.task.slice(0, 80)}" [${t.status}]${claudeInfo}${lastLog ? ` (${lastLog.message.slice(0, 50)})` : ''}`
       })
       .join('\n')
 
@@ -185,7 +198,14 @@ export function useOrchestrator() {
       const modeNote = store.mode === 'split'
         ? 'These terminals are working on sub-tasks of the same project. Avoid duplicating their work or editing the same files.'
         : 'These terminals are working on separate tasks. Avoid interfering with their files.'
+      const selfAgent = CLI_PROVIDERS[providerFor(terminalId)].name
       stateContext += `\n\n=== OTHER TERMINALS ===\n${otherTerminals}\n${modeNote}`
+      // A mixed swarm needs the supervisor to know whose TUI it is reading --
+      // slash commands and approval prompts differ per agent.
+      const agents = new Set([...store.terminals.values()].map((t) => t.cliProvider))
+      if (agents.size > 1) {
+        stateContext += `\n\nNOTE: this swarm mixes different CLI agents. You are supervising ${selfAgent}; only send input valid for ${selfAgent}.`
+      }
     }
 
     const truncatedOutput = summarizeTerminalOutput(cleanOutput, 4000)
@@ -228,7 +248,7 @@ export function useOrchestrator() {
       }
     }
     return null
-  }, [getTerminalRefs])
+  }, [getTerminalRefs, providerFor])
 
   // Handle idle for a specific terminal
   const handleIdleForTerminal = useCallback(async (terminalId: string) => {
@@ -241,7 +261,8 @@ export function useOrchestrator() {
 
     try {
       const cleanBuffer = stripAnsi(termState.outputBuffer)
-      const currentCliProvider = cliProviderRef.current
+      const currentCliProvider = termState.cliProvider
+      const agentName = CLI_PROVIDERS[currentCliProvider].name
 
       // Update stats
       const stats = parseStats(cleanBuffer)
@@ -287,7 +308,7 @@ export function useOrchestrator() {
       // Skip LLM when working or streaming
       const status = detectClaudeStatus(cleanBuffer, currentCliProvider)
       if (status === 'working' || status === 'streaming') {
-        store.addTerminalLog(terminalId, 'working', status === 'streaming' ? 'Claude is generating response, skipping LLM call' : 'Claude is working, skipping LLM call')
+        store.addTerminalLog(terminalId, 'working', status === 'streaming' ? `${agentName} is generating response, skipping LLM call` : `${agentName} is working, skipping LLM call`)
         const idleTimeout = (store.config?.idleTimeout || 5) * 1000
         if (refs.idleTimer) clearTimeout(refs.idleTimer)
         refs.idleTimer = setTimeout(() => handleIdleForTerminal(terminalId), Math.min(idleTimeout, 8000))
@@ -460,7 +481,7 @@ export function useOrchestrator() {
       const fullOutput = termState.outputBuffer + data
       const cleanOutput = stripAnsi(fullOutput)
       const lastLines = cleanOutput.split('\n').slice(-5).join('\n')
-      const currentCliProvider = cliProviderRef.current
+      const currentCliProvider = termState.cliProvider
       const providerConfig = CLI_PROVIDERS[currentCliProvider]
 
       const hasReadyPrompt = providerConfig.promptChar.test(lastLines)
@@ -474,7 +495,7 @@ export function useOrchestrator() {
         }
         refs.waitingForReady = false
         refs.taskSent = true
-        store.addTerminalLog(terminalId, 'ready', 'Claude is ready! Sending task...')
+        store.addTerminalLog(terminalId, 'ready', `${providerConfig.name} is ready! Sending task...`)
         store.addTerminalLog(terminalId, 'input', `Sending task: ${termState.task}`)
         window.api.terminalSendText(termState.task, terminalId)
         store.markTerminalSent(terminalId, termState.task)
@@ -489,8 +510,7 @@ export function useOrchestrator() {
 
     const fullOutput = termState.outputBuffer + data
     const cleanFull = stripAnsi(fullOutput)
-    const currentCliProvider = cliProviderRef.current
-    const currentStatus = detectClaudeStatus(cleanFull, currentCliProvider)
+    const currentStatus = detectClaudeStatus(cleanFull, termState.cliProvider)
 
     const baseTimeout = (store.config?.idleTimeout || 5) * 1000
     let idleTimeout: number
@@ -506,7 +526,13 @@ export function useOrchestrator() {
   }, [getTerminalRefs, handleIdleForTerminal])
 
   // Decompose task via LLM (split mode)
-  const decomposeTask = useCallback(async (masterTask: string, terminalCount: number): Promise<string[] | null> => {
+  const decomposeTask = useCallback(async (
+    masterTask: string,
+    terminalCount: number,
+    /** Display names of the agent in each terminal, in order. Mixed swarms get
+     *  strengths-aware splitting instead of "N identical Claude terminals". */
+    agentNames?: string[]
+  ): Promise<string[] | null> => {
     // Load config first to ensure we have API keys
     try {
       const loadedConfig = await window.api.loadSuperAgentConfig()
@@ -522,7 +548,14 @@ export function useOrchestrator() {
     const model = getSupervisorModel(cfg, prov)
     if (supervisorProviderNeedsApiKey(prov) && !apiKey) return null
 
-    const systemPrompt = `You are a task decomposition assistant. You take a master task and break it into ${terminalCount} DISTINCT sub-tasks for parallel execution by separate Claude Code CLI terminals.
+    // Only mention specific agents when the swarm is actually mixed -- naming a
+    // single agent N times just adds noise to the prompt.
+    const uniqueAgents = new Set(agentNames ?? [])
+    const roster = agentNames && uniqueAgents.size > 1
+      ? `\n\nThese terminals do NOT all run the same agent. In order, they are:\n${agentNames.map((n, i) => `${i + 1}. ${n}`).join('\n')}\nAssign sub-task ${'#'}i to whichever aspect suits agent i, and write each sub-task addressed to that agent.`
+      : ''
+
+    const systemPrompt = `You are a task decomposition assistant. You take a master task and break it into ${terminalCount} DISTINCT sub-tasks for parallel execution by separate coding-agent CLI terminals.${roster}
 
 RULES:
 - Each sub-task MUST be different -- never repeat the same task
@@ -601,7 +634,9 @@ Respond ONLY with a valid JSON array of ${terminalCount} strings. No markdown, n
     mode: OrchestratorMode
     masterTask: string
     tasks?: Record<string, string> // terminalId -> task (parallel mode)
-    terminalIds: Array<{ terminalId: string; tabId: string; panelId: string }>
+    // cliProvider is which agent is live in that PTY; omitted falls back to the
+    // app-level default so older callers keep working.
+    terminalIds: Array<{ terminalId: string; tabId: string; panelId: string; cliProvider?: CLIProvider }>
     timeLimit?: number
     safetyLevel?: SafetyLevel
     projectFolder?: string
@@ -647,9 +682,15 @@ Respond ONLY with a valid JSON array of ${terminalCount} strings. No markdown, n
     // Set up terminals
     if (config.mode === 'parallel') {
       // Each terminal gets its own task
-      for (const { terminalId, tabId, panelId } of config.terminalIds) {
+      for (const { terminalId, tabId, panelId, cliProvider: termProvider } of config.terminalIds) {
         const task = config.tasks?.[terminalId] || config.masterTask
-        store.addTerminal(terminalId, { tabId, panelId, task, status: 'pending' })
+        store.addTerminal(terminalId, {
+          tabId,
+          panelId,
+          cliProvider: termProvider ?? cliProviderRef.current,
+          task,
+          status: 'pending'
+        })
         const refs = getTerminalRefs(terminalId)
         refs.waitingForReady = true
         refs.taskSent = false
@@ -679,7 +720,10 @@ Respond ONLY with a valid JSON array of ${terminalCount} strings. No markdown, n
     } else {
       // Split mode: decompose first, then assign
       store.addCoordinatorLog('decision', 'Decomposing master task...')
-      const subTasks = await decomposeTask(config.masterTask, config.terminalIds.length)
+      const agentNames = config.terminalIds.map(
+        ({ cliProvider: p }) => CLI_PROVIDERS[p ?? cliProviderRef.current].name
+      )
+      const subTasks = await decomposeTask(config.masterTask, config.terminalIds.length, agentNames)
 
       if (!subTasks || subTasks.length === 0) {
         store.addCoordinatorLog('error', 'Failed to decompose task. Creating numbered sub-tasks as fallback.')
@@ -693,18 +737,30 @@ Respond ONLY with a valid JSON array of ${terminalCount} strings. No markdown, n
           'Focus on integration and connecting the pieces together'
         ]
         for (let i = 0; i < config.terminalIds.length; i++) {
-          const { terminalId, tabId, panelId } = config.terminalIds[i]
+          const { terminalId, tabId, panelId, cliProvider: termProvider } = config.terminalIds[i]
           const aspect = fallbackAspects[i % fallbackAspects.length]
           const fallbackTask = `${config.masterTask}\n\n${aspect}. This is terminal ${i + 1} of ${config.terminalIds.length} working on this task in parallel -- coordinate to avoid duplicate work.`
-          store.addTerminal(terminalId, { tabId, panelId, task: fallbackTask, status: 'pending' })
+          store.addTerminal(terminalId, {
+            tabId,
+            panelId,
+            cliProvider: termProvider ?? cliProviderRef.current,
+            task: fallbackTask,
+            status: 'pending'
+          })
           const refs = getTerminalRefs(terminalId)
           refs.waitingForReady = true
           refs.taskSent = false
         }
       } else {
-        const decomposed = config.terminalIds.map(({ terminalId, tabId, panelId }, i) => {
+        const decomposed = config.terminalIds.map(({ terminalId, tabId, panelId, cliProvider: termProvider }, i) => {
           const task = subTasks[i] || subTasks[subTasks.length - 1]
-          store.addTerminal(terminalId, { tabId, panelId, task, status: 'pending' })
+          store.addTerminal(terminalId, {
+            tabId,
+            panelId,
+            cliProvider: termProvider ?? cliProviderRef.current,
+            task,
+            status: 'pending'
+          })
           const refs = getTerminalRefs(terminalId)
           refs.waitingForReady = true
           refs.taskSent = false
