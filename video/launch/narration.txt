@@ -1,0 +1,17 @@
+The terminal isn't the experience.
+
+And you shouldn't have to pick between Claude Code and Codex either.
+
+This is Crest. The premium desktop home for your A.I. coding agents.
+
+Both CLIs, side by side. One tab Claude. The next tab Codex.
+
+Launch a swarm of specialized agents. Audit your code. Fix the bugs. Ship the tests.
+
+Run terminals in parallel. Split one task across many. Orchestrate the whole thing from a single window.
+
+Memory that follows you across projects. Analytics that show your real coding time. Twenty five skills, ready out of the box.
+
+For developers — stop context switching. For everyone else — describe what you want, and watch it build.
+
+Crest two point three. Code with superpowers. Download now at crest A.I. dot dev.

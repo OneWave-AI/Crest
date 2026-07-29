@@ -1,0 +1,2251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("fonts/sg-500.ttf") format("truetype");
+        font-weight: 500;
+        font-style: normal;
+        font-display: block;
+      }
+
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("fonts/sg-700.ttf") format("truetype");
+        font-weight: 700;
+        font-style: normal;
+        font-display: block;
+      }
+
+      :root {
+        --bg: #030303;
+        --surface: #0a0a0a;
+        --surface-2: #141414;
+        --fg: #f5efe8;
+        --fg-dim: #9a8f84;
+        --primary: #ff4f18;
+        --primary-soft: #ff6a3d;
+        --accent: #10b981;
+        --rule: rgba(245, 239, 232, 0.08);
+        --rule-strong: rgba(245, 239, 232, 0.18);
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        background: var(--bg);
+        overflow: hidden;
+      }
+
+      /* Persistent ambient glow that lives across all scenes via z-index trickery
+         is not possible in clip model — instead each scene re-stamps its own glow. */
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      .scene-pad {
+        width: 100%;
+        height: 100%;
+        padding: 110px 140px;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        position: relative;
+      }
+
+      /* Background decoratives */
+      .glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        pointer-events: none;
+        will-change: transform, opacity;
+      }
+      .glow-primary {
+        background: radial-gradient(
+          closest-side,
+          rgba(255, 79, 24, 0.42),
+          rgba(255, 79, 24, 0)
+        );
+      }
+      .glow-cool {
+        background: radial-gradient(
+          closest-side,
+          rgba(245, 239, 232, 0.14),
+          rgba(245, 239, 232, 0)
+        );
+      }
+
+      .grain {
+        position: absolute;
+        inset: 0;
+        opacity: 1;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(245, 239, 232, 0.018) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(245, 239, 232, 0.018) 1px, transparent 1px);
+        background-size: 140px 140px;
+        background-position: 0 0;
+        mask-image: radial-gradient(
+          ellipse 65% 75% at center,
+          rgba(0, 0, 0, 1) 25%,
+          rgba(0, 0, 0, 0) 100%
+        );
+      }
+      .glow {
+        filter: blur(200px);
+        opacity: 0.4 !important;
+      }
+      /* Soft cinematic gradient over the whole scene — sets the mood */
+      .scene {
+        background:
+          radial-gradient(
+            ellipse 100% 80% at 50% 110%,
+            rgba(255, 79, 24, 0.07),
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 70% 55% at 50% -10%,
+            rgba(95, 105, 130, 0.05),
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 90% 100% at 50% 50%,
+            rgba(8, 8, 8, 0) 60%,
+            rgba(0, 0, 0, 0.55) 100%
+          );
+      }
+
+      /* Abstract drifting orbs — added per-scene for ambient motion */
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        pointer-events: none;
+        mix-blend-mode: screen;
+        will-change: transform;
+      }
+      .orb.warm {
+        background: radial-gradient(closest-side, rgba(255, 138, 92, 0.35), rgba(255, 138, 92, 0));
+      }
+      .orb.deep {
+        background: radial-gradient(closest-side, rgba(255, 79, 24, 0.28), rgba(255, 79, 24, 0));
+      }
+      .orb.cool {
+        background: radial-gradient(closest-side, rgba(120, 140, 180, 0.18), rgba(120, 140, 180, 0));
+      }
+      .orb.green {
+        background: radial-gradient(closest-side, rgba(16, 185, 129, 0.18), rgba(16, 185, 129, 0));
+      }
+
+      /* Faint horizontal scan line that drifts across — adds quiet motion */
+      .drift-line {
+        position: absolute;
+        left: -20%;
+        width: 140%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 79, 24, 0.4) 50%,
+          transparent 100%
+        );
+        opacity: 0.6;
+        pointer-events: none;
+        will-change: transform;
+      }
+
+      .rule {
+        position: absolute;
+        background: var(--rule-strong);
+        transform-origin: left center;
+      }
+      .rule.h {
+        height: 1px;
+      }
+      .rule.v {
+        width: 1px;
+        transform-origin: center top;
+      }
+
+      .ghost { display: none; }
+
+      .tag { display: none; }
+
+      /* Bottom-right brand mark */
+      .brand {
+        position: absolute;
+        bottom: 60px;
+        right: 140px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        letter-spacing: 0.16em;
+        color: var(--fg-dim);
+        text-transform: uppercase;
+      }
+      .brand svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      /* Headlines */
+      h1.hero {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 168px;
+        line-height: 0.92;
+        letter-spacing: -0.035em;
+        color: var(--fg);
+      }
+      h1.hero .accent {
+        color: var(--primary);
+      }
+      h2.sub {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 500;
+        font-size: 52px;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: var(--fg-dim);
+        margin-top: 32px;
+      }
+      .kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--primary);
+        margin-bottom: 28px;
+      }
+
+      /* Device frame around screenshots */
+      .device {
+        position: relative;
+        border-radius: 18px;
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow:
+          0 60px 120px -40px rgba(0, 0, 0, 0.9),
+          0 0 0 1px rgba(255, 79, 24, 0.05),
+          0 0 140px -20px rgba(255, 79, 24, 0.25);
+      }
+      .device img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .device .chrome {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 28px;
+        background: rgba(8, 8, 8, 0.92);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        z-index: 2;
+      }
+      .device .chrome i {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.18);
+      }
+      .device .chrome i:first-child {
+        background: #ff5f57;
+      }
+      .device .chrome i:nth-child(2) {
+        background: #febc2e;
+      }
+      .device .chrome i:nth-child(3) {
+        background: #28c840;
+      }
+
+      /* ====== Scene 0 — DIGITIZED BOOT INTRO ====== */
+      #s0 {
+        background: #050505;
+      }
+      #s0::before {
+        /* Dense pixel-board background: dot matrix */
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          radial-gradient(circle at 1px 1px, rgba(255, 79, 24, 0.16) 1px, transparent 0);
+        background-size: 18px 18px;
+        background-position: 0 0;
+        mask-image: radial-gradient(
+          ellipse 75% 80% at center,
+          rgba(0, 0, 0, 1) 25%,
+          rgba(0, 0, 0, 0) 100%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+      #s0 .scanlines {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 2px,
+          rgba(255, 255, 255, 0.025) 3px,
+          transparent 4px
+        );
+        background-size: 100% 4px;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.7;
+      }
+      #s0 .crt-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 75% 75% at center,
+          transparent 40%,
+          rgba(0, 0, 0, 0.7) 100%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+      #s0 .scene-pad {
+        padding: 60px 0;
+        justify-content: center;
+        align-items: center;
+      }
+      #s0 .boot {
+        align-items: flex-start;
+      }
+      #s0 .logo-art {
+        justify-content: center;
+        margin: 24px auto 0;
+      }
+      #s0 .tagline-final {
+        text-align: center;
+      }
+      #s0 .boot {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        line-height: 1.55;
+        color: var(--fg);
+        white-space: pre;
+        display: block;
+        text-align: left;
+        width: 760px;
+        margin: 0 auto;
+      }
+      #s0 .boot .line {
+        display: block;
+        white-space: nowrap;
+        opacity: 0;
+      }
+      #s0 .boot .line.dim { color: var(--fg-dim); }
+      #s0 .boot .line .ok { color: var(--accent); }
+      #s0 .boot .line .warn { color: var(--primary); }
+      #s0 .boot .pbar-wrap {
+        display: inline-block;
+        position: relative;
+        width: 32ch;
+        color: var(--fg-dim);
+        font-family: "JetBrains Mono", monospace;
+      }
+      #s0 .boot .pbar-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        color: var(--primary);
+        text-shadow: 0 0 8px rgba(255, 79, 24, 0.55);
+        width: 0;
+      }
+      #s0 .boot .pct {
+        margin-left: 8px;
+        color: var(--fg-dim);
+      }
+      #s0 .boot .empty {
+        height: 14px;
+      }
+
+      /* Logo block-art — built as a CSS-grid of cells */
+      #s0 .logo-art {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(42, 22px);
+        grid-auto-rows: 30px;
+        gap: 1px;
+        justify-content: start;
+      }
+      #s0 .logo-art .cell {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 28px;
+        line-height: 30px;
+        color: var(--primary);
+        text-shadow: 0 0 12px rgba(255, 79, 24, 0.55);
+        opacity: 0;
+        text-align: center;
+        will-change: opacity, transform;
+      }
+      #s0 .logo-art .cell.empty {
+        color: transparent;
+        text-shadow: none;
+      }
+      #s0 .tagline-final {
+        margin-top: 28px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--fg-dim);
+        opacity: 0;
+      }
+      #s0 .tagline-final .ready {
+        color: var(--accent);
+      }
+      #s0 .cursor-block {
+        display: inline-block;
+        width: 14px;
+        height: 26px;
+        background: var(--primary);
+        margin-left: 6px;
+        vertical-align: -4px;
+        box-shadow: 0 0 12px rgba(255, 79, 24, 0.7);
+      }
+
+      /* ====== Scene 1 — HOOK ====== */
+      #s1 .scene-pad {
+        justify-content: center;
+        align-items: flex-start;
+      }
+      #s1 h1.hero {
+        max-width: 1500px;
+      }
+      #s1 .strike {
+        position: relative;
+        display: inline-block;
+      }
+      #s1 .strike-line {
+        position: absolute;
+        top: 54%;
+        left: -10px;
+        right: -10px;
+        height: 8px;
+        background: var(--primary);
+        transform-origin: left center;
+        transform: scaleX(0);
+        box-shadow: 0 0 28px rgba(255, 79, 24, 0.7);
+      }
+
+      /* ====== Scene 2 — REVEAL ====== */
+      #s2 .scene-pad {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0;
+      }
+      #s2 .logo-row {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+      }
+      #s2 .crest-mark {
+        width: 140px;
+        height: 140px;
+        border-radius: 30px;
+        background: linear-gradient(180deg, #1a1a1a 0%, #050505 100%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow:
+          0 30px 80px -20px rgba(0, 0, 0, 0.9),
+          0 0 120px -10px rgba(255, 79, 24, 0.45);
+      }
+      #s2 .crest-mark svg {
+        width: 84px;
+        height: 84px;
+      }
+      #s2 .wordmark {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 240px;
+        line-height: 0.9;
+        letter-spacing: -0.04em;
+        color: var(--fg);
+      }
+      #s2 .tagline {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 500;
+        font-size: 56px;
+        letter-spacing: -0.015em;
+        color: var(--fg-dim);
+        margin-top: 38px;
+      }
+      #s2 .tagline span {
+        color: var(--primary);
+      }
+      #s2 .underline {
+        margin: 28px auto 0;
+        width: 0;
+        height: 3px;
+        background: var(--primary);
+        box-shadow: 0 0 18px rgba(255, 79, 24, 0.7);
+      }
+
+      /* ====== Scene 3 — ANIMATED SPLIT TERMINALS (rebuilt) ====== */
+      #s3 .scene-pad {
+        flex-direction: column;
+        gap: 0;
+        padding: 70px 90px 70px;
+        justify-content: flex-start;
+      }
+      #s3 .prompt-card {
+        position: relative;
+        margin: 12px auto 0;
+        max-width: 1200px;
+        width: 1200px;
+        background: linear-gradient(180deg, #161616 0%, #0a0a0a 100%);
+        border: 1px solid var(--rule-strong);
+        border-radius: 16px;
+        padding: 22px 28px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow:
+          0 30px 70px -20px rgba(0, 0, 0, 0.8),
+          0 0 80px -20px rgba(255, 79, 24, 0.18);
+      }
+      #s3 .prompt-card::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 16px;
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 79, 24, 0.4),
+          rgba(16, 185, 129, 0.4)
+        );
+        -webkit-mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+                mask-composite: exclude;
+        pointer-events: none;
+      }
+      #s3 .prompt-card .caret {
+        color: var(--primary);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1;
+        flex: none;
+        align-self: flex-start;
+        margin-top: 6px;
+      }
+      #s3 .prompt-multiline {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 30px;
+        letter-spacing: -0.005em;
+        line-height: 1.25;
+        color: var(--fg);
+      }
+      #s3 .typed-line {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 0;
+        opacity: 0;
+      }
+      #s3 .typed-line.typing {
+        border-right: 3px solid var(--primary);
+      }
+      #s3 .prompt-card {
+        align-items: flex-start;
+        padding: 24px 28px;
+      }
+      #s3 .prompt-card .submit {
+        flex: none;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 18px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--bg);
+        background: var(--primary);
+        padding: 12px 22px;
+        border-radius: 10px;
+        opacity: 0;
+        box-shadow: 0 0 24px rgba(255, 79, 24, 0.6);
+      }
+      #s3 .fork {
+        position: relative;
+        height: 70px;
+        margin-top: 8px;
+        flex: none;
+      }
+      #s3 .fork svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+      #s3 .fork path {
+        stroke: var(--rule-strong);
+        stroke-width: 2;
+        fill: none;
+        stroke-dasharray: 800;
+        stroke-dashoffset: 800;
+      }
+      #s3 .fork .glow-pulse {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--primary);
+        box-shadow: 0 0 16px var(--primary);
+        opacity: 0;
+        top: 0;
+        left: 50%;
+        margin-left: -6px;
+      }
+      #s3 .term-row {
+        flex: 1;
+        display: flex;
+        gap: 36px;
+        min-height: 0;
+        margin-top: 10px;
+      }
+      #s3 .term {
+        flex: 1;
+        background: var(--surface);
+        border: 1px solid var(--rule-strong);
+        border-radius: 16px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        box-shadow:
+          0 50px 100px -40px rgba(0, 0, 0, 0.9),
+          0 0 80px -20px rgba(255, 79, 24, 0.12);
+      }
+      #s3 .term .done-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent);
+        padding: 6px 12px;
+        border: 1px solid var(--accent);
+        border-radius: 999px;
+        opacity: 0;
+        background: rgba(16, 185, 129, 0.08);
+        z-index: 5;
+      }
+
+      /* ---- Authentic Claude Code / Codex banners ---- */
+      #s3 .cc-banner {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+        padding: 20px 24px 10px;
+        font-family: "JetBrains Mono", monospace;
+      }
+      /* Claude bear/robot mascot — 6 columns × 7 rows */
+      #s3 .cc-mascot {
+        width: 72px;
+        height: 84px;
+        flex: none;
+        display: grid;
+        grid-template-columns: repeat(6, 12px);
+        grid-template-rows: repeat(7, 12px);
+      }
+      #s3 .cc-mascot i { background: transparent; }
+      #s3 .cc-mascot i.on { background: #cc785c; }
+      #s3 .cc-mascot i.dim { background: #8a4d3d; }
+      #s3 .cc-mascot i.eye { background: #0a0a0a; }
+      #s3 .cc-text { display: flex; flex-direction: column; line-height: 1.4; }
+      #s3 .cc-line1 { font-weight: 700; color: var(--fg); font-size: 20px; }
+      #s3 .cc-line1 .ver { font-weight: 400; color: var(--fg-dim); margin-left: 8px; }
+      #s3 .cc-line2 { color: var(--fg-dim); font-size: 16px; }
+      #s3 .cc-line3 { color: var(--fg-dim); font-size: 16px; }
+
+      /* Codex CLI startup boxed banner */
+      #s3 .codex-banner {
+        margin: 20px 24px 10px;
+        border: 1px solid rgba(245, 239, 232, 0.22);
+        border-radius: 10px;
+        padding: 16px 22px;
+        font-family: "JetBrains Mono", monospace;
+        color: var(--fg);
+        font-size: 16px;
+        line-height: 1.55;
+      }
+      #s3 .codex-banner .row1 {
+        color: var(--fg);
+        font-weight: 700;
+        font-size: 19px;
+        margin-bottom: 10px;
+      }
+      #s3 .codex-banner .row1 .arrow {
+        color: #cc785c;
+        margin-right: 10px;
+        font-weight: 700;
+      }
+      #s3 .codex-banner .row1 .ver {
+        font-weight: 400;
+        color: var(--fg-dim);
+        margin-left: 8px;
+      }
+      #s3 .codex-banner .kv { display: flex; gap: 4px; align-items: baseline; }
+      #s3 .codex-banner .kv .k {
+        color: var(--fg-dim);
+        min-width: 96px;
+      }
+      #s3 .codex-banner .kv .v { color: var(--fg); font-weight: 500; }
+      #s3 .codex-banner .kv .v .cmd { color: #6ab7c5; margin-left: 14px; }
+      #s3 .codex-banner .kv .v .hint { color: var(--fg-dim); margin-left: 6px; }
+
+      #s3 .term .divider {
+        height: 1px;
+        background: var(--rule);
+        margin: 6px 22px 0;
+      }
+      #s3 .term-claude {
+        border-color: rgba(255, 79, 24, 0.35);
+        box-shadow:
+          0 50px 100px -40px rgba(0, 0, 0, 0.9),
+          0 0 100px -20px rgba(255, 79, 24, 0.28);
+      }
+      #s3 .term-codex {
+        border-color: rgba(16, 185, 129, 0.25);
+        box-shadow:
+          0 50px 100px -40px rgba(0, 0, 0, 0.9),
+          0 0 100px -20px rgba(16, 185, 129, 0.22);
+      }
+      #s3 .term-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 22px;
+        border-bottom: 1px solid var(--rule);
+        background: rgba(0, 0, 0, 0.5);
+      }
+      #s3 .term-head .who {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--fg);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      #s3 .term-head .who .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      #s3 .term-claude .term-head .who .dot {
+        background: var(--primary);
+        box-shadow: 0 0 14px rgba(255, 79, 24, 0.9);
+      }
+      #s3 .term-codex .term-head .who .dot {
+        background: var(--accent);
+        box-shadow: 0 0 14px rgba(16, 185, 129, 0.9);
+      }
+      #s3 .term-head .model {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 18px;
+        color: var(--fg-dim);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      #s3 .term-body {
+        flex: 1;
+        padding: 28px 30px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        line-height: 1.55;
+        color: var(--fg);
+        overflow: hidden;
+        position: relative;
+      }
+      #s3 .term-body .line {
+        display: block;
+        margin-bottom: 6px;
+        opacity: 0;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      #s3 .term-body .line .glyph {
+        color: var(--fg-dim);
+        margin-right: 10px;
+      }
+      #s3 .term-claude .term-body .line.user { color: var(--fg); }
+      #s3 .term-claude .term-body .line.tool { color: var(--primary); }
+      #s3 .term-claude .term-body .line.text { color: var(--fg); }
+      #s3 .term-claude .term-body .line.ok { color: var(--accent); }
+
+      #s3 .term-codex .term-body .line.user { color: var(--fg); }
+      #s3 .term-codex .term-body .line.tool { color: var(--accent); }
+      #s3 .term-codex .term-body .line.text { color: var(--fg); }
+      #s3 .term-codex .term-body .line.ok { color: var(--accent); }
+
+      #s3 .term-body .cursor {
+        display: inline-block;
+        width: 12px;
+        height: 22px;
+        background: var(--fg);
+        vertical-align: -3px;
+        opacity: 0.85;
+      }
+      #s3 .term-claude .term-body .cursor { background: var(--primary); }
+      #s3 .term-codex .term-body .cursor { background: var(--accent); }
+
+      #s3 .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--fg-dim);
+      }
+      #s3 .footer .lead {
+        color: var(--fg);
+        font-family: "Space Grotesk", sans-serif;
+        text-transform: none;
+        font-weight: 700;
+        font-size: 44px;
+        letter-spacing: -0.02em;
+      }
+      #s3 .footer .lead em {
+        font-style: normal;
+        color: var(--primary);
+      }
+
+      /* ====== Scene 4 — SWARM ====== */
+      #s4 .scene-pad {
+        flex-direction: row-reverse;
+        gap: 90px;
+        align-items: center;
+      }
+      #s4 .text-col {
+        flex: 0 0 620px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      #s4 .text-col h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 132px;
+        line-height: 0.9;
+        letter-spacing: -0.04em;
+      }
+      #s4 .text-col h2 span {
+        color: var(--primary);
+      }
+      #s4 .text-col p {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 32px;
+        line-height: 1.35;
+        color: var(--fg-dim);
+        margin-top: 20px;
+        max-width: 580px;
+      }
+      /* Scene 4 — 6-terminal swarm grid */
+      #s4 .hive-wrap {
+        flex: 1;
+        height: 740px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 16px;
+        perspective: 1600px;
+      }
+      #s4 .mini {
+        background: linear-gradient(180deg, #0c0c0c 0%, #050505 100%);
+        border: 1px solid var(--rule-strong);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        opacity: 0;
+        box-shadow:
+          0 30px 60px -30px rgba(0, 0, 0, 0.8),
+          0 0 60px -20px rgba(255, 79, 24, 0.15);
+      }
+      #s4 .mini .head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        background: rgba(0, 0, 0, 0.55);
+        border-bottom: 1px solid var(--rule);
+        flex: none;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+      }
+      /* Claude mini banner */
+      .cli-claude {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .cli-claude .blocks {
+        display: grid;
+        grid-template-columns: 4px 4px;
+        grid-template-rows: 4px 4px;
+        gap: 1px;
+        flex: none;
+      }
+      .cli-claude .blocks i {
+        background: #cc785c;
+        border-radius: 1px;
+      }
+      .cli-claude .name {
+        color: var(--fg);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        font-size: 12px;
+      }
+      .cli-claude .ver {
+        color: var(--fg-dim);
+        font-weight: 400;
+        margin-left: 4px;
+        letter-spacing: 0.04em;
+      }
+      /* Codex mini banner */
+      .cli-codex {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .cli-codex .arrow {
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .cli-codex .name {
+        color: var(--fg);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        font-size: 12px;
+      }
+      .cli-codex .ver {
+        color: var(--fg-dim);
+        font-weight: 400;
+        margin-left: 4px;
+        letter-spacing: 0.04em;
+      }
+      #s4 .mini .head .pulse,
+      #s5 .child .head .pulse {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--accent);
+        margin-left: auto;
+        flex: none;
+      }
+      #s4 .mini.done .head .pulse {
+        background: var(--primary);
+        box-shadow: 0 0 8px var(--primary);
+      }
+      #s4 .mini .body {
+        flex: 1;
+        padding: 12px 14px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        line-height: 1.55;
+        color: var(--fg);
+        overflow: hidden;
+        position: relative;
+      }
+      #s4 .mini .body .ln {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-bottom: 2px;
+        opacity: 0;
+      }
+      #s4 .mini .ln .gly { color: var(--fg-dim); margin-right: 6px; }
+      #s4 .mini .ln.user { color: var(--fg); }
+      #s4 .mini .ln.tool { color: var(--primary); }
+      #s4 .mini .ln.text { color: var(--fg-dim); }
+      #s4 .mini .ln.ok { color: var(--accent); }
+      #s4 .mini .ln.code { color: #ffd29a; }
+      #s4 .mini .thinking {
+        color: var(--accent);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      #s4 .mini .thinking .dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      #s4 .mini .badge {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--primary);
+        padding: 4px 8px;
+        border: 1px solid var(--primary);
+        border-radius: 999px;
+        background: rgba(255, 79, 24, 0.08);
+        opacity: 0;
+      }
+
+      /* ====== Scene 5 — ORCHESTRATOR ====== */
+      #s5 .scene-pad {
+        flex-direction: column;
+        gap: 60px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 80px 140px;
+      }
+      #s5 h2.hero {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 148px;
+        line-height: 0.9;
+        letter-spacing: -0.04em;
+        max-width: 1500px;
+      }
+      #s5 h2.hero .accent {
+        color: var(--primary);
+      }
+      #s5 .orch-wrap {
+        position: relative;
+        width: 1500px;
+        height: 620px;
+        margin: 0 auto;
+      }
+      #s5 .master {
+        position: relative;
+        margin: 0 auto;
+        width: 720px;
+        background: linear-gradient(180deg, #161616 0%, #0a0a0a 100%);
+        border: 1px solid var(--primary);
+        border-radius: 14px;
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        opacity: 0;
+        box-shadow: 0 0 60px -10px rgba(255, 79, 24, 0.45);
+      }
+      #s5 .master .badge {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--primary);
+        padding: 5px 10px;
+        border: 1px solid var(--primary);
+        border-radius: 999px;
+        flex: none;
+      }
+      #s5 .master .task-text {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        color: var(--fg);
+        flex: 1;
+      }
+      #s5 .branch-svg {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        height: 110px;
+        width: 100%;
+        overflow: visible;
+        pointer-events: none;
+      }
+      #s5 .branch-svg path {
+        stroke: var(--rule-strong);
+        stroke-width: 2;
+        fill: none;
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+      }
+      #s5 .children-row {
+        position: absolute;
+        top: 200px;
+        left: 0;
+        right: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        height: 400px;
+      }
+      #s5 .child {
+        background: linear-gradient(180deg, #0c0c0c 0%, #050505 100%);
+        border: 1px solid var(--rule-strong);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+      }
+      #s5 .child .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        background: rgba(0, 0, 0, 0.5);
+        border-bottom: 1px solid var(--rule);
+        flex: none;
+      }
+      #s5 .child .head .who {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--fg);
+      }
+      #s5 .child .head .who .pulse {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--accent);
+      }
+      #s5 .child .head .num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        color: var(--fg-dim);
+      }
+      #s5 .child .body {
+        flex: 1;
+        padding: 10px 12px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        line-height: 1.55;
+        color: var(--fg);
+        overflow: hidden;
+      }
+      #s5 .child .body .ln {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-bottom: 2px;
+        opacity: 0;
+      }
+      #s5 .child .ln .gly { color: var(--fg-dim); margin-right: 5px; }
+      #s5 .child .ln.tool { color: var(--primary); }
+      #s5 .child .ln.ok { color: var(--accent); }
+      #s5 .child .ln.text { color: var(--fg-dim); }
+
+      /* ====== Scene 6 — 100 PAPERCUTS WALL ====== */
+      #s6 .scene-pad {
+        flex-direction: row;
+        gap: 60px;
+        padding: 110px 140px;
+        align-items: center;
+      }
+      #s6 .left-col {
+        flex: 0 0 640px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      #s6 .big-num {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 280px;
+        line-height: 0.85;
+        letter-spacing: -0.05em;
+        color: var(--primary);
+        text-shadow: 0 0 80px rgba(255, 79, 24, 0.45);
+      }
+      #s6 .big-num .plus {
+        color: var(--fg);
+      }
+      #s6 .left-col h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 72px;
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+        margin-top: 8px;
+      }
+      #s6 .left-col p {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 30px;
+        line-height: 1.4;
+        color: var(--fg-dim);
+        margin-top: 16px;
+        max-width: 560px;
+      }
+      #s6 .wall {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 12px;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        max-height: 800px;
+      }
+      #s6 .chip6 {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        letter-spacing: 0.04em;
+        padding: 14px 22px;
+        border-radius: 999px;
+        border: 1px solid var(--rule-strong);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--fg);
+        white-space: nowrap;
+        opacity: 0;
+      }
+      #s6 .chip6.hot {
+        border-color: var(--primary);
+        color: var(--primary);
+        background: rgba(255, 79, 24, 0.07);
+      }
+      #s6 .chip6.cool {
+        border-color: rgba(16, 185, 129, 0.4);
+        color: var(--accent);
+        background: rgba(16, 185, 129, 0.06);
+      }
+
+      /* ====== Scene 7 — VALUE SPLIT ====== */
+      #s7 .scene-pad {
+        flex-direction: row;
+        padding: 0;
+        gap: 0;
+      }
+      #s7 .half {
+        flex: 1;
+        height: 100%;
+        padding: 140px 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 22px;
+        position: relative;
+      }
+      #s7 .half + .half {
+        border-left: 1px solid var(--rule-strong);
+      }
+      #s7 .half .label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--primary);
+      }
+      #s7 .half h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 104px;
+        line-height: 0.95;
+        letter-spacing: -0.035em;
+      }
+      #s7 .half p {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 400;
+        font-size: 34px;
+        line-height: 1.4;
+        color: var(--fg-dim);
+        max-width: 600px;
+      }
+
+      /* ====== Scene 8 — CTA ====== */
+      #s8 .scene-pad {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      #s8 .badge {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--primary);
+        padding: 14px 30px;
+        border: 1px solid var(--primary);
+        border-radius: 999px;
+        margin-bottom: 50px;
+        background: rgba(255, 79, 24, 0.06);
+      }
+      #s8 .mega {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 192px;
+        line-height: 0.9;
+        letter-spacing: -0.045em;
+        max-width: 1700px;
+      }
+      #s8 .mega .accent {
+        color: var(--primary);
+      }
+      #s8 .url {
+        margin-top: 60px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 56px;
+        letter-spacing: 0.06em;
+        color: var(--fg);
+        display: inline-flex;
+        align-items: center;
+        gap: 20px;
+      }
+      #s8 .url .arrow {
+        color: var(--primary);
+      }
+      #s8 .underline-big {
+        width: 0;
+        height: 3px;
+        background: var(--primary);
+        margin: 14px auto 0;
+        box-shadow: 0 0 22px rgba(255, 79, 24, 0.7);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="45.5"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- ============ SCENE 0 — DIGITIZED BOOT ============ -->
+      <div
+        id="s0"
+        class="clip scene" data-layout-allow-overflow
+        data-start="0"
+        data-duration="5.5"
+        data-track-index="0"
+      >
+        <div class="glow glow-primary" style="width: 1100px; height: 1100px; left: 50%; bottom: -400px; transform: translateX(-50%);" id="s0-glow"></div>
+        <div class="scanlines" id="s0-scanlines"></div>
+        <div class="crt-vignette"></div>
+        <div class="scene-pad">
+          <div class="boot">
+            <span class="line dim" id="s0-l1">&gt; crest os v2.3.1 · darwin arm64</span>
+            <span class="line dim" id="s0-l2">&gt; initializing kernel...</span>
+            <div class="empty"></div>
+            <span class="line" id="s0-l3"><span class="pbar-wrap">[<span id="s0-pbar-track">░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</span>]<span class="pct" id="s0-pct">000%</span></span></span>
+            <div class="empty"></div>
+            <span class="line dim" id="s0-l4">&gt; claude code .................. <span class="ok">ok</span></span>
+            <span class="line dim" id="s0-l5">&gt; openai codex ................. <span class="ok">ok</span></span>
+            <span class="line dim" id="s0-l6">&gt; orchestrator ................. <span class="ok">ok</span></span>
+            <span class="line dim" id="s0-l7">&gt; agent swarm (5) .............. <span class="ok">ok</span></span>
+            <span class="line dim" id="s0-l8">&gt; skills (25) .................. <span class="ok">ok</span></span>
+            <span class="line dim" id="s0-l9">&gt; memory + analytics ........... <span class="ok">ok</span></span>
+          </div>
+          <div class="logo-art" id="s0-logo"></div>
+          <div class="tagline-final" id="s0-tagline">system <span class="ready">ready</span>.<span class="cursor-block"></span></div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 1 — HOOK ============ -->
+      <div
+        id="s1"
+        class="clip scene" data-layout-allow-overflow
+        data-start="5"
+        data-duration="4"
+        data-track-index="1"
+      >
+        <div class="glow glow-primary" style="width: 900px; height: 900px; left: -240px; top: -260px;" id="s1-glow"></div>
+        <div class="glow glow-cool" style="width: 700px; height: 700px; right: -200px; bottom: -220px;" id="s1-glow2"></div>
+        <div class="grain"></div>
+
+        <div class="ghost" id="s1-ghost" style="left: -60px; top: 600px;">TERMINAL</div>
+
+        <div class="tag" id="s1-tag">
+          <span class="dot"></span>01 &nbsp;·&nbsp; THE PROBLEM
+        </div>
+        <div class="rule h" id="s1-rule" style="top: 110px; left: 140px; width: 0; transform: scaleX(0);"></div>
+        <div class="brand" id="s1-brand">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M2 16 C5 16 7 14 9 11 C10.5 8.5 11.5 6 12 4 C12.5 6 13.5 8.5 15 11 C17 14 19 16 22 16" stroke="#ff6a3d" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span>CREST · ANNOUNCING</span>
+        </div>
+
+        <div class="scene-pad">
+          <h1 class="hero">
+            <span id="s1-line1">Claude Code is brilliant.</span><br>
+            <span id="s1-line2">The terminal is <span class="strike"><span class="accent">limiting.</span><span class="strike-line" id="s1-strike"></span></span></span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 2 — REVEAL ============ -->
+      <div
+        id="s2"
+        class="clip scene" data-layout-allow-overflow
+        data-start="8.7"
+        data-duration="4"
+        data-track-index="2"
+      >
+        <div class="glow glow-primary" style="width: 1400px; height: 1400px; left: 260px; top: -300px;" id="s2-glow"></div>
+        <div class="glow glow-cool" style="width: 600px; height: 600px; left: 80px; bottom: -180px;" id="s2-glow2"></div>
+        <div class="grain"></div>
+
+        <div class="ghost" id="s2-ghost" style="left: -40px; top: 700px; font-size: 380px;">CREST</div>
+
+        <div class="tag" id="s2-tag">
+          <span class="dot"></span>02 &nbsp;·&nbsp; INTRODUCING
+        </div>
+
+        <div class="scene-pad">
+          <div class="logo-row">
+            <div class="crest-mark" id="s2-mark">
+              <svg viewBox="0 0 24 24" fill="none">
+                <defs>
+                  <linearGradient id="s2wave" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#ff4f18"/>
+                    <stop offset="1" stop-color="#ff8a5c"/>
+                  </linearGradient>
+                </defs>
+                <path d="M2 16 C5 16 7 14 9 11 C10.5 8.5 11.5 6 12 4 C12.5 6 13.5 8.5 15 11 C17 14 19 16 22 16" stroke="url(#s2wave)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+                <circle cx="11" cy="3" r="1" fill="#ff8a5c" opacity="0.7"/>
+                <circle cx="12" cy="2" r="1.2" fill="#ff8a5c" opacity="0.5"/>
+                <circle cx="13" cy="3" r="1" fill="#ff8a5c" opacity="0.7"/>
+              </svg>
+            </div>
+            <div class="wordmark" id="s2-word">Crest</div>
+          </div>
+          <div class="tagline" id="s2-tag-text">Claude + Codex. <span>One window.</span></div>
+          <div class="underline" id="s2-underline"></div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 3 — ANIMATED SPLIT TERMINALS ============ -->
+      <div
+        id="s3"
+        class="clip scene" data-layout-allow-overflow
+        data-start="12.4"
+        data-duration="7"
+        data-track-index="3"
+      >
+        <div class="glow glow-primary" style="width: 900px; height: 900px; left: -260px; top: -200px;" id="s3-glow"></div>
+        <div class="glow glow-cool" style="width: 700px; height: 700px; right: -180px; bottom: -180px; background: radial-gradient(closest-side, rgba(16,185,129,0.22), rgba(16,185,129,0));" id="s3-glow2"></div>
+        <div class="grain"></div>
+
+        <div class="tag" id="s3-tag">
+          <span class="dot"></span>03 &nbsp;·&nbsp; BOTH CLIs · ONE WINDOW
+        </div>
+        <div class="brand" id="s3-brand">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M2 16 C5 16 7 14 9 11 C10.5 8.5 11.5 6 12 4 C12.5 6 13.5 8.5 15 11 C17 14 19 16 22 16" stroke="#ff6a3d" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span>crestai.dev</span>
+        </div>
+
+        <div class="scene-pad">
+          <div class="prompt-card" id="s3-prompt">
+            <span class="caret">▸</span>
+            <span class="prompt-multiline" id="s3-typed-wrap">
+              <span class="typed-line" id="s3-tl1">build a landing page for my sourdough bakery</span>
+              <span class="typed-line" id="s3-tl2">menu grid, store hours, online order form</span>
+              <span class="typed-line" id="s3-tl3">match the warm tones in /assets/brand.png</span>
+              <span class="typed-line typing" id="s3-tl4">deploy to vercel when it's ready</span>
+            </span>
+            <span class="submit" id="s3-submit">⏎ send</span>
+          </div>
+
+          <div class="fork" id="s3-fork">
+            <svg viewBox="0 0 1200 70" preserveAspectRatio="none">
+              <path id="s3-path-l" d="M 600 0 L 600 30 Q 600 50 580 50 L 240 50 Q 220 50 220 70"/>
+              <path id="s3-path-r" d="M 600 0 L 600 30 Q 600 50 620 50 L 960 50 Q 980 50 980 70"/>
+            </svg>
+            <div class="glow-pulse" id="s3-fpulse"></div>
+          </div>
+
+          <div class="term-row">
+            <!-- Claude terminal -->
+            <div class="term term-claude" id="s3-tclaude">
+              <div class="done-badge" id="s3-c-done">✓ done · 4 files</div>
+              <div class="cc-banner">
+                <div class="cc-mascot" aria-hidden="true">
+                  <!-- row 0: ear bumps -->
+                  <i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i>
+                  <!-- row 1: ears + top of head edges -->
+                  <i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i>
+                  <!-- row 2: top of head solid -->
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+                  <!-- row 3: eye row -->
+                  <i class="on"></i><i class="eye"></i><i class="on"></i><i class="on"></i><i class="eye"></i><i class="on"></i>
+                  <!-- row 4: middle of head -->
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+                  <!-- row 5: lower face -->
+                  <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+                  <!-- row 6: feet -->
+                  <i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i>
+                </div>
+                <div class="cc-text">
+                  <div class="cc-line1">Claude Code<span class="ver">v2.1.148</span></div>
+                  <div class="cc-line2">Opus 4.6 (1M context) · Claude Team</div>
+                  <div class="cc-line3">~/bakery-site</div>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="term-body">
+                <span class="line user" id="s3-c-l1"><span class="glyph">›</span>Reading brand assets…</span>
+                <span class="line tool" id="s3-c-l2"><span class="glyph">●</span>tool · scaffold(next-app)</span>
+                <span class="line text" id="s3-c-l3">/app · /components · tailwind.config</span>
+                <span class="line tool" id="s3-c-l4"><span class="glyph">●</span>tool · write(hero.tsx, menu.tsx)</span>
+                <span class="line text" id="s3-c-l5">Warm palette · CTA · order form</span>
+                <span class="line ok" id="s3-c-l6"><span class="glyph">✓</span>deployed → bakery.vercel.app</span>
+                <span class="line user" id="s3-c-l7"><span class="cursor" id="s3-c-cursor"></span></span>
+              </div>
+            </div>
+
+            <!-- Codex terminal -->
+            <div class="term term-codex" id="s3-tcodex">
+              <div class="done-badge" id="s3-x-done">✓ done · 4 files</div>
+              <div class="codex-banner">
+                <div class="row1"><span class="arrow">&gt;_</span>OpenAI Codex<span class="ver">(v0.133.0)</span></div>
+                <div class="kv"><span class="k">model:</span><span class="v">gpt-5.3 xhigh &nbsp;<span class="cmd">/model</span> <span class="hint">to change</span></span></div>
+                <div class="kv"><span class="k">directory:</span><span class="v">~/bakery-site</span></div>
+              </div>
+              <div class="divider"></div>
+              <div class="term-body">
+                <span class="line user" id="s3-x-l1"><span class="glyph">›</span>Indexing assets/brand.png…</span>
+                <span class="line tool" id="s3-x-l2"><span class="glyph">●</span>tool · run(install deps)</span>
+                <span class="line text" id="s3-x-l3">added 142 packages · 3.1s</span>
+                <span class="line tool" id="s3-x-l4"><span class="glyph">●</span>tool · write(order-form.tsx)</span>
+                <span class="line text" id="s3-x-l5">Stripe checkout · pickup slots</span>
+                <span class="line ok" id="s3-x-l6"><span class="glyph">✓</span>deployed → bakery-2.vercel.app</span>
+                <span class="line user" id="s3-x-l7"><span class="cursor" id="s3-x-cursor"></span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <div class="lead" id="s3-lead">Two agents. <em>One prompt.</em></div>
+            <div id="s3-meta">CMD+SHIFT+T · NEW TAB</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 4 — SWARM ============ -->
+      <div
+        id="s4"
+        class="clip scene" data-layout-allow-overflow
+        data-start="19"
+        data-duration="4.5"
+        data-track-index="4"
+      >
+        <div class="glow glow-primary" style="width: 1100px; height: 1100px; left: -350px; top: -240px;" id="s4-glow"></div>
+        <div class="grain"></div>
+
+        <div class="tag" id="s4-tag">
+          <span class="dot"></span>04 &nbsp;·&nbsp; AGENT SWARM
+        </div>
+        <div class="ghost" id="s4-ghost" style="right: -100px; top: 540px; font-size: 360px;">SWARM</div>
+
+        <div class="scene-pad">
+          <div class="text-col">
+            <div class="kicker" id="s4-kicker">No more one-at-a-time</div>
+            <h2 id="s4-h">Many agents.<br><span>In parallel.</span></h2>
+            <p id="s4-p">Audit, fix, refactor, test — all at once. Crest picks the right agents and runs them together.</p>
+          </div>
+          <div class="hive-wrap">
+            <div class="mini" id="s4-m1">
+              <div class="head">
+                <div class="cli-claude"><div class="blocks"><i></i><i></i><i></i><i></i></div><span class="name">Claude Code<span class="ver">2.1</span></span></div>
+                <div class="pulse"></div>
+              </div>
+              <div class="badge" id="s4-m1-badge">✓ done</div>
+              <div class="body">
+                <span class="ln text" id="s4-m1-l0" style="color: var(--fg-dim); margin-bottom: 4px;">role: code reviewer · Opus 4.6</span>
+                <span class="ln user" id="s4-m1-l1"><span class="gly">›</span>scan src/auth/*</span>
+                <span class="ln tool" id="s4-m1-l2"><span class="gly">●</span>ast_grep("useSession")</span>
+                <span class="ln text" id="s4-m1-l3">17 call sites · 3 stale</span>
+                <span class="ln tool" id="s4-m1-l4"><span class="gly">●</span>edit(session.ts:42)</span>
+                <span class="ln ok" id="s4-m1-l5"><span class="gly">✓</span>3 issues patched</span>
+              </div>
+            </div>
+
+            <div class="mini" id="s4-m2">
+              <div class="head">
+                <div class="cli-claude"><div class="blocks"><i></i><i></i><i></i><i></i></div><span class="name">Claude Code<span class="ver">2.1</span></span></div>
+                <div class="pulse"></div>
+              </div>
+              <div class="badge" id="s4-m2-badge">✓ done</div>
+              <div class="body">
+                <span class="ln text" id="s4-m2-l0" style="color: var(--fg-dim); margin-bottom: 4px;">role: security · Sonnet 4.6</span>
+                <span class="ln user" id="s4-m2-l1"><span class="gly">›</span>audit OWASP top 10</span>
+                <span class="ln tool" id="s4-m2-l2"><span class="gly">●</span>grep("dangerouslySet")</span>
+                <span class="ln text" id="s4-m2-l3"><span class="thinking">thinking<span class="dot"></span><span class="dot"></span><span class="dot"></span></span></span>
+                <span class="ln code" id="s4-m2-l4">XSS · 2 · CSRF · 0</span>
+                <span class="ln ok" id="s4-m2-l5"><span class="gly">✓</span>report.md written</span>
+              </div>
+            </div>
+
+            <div class="mini" id="s4-m3">
+              <div class="head">
+                <div class="cli-codex"><span class="arrow">&gt;_</span><span class="name">OpenAI Codex<span class="ver">0.13</span></span></div>
+                <div class="pulse"></div>
+              </div>
+              <div class="badge" id="s4-m3-badge">✓ done</div>
+              <div class="body">
+                <span class="ln text" id="s4-m3-l0" style="color: var(--fg-dim); margin-bottom: 4px;">role: test engineer · gpt-5.3</span>
+                <span class="ln user" id="s4-m3-l1"><span class="gly">›</span>cover lib/payments</span>
+                <span class="ln tool" id="s4-m3-l2"><span class="gly">●</span>write(charge.test.ts)</span>
+                <span class="ln code" id="s4-m3-l3">it("handles 3DS retry")</span>
+                <span class="ln tool" id="s4-m3-l4"><span class="gly">●</span>run(jest --coverage)</span>
+                <span class="ln ok" id="s4-m3-l5"><span class="gly">✓</span>94% · 12 new tests</span>
+              </div>
+            </div>
+
+            <div class="mini" id="s4-m4">
+              <div class="head">
+                <div class="cli-codex"><span class="arrow">&gt;_</span><span class="name">OpenAI Codex<span class="ver">0.13</span></span></div>
+                <div class="pulse"></div>
+              </div>
+              <div class="badge" id="s4-m4-badge">✓ done</div>
+              <div class="body">
+                <span class="ln text" id="s4-m4-l0" style="color: var(--fg-dim); margin-bottom: 4px;">role: frontend dev · gpt-5.3</span>
+                <span class="ln user" id="s4-m4-l1"><span class="gly">›</span>refactor &lt;Nav/&gt;</span>
+                <span class="ln tool" id="s4-m4-l2"><span class="gly">●</span>axe-core(routes)</span>
+                <span class="ln text" id="s4-m4-l3">contrast · focus · aria</span>
+                <span class="ln tool" id="s4-m4-l4"><span class="gly">●</span>edit(Nav.tsx)</span>
+                <span class="ln ok" id="s4-m4-l5"><span class="gly">✓</span>a11y · 8 fixes</span>
+              </div>
+            </div>
+
+            <div class="mini" id="s4-m5">
+              <div class="head">
+                <div class="cli-claude"><div class="blocks"><i></i><i></i><i></i><i></i></div><span class="name">Claude Code<span class="ver">2.1</span></span></div>
+                <div class="pulse"></div>
+              </div>
+              <div class="badge" id="s4-m5-badge">✓ done</div>
+              <div class="body">
+                <span class="ln text" id="s4-m5-l0" style="color: var(--fg-dim); margin-bottom: 4px;">role: backend dev · Opus 4.6</span>
+                <span class="ln user" id="s4-m5-l1"><span class="gly">›</span>profile /api/feed</span>
+                <span class="ln tool" id="s4-m5-l2"><span class="gly">●</span>explain_analyze()</span>
+                <span class="ln text" id="s4-m5-l3">seq scan · 240ms</span>
+                <span class="ln tool" id="s4-m5-l4"><span class="gly">●</span>add_index(feed_user_id)</span>
+                <span class="ln ok" id="s4-m5-l5"><span class="gly">✓</span>240ms → 18ms</span>
+              </div>
+            </div>
+
+            <div class="mini" id="s4-m6">
+              <div class="head">
+                <div class="cli-codex"><span class="arrow">&gt;_</span><span class="name">OpenAI Codex<span class="ver">0.13</span></span></div>
+                <div class="pulse"></div>
+              </div>
+              <div class="badge" id="s4-m6-badge">✓ done</div>
+              <div class="body">
+                <span class="ln text" id="s4-m6-l0" style="color: var(--fg-dim); margin-bottom: 4px;">role: refactor bot · gpt-5.3</span>
+                <span class="ln user" id="s4-m6-l1"><span class="gly">›</span>dedupe utils/*</span>
+                <span class="ln tool" id="s4-m6-l2"><span class="gly">●</span>jscodeshift(extract)</span>
+                <span class="ln text" id="s4-m6-l3"><span class="thinking">thinking<span class="dot"></span><span class="dot"></span><span class="dot"></span></span></span>
+                <span class="ln tool" id="s4-m6-l4"><span class="gly">●</span>write(shared.ts)</span>
+                <span class="ln ok" id="s4-m6-l5"><span class="gly">✓</span>−412 lines</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 5 — ORCHESTRATOR ============ -->
+      <div
+        id="s5"
+        class="clip scene" data-layout-allow-overflow
+        data-start="23.2"
+        data-duration="4.3"
+        data-track-index="5"
+      >
+        <div class="glow glow-primary" style="width: 1300px; height: 1300px; left: 50%; top: -400px;" id="s5-glow"></div>
+        <div class="grain"></div>
+
+        <div class="tag" id="s5-tag">
+          <span class="dot"></span>05 &nbsp;·&nbsp; ORCHESTRATOR
+        </div>
+
+        <div class="scene-pad">
+          <h2 class="hero" id="s5-h">
+            One task. <span class="accent">Split every way.</span>
+          </h2>
+          <div class="orch-wrap">
+            <div class="master" id="s5-master">
+              <div class="badge">▸ Master task</div>
+              <div class="task-text">build a feature-flag system across the stack</div>
+            </div>
+
+            <svg class="branch-svg" viewBox="0 0 1500 110" preserveAspectRatio="none">
+              <path id="s5-br1" d="M 750 0 L 750 50 Q 750 70 730 70 L 200 70 Q 180 70 180 110"/>
+              <path id="s5-br2" d="M 750 0 L 750 50 Q 750 70 736 70 L 580 70 Q 560 70 560 110"/>
+              <path id="s5-br3" d="M 750 0 L 750 50 Q 750 70 764 70 L 920 70 Q 940 70 940 110"/>
+              <path id="s5-br4" d="M 750 0 L 750 50 Q 750 70 770 70 L 1300 70 Q 1320 70 1320 110"/>
+            </svg>
+
+            <div class="children-row">
+              <div class="child" id="s5-ch1">
+                <div class="head"><div class="who"><span class="pulse"></span>Backend</div><div class="num">01/04</div></div>
+                <div class="body">
+                  <span class="ln" id="s5-ch1-l1"><span class="gly">›</span>migration · flags table</span>
+                  <span class="ln tool" id="s5-ch1-l2"><span class="gly">●</span>write(0042_flags.sql)</span>
+                  <span class="ln text" id="s5-ch1-l3">+ rules · variants</span>
+                  <span class="ln ok" id="s5-ch1-l4"><span class="gly">✓</span>schema · ready</span>
+                </div>
+              </div>
+              <div class="child" id="s5-ch2">
+                <div class="head"><div class="who"><span class="pulse"></span>API</div><div class="num">02/04</div></div>
+                <div class="body">
+                  <span class="ln" id="s5-ch2-l1"><span class="gly">›</span>POST /flags/evaluate</span>
+                  <span class="ln tool" id="s5-ch2-l2"><span class="gly">●</span>write(routes/flags.ts)</span>
+                  <span class="ln text" id="s5-ch2-l3">caching · 30s</span>
+                  <span class="ln ok" id="s5-ch2-l4"><span class="gly">✓</span>endpoint · live</span>
+                </div>
+              </div>
+              <div class="child" id="s5-ch3">
+                <div class="head"><div class="who"><span class="pulse"></span>SDK</div><div class="num">03/04</div></div>
+                <div class="body">
+                  <span class="ln" id="s5-ch3-l1"><span class="gly">›</span>useFlag(name) hook</span>
+                  <span class="ln tool" id="s5-ch3-l2"><span class="gly">●</span>write(sdk/react.ts)</span>
+                  <span class="ln text" id="s5-ch3-l3">SSR-safe · suspense</span>
+                  <span class="ln ok" id="s5-ch3-l4"><span class="gly">✓</span>published</span>
+                </div>
+              </div>
+              <div class="child" id="s5-ch4">
+                <div class="head"><div class="who"><span class="pulse"></span>Tests</div><div class="num">04/04</div></div>
+                <div class="body">
+                  <span class="ln" id="s5-ch4-l1"><span class="gly">›</span>e2e · variants</span>
+                  <span class="ln tool" id="s5-ch4-l2"><span class="gly">●</span>playwright(targets)</span>
+                  <span class="ln text" id="s5-ch4-l3">24 specs · 0.9s</span>
+                  <span class="ln ok" id="s5-ch4-l4"><span class="gly">✓</span>passing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 6 — STACK GRID ============ -->
+      <div
+        id="s6"
+        class="clip scene" data-layout-allow-overflow
+        data-start="27.2"
+        data-duration="5.3"
+        data-track-index="6"
+      >
+        <div class="glow glow-primary" style="width: 1000px; height: 1000px; right: -260px; bottom: -300px;" id="s6-glow"></div>
+        <div class="grain"></div>
+
+        <div class="tag" id="s6-tag">
+          <span class="dot"></span>06 &nbsp;·&nbsp; THE WHOLE STACK
+        </div>
+
+        <div class="scene-pad">
+          <div class="left-col">
+            <div class="kicker" id="s6-kicker">The papercuts · solved</div>
+            <div class="big-num" id="s6-num">100<span class="plus">+</span></div>
+            <h2 id="s6-h">small things<br>you didn't love.</h2>
+            <p id="s6-p">Every little annoyance about running Claude Code and Codex from a terminal — quietly fixed.</p>
+          </div>
+          <div class="wall">
+            <div class="chip6 hot" id="s6-w01">Cmd+P palette</div>
+            <div class="chip6" id="s6-w02">Memory across projects</div>
+            <div class="chip6" id="s6-w03">Per-tab provider</div>
+            <div class="chip6 cool" id="s6-w04">Drag & drop tabs</div>
+            <div class="chip6" id="s6-w05">14 terminal themes</div>
+            <div class="chip6 hot" id="s6-w06">One-click PRs</div>
+            <div class="chip6" id="s6-w07">Auto-install CLIs</div>
+            <div class="chip6" id="s6-w08">Quick open files</div>
+            <div class="chip6 cool" id="s6-w09">Multi-agent swarm</div>
+            <div class="chip6" id="s6-w10">Visual Git</div>
+            <div class="chip6 hot" id="s6-w11">Auto-detect dev server</div>
+            <div class="chip6" id="s6-w12">Plan panel</div>
+            <div class="chip6" id="s6-w13">Toolbelt</div>
+            <div class="chip6 cool" id="s6-w14">Orchestrator</div>
+            <div class="chip6" id="s6-w15">Super Agent loops</div>
+            <div class="chip6" id="s6-w16">Conversation history</div>
+            <div class="chip6 hot" id="s6-w17">Analytics dashboard</div>
+            <div class="chip6" id="s6-w18">MCP manager</div>
+            <div class="chip6" id="s6-w19">25 starter skills</div>
+            <div class="chip6 cool" id="s6-w20">5 starter agents</div>
+            <div class="chip6" id="s6-w21">Document viewer</div>
+            <div class="chip6" id="s6-w22">Localhost preview</div>
+            <div class="chip6 hot" id="s6-w23">File search</div>
+            <div class="chip6" id="s6-w24">Git status in tree</div>
+            <div class="chip6" id="s6-w25">Toast notifications</div>
+            <div class="chip6 cool" id="s6-w26">Skeleton loaders</div>
+            <div class="chip6" id="s6-w27">Reduced motion</div>
+            <div class="chip6 hot" id="s6-w28">Deploy menu</div>
+            <div class="chip6" id="s6-w29">Active time tracking</div>
+            <div class="chip6" id="s6-w30">Notification center</div>
+            <div class="chip6" id="s6-w31">…and 70+ more</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 7 — VALUE SPLIT ============ -->
+      <div
+        id="s7"
+        class="clip scene" data-layout-allow-overflow
+        data-start="32.2"
+        data-duration="4.3"
+        data-track-index="7"
+      >
+        <div class="glow glow-primary" style="width: 800px; height: 800px; left: -200px; top: -200px;" id="s7-glowA"></div>
+        <div class="glow glow-cool" style="width: 800px; height: 800px; right: -200px; bottom: -200px;" id="s7-glowB"></div>
+        <div class="grain"></div>
+
+        <div class="tag" id="s7-tag">
+          <span class="dot"></span>07 &nbsp;·&nbsp; WHO IT'S FOR
+        </div>
+
+        <div class="scene-pad">
+          <div class="half" id="s7-left">
+            <div class="label">For developers</div>
+            <h3 id="s7-h1">Both CLIs.<br>Zero setup.</h3>
+            <p id="s7-p1">Claude Code and OpenAI Codex installed, configured, ready. Tabs, themes, memory — included.</p>
+          </div>
+          <div class="half" id="s7-right">
+            <div class="label">For everyone else</div>
+            <h3 id="s7-h2">No terminal.<br>Just describe it.</h3>
+            <p id="s7-p2">Two world-class agents, one easy window. Type what you want — they build it.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 8 — CTA STING ============ -->
+      <div
+        id="s8"
+        class="clip scene" data-layout-allow-overflow
+        data-start="36.2"
+        data-duration="9"
+        data-track-index="8"
+      >
+        <div class="glow glow-primary" style="width: 1600px; height: 1600px; left: 50%; top: 50%; transform: translate(-50%,-50%);" id="s8-glow"></div>
+        <div class="grain"></div>
+
+        <div class="ghost" id="s8-ghost" style="left: -120px; bottom: -120px; font-size: 600px; color: #ff4f18; opacity: 0.05;">CREST</div>
+
+        <div class="scene-pad">
+          <div class="badge" id="s8-badge">Crest 2.3 · Out now</div>
+          <h1 class="mega" id="s8-mega">Stop prompting.<br><span class="accent">Start orchestrating.</span></h1>
+          <div class="url" id="s8-url">
+            <span class="arrow">▸</span><span>crestai.dev</span>
+          </div>
+          <div class="underline-big" id="s8-underline"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const S1 = 5;
+      const S2 = 8.7;
+
+      /* ============================================================
+       *  SCENE 0 — DIGITIZED BOOT (0 → 5.5)
+       * ============================================================ */
+
+      // Build the CREST logo as a CSS-grid bitmap (DOM only)
+      const s0cells = (function buildLogo() {
+        const art = document.getElementById("s0-logo");
+        if (!art) return [];
+        const lines = [
+          "                                          ",
+          " ██████  ██████  ███████ ███████ ████████ ",
+          " ██      ██   ██ ██      ██         ██    ",
+          " ██      ██████  █████   ███████    ██    ",
+          " ██      ██   ██ ██           ██    ██    ",
+          " ██████  ██   ██ ███████ ███████    ██    ",
+          "                                          "
+        ];
+        const cells = [];
+        lines.forEach((row, r) => {
+          for (let c = 0; c < row.length; c++) {
+            const ch = row[c];
+            const el = document.createElement("div");
+            el.className = "cell" + (ch === " " ? " empty" : "");
+            el.textContent = ch === " " ? " " : "█";
+            el.dataset.r = r;
+            el.dataset.c = c;
+            art.appendChild(el);
+            cells.push(el);
+          }
+        });
+        return cells;
+      })();
+
+      // Boot lines reveal — staggered opacity (deterministic, capture-safe)
+      const bootLines = ["#s0-l1","#s0-l2","#s0-l3","#s0-l4","#s0-l5","#s0-l6","#s0-l7","#s0-l8","#s0-l9"];
+      const bootStarts = [0.1, 0.35, 0.7, 1.45, 1.65, 1.85, 2.05, 2.25, 2.45];
+      bootLines.forEach((id, i) => {
+        tl.fromTo(id, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.25, ease: "power2.out" }, bootStarts[i]);
+      });
+
+      // Progress bar fills char-by-char via a 32-step width animation on the overlay track
+      // Pre-build a string of 32 filled blocks; reveal via clip-path animation
+      const pbarFillEl = document.getElementById("s0-pbar-track");
+      if (pbarFillEl) {
+        // Wrap the track so we can clip-path it
+        const fillSpan = document.createElement("span");
+        fillSpan.id = "s0-pbar-fill";
+        fillSpan.style.cssText = "position:absolute;left:0;top:0;color:var(--primary);text-shadow:0 0 8px rgba(255,79,24,0.55);";
+        fillSpan.textContent = "████████████████████████████████";
+        pbarFillEl.style.position = "relative";
+        pbarFillEl.style.display = "inline-block";
+        pbarFillEl.appendChild(fillSpan);
+        tl.fromTo("#s0-pbar-fill", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.9, ease: "steps(32)" }, 1.0);
+      }
+      // Percent counter — uses a single onUpdate (single tween)
+      tl.to({ p: 0 }, { p: 100, duration: 0.9, ease: "none",
+        onUpdate: function () {
+          const el = document.getElementById("s0-pct");
+          if (el) el.textContent = String(Math.floor(this.targets()[0].p)).padStart(3, "0") + "%";
+        }
+      }, 1.0);
+
+      // CREST logo blocks reveal in a left-to-right wave — each cell on the seekable timeline
+      s0cells.forEach((el) => {
+        if (el.classList.contains("empty")) return;
+        const c = +el.dataset.c;
+        const delay = (c / 42) * 0.9;
+        tl.fromTo(el,
+          { opacity: 0, y: -8 },
+          { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.6)" },
+          3.3 + delay
+        );
+      });
+
+      // Final tagline
+      tl.fromTo("#s0-tagline", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 4.6);
+
+      // Hold then exit (last frame of scene fades to scene 1)
+      tl.to(["#s0-tagline", "#s0-logo"], { opacity: 0, y: -20, duration: 0.4, ease: "power2.in" }, 5.1);
+      tl.to(".boot", { opacity: 0, duration: 0.4, ease: "power2.in" }, 5.1);
+
+      // Ambient glow on the boot scene
+      tl.fromTo("#s0-glow", { opacity: 0, scale: 0.7 }, { opacity: 0.5, scale: 1.05, duration: 1.6, ease: "sine.out" }, 0);
+      tl.to("#s0-glow", { scale: 1.1, duration: 3, ease: "sine.inOut" }, 1.6);
+
+      // CRT scanlines slowly drift downward — feels alive
+      tl.to("#s0-scanlines", { backgroundPositionY: "+=80px", duration: 5.5, ease: "none" }, 0);
+      // Brief flicker on boot (subtle)
+      tl.to("#s0-scanlines", { opacity: 0.4, duration: 0.05, repeat: 5, yoyo: true, ease: "steps(1)" }, 0.1);
+
+
+      /* ============================================================
+       *  SCENE 1 — HOOK (5.0 → 9.0)
+       * ============================================================ */
+      tl.fromTo("#s1-glow", { scale: 1, opacity: 0.55 }, { scale: 1.08, opacity: 0.75, duration: 4, ease: "sine.inOut" }, S1);
+      tl.fromTo("#s1-glow2", { scale: 1, opacity: 0.4 }, { scale: 1.05, opacity: 0.6, duration: 4, ease: "sine.inOut" }, S1);
+      tl.fromTo("#s1-ghost", { x: -40, opacity: 0 }, { x: 0, opacity: 0.04, duration: 1.6, ease: "power1.out" }, S1 + 0.1);
+      tl.to("#s1-ghost", { x: -30, duration: 3, ease: "sine.inOut" }, S1 + 1);
+
+      tl.fromTo("#s1-rule", { scaleX: 0 }, { scaleX: 1, width: 1640, duration: 0.7, ease: "expo.out" }, S1 + 0.2);
+      tl.fromTo("#s1-tag", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, S1 + 0.35);
+      tl.fromTo("#s1-brand", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }, S1 + 0.45);
+
+      tl.fromTo("#s1-line1", { y: 80, opacity: 0, filter: "blur(6px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, S1 + 0.55);
+      tl.fromTo("#s1-line2", { y: 80, opacity: 0, filter: "blur(6px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.75, ease: "expo.out" }, S1 + 0.85);
+
+      tl.fromTo("#s1-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.in" }, S1 + 2.1);
+
+      /* ============================================================
+       *  SCENE 2 — REVEAL (3.7 → 7.7)
+       * ============================================================ */
+      tl.fromTo("#s2-glow", { scale: 0.7, opacity: 0 }, { scale: 1.05, opacity: 0.85, duration: 1.6, ease: "expo.out" }, S2);
+      tl.to("#s2-glow", { scale: 1.12, duration: 2.4, ease: "sine.inOut" }, S2 + 1.6);
+      tl.fromTo("#s2-glow2", { scale: 1, opacity: 0 }, { opacity: 0.55, duration: 1.2, ease: "power1.out" }, S2 + 0.4);
+      tl.fromTo("#s2-ghost", { y: 30, opacity: 0 }, { y: 0, opacity: 0.04, duration: 1.4, ease: "power2.out" }, S2 + 0.2);
+
+      tl.fromTo("#s2-tag", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, S2 + 0.25);
+
+      // logo SLAM
+      tl.fromTo("#s2-mark", { scale: 0.4, opacity: 0, rotation: -10 },
+        { scale: 1, opacity: 1, rotation: 0, duration: 0.45, ease: "back.out(2)" }, S2 + 0.35);
+      tl.to("#s2-mark", { y: -8, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, S2 + 1.1);
+
+      // wordmark unmask
+      tl.fromTo("#s2-word", { y: 120, opacity: 0, letterSpacing: "0.04em" },
+        { y: 0, opacity: 1, letterSpacing: "-0.04em", duration: 0.65, ease: "expo.out" }, S2 + 0.55);
+
+      tl.fromTo("#s2-tag-text", { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, S2 + 0.95);
+
+      tl.fromTo("#s2-underline", { width: 0 }, { width: 360, duration: 0.6, ease: "expo.out" }, S2 + 1.25);
+
+      /* ============================================================
+       *  SCENE 3 — ANIMATED SPLIT TERMINALS (7.4 → 13.0)
+       * ============================================================ */
+      const S3 = 12.4;
+      tl.fromTo("#s3-glow", { opacity: 0, scale: 0.9 }, { opacity: 0.75, scale: 1.06, duration: 1.4, ease: "sine.out" }, S3);
+      tl.fromTo("#s3-glow2", { opacity: 0, scale: 0.9 }, { opacity: 0.6, scale: 1.05, duration: 1.4, ease: "sine.out" }, S3 + 0.2);
+      tl.to("#s3-glow", { x: -30, duration: 4, ease: "sine.inOut" }, S3 + 1);
+      tl.to("#s3-glow2", { x: 30, duration: 4, ease: "sine.inOut" }, S3 + 1);
+      tl.fromTo("#s3-tag", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, S3 + 0.15);
+      tl.fromTo("#s3-brand", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }, S3 + 0.2);
+
+      // Prompt card + 4-line typewriter cascade
+      tl.fromTo("#s3-prompt", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, S3 + 0.25);
+      const tlines = ["#s3-tl1","#s3-tl2","#s3-tl3","#s3-tl4"];
+      const tlineWidths = [820, 760, 770, 590];
+      tlines.forEach((id, i) => {
+        const start = S3 + 0.45 + i * 0.55;
+        tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.1 }, start);
+        tl.fromTo(id, { width: 0 }, { width: tlineWidths[i], duration: 0.5, ease: "steps(28)" }, start);
+      });
+      tl.fromTo("#s3-submit", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, S3 + 2.85);
+
+      // Fork lines draw
+      tl.fromTo("#s3-path-l", { strokeDashoffset: 800 }, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, S3 + 3.0);
+      tl.fromTo("#s3-path-r", { strokeDashoffset: 800 }, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, S3 + 3.0);
+      tl.fromTo("#s3-fpulse", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, S3 + 3.05);
+
+      // Done badges on both terminals
+      tl.fromTo("#s3-c-done", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, S3 + 5.0);
+      tl.fromTo("#s3-x-done", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, S3 + 5.15);
+
+      // Terminals slam in AFTER prompt is sent (S3 + 3.1)
+      tl.fromTo("#s3-tclaude", { x: -120, opacity: 0, filter: "blur(8px)" },
+        { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, S3 + 3.2);
+      tl.fromTo("#s3-tcodex", { x: 120, opacity: 0, filter: "blur(8px)" },
+        { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, S3 + 3.3);
+
+      // Claude lines stream in
+      const claudeLines = ["#s3-c-l1","#s3-c-l2","#s3-c-l3","#s3-c-l4","#s3-c-l5","#s3-c-l6"];
+      claudeLines.forEach((id, i) => {
+        tl.fromTo(id, { opacity: 0, x: -20 },
+          { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, S3 + 3.75 + i * 0.22);
+      });
+      tl.fromTo("#s3-c-l7", { opacity: 0 }, { opacity: 1, duration: 0.2 }, S3 + 5.2);
+      tl.to("#s3-c-cursor", { opacity: 0.2, duration: 0.4, repeat: 3, yoyo: true, ease: "steps(1)" }, S3 + 5.4);
+
+      // Codex lines stream in (slightly offset to feel parallel)
+      const codexLines = ["#s3-x-l1","#s3-x-l2","#s3-x-l3","#s3-x-l4","#s3-x-l5","#s3-x-l6"];
+      codexLines.forEach((id, i) => {
+        tl.fromTo(id, { opacity: 0, x: 20 },
+          { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, S3 + 3.85 + i * 0.22);
+      });
+      tl.fromTo("#s3-x-l7", { opacity: 0 }, { opacity: 1, duration: 0.2 }, S3 + 5.3);
+      tl.to("#s3-x-cursor", { opacity: 0.2, duration: 0.4, repeat: 3, yoyo: true, ease: "steps(1)" }, S3 + 5.5);
+
+      // Done badges
+      tl.fromTo("#s3-c-done", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, S3 + 5.6);
+      tl.fromTo("#s3-x-done", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, S3 + 5.75);
+
+      // Footer
+      tl.fromTo("#s3-lead", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, ease: "expo.out" }, S3 + 6.1);
+      tl.fromTo("#s3-meta", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.55, ease: "expo.out" }, S3 + 6.25);
+
+      /* ============================================================
+       *  SCENE 4 — SWARM (12.7 → 17.3)
+       * ============================================================ */
+      const S4 = 19.0;
+      tl.fromTo("#s4-glow", { opacity: 0, scale: 0.9 }, { opacity: 0.85, scale: 1.05, duration: 1.4, ease: "power2.out" }, S4);
+      tl.to("#s4-glow", { x: 60, duration: 3.2, ease: "sine.inOut" }, S4 + 1);
+      tl.fromTo("#s4-ghost", { x: 60, opacity: 0 }, { x: 0, opacity: 0.05, duration: 1.6, ease: "power2.out" }, S4 + 0.2);
+
+      tl.fromTo("#s4-tag", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, S4 + 0.2);
+
+      tl.fromTo("#s4-kicker", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" }, S4 + 0.35);
+      tl.fromTo("#s4-h", { opacity: 0, scale: 1.25, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, S4 + 0.5);
+      tl.fromTo("#s4-p", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, S4 + 1);
+
+      // 6 mini terminals slam in, staggered
+      const minis = ["#s4-m1","#s4-m2","#s4-m3","#s4-m4","#s4-m5","#s4-m6"];
+      minis.forEach((id, i) => {
+        const dir = i % 2 === 0 ? -1 : 1;
+        tl.fromTo(id, { opacity: 0, y: 40, x: dir * 30, rotationY: dir * 6, filter: "blur(6px)" },
+          { opacity: 1, y: 0, x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.55, ease: "expo.out" }, S4 + 0.55 + i * 0.08);
+      });
+
+      // Each terminal streams 5 lines in parallel, offset starts so they feel asynchronous
+      const offsets = [0.0, 0.18, 0.08, 0.24, 0.12, 0.30]; // each terminal's per-agent start offset
+      const lineStaggers = [0.32, 0.28, 0.36, 0.30, 0.34, 0.28]; // each terminal's line cadence
+      minis.forEach((m, mi) => {
+        const startBase = S4 + 1.0 + offsets[mi];
+        for (let li = 1; li <= 5; li++) {
+          tl.fromTo(`${m}-l${li}`, { opacity: 0, x: -14 },
+            { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, startBase + (li - 1) * lineStaggers[mi]);
+        }
+        // Final badge
+        const badgeT = startBase + 4 * lineStaggers[mi] + 0.35;
+        tl.fromTo(`${m}-badge`, { opacity: 0, scale: 0.8 },
+          { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, badgeT);
+        // Mark pulse dot as "done" (orange) when badge appears
+        const pulseSel = `${m} .pulse`;
+        tl.to(pulseSel, { backgroundColor: "#FF4F18", boxShadow: "0 0 10px #FF4F18", duration: 0.3 }, badgeT);
+      });
+
+      /* ============================================================
+       *  SCENE 5 — ORCHESTRATOR (16.9 → 21.3)
+       * ============================================================ */
+      const S5 = 23.2;
+      tl.fromTo("#s5-glow", { opacity: 0, scale: 0.8, xPercent: -50 }, { opacity: 0.75, scale: 1.05, xPercent: -50, duration: 1.4, ease: "expo.out" }, S5);
+      tl.to("#s5-glow", { scale: 1.12, duration: 2.6, ease: "sine.inOut" }, S5 + 1.4);
+      tl.fromTo("#s5-tag", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, S5 + 0.15);
+
+      tl.fromTo("#s5-h", { opacity: 0, y: 80, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, S5 + 0.3);
+
+      // Master task card slams in
+      tl.fromTo("#s5-master", { opacity: 0, y: -40, scale: 0.92 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.8)" }, S5 + 0.6);
+
+      // Branch lines draw down
+      const branches = ["#s5-br1","#s5-br2","#s5-br3","#s5-br4"];
+      branches.forEach((id, i) => {
+        tl.fromTo(id, { strokeDashoffset: 600 },
+          { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, S5 + 1.1 + i * 0.06);
+      });
+
+      // 4 child terminals drop in staggered
+      const children = ["#s5-ch1","#s5-ch2","#s5-ch3","#s5-ch4"];
+      children.forEach((id, i) => {
+        tl.fromTo(id, { opacity: 0, y: 30, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.6)" }, S5 + 1.3 + i * 0.1);
+      });
+
+      // Each child streams its 4 lines, slightly offset between children
+      const childOffsets = [0.0, 0.12, 0.08, 0.16];
+      children.forEach((c, ci) => {
+        const baseStart = S5 + 1.85 + childOffsets[ci];
+        for (let li = 1; li <= 4; li++) {
+          tl.fromTo(`${c}-l${li}`, { opacity: 0, x: -10 },
+            { opacity: 1, x: 0, duration: 0.28, ease: "power2.out" }, baseStart + (li - 1) * 0.34);
+        }
+      });
+
+      /* ============================================================
+       *  SCENE 6 — 100 PAPERCUTS WALL (20.9 → 26.1)
+       * ============================================================ */
+      const S6 = 27.2;
+      tl.fromTo("#s6-glow", { opacity: 0, scale: 0.9 }, { opacity: 0.6, scale: 1.05, duration: 1.6, ease: "sine.out" }, S6);
+      tl.fromTo("#s6-tag", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, S6 + 0.15);
+
+      tl.fromTo("#s6-kicker", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, S6 + 0.25);
+      tl.fromTo("#s6-num", { opacity: 0, scale: 0.6, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.85, ease: "expo.out" }, S6 + 0.45);
+      tl.fromTo("#s6-h", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, S6 + 0.95);
+      tl.fromTo("#s6-p", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, S6 + 1.2);
+
+      // Rapid-fire chips — 31 chips over ~2.6 seconds = 84ms stagger
+      const chips = [];
+      for (let i = 1; i <= 31; i++) chips.push("#s6-w" + String(i).padStart(2, "0"));
+      tl.fromTo(chips, { opacity: 0, scale: 0.8, y: 12 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(2)", stagger: 0.07 }, S6 + 1.4);
+
+      // Pulse the final chip
+      tl.to("#s6-w31", { scale: 1.06, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 1 }, S6 + 4.0);
+
+      // Big number pulses
+      tl.to("#s6-num", { scale: 1.04, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, S6 + 1.4);
+
+      /* ============================================================
+       *  SCENE 7 — VALUE SPLIT (24.6 → 29.4)
+       * ============================================================ */
+      const S7 = 32.2;
+      tl.fromTo("#s7-glowA", { opacity: 0 }, { opacity: 0.7, duration: 1.2, ease: "sine.out" }, S7);
+      tl.fromTo("#s7-glowB", { opacity: 0 }, { opacity: 0.55, duration: 1.2, ease: "sine.out" }, S7 + 0.15);
+      tl.to("#s7-glowA", { scale: 1.08, duration: 3, ease: "sine.inOut" }, S7 + 1);
+      tl.to("#s7-glowB", { scale: 1.08, duration: 3, ease: "sine.inOut" }, S7 + 1);
+
+      tl.fromTo("#s7-tag", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, S7 + 0.15);
+
+      tl.fromTo("#s7-left", { opacity: 0, x: -60, filter: "blur(6px)" },
+        { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, S7 + 0.3);
+      tl.fromTo("#s7-right", { opacity: 0, x: 60, filter: "blur(6px)" },
+        { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, S7 + 0.55);
+
+      /* ============================================================
+       *  SCENE 8 — CTA STING (29.2 → 38.0) — last scene; exits allowed
+       * ============================================================ */
+      const S8 = 36.2;
+      tl.fromTo("#s8-glow", { opacity: 0, scale: 0.6 }, { opacity: 0.9, scale: 1.0, duration: 1.4, ease: "expo.out" }, S8);
+      tl.to("#s8-glow", { scale: 1.12, duration: 6, ease: "sine.inOut" }, S8 + 1.4);
+      tl.fromTo("#s8-ghost", { y: 80, opacity: 0 }, { y: 0, opacity: 0.05, duration: 1.6, ease: "power2.out" }, S8 + 0.2);
+
+      tl.fromTo("#s8-badge", { opacity: 0, y: 20, scale: 0.85 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.8)" }, S8 + 0.3);
+
+      tl.fromTo("#s8-mega", { opacity: 0, y: 120, filter: "blur(8px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.85, ease: "expo.out" }, S8 + 0.55);
+
+      tl.fromTo("#s8-url", { opacity: 0, y: 40, letterSpacing: "0.18em" },
+        { opacity: 1, y: 0, letterSpacing: "0.06em", duration: 0.7, ease: "expo.out" }, S8 + 1.2);
+
+      tl.fromTo("#s8-underline", { width: 0 }, { width: 540, duration: 0.7, ease: "expo.out" }, S8 + 1.7);
+
+      // Final ambient drift on the mega text
+      tl.to("#s8-mega", { y: -8, duration: 4, ease: "sine.inOut" }, S8 + 2.5);
+
+      // Final fade-to-black on the very last beat
+      tl.to(["#s8-badge", "#s8-mega", "#s8-url", "#s8-underline", "#s8-ghost"],
+        { opacity: 0, duration: 0.6, ease: "power2.in" }, S8 + 8);
+      tl.to("#s8-glow", { opacity: 0, duration: 0.6, ease: "power2.in" }, S8 + 8);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
