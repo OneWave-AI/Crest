@@ -5,7 +5,8 @@ import { SearchAddon } from '@xterm/addon-search'
 import { WebLinksAddon } from '@xterm/addon-web-links'
 import '@xterm/xterm/css/xterm.css'
 import { useAppStore } from '../../store'
-import { CLI_PROVIDERS } from '../../../shared/providers'
+import { CLI_PROVIDERS, resolveLaunchCommand, supportsLocalRuntime } from '../../../shared/providers'
+import type { ModelRuntime } from '../../../shared/types'
 import { ChevronUp, ChevronDown, X, Search, Copy, Clipboard, Trash2, ArrowDownToLine } from 'lucide-react'
 
 // ANSI color codes for terminal highlighting
@@ -184,6 +185,8 @@ interface TerminalProps {
   onTerminalData?: (data: string, terminalId: string) => void
   onTerminalIdReady?: (terminalId: string) => void
   cliProvider?: import('../../../shared/types').CLIProvider
+  /** Overrides the persisted runtime for this terminal (per-tab local/API choice). */
+  runtime?: ModelRuntime
   /** If set, attach to this existing PTY instead of creating a new one (sleep/wake restore) */
   existingTerminalId?: string
 }
@@ -212,7 +215,7 @@ const applyHighlighting = (text: string, enabled: boolean): string => {
   return result
 }
 
-const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEnabled = false, zoomLevel = 100, highlightPatterns = false, onLocalhostDetected, onTerminalData, onTerminalIdReady, cliProvider: cliProviderProp, existingTerminalId }, ref) => {
+const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEnabled = false, zoomLevel = 100, highlightPatterns = false, onLocalhostDetected, onTerminalData, onTerminalIdReady, cliProvider: cliProviderProp, runtime: runtimeProp, existingTerminalId }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const terminalRef = useRef<XTerm | null>(null)
   const fitAddonRef = useRef<FitAddon | null>(null)
@@ -600,18 +603,38 @@ const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEn
           })()
         }
 
+        // Runtime axis: 'local' swaps the binary for a shell wrapper that points
+        // the same CLI at ollama. Falls back to the API binary when the agent
+        // cannot do local, so a stale setting never launches a broken command.
+        const runtime: ModelRuntime = runtimeProp ?? settings?.modelRuntime ?? 'api'
+        const localModel = settings?.localModel
+        const launchCommand = resolveLaunchCommand(provider, runtime, localModel)
+        const usingLocal = runtime === 'local' && supportsLocalRuntime(provider)
+
         try {
           const isInstalled = await window.api.checkCliInstalled(provider)
-          if (isInstalled) {
-            window.api.terminalInput(`${config.binaryName}\n`, id)
-          } else {
+          if (!isInstalled) {
             terminal.writeln(`\x1b[33m${config.name} CLI is not installed.\x1b[0m`)
             terminal.writeln(`Run \x1b[36m${config.installCommand}\x1b[0m to install it.`)
             terminal.writeln('')
+          } else if (usingLocal) {
+            // A local run is useless if the daemon is down, and the CLI's own
+            // error would be an opaque connection refused. Check first.
+            const status = await window.api.ollamaStatus()
+            if (!status.running) {
+              terminal.writeln(`\x1b[33mollama is not running at ${status.host}.\x1b[0m`)
+              terminal.writeln(`Run \x1b[36mbrew services start ollama\x1b[0m, then start a new session.`)
+              terminal.writeln('')
+            } else {
+              terminal.writeln(`\x1b[90mlocal runtime -> ${localModel || 'default'} via ${status.host}\x1b[0m`)
+              window.api.terminalInput(`${launchCommand}\n`, id)
+            }
+          } else {
+            window.api.terminalInput(`${launchCommand}\n`, id)
           }
         } catch (err) {
           console.error(`Failed to check ${config.name} installation:`, err)
-          window.api.terminalInput(`${config.binaryName}\n`, id)
+          window.api.terminalInput(`${launchCommand}\n`, id)
         }
       }).catch((err) => {
         console.error('Failed to create terminal:', err)

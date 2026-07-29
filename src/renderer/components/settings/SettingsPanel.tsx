@@ -5,8 +5,9 @@ import {
   AlertTriangle, ExternalLink, Loader2, FolderOpen, Sparkles, Zap, CheckCircle, Save
 } from 'lucide-react'
 import { useAppStore } from '../../store'
-import type { CustomTheme, UpdateInfo, SuperAgentConfig, LLMProvider, SafetyLevel, CLIProvider } from '../../../shared/types'
+import type { CustomTheme, UpdateInfo, SuperAgentConfig, LLMProvider, SafetyLevel, CLIProvider, OllamaRuntimeStatus } from '../../../shared/types'
 import { CLI_PROVIDERS } from '../../../shared/providers'
+import { SUPERVISOR_PROVIDERS, supervisorProviderLabel } from '../../../shared/llmProviders'
 
 interface SettingsPanelProps {
   isOpen: boolean
@@ -161,6 +162,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const [showOpenAIKey, setShowOpenAIKey] = useState(false)
   const [savingSuperAgent, setSavingSuperAgent] = useState(false)
   const [superAgentSaved, setSuperAgentSaved] = useState(false)
+  const [supervisorOllamaStatus, setSupervisorOllamaStatus] = useState<OllamaRuntimeStatus | null>(null)
 
   // Sync local API key when store changes (e.g., on initial load)
   useEffect(() => {
@@ -174,6 +176,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
       // Default Super Agent config
       const defaultConfig: SuperAgentConfig = {
+        ollamaModel: 'qwen3-coder:30b',
         groqApiKey: '',
         groqModel: 'llama-3.3-70b-versatile',
         openaiApiKey: '',
@@ -199,6 +202,15 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             console.error('Failed to load Super Agent config:', err)
           })
       }
+
+      window.api?.ollamaStatus()
+        .then(setSupervisorOllamaStatus)
+        .catch(() => setSupervisorOllamaStatus({
+          running: false,
+          host: 'http://127.0.0.1:11434',
+          models: [],
+          error: 'Ollama did not respond'
+        }))
     }
   }, [isOpen, initializeSettings])
 
@@ -1047,6 +1059,69 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                 {superAgentConfig && (
                   <>
+                    {/* Local supervisor -- independent from the terminal agent runtime */}
+                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                          <span className={`w-2 h-2 rounded-full ${supervisorOllamaStatus?.running ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
+                          Ollama Local (No API Cost)
+                        </h4>
+                        <button
+                          onClick={() => window.api.ollamaStatus().then(setSupervisorOllamaStatus)}
+                          className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1"
+                        >
+                          <RefreshCw size={12} />
+                          Re-check
+                        </button>
+                      </div>
+
+                      <div className="space-y-3">
+                        <p className="text-xs text-gray-500">
+                          This model watches and talks to the terminal agent. It is independent from whether that terminal agent uses a local model or an API.
+                        </p>
+                        <div className="text-xs text-gray-500">
+                          {supervisorOllamaStatus?.running
+                            ? `Connected to ${supervisorOllamaStatus.host}`
+                            : `Not running at ${supervisorOllamaStatus?.host ?? 'http://127.0.0.1:11434'}`}
+                        </div>
+                        <div>
+                          <label className="block text-xs text-gray-500 mb-2">Supervisor Model</label>
+                          {supervisorOllamaStatus?.running &&
+                          supervisorOllamaStatus.models.some((model) => !model.embeddingOnly) ? (
+                            <select
+                              value={superAgentConfig.ollamaModel}
+                              onChange={(e) => {
+                                setSuperAgentConfig({ ...superAgentConfig, ollamaModel: e.target.value })
+                                setSuperAgentSaved(false)
+                              }}
+                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-purple-500/50"
+                            >
+                              {!supervisorOllamaStatus.models.some((model) => model.name === superAgentConfig.ollamaModel) && (
+                                <option value={superAgentConfig.ollamaModel}>{superAgentConfig.ollamaModel} (not pulled)</option>
+                              )}
+                              {supervisorOllamaStatus.models
+                                .filter((model) => !model.embeddingOnly)
+                                .map((model) => (
+                                  <option key={model.name} value={model.name}>
+                                    {model.name}{model.parameters ? ` — ${model.parameters}` : ''}
+                                  </option>
+                                ))}
+                            </select>
+                          ) : (
+                            <input
+                              value={superAgentConfig.ollamaModel}
+                              onChange={(e) => {
+                                setSuperAgentConfig({ ...superAgentConfig, ollamaModel: e.target.value })
+                                setSuperAgentSaved(false)
+                              }}
+                              placeholder="qwen3-coder:30b"
+                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-purple-500/50 font-mono"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Groq Section */}
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                       <div className="flex items-center justify-between mb-4">
@@ -1172,7 +1247,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                       <label className="block text-xs text-gray-500 mb-3">Default Provider</label>
                       <div className="flex gap-2">
-                        {(['groq', 'openai'] as LLMProvider[]).map((provider) => (
+                        {SUPERVISOR_PROVIDERS.map((provider: LLMProvider) => (
                           <button
                             key={provider}
                             onClick={() => {
@@ -1185,7 +1260,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 : 'bg-black/30 text-gray-400 hover:bg-black/50 hover:text-white'
                             }`}
                           >
-                            {provider === 'groq' ? 'Groq (Fast)' : 'OpenAI'}
+                            {provider === 'ollama' ? 'Local' : provider === 'groq' ? 'Groq (Fast)' : supervisorProviderLabel(provider)}
                           </button>
                         ))}
                       </div>

@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import type { IpcApi, ConversationExportOptions, LLMApiRequest, SuperAgentConfig, SuperAgentSession, Hive, CLIProvider } from '../shared/types'
+import type { IpcApi, ConversationExportOptions, LLMApiRequest, SuperAgentConfig, SuperAgentSession, Hive, CLIProvider, AcpEvent } from '../shared/types'
 
 const api: IpcApi = {
   // Terminal
@@ -252,6 +252,27 @@ const api: IpcApi = {
     const handler = (_: Electron.IpcRendererEvent, sessionId: string, event: any) => callback(sessionId, event)
     ipcRenderer.on('chat:stream-event', handler)
     return () => ipcRenderer.removeListener('chat:stream-event', handler)
+  },
+
+  // ACP (Agent Client Protocol)
+  acpStart: (options) => ipcRenderer.invoke('acp:start', options),
+  acpPrompt: (sessionId, blocks) => ipcRenderer.invoke('acp:prompt', sessionId, blocks),
+  acpAuthenticate: (sessionId, methodId) => ipcRenderer.invoke('acp:authenticate', sessionId, methodId),
+  acpSetAutoApprove: (sessionId, autoApprove) =>
+    ipcRenderer.invoke('acp:set-auto-approve', sessionId, autoApprove),
+  acpCancel: (sessionId) => ipcRenderer.invoke('acp:cancel', sessionId),
+  acpPermissionResponse: (sessionId, requestId, optionId) =>
+    ipcRenderer.invoke('acp:permission-response', sessionId, requestId, optionId),
+  acpSetMode: (sessionId, modeId) => ipcRenderer.invoke('acp:set-mode', sessionId, modeId),
+  acpSetModel: (sessionId, modelId) => ipcRenderer.invoke('acp:set-model', sessionId, modelId),
+  acpStop: (sessionId) => ipcRenderer.invoke('acp:stop', sessionId),
+  acpGetState: (sessionId) => ipcRenderer.invoke('acp:get-state', sessionId),
+  acpListAgents: () => ipcRenderer.invoke('acp:list-agents'),
+  ollamaStatus: () => ipcRenderer.invoke('ollama:status'),
+  onAcpEvent: (callback) => {
+    const handler = (_: Electron.IpcRendererEvent, event: AcpEvent) => callback(event)
+    ipcRenderer.on('acp:event', handler)
+    return () => ipcRenderer.removeListener('acp:event', handler)
   },
 
   // Legacy methods (backward compatibility)

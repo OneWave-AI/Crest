@@ -13,10 +13,10 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://crestai.dev/">
+  <meta property="og:url" content="https://www.crestai.dev/">
   <meta property="og:title" content="Crest - Code with Superpowers">
   <meta property="og:description" content="The premium desktop app for Claude Code and OpenAI Codex. Run both CLIs side by side, launch agent swarms, track sessions, and access 25+ skills.">
-  <meta property="og:image" content="https://crestai.dev/dashboard.png">
+  <meta property="og:image" content="https://www.crestai.dev/dashboard.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="Crest">
@@ -25,11 +25,27 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Crest - Code with Superpowers">
   <meta name="twitter:description" content="The premium desktop app for Claude Code and OpenAI Codex. Agent swarms, analytics, per-tab provider selection, and 25+ skills.">
-  <meta name="twitter:image" content="https://crestai.dev/dashboard.png">
+  <meta name="twitter:image" content="https://www.crestai.dev/dashboard.png">
 
   <meta name="theme-color" content="#FF4F18">
   <meta name="author" content="OneWave AI">
-  <link rel="canonical" href="https://crestai.dev/">
+  <link rel="canonical" href="https://www.crestai.dev/">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Crest",
+    "operatingSystem": "macOS, Linux, ChromeOS",
+    "applicationCategory": "DeveloperApplication",
+    "description": "The premium desktop app for Claude Code and OpenAI Codex. Run both CLIs side by side, launch agent swarms, track sessions with analytics, and use 25+ skills.",
+    "url": "https://www.crestai.dev/",
+    "image": "https://www.crestai.dev/dashboard.png",
+    "downloadUrl": "https://github.com/OneWave-AI/Crest/releases/latest",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Organization", "name": "OneWave AI", "url": "https://onewave-ai.com" }
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -162,7 +178,7 @@
       </p>
 
       <!-- CTA Buttons -->
-      <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6 fade-up stagger-3">
+      <div id="download" class="flex flex-col sm:flex-row justify-center gap-4 mb-6 fade-up stagger-3">
         <a href="https://github.com/OneWave-AI/Crest/releases/latest/download/Crest-arm64.dmg" class="btn btn-primary btn-xl glow-primary">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
           Download for macOS
@@ -216,7 +232,7 @@
           <div class="w-3 h-3 rounded-full bg-green-500"></div>
           <span class="ml-4 text-xs text-zinc-500">Crest</span>
         </div>
-        <img src="screenshots/split-providers.png" alt="Claude Code and OpenAI Codex running side by side in Crest" class="w-full">
+        <img src="screenshots/split-providers.png" alt="Claude Code and OpenAI Codex running side by side in Crest" width="3456" height="2234" fetchpriority="high" class="w-full">
       </div>
     </div>
   </section>
@@ -495,21 +511,21 @@
       </div>
 
       <!-- Tab Buttons -->
-      <div class="flex flex-wrap justify-center gap-2 mb-8 fade-up stagger-2">
-        <button class="tab-btn active" data-tab="terminal">Terminal</button>
-        <button class="tab-btn" data-tab="split">Multi-Provider</button>
-        <button class="tab-btn" data-tab="orchestrator">Orchestrator</button>
-        <button class="tab-btn" data-tab="memory">Memory</button>
-        <button class="tab-btn" data-tab="teams">Teams</button>
-        <button class="tab-btn" data-tab="dashboard">Dashboard</button>
-        <button class="tab-btn" data-tab="hive">Agent Hive</button>
-        <button class="tab-btn" data-tab="super-agent">Super Agent</button>
-        <button class="tab-btn" data-tab="skills">Skills & Agents</button>
+      <div class="flex flex-wrap justify-center gap-2 mb-8 fade-up stagger-2" role="tablist" aria-label="Crest screenshots">
+        <button class="tab-btn active" data-tab="terminal" role="tab" aria-selected="true" aria-controls="tab-terminal">Terminal</button>
+        <button class="tab-btn" data-tab="split" role="tab" aria-selected="false" aria-controls="tab-split">Multi-Provider</button>
+        <button class="tab-btn" data-tab="orchestrator" role="tab" aria-selected="false" aria-controls="tab-orchestrator">Orchestrator</button>
+        <button class="tab-btn" data-tab="memory" role="tab" aria-selected="false" aria-controls="tab-memory">Memory</button>
+        <button class="tab-btn" data-tab="teams" role="tab" aria-selected="false" aria-controls="tab-teams">Teams</button>
+        <button class="tab-btn" data-tab="dashboard" role="tab" aria-selected="false" aria-controls="tab-dashboard">Dashboard</button>
+        <button class="tab-btn" data-tab="hive" role="tab" aria-selected="false" aria-controls="tab-hive">Agent Hive</button>
+        <button class="tab-btn" data-tab="super-agent" role="tab" aria-selected="false" aria-controls="tab-super-agent">Super Agent</button>
+        <button class="tab-btn" data-tab="skills" role="tab" aria-selected="false" aria-controls="tab-skills">Skills & Agents</button>
       </div>
 
       <!-- Tab Panels -->
       <div class="fade-up stagger-3">
-        <div class="tab-panel active" id="tab-terminal">
+        <div class="tab-panel active" id="tab-terminal" role="tabpanel">
           <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div class="window-chrome">
               <div class="window-dot window-dot-red"></div>
@@ -528,7 +544,7 @@
           <p class="text-center text-sm text-zinc-500 mt-4">Full terminal with file explorer, model selector, plan/work toggle, and session tracking</p>
         </div>
 
-        <div class="tab-panel" id="tab-split">
+        <div class="tab-panel" id="tab-split" role="tabpanel">
           <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div class="window-chrome">
               <div class="window-dot window-dot-red"></div>
@@ -546,7 +562,7 @@
           <p class="text-center text-sm text-zinc-500 mt-4">Run Claude Code and OpenAI Codex side by side&mdash;each tab picks its own CLI provider</p>
         </div>
 
-        <div class="tab-panel" id="tab-orchestrator">
+        <div class="tab-panel" id="tab-orchestrator" role="tabpanel">
           <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div class="window-chrome">
               <div class="window-dot window-dot-red"></div>
@@ -564,7 +580,7 @@
           <p class="text-center text-sm text-zinc-500 mt-4">Split or parallel mode&mdash;assign tasks per terminal and launch coordinated multi-agent workflows</p>
         </div>
 
-        <div class="tab-panel" id="tab-memory">
+        <div class="tab-panel" id="tab-memory" role="tabpanel">
           <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div class="window-chrome">
               <div class="window-dot window-dot-red"></div>
@@ -582,7 +598,7 @@
           <p class="text-center text-sm text-zinc-500 mt-4">Teach Claude your preferences in plain English&mdash;scoped per project, private, or global</p>
         </div>
 
-        <div class="tab-panel" id="tab-teams">
+        <div class="tab-panel" id="tab-teams" role="tabpanel">
           <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div class="window-chrome">
               <div class="window-dot window-dot-red"></div>
@@ -600,7 +616,7 @@
           <p class="text-center text-sm text-zinc-500 mt-4">Monitor multi-agent teams with real-time task progress and coordination</p>
         </div>
 
-        <div class="tab-panel" id="tab-dashboard">
+        <div class="tab-panel" id="tab-dashboard" role="tabpanel">
           <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div class="window-chrome">
               <div class="window-dot window-dot-red"></div>
@@ -619,7 +635,7 @@
           <p class="text-center text-sm text-zinc-500 mt-4">Track coding time, tokens, and project activity with real-time analytics</p>
         </div>
 
-        <div class="tab-panel" id="tab-hive">
+        <div class="tab-panel" id="tab-hive" role="tabpanel">
           <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div class="window-chrome">
               <div class="window-dot window-dot-red"></div>
@@ -637,7 +653,7 @@
           <p class="text-center text-sm text-zinc-500 mt-4">Manage specialized agent swarms for audit, action, design, and more</p>
         </div>
 
-        <div class="tab-panel" id="tab-super-agent">
+        <div class="tab-panel" id="tab-super-agent" role="tabpanel">
           <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div class="window-chrome">
               <div class="window-dot window-dot-red"></div>
@@ -655,7 +671,7 @@
           <p class="text-center text-sm text-zinc-500 mt-4">Launch autonomous tasks with time limits, safety levels, and provider choice</p>
         </div>
 
-        <div class="tab-panel" id="tab-skills">
+        <div class="tab-panel" id="tab-skills" role="tabpanel">
           <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
             <div class="window-chrome">
               <div class="window-dot window-dot-red"></div>
@@ -791,7 +807,7 @@
         </div>
         <span class="font-semibold">Crest</span>
       </div>
-      <p class="text-zinc-500 text-sm">Made by <a href="https://onewave-ai.com" class="text-zinc-400 hover:text-white transition-colors">OneWave AI</a></p>
+      <p class="text-zinc-500 text-sm">&copy; 2026 Crest &middot; Made by <a href="https://onewave-ai.com" class="text-zinc-400 hover:text-white transition-colors">OneWave AI</a></p>
       <div class="flex gap-6 text-sm text-zinc-500">
         <a href="features.html" class="hover:text-white transition-colors">Features</a>
         <a href="docs.html" class="hover:text-white transition-colors">Docs</a>
@@ -876,10 +892,14 @@
     // Tab switching for screenshot showcase
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
-        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        document.getElementById('tab-' + btn.dataset.tab)?.classList.add('active');
       });
     });
 

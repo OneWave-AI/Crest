@@ -55,6 +55,7 @@ const BeeIcon = ({ className, size = 24 }: { className?: string; size?: number }
   </svg>
 )
 import { useAppStore } from '../store'
+import { AgentRuntimePicker } from './settings/AgentRuntimePicker'
 
 interface HomeScreenProps {
   cwd: string
@@ -128,6 +129,12 @@ export default function HomeScreen({
 }: HomeScreenProps) {
   // Get setCwd from store to keep it in sync when clicking projects
   const setCwd = useAppStore((state) => state.setCwd)
+  const cliProvider = useAppStore((state) => state.cliProvider)
+  const setCLIProvider = useAppStore((state) => state.setCLIProvider)
+  const modelRuntime = useAppStore((state) => state.modelRuntime)
+  const setModelRuntime = useAppStore((state) => state.setModelRuntime)
+  const localModel = useAppStore((state) => state.localModel)
+  const setLocalModel = useAppStore((state) => state.setLocalModel)
 
   const [recentProjects, setRecentProjects] = useState<RecentProject[]>([])
   const [stats, setStats] = useState<Stats>({ conversations: 0, skills: 0, agents: 0, mcpServers: 0 })
@@ -738,6 +745,20 @@ export default function HomeScreen({
               )}
             </div>
           )}
+
+          {/* Agent + runtime -- which CLI drives the session, and where its model runs */}
+          <div className="rounded-xl bg-black/30 border border-white/[0.06] p-3 mb-4">
+            <AgentRuntimePicker
+              provider={cliProvider}
+              runtime={modelRuntime}
+              localModel={localModel}
+              onProviderChange={setCLIProvider}
+              onRuntimeChange={setModelRuntime}
+              onLocalModelChange={setLocalModel}
+              installed={{ claude: claudeCliInstalled ?? null, codex: codexCliInstalled ?? null }}
+              compact
+            />
+          </div>
 
           {/* Start Buttons */}
           <div className="flex gap-3">

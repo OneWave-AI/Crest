@@ -17,6 +17,13 @@ import { useSuperAgent } from '../../hooks/useSuperAgent'
 import { useAppStore } from '../../store'
 import { useOrchestratorStore } from '../../store/orchestratorStore'
 import type { SafetyLevel, LLMProvider } from '../../../shared/types'
+import {
+  SUPERVISOR_PROVIDERS,
+  getSupervisorApiKey,
+  supervisorProviderLabel,
+  supervisorProviderNeedsApiKey
+} from '../../../shared/llmProviders'
+import { CLI_PROVIDERS } from '../../../shared/providers'
 
 type LaunchMode = 'new' | 'takeover'
 
@@ -36,7 +43,7 @@ const SAFETY_OPTIONS = [
 export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperAgentModalProps) {
   const { startSuperAgent, config, provider, setProvider, timeLimit, setTimeLimit, safetyLevel, setSafetyLevel, loadConfig } =
     useSuperAgent()
-  const { cwd } = useAppStore()
+  const { cwd, cliProvider, modelRuntime, localModel } = useAppStore()
   const orchestratorRunning = useOrchestratorStore((s) => s.isRunning)
 
   const [task, setTask] = useState('')
@@ -65,7 +72,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
     }
 
     if (mode === 'new' && !task.trim()) {
-      setError('Tell Claude what to build')
+      setError('Tell the terminal agent what to build')
       return
     }
 
@@ -74,10 +81,22 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
       return
     }
 
-    const apiKey = provider === 'openai' ? config.openaiApiKey : config.groqApiKey
-    if (!apiKey) {
-      setError(`Add ${provider === 'openai' ? 'OpenAI' : 'Groq'} API key in Settings`)
+    const apiKey = getSupervisorApiKey(config, provider)
+    if (supervisorProviderNeedsApiKey(provider) && !apiKey) {
+      setError(`Add a ${supervisorProviderLabel(provider)} API key in Settings`)
       return
+    }
+
+    if (provider === 'ollama') {
+      const status = await window.api.ollamaStatus()
+      if (!status.running) {
+        setError(`Start Ollama first (${status.host})`)
+        return
+      }
+      if (!status.models.some((model) => !model.embeddingOnly && model.name === config.ollamaModel)) {
+        setError(`Pull or select the local model ${config.ollamaModel}`)
+        return
+      }
     }
 
     if (!terminalId) {
@@ -89,7 +108,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
     setError(null)
 
     const taskToSend = mode === 'takeover' && !task.trim()
-      ? 'Continue working on the current task. Analyze what Claude is doing and help it make progress.'
+      ? 'Continue working on the current task. Analyze what the terminal agent is doing and help it make progress.'
       : task
 
     const success = await startSuperAgent(taskToSend, terminalId, {
@@ -103,7 +122,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
       onStart()
       onClose()
     } else {
-      setError('Failed to start. Check API key in Settings.')
+      setError('Failed to start. Check the selected supervisor in Settings.')
       setIsStarting(false)
     }
   }
@@ -144,6 +163,24 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
             </div>
           )}
 
+          {/* The two axes stay independent, so all local/API combinations work. */}
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="rounded-lg border border-white/[0.06] bg-black/20 px-3 py-2">
+              <div className="text-gray-600 uppercase tracking-wider text-[9px]">Supervisor</div>
+              <div className="text-gray-300 mt-1">
+                {provider === 'ollama' ? `Local · ${config.ollamaModel}` : `API · ${supervisorProviderLabel(provider)}`}
+              </div>
+            </div>
+            <div className="rounded-lg border border-white/[0.06] bg-black/20 px-3 py-2">
+              <div className="text-gray-600 uppercase tracking-wider text-[9px]">Terminal agent</div>
+              <div className="text-gray-300 mt-1">
+                {modelRuntime === 'local'
+                  ? `Local · ${CLI_PROVIDERS[cliProvider].name} · ${localModel}`
+                  : `API · ${CLI_PROVIDERS[cliProvider].name}`}
+              </div>
+            </div>
+          </div>
+
           {/* Mode Toggle */}
           <div className="flex gap-2 p-1 bg-[#0a0a0b] rounded-lg">
             <button
@@ -177,7 +214,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
               onChange={(e) => setTask(e.target.value.slice(0, 500))}
               placeholder={launchMode === 'takeover'
                 ? "Optional: Provide guidance..."
-                : "What should Claude build?"}
+                : "What should the terminal agent build?"}
               className="w-full h-24 bg-[#0a0a0b] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#cc785c]/50 resize-none text-sm"
               autoFocus
               onKeyDown={(e) => {
@@ -202,7 +239,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-500 w-16">Provider</span>
                 <div className="flex-1 flex gap-2">
-                  {(['groq', 'openai'] as LLMProvider[]).map((p) => (
+                  {SUPERVISOR_PROVIDERS.map((p: LLMProvider) => (
                     <button
                       key={p}
                       onClick={() => setProvider(p)}
@@ -212,7 +249,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
                           : 'text-gray-500 hover:text-gray-300'
                       }`}
                     >
-                      {p === 'groq' ? 'Groq' : 'OpenAI'}
+                      {p === 'ollama' ? 'Local' : supervisorProviderLabel(p)}
                     </button>
                   ))}
                 </div>

@@ -1,5 +1,9 @@
 import { create } from 'zustand'
-import type { AppSettings, CustomTheme, CLIProvider } from '../../shared/types'
+import type { AppSettings, CustomTheme, CLIProvider, ModelRuntime } from '../../shared/types'
+import { supportsLocalRuntime } from '../../shared/providers'
+
+/** Sensible starting point; the picker replaces this with whatever ollama reports. */
+const DEFAULT_LOCAL_MODEL = 'qwen3-coder:30b'
 
 // Debounce helper
 let saveTimeout: NodeJS.Timeout | null = null
@@ -74,6 +78,12 @@ interface AppState {
   cliProvider: CLIProvider
   setCLIProvider: (provider: CLIProvider) => void
 
+  // Model runtime (cloud API vs local ollama)
+  modelRuntime: ModelRuntime
+  setModelRuntime: (runtime: ModelRuntime) => void
+  localModel: string
+  setLocalModel: (model: string) => void
+
   // Session Context
   sessionContextEnabled: boolean
   setSessionContextEnabled: (enabled: boolean) => void
@@ -107,6 +117,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   autoUpdate: true,
   claudeApiKey: '',
   cliProvider: 'claude' as CLIProvider,
+  modelRuntime: 'api' as ModelRuntime,
+  localModel: DEFAULT_LOCAL_MODEL,
   sessionContextEnabled: true,
   sessionContextDays: 7
 }
@@ -218,6 +230,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       autoUpdate: settings.autoUpdate,
       claudeApiKey: settings.claudeApiKey,
       cliProvider: settings.cliProvider || 'claude',
+      modelRuntime: settings.modelRuntime || 'api',
+      localModel: settings.localModel || DEFAULT_LOCAL_MODEL,
       sessionContextEnabled: settings.sessionContextEnabled !== false,
       sessionContextDays: settings.sessionContextDays ?? 7,
       customThemes: settings.customThemes
@@ -326,7 +340,26 @@ export const useAppStore = create<AppState>((set, get) => ({
   cliProvider: 'claude' as CLIProvider,
   setCLIProvider: (cliProvider) => {
     set({ cliProvider })
-    const settings = { ...get().settings, cliProvider }
+    // Switching to an agent that cannot run locally must not leave the runtime
+    // stuck on 'local' -- that combination has no valid launch command.
+    const modelRuntime = supportsLocalRuntime(cliProvider) ? get().modelRuntime : 'api'
+    const settings = { ...get().settings, cliProvider, modelRuntime }
+    set({ settings, modelRuntime })
+    get().saveAllSettings()
+  },
+
+  modelRuntime: 'api' as ModelRuntime,
+  setModelRuntime: (modelRuntime) => {
+    set({ modelRuntime })
+    const settings = { ...get().settings, modelRuntime }
+    set({ settings })
+    get().saveAllSettings()
+  },
+
+  localModel: DEFAULT_LOCAL_MODEL,
+  setLocalModel: (localModel) => {
+    set({ localModel })
+    const settings = { ...get().settings, localModel }
     set({ settings })
     get().saveAllSettings()
   },

@@ -94,9 +94,9 @@ interface HeaderProps {
   onOpenBackgroundAgents?: () => void
   onOpenRepoVisualization?: () => void
   onOpenTeams?: () => void
-  viewMode?: 'terminal' | 'chat'
-  onViewModeChange?: (mode: 'terminal' | 'chat') => void
   onOpenDiff?: () => void
+  viewMode?: 'terminal' | 'chat' | 'acp'
+  onViewModeChange?: (mode: 'terminal' | 'chat' | 'acp') => void
 }
 
 export default function Header({
@@ -1172,6 +1172,19 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
             >
               <MessageSquare size={12} />
               <span>Chat</span>
+            </button>
+            <div className="w-px h-4 bg-white/[0.06]" />
+            <button
+              onClick={() => onViewModeChange('acp')}
+              className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${
+                viewMode === 'acp'
+                  ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+              }`}
+              title="ACP view — structured agent session"
+            >
+              <Plug size={12} />
+              <span>ACP</span>
             </button>
           </div>
         )}

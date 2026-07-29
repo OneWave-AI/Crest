@@ -42,3 +42,6 @@ coverage/
 tmp/
 temp/
 .vercel
+
+# Claude Code session context
+.claude/rules/session-context.md

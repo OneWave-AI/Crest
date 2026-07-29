@@ -79,7 +79,7 @@ export function ConversationView() {
   const hasOlder = startIndex > 0
   const hiddenCount = totalCount - visibleMessages.length
 
-  const grouped = useMemo(() => groupMessages(visibleMessages), [visibleMessages])
+  const grouped = useMemo(() => groupMessages(visibleMessages), [visibleMessages, revision])
 
   const isRunning = status === 'running' || status === 'connecting'
   const isFailed = status === 'failed'

@@ -19,6 +19,11 @@ import { useOrchestrator } from '../../hooks/useOrchestrator'
 import { useSuperAgentStore } from '../../store/superAgentStore'
 import { useAppStore } from '../../store'
 import type { SafetyLevel, LLMProvider } from '../../../shared/types'
+import {
+  SUPERVISOR_PROVIDERS,
+  supervisorProviderIsConfigured,
+  supervisorProviderLabel
+} from '../../../shared/llmProviders'
 
 interface OrchestratorModalProps {
   isOpen: boolean
@@ -93,7 +98,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
     if (tasks) {
       setDecomposedPreview(tasks)
     } else {
-      setError('Failed to decompose task. Check your API key.')
+      setError('Failed to decompose task. Check the selected supervisor.')
     }
     setIsDecomposing(false)
   }
@@ -113,6 +118,32 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
     } else if (!masterTask.trim()) {
       setError('Enter a master task')
       return
+    }
+
+    const loadedConfig = await window.api.loadSuperAgentConfig().catch(() => null)
+    let effectiveProvider = provider
+    let configured = Boolean(loadedConfig && supervisorProviderIsConfigured(loadedConfig, effectiveProvider))
+    if (!configured && loadedConfig?.defaultProvider && loadedConfig.defaultProvider !== effectiveProvider) {
+      effectiveProvider = loadedConfig.defaultProvider
+      configured = supervisorProviderIsConfigured(loadedConfig, effectiveProvider)
+    }
+    if (!loadedConfig || !configured) {
+      setError(`Configure ${supervisorProviderLabel(effectiveProvider)} in Settings`)
+      return
+    }
+    if (effectiveProvider === 'ollama') {
+      const status = await window.api.ollamaStatus()
+      if (!status.running) {
+        setError(`Start Ollama first (${status.host})`)
+        return
+      }
+      if (!status.models.some((model) => !model.embeddingOnly && model.name === loadedConfig.ollamaModel)) {
+        setError(`Pull or select the local model ${loadedConfig.ollamaModel}`)
+        return
+      }
+    }
+    if (effectiveProvider !== provider) {
+      setProvider(effectiveProvider)
     }
 
     setIsStarting(true)
@@ -190,7 +221,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
       onStart()
       onClose()
     } else {
-      setError('Failed to start. Check API keys in Settings.')
+      setError('Failed to start. Check the selected supervisor in Settings.')
       setIsStarting(false)
       setStartPhase('idle')
     }
@@ -409,7 +440,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-500 w-16">Provider</span>
                 <div className="flex-1 flex gap-2">
-                  {(['groq', 'openai'] as LLMProvider[]).map((p) => (
+                  {SUPERVISOR_PROVIDERS.map((p: LLMProvider) => (
                     <button
                       key={p}
                       onClick={() => setProvider(p)}
@@ -417,7 +448,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
                         provider === p ? 'bg-white/[0.1] text-white' : 'text-gray-500 hover:text-gray-300'
                       }`}
                     >
-                      {p === 'groq' ? 'Groq' : 'OpenAI'}
+                      {p === 'ollama' ? 'Local' : supervisorProviderLabel(p)}
                     </button>
                   ))}
                 </div>

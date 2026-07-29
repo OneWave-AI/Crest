@@ -23,9 +23,10 @@ import RepoVisualization from './components/repo/RepoVisualization'
 import DiffPanel from './components/git/DiffPanel'
 import TeamsPanel from './components/teams/TeamsPanel'
 import ChatView from './components/chat/ChatView'
+import AcpView from './components/acp/AcpView'
 
 type Screen = 'home' | 'terminal' | 'skills' | 'history' | 'analytics' | 'hive'
-type ViewMode = 'terminal' | 'chat'
+type ViewMode = 'terminal' | 'chat' | 'acp'
 
 function App() {
   const [showSplash, setShowSplash] = useState(true)
@@ -238,6 +239,11 @@ function App() {
             {/* Chat View */}
             {screen === 'terminal' && viewMode === 'chat' && (
               <ChatView cwd={cwd} />
+            )}
+
+            {/* ACP View — structured agent session over the Agent Client Protocol */}
+            {screen === 'terminal' && viewMode === 'acp' && (
+              <AcpView cwd={cwd} />
             )}
 
             {/* Terminal - always render once mounted, hide when not active to preserve session */}

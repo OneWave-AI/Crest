@@ -344,6 +344,16 @@ export function parseStats(cleanOutput: string): Record<string, number> {
 export function parseLLMDecision(rawDecision: string): string {
   let trimmed = rawDecision.trim()
 
+  const fencedJson = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i)
+  if (fencedJson?.[1]) {
+    trimmed = fencedJson[1].trim()
+  } else {
+    const embeddedJson = trimmed.match(/\{[\s\S]*"action"[\s\S]*\}/)
+    if (embeddedJson?.[0]) {
+      trimmed = embeddedJson[0].trim()
+    }
+  }
+
   // Try parsing as JSON structured output first
   try {
     const parsed = JSON.parse(trimmed)

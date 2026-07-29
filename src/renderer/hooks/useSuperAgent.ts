@@ -2,6 +2,11 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useSuperAgentStore } from '../store/superAgentStore'
 import { useAppStore } from '../store'
 import { CLI_PROVIDERS } from '../../shared/providers'
+import {
+  getSupervisorApiKey,
+  getSupervisorModel,
+  supervisorProviderNeedsApiKey
+} from '../../shared/llmProviders'
 import type { SafetyLevel, CLIProvider } from '../../shared/types'
 import {
   stripAnsi,
@@ -98,10 +103,10 @@ export function useSuperAgent() {
 
     if (!cfg) return null
 
-    const apiKey = prov === 'openai' ? cfg.openaiApiKey : cfg.groqApiKey
-    const model = prov === 'openai' ? cfg.openaiModel : cfg.groqModel
+    const apiKey = getSupervisorApiKey(cfg, prov)
+    const model = getSupervisorModel(cfg, prov)
 
-    if (!apiKey) {
+    if (supervisorProviderNeedsApiKey(prov) && !apiKey) {
       store.addLog('error', `No API key configured for ${prov}`)
       return null
     }
@@ -573,8 +578,8 @@ You're taking control of an existing conversation that was already in progress.
       return false
     }
 
-    const apiKey = prov === 'openai' ? cfg.openaiApiKey : cfg.groqApiKey
-    if (!apiKey) {
+    const apiKey = getSupervisorApiKey(cfg, prov)
+    if (supervisorProviderNeedsApiKey(prov) && !apiKey) {
       console.error(`No ${prov} API key configured`)
       return false
     }

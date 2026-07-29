@@ -62,6 +62,7 @@
     "files": [
       "out/**/*"
     ],
+    "afterPack": "build/afterPack.js",
     "extraResources": [
       {
         "from": "assets",
@@ -79,7 +80,8 @@
       "artifactName": "${productName}-${arch}.${ext}",
       "icon": "assets/icon.icns",
       "category": "public.app-category.developer-tools",
-      "hardenedRuntime": true,
+      "identity": null,
+      "hardenedRuntime": false,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist"

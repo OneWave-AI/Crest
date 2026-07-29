@@ -17,6 +17,8 @@ import { registerBackgroundAgentHandlers } from './backgroundAgents'
 import { registerRepoAnalyzerHandlers } from './repoAnalyzer'
 import { registerTeamHandlers } from './teams'
 import { registerChatHandlers } from './chat'
+import { registerAcpHandlers } from './acp'
+import { registerOllamaHandlers } from './ollama'
 import type { CLIProvider } from '../../shared/types'
 import { CLI_PROVIDERS } from '../../shared/providers'
 
@@ -65,6 +67,12 @@ export function registerIpcHandlers(): void {
 
   // Chat handlers
   registerChatHandlers()
+
+  // ACP (Agent Client Protocol) handlers
+  registerAcpHandlers()
+
+  // Local ollama runtime status/model list
+  registerOllamaHandlers()
 
   // Initialize settings (apply window opacity, etc.)
   initializeSettings()
@@ -153,6 +161,14 @@ export function registerIpcHandlers(): void {
     const { spawn } = await import('child_process')
 
     const config = CLI_PROVIDERS[provider]
+
+    // Not every agent ships as an npm package (Kimi installs a native binary via
+    // its own installer). Fail loudly instead of running `npm install -g ''`.
+    if (!config.installPackage) {
+      throw new Error(
+        `${config.name} cannot be installed automatically. ${config.installCommand}`
+      )
+    }
 
     return new Promise<void>((resolve, reject) => {
       const { CLAUDECODE: _, ...cleanEnv } = process.env

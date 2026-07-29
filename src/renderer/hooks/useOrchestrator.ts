@@ -3,6 +3,11 @@ import { useOrchestratorStore, type OrchestratorMode } from '../store/orchestrat
 import { useSuperAgentStore } from '../store/superAgentStore'
 import { useAppStore } from '../store'
 import { CLI_PROVIDERS } from '../../shared/providers'
+import {
+  getSupervisorApiKey,
+  getSupervisorModel,
+  supervisorProviderNeedsApiKey
+} from '../../shared/llmProviders'
 import type { SafetyLevel, CLIProvider } from '../../shared/types'
 import {
   stripAnsi,
@@ -130,9 +135,9 @@ export function useOrchestrator() {
     const termState = store.terminals.get(terminalId)
     if (!cfg || !termState) return null
 
-    const apiKey = prov === 'openai' ? cfg.openaiApiKey : cfg.groqApiKey
-    const model = prov === 'openai' ? cfg.openaiModel : cfg.groqModel
-    if (!apiKey) {
+    const apiKey = getSupervisorApiKey(cfg, prov)
+    const model = getSupervisorModel(cfg, prov)
+    if (supervisorProviderNeedsApiKey(prov) && !apiKey) {
       store.addTerminalLog(terminalId, 'error', `No API key configured for ${prov}`)
       return null
     }
@@ -513,9 +518,9 @@ export function useOrchestrator() {
     const { config: cfg, provider: prov } = getStore()
     if (!cfg) return null
 
-    const apiKey = prov === 'openai' ? cfg.openaiApiKey : cfg.groqApiKey
-    const model = prov === 'openai' ? cfg.openaiModel : cfg.groqModel
-    if (!apiKey) return null
+    const apiKey = getSupervisorApiKey(cfg, prov)
+    const model = getSupervisorModel(cfg, prov)
+    if (supervisorProviderNeedsApiKey(prov) && !apiKey) return null
 
     const systemPrompt = `You are a task decomposition assistant. You take a master task and break it into ${terminalCount} DISTINCT sub-tasks for parallel execution by separate Claude Code CLI terminals.
 
@@ -614,9 +619,13 @@ Respond ONLY with a valid JSON array of ${terminalCount} strings. No markdown, n
     }
 
     // Load config
+    const selectedProvider = getStore().provider
     try {
       const loadedConfig = await window.api.loadSuperAgentConfig()
-      if (loadedConfig) store.setConfig(loadedConfig)
+      if (loadedConfig) {
+        store.setConfig(loadedConfig)
+        store.setProvider(selectedProvider)
+      }
     } catch (err) {
       console.error('Failed to load config:', err)
     }
@@ -624,8 +633,8 @@ Respond ONLY with a valid JSON array of ${terminalCount} strings. No markdown, n
     // Re-read store after setConfig to get fresh values
     const cfg = getStore().config
     const prov = getStore().provider
-    const apiKey = prov === 'openai' ? cfg.openaiApiKey : cfg.groqApiKey
-    if (!apiKey) {
+    const apiKey = getSupervisorApiKey(cfg, prov)
+    if (supervisorProviderNeedsApiKey(prov) && !apiKey) {
       console.error(`No ${prov} API key configured`)
       return false
     }

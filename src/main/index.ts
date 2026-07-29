@@ -1,8 +1,10 @@
 import { app, BrowserWindow, shell, protocol, net, dialog, ipcMain, session } from 'electron'
 import { join } from 'path'
+import { homedir } from 'os'
 import { pathToFileURL } from 'url'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { registerIpcHandlers } from './ipc'
+import { stopAllAcpSessions } from './ipc/acp'
 import { autoInstallStarterKit } from './ipc/skills'
 
 // Register custom protocol as privileged (must be before app ready)
@@ -159,6 +161,11 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+})
+
+// Don't orphan ACP agent processes when Crest exits.
+app.on('will-quit', () => {
+  stopAllAcpSessions()
 })
 
 export { mainWindow }

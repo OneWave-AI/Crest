@@ -3,11 +3,13 @@ import { homedir } from 'os'
 import { join } from 'path'
 import * as fs from 'fs/promises'
 import type { LLMApiRequest, LLMApiResponse, SuperAgentConfig, SuperAgentSession } from '../../shared/types'
+import { OLLAMA_HOST } from './ollama'
 
 const SUPER_AGENT_CONFIG_PATH = join(homedir(), '.crest', 'superagent-config.json')
 const SUPER_AGENT_HISTORY_PATH = join(homedir(), '.crest', 'superagent-history.json')
 
 const DEFAULT_CONFIG: SuperAgentConfig = {
+  ollamaModel: 'qwen3-coder:30b',
   groqApiKey: '',
   groqModel: 'llama-3.3-70b-versatile',
   openaiApiKey: '',
@@ -61,28 +63,31 @@ async function saveSessionHistory(sessions: SuperAgentSession[]): Promise<void> 
 }
 
 export function registerSuperAgentHandlers(): void {
-  // Call LLM API (Groq or OpenAI)
+  // Call the independent supervisor LLM (local Ollama, Groq, or OpenAI).
   ipcMain.handle('call-llm-api', async (_, request: LLMApiRequest): Promise<LLMApiResponse> => {
     const { provider, apiKey, model, systemPrompt, userPrompt, temperature = 0.3 } = request
 
-    if (!apiKey) {
+    if (provider !== 'ollama' && !apiKey) {
       return { success: false, error: 'API key is required' }
     }
 
     const baseUrl =
-      provider === 'openai'
+      provider === 'ollama'
+        ? `${OLLAMA_HOST}/v1/chat/completions`
+        : provider === 'openai'
         ? 'https://api.openai.com/v1/chat/completions'
         : 'https://api.groq.com/openai/v1/chat/completions'
 
     try {
-      // Add 15-second timeout to prevent hanging
+      // A local 30B model can take longer on its first load than a hosted API.
+      const timeoutMs = provider === 'ollama' ? 120_000 : 15_000
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 15000)
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
 
       const response = await fetch(baseUrl, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${apiKey}`,
+          ...(provider === 'ollama' ? {} : { Authorization: `Bearer ${apiKey}` }),
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -126,7 +131,7 @@ export function registerSuperAgentHandlers(): void {
       if (error instanceof Error && error.name === 'AbortError') {
         return {
           success: false,
-          error: 'Request timed out after 15 seconds'
+          error: `Request timed out after ${provider === 'ollama' ? 120 : 15} seconds`
         }
       }
       return {

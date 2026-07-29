@@ -80,6 +80,7 @@ interface SuperAgentState {
 }
 
 const DEFAULT_CONFIG: SuperAgentConfig = {
+  ollamaModel: 'qwen3-coder:30b',
   groqApiKey: '',
   groqModel: 'llama-3.3-70b-versatile',
   openaiApiKey: '',

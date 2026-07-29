@@ -40,6 +40,8 @@ function getDefaultSettings(): AppSettings {
 
     // CLI Provider
     cliProvider: 'claude',
+    modelRuntime: 'api',
+    localModel: 'qwen3-coder:30b',
 
     // Session Context
     sessionContextEnabled: true,

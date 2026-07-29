@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Zap, Eye, EyeOff, Save, CheckCircle } from 'lucide-react'
 import type { SuperAgentConfig, LLMProvider, SafetyLevel } from '../../../shared/types'
+import { SUPERVISOR_PROVIDERS, supervisorProviderLabel } from '../../../shared/llmProviders'
 
 const DEFAULT_CONFIG: SuperAgentConfig = {
+  ollamaModel: 'qwen3-coder:30b',
   groqApiKey: '',
   groqModel: 'llama-3.3-70b-versatile',
   openaiApiKey: '',
@@ -56,6 +58,24 @@ export function SuperAgentSettings() {
           <p className="text-xs text-gray-400">Configure autonomous AI settings</p>
         </div>
       </div>
+
+      {/* Local Supervisor Model */}
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-2">
+          Ollama Supervisor Model
+        </label>
+        <input
+          value={config.ollamaModel}
+          onChange={(e) => updateConfig({ ollamaModel: e.target.value })}
+          placeholder="qwen3-coder:30b"
+          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          Runs the terminal-watching Super Agent locally with no API key.
+        </p>
+      </div>
+
+      <div className="border-t border-gray-700" />
 
       {/* Groq API Key */}
       <div>
@@ -162,7 +182,7 @@ export function SuperAgentSettings() {
           Default Provider
         </label>
         <div className="flex gap-2">
-          {(['groq', 'openai'] as LLMProvider[]).map((p) => (
+          {SUPERVISOR_PROVIDERS.map((p: LLMProvider) => (
             <button
               key={p}
               onClick={() => updateConfig({ defaultProvider: p })}
@@ -172,7 +192,7 @@ export function SuperAgentSettings() {
                   : 'bg-black/30 text-gray-400 hover:bg-black/50'
               }`}
             >
-              {p === 'groq' ? 'Groq' : 'OpenAI'}
+              {p === 'ollama' ? 'Local' : supervisorProviderLabel(p)}
             </button>
           ))}
         </div>

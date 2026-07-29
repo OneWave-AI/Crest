@@ -1,5 +1,16 @@
 // Shared types between main and renderer
 
+import type {
+  AcpAgentSpec,
+  AcpContentBlock,
+  AcpEvent,
+  AcpPromptResult,
+  AcpSessionState,
+  AcpStartOptions
+} from './acp'
+
+export * from './acp'
+
 export interface Terminal {
   id: string
   name: string
@@ -209,7 +220,17 @@ export interface CustomTheme {
 }
 
 // CLI Provider types
-export type CLIProvider = 'claude' | 'codex'
+export type CLIProvider = 'claude' | 'codex' | 'kimi'
+
+/**
+ * Where the model behind an agent actually runs.
+ *
+ * This is orthogonal to CLIProvider: the provider is the *harness* (which CLI
+ * drives the edits), the runtime is *where inference happens*. Ollama is a
+ * runtime, not an agent -- it has no tool-calling harness of its own, so it is
+ * deliberately not a CLIProvider.
+ */
+export type ModelRuntime = 'api' | 'local'
 
 export interface CLIModelInfo {
   id: string
@@ -234,6 +255,17 @@ export interface CLIProviderConfig {
   promptChar: RegExp
   workingPatterns: RegExp[]
   waitingPatterns: RegExp[]
+  /** Whether this agent can be pointed at a local ollama model. */
+  supportsLocal: boolean
+  /**
+   * Shell command used instead of `binaryName` when runtime === 'local'.
+   * Resolved through the login shell, so a zsh function (e.g. `claude-local`)
+   * is valid here -- that is how the ollama env vars get injected without
+   * Electron having to know about them.
+   */
+  localCommand?: string
+  /** Why local is unavailable, shown as a tooltip on the disabled toggle. */
+  localUnavailableReason?: string
 }
 
 export interface AppSettings {
@@ -263,6 +295,10 @@ export interface AppSettings {
 
   // CLI Provider
   cliProvider: CLIProvider
+
+  // Model runtime (cloud API vs local ollama) + which local model to use
+  modelRuntime: ModelRuntime
+  localModel: string
 
   // Session Context
   sessionContextEnabled: boolean
@@ -581,6 +617,36 @@ export interface IpcApi {
   chatStop: (sessionId: string) => Promise<boolean>
   chatPermissionResponse: (sessionId: string, toolUseId: string, allowed: boolean) => Promise<boolean>
   onChatStreamEvent: (callback: (sessionId: string, event: any) => void) => () => void
+
+  // ACP (Agent Client Protocol)
+  acpStart: (options: AcpStartOptions) => Promise<AcpSessionState>
+  acpPrompt: (sessionId: string, blocks: AcpContentBlock[]) => Promise<AcpPromptResult>
+  acpAuthenticate: (sessionId: string, methodId: string) => Promise<AcpSessionState>
+  acpSetAutoApprove: (sessionId: string, autoApprove: boolean) => Promise<void>
+  acpCancel: (sessionId: string) => Promise<void>
+  acpPermissionResponse: (sessionId: string, requestId: string, optionId: string | null) => Promise<void>
+  acpSetMode: (sessionId: string, modeId: string) => Promise<void>
+  acpSetModel: (sessionId: string, modelId: string) => Promise<void>
+  acpStop: (sessionId: string) => Promise<void>
+  acpGetState: (sessionId: string) => Promise<AcpSessionState | null>
+  acpListAgents: () => Promise<AcpAgentSpec[]>
+  onAcpEvent: (callback: (event: AcpEvent) => void) => () => void
+  ollamaStatus: () => Promise<OllamaRuntimeStatus>
+}
+
+// Local ollama runtime (mirrors src/main/ipc/ollama.ts)
+export interface OllamaRuntimeModel {
+  name: string
+  parameters?: string
+  size?: number
+  embeddingOnly: boolean
+}
+
+export interface OllamaRuntimeStatus {
+  running: boolean
+  host: string
+  models: OllamaRuntimeModel[]
+  error?: string
 }
 
 // Memory types (CLAUDE.md based system)
@@ -640,7 +706,7 @@ export interface MemoryItem {
 }
 
 // Super Agent types
-export type LLMProvider = 'groq' | 'openai'
+export type LLMProvider = 'ollama' | 'groq' | 'openai'
 export type SafetyLevel = 'safe' | 'moderate' | 'yolo'
 
 export interface LLMApiRequest {
@@ -664,6 +730,7 @@ export interface LLMApiResponse {
 }
 
 export interface SuperAgentConfig {
+  ollamaModel: string
   groqApiKey: string
   groqModel: string
   openaiApiKey: string

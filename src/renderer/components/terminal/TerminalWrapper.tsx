@@ -221,8 +221,9 @@ export default function TerminalWrapper({
   useEffect(() => {
     if (!restoredLayout) return
 
-    window.api.getTerminals().then((survivingIds: string[]) => {
-      if (!survivingIds || survivingIds.length === 0) return
+    window.api.getTerminals().then((surviving) => {
+      const survivingIds = (surviving ?? []).map((t) => t.id)
+      if (survivingIds.length === 0) return
 
       const survivingSet = new Set(survivingIds)
       // Check if any saved tabs match surviving PTYs
