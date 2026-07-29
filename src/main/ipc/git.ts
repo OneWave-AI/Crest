@@ -1,9 +1,16 @@
-import { ipcMain } from 'electron'
+import { ipcMain, app } from 'electron'
 import { execFile } from 'child_process'
 import { promisify } from 'util'
 import * as path from 'path'
+import * as fs from 'fs/promises'
 import { getCwd } from './terminal'
-import type { GitFileStatusMap, GitFileStatusType } from '../../shared/types'
+import type {
+  GitFileStatusMap,
+  GitFileStatusType,
+  GitDiffFile,
+  GitDiffResult,
+  GitApplyResult
+} from '../../shared/types'
 
 const execFileAsync = promisify(execFile)
 
@@ -43,6 +50,24 @@ async function runGitCommandSafe(args: string[], cwd: string): Promise<GitComman
   } catch (error: unknown) {
     // execFile throws an error object that includes stdout and stderr
     const execError = error as { stdout?: string; stderr?: string; message?: string }
+    throw new Error(parseGitError(execError.stderr || execError.message || 'Unknown git error'))
+  }
+}
+
+// Some git commands (diff, apply --check) use exit code 1 to mean "differences found"
+// rather than "failure". This variant treats exit 1 as success and returns stdout.
+async function runGitAllowDiffExit(args: string[], cwd: string): Promise<GitCommandResult> {
+  try {
+    const { stdout, stderr } = await execFileAsync('git', args, {
+      cwd,
+      maxBuffer: 50 * 1024 * 1024
+    })
+    return { stdout, stderr: stderr.trim() }
+  } catch (error: unknown) {
+    const execError = error as { code?: number; stdout?: string; stderr?: string; message?: string }
+    if (execError.code === 1 && typeof execError.stdout === 'string') {
+      return { stdout: execError.stdout, stderr: (execError.stderr || '').trim() }
+    }
     throw new Error(parseGitError(execError.stderr || execError.message || 'Unknown git error'))
   }
 }
@@ -374,4 +399,253 @@ export function registerGitHandlers(): void {
       return {}
     }
   })
+
+  // ---------------------------------------------------------------------------
+  // Diff review — per-file diffs and per-hunk stage / unstage / discard
+  // ---------------------------------------------------------------------------
+
+  // Reject anything that would escape the repo root before handing it to git
+  function resolveInRepo(cwd: string, relPath: string): string | null {
+    const resolved = path.resolve(cwd, relPath)
+    const root = path.resolve(cwd)
+    if (resolved !== root && !resolved.startsWith(root + path.sep)) return null
+    return resolved
+  }
+
+  // Parse `git diff --numstat --no-renames -z` into { path: [insertions, deletions] }.
+  // --no-renames keeps every record a plain `ins\tdel\tpath\0` triple.
+  function parseNumstat(stdout: string): Record<string, { insertions: number; deletions: number; binary: boolean }> {
+    const out: Record<string, { insertions: number; deletions: number; binary: boolean }> = {}
+    for (const entry of stdout.split('\0')) {
+      if (!entry) continue
+      const parts = entry.split('\t')
+      if (parts.length < 3) continue
+      const [ins, del, filePath] = parts
+      out[filePath] = {
+        insertions: ins === '-' ? 0 : parseInt(ins, 10) || 0,
+        deletions: del === '-' ? 0 : parseInt(del, 10) || 0,
+        binary: ins === '-' && del === '-'
+      }
+    }
+    return out
+  }
+
+  // Every changed file in the working tree, with staged/unstaged split and line counts
+  ipcMain.handle('git-diff-summary', async (): Promise<GitDiffFile[]> => {
+    const cwd = getCwd()
+
+    try {
+      await runGitCommandSafe(['rev-parse', '--git-dir'], cwd)
+
+      const [unstagedStat, stagedStat, { stdout: status }] = await Promise.all([
+        runGitAllowDiffExit(['diff', '--numstat', '--no-renames', '-z'], cwd).then((r) => parseNumstat(r.stdout)),
+        runGitAllowDiffExit(['diff', '--cached', '--numstat', '--no-renames', '-z'], cwd).then((r) => parseNumstat(r.stdout)),
+        runGitCommandSafe(['status', '--porcelain', '-u', '-z'], cwd)
+      ])
+
+      const files: GitDiffFile[] = []
+      const entries = status.split('\0').filter((entry) => entry.length > 0)
+
+      let i = 0
+      while (i < entries.length) {
+        const entry = entries[i]
+        if (entry.length < 3) {
+          i++
+          continue
+        }
+
+        const indexStatus = entry[0]
+        const workTreeStatus = entry[1]
+        let filePath = unquoteGitPath(entry.substring(3))
+
+        // Renames/copies carry the original path in the following NUL-separated entry
+        if (indexStatus === 'R' || indexStatus === 'C') i++
+
+        const untracked = indexStatus === '?' && workTreeStatus === '?'
+        const staged = !untracked && indexStatus !== ' ' && indexStatus !== '?'
+        const unstaged = untracked || (workTreeStatus !== ' ' && workTreeStatus !== '?')
+
+        let fileStatus: GitFileStatusType = 'modified'
+        if (untracked) fileStatus = 'untracked'
+        else if (indexStatus === 'U' || workTreeStatus === 'U') fileStatus = 'conflict'
+        else if (indexStatus === 'A') fileStatus = 'added'
+        else if (indexStatus === 'D' || workTreeStatus === 'D') fileStatus = 'deleted'
+        else if (indexStatus === 'R') fileStatus = 'renamed'
+
+        const stat = unstagedStat[filePath]
+        const cachedStat = stagedStat[filePath]
+
+        let insertions = (stat?.insertions || 0) + (cachedStat?.insertions || 0)
+        let deletions = (stat?.deletions || 0) + (cachedStat?.deletions || 0)
+        let binary = Boolean(stat?.binary || cachedStat?.binary)
+
+        // Untracked files have no numstat entry — count the new lines ourselves
+        if (untracked) {
+          const absolute = resolveInRepo(cwd, filePath)
+          if (absolute) {
+            try {
+              const stats = await fs.stat(absolute)
+              if (stats.isDirectory()) {
+                i++
+                continue
+              }
+              if (stats.size > 2 * 1024 * 1024) {
+                binary = true
+              } else {
+                const contents = await fs.readFile(absolute)
+                if (contents.includes(0)) {
+                  binary = true
+                } else {
+                  const text = contents.toString('utf-8')
+                  insertions = text.length === 0 ? 0 : text.replace(/\n$/, '').split('\n').length
+                  deletions = 0
+                }
+              }
+            } catch {
+              // Unreadable — leave the counts at zero
+            }
+          }
+        }
+
+        files.push({
+          path: filePath,
+          absolutePath: path.resolve(cwd, filePath),
+          status: fileStatus,
+          staged,
+          unstaged,
+          insertions,
+          deletions,
+          binary
+        })
+        i++
+      }
+
+      files.sort((a, b) => a.path.localeCompare(b.path))
+      return files
+    } catch {
+      return []
+    }
+  })
+
+  // Unified diff for a single file, either the staged or the working-tree side
+  ipcMain.handle(
+    'git-diff-file',
+    async (_, relPath: string, staged: boolean, untracked: boolean): Promise<GitDiffResult> => {
+      const cwd = getCwd()
+
+      try {
+        const absolute = resolveInRepo(cwd, relPath)
+        if (!absolute) return { success: false, error: 'Path is outside the repository' }
+
+        // Untracked files aren't known to git yet, so diff them against /dev/null
+        // and rewrite the headers to repo-relative paths so hunks stay appliable.
+        if (untracked) {
+          const { stdout } = await runGitAllowDiffExit(
+            ['diff', '--no-index', '--unified=3', '--', '/dev/null', absolute],
+            cwd
+          )
+          const normalized = stdout
+            .replace(/^diff --git .*$/m, `diff --git a/${relPath} b/${relPath}`)
+            .replace(/^\+\+\+ .*$/m, `+++ b/${relPath}`)
+          return { success: true, diff: normalized, binary: /^(Binary files|GIT binary patch)/m.test(stdout) }
+        }
+
+        const args = staged
+          ? ['diff', '--cached', '--unified=3', '--no-renames', '--', relPath]
+          : ['diff', '--unified=3', '--no-renames', '--', relPath]
+        const { stdout } = await runGitAllowDiffExit(args, cwd)
+
+        return { success: true, diff: stdout, binary: /^(Binary files|GIT binary patch)/m.test(stdout) }
+      } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Failed to read diff' }
+      }
+    }
+  )
+
+  // Apply a patch fragment. The renderer builds single-hunk patches from a parsed
+  // diff, so this is the one primitive behind stage-hunk / unstage-hunk / discard-hunk:
+  //   stage   -> { cached: true }
+  //   unstage -> { cached: true, reverse: true }
+  //   discard -> { reverse: true }
+  ipcMain.handle(
+    'git-apply-patch',
+    async (_, patch: string, options?: { reverse?: boolean; cached?: boolean }): Promise<GitApplyResult> => {
+      const cwd = getCwd()
+
+      if (!patch || !patch.trim()) {
+        return { success: false, error: 'Empty patch' }
+      }
+
+      // git apply requires a trailing newline
+      const body = patch.endsWith('\n') ? patch : `${patch}\n`
+      const patchFile = path.join(app.getPath('temp'), `crest-hunk-${Date.now()}-${Math.random().toString(36).slice(2)}.patch`)
+
+      try {
+        await fs.writeFile(patchFile, body, 'utf-8')
+
+        const args = ['apply', '--whitespace=nowarn']
+        if (options?.cached) args.push('--cached')
+        if (options?.reverse) args.push('--reverse')
+        args.push(patchFile)
+
+        // --check first so a failure leaves the tree untouched instead of half-applied
+        await runGitCommandSafe([...args.slice(0, -1), '--check', patchFile], cwd)
+        await runGitCommandSafe(args, cwd)
+
+        return { success: true }
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : 'Failed to apply patch'
+        }
+      } finally {
+        await fs.unlink(patchFile).catch(() => {})
+      }
+    }
+  )
+
+  ipcMain.handle('git-stage-file', async (_, relPath: string): Promise<GitApplyResult> => {
+    const cwd = getCwd()
+    try {
+      if (!resolveInRepo(cwd, relPath)) return { success: false, error: 'Path is outside the repository' }
+      await runGitCommandSafe(['add', '--', relPath], cwd)
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Failed to stage file' }
+    }
+  })
+
+  ipcMain.handle('git-unstage-file', async (_, relPath: string): Promise<GitApplyResult> => {
+    const cwd = getCwd()
+    try {
+      if (!resolveInRepo(cwd, relPath)) return { success: false, error: 'Path is outside the repository' }
+      await runGitCommandSafe(['restore', '--staged', '--', relPath], cwd)
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Failed to unstage file' }
+    }
+  })
+
+  // Destructive: throws away working-tree changes for one file. The index is left
+  // alone, and untracked files are deleted outright. The UI confirms before calling.
+  ipcMain.handle(
+    'git-discard-file',
+    async (_, relPath: string, untracked: boolean): Promise<GitApplyResult> => {
+      const cwd = getCwd()
+      try {
+        const absolute = resolveInRepo(cwd, relPath)
+        if (!absolute) return { success: false, error: 'Path is outside the repository' }
+
+        if (untracked) {
+          await fs.rm(absolute, { force: true })
+          return { success: true }
+        }
+
+        await runGitCommandSafe(['restore', '--worktree', '--', relPath], cwd)
+        return { success: true }
+      } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Failed to discard changes' }
+      }
+    }
+  )
 }

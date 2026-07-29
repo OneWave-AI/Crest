@@ -10,6 +10,8 @@ const api: IpcApi = {
     ipcRenderer.invoke('terminal-resize', cols, rows, terminalId),
   getTerminals: () => ipcRenderer.invoke('get-terminals'),
   terminalSendText: (text, terminalId) => ipcRenderer.invoke('terminal-send-text', text, terminalId),
+  terminalSendPaste: (text, terminalId, submit) =>
+    ipcRenderer.invoke('terminal-send-paste', text, terminalId, submit),
   terminalGetBuffer: (terminalId, lines) => ipcRenderer.invoke('terminal-get-buffer', terminalId, lines),
   terminalInterrupt: (terminalId) => ipcRenderer.invoke('terminal-interrupt', terminalId),
   terminalSendEscape: (terminalId) => ipcRenderer.invoke('terminal-send-escape', terminalId),
@@ -113,6 +115,17 @@ const api: IpcApi = {
   gitPush: () => ipcRenderer.invoke('git-push'),
   gitPull: () => ipcRenderer.invoke('git-pull'),
   gitFileStatus: () => ipcRenderer.invoke('git-file-status'),
+  gitDiffSummary: () => ipcRenderer.invoke('git-diff-summary'),
+  gitDiffFile: (relPath, staged, untracked) =>
+    ipcRenderer.invoke('git-diff-file', relPath, staged, untracked),
+  gitApplyPatch: (patch, options) => ipcRenderer.invoke('git-apply-patch', patch, options),
+  gitStageFile: (relPath) => ipcRenderer.invoke('git-stage-file', relPath),
+  gitUnstageFile: (relPath) => ipcRenderer.invoke('git-unstage-file', relPath),
+  gitDiscardFile: (relPath, untracked) => ipcRenderer.invoke('git-discard-file', relPath, untracked),
+
+  // Preview
+  previewCapture: (webContentsId, label) =>
+    ipcRenderer.invoke('preview:capture', webContentsId, label),
 
   // System
   getHomeDir: () => ipcRenderer.invoke('get-home-dir'),

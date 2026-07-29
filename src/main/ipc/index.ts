@@ -7,6 +7,7 @@ import { registerFileHandlers } from './files'
 import { registerSkillsHandlers } from './skills'
 import { registerConversationHandlers } from './conversations'
 import { registerGitHandlers } from './git'
+import { registerPreviewHandlers } from './preview'
 import { registerSettingsHandlers, initializeSettings } from './settings'
 import { registerMCPHandlers } from './mcp'
 import { registerSuperAgentHandlers } from './superagent'
@@ -34,6 +35,9 @@ export function registerIpcHandlers(): void {
 
   // Git handlers
   registerGitHandlers()
+
+  // Preview handlers (screenshot capture)
+  registerPreviewHandlers()
 
   // Settings handlers
   registerSettingsHandlers()

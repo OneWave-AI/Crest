@@ -20,6 +20,7 @@ import HiveManager from './components/hives/HiveManager'
 import MemoryPanelNatural from './components/memory/MemoryPanelNatural'
 import BackgroundAgentsPanel from './components/agents/BackgroundAgentsPanel'
 import RepoVisualization from './components/repo/RepoVisualization'
+import DiffPanel from './components/git/DiffPanel'
 import TeamsPanel from './components/teams/TeamsPanel'
 import ChatView from './components/chat/ChatView'
 
@@ -41,6 +42,7 @@ function App() {
   const [backgroundAgentsPanelOpen, setBackgroundAgentsPanelOpen] = useState(false)
   const [repoVisualizationOpen, setRepoVisualizationOpen] = useState(false)
   const [teamsPanelOpen, setTeamsPanelOpen] = useState(false)
+  const [diffPanelOpen, setDiffPanelOpen] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [viewMode, setViewMode] = useState<ViewMode>('terminal')
   const [activeTerminalId, setActiveTerminalId] = useState<string | null>(null)
@@ -165,6 +167,7 @@ function App() {
           onOpenBackgroundAgents={() => setBackgroundAgentsPanelOpen(true)}
           onOpenRepoVisualization={() => setRepoVisualizationOpen(true)}
           onOpenTeams={() => setTeamsPanelOpen(true)}
+          onOpenDiff={() => setDiffPanelOpen(true)}
           viewMode={viewMode}
           onViewModeChange={setViewMode}
         />
@@ -333,6 +336,13 @@ function App() {
         <TeamsPanel
           isOpen={teamsPanelOpen}
           onClose={() => setTeamsPanelOpen(false)}
+          activeTerminalId={activeTerminalId}
+        />
+
+        {/* Diff Review */}
+        <DiffPanel
+          isOpen={diffPanelOpen}
+          onClose={() => setDiffPanelOpen(false)}
           activeTerminalId={activeTerminalId}
         />
 

@@ -192,6 +192,24 @@ export function registerTerminalHandlers(): void {
     }
   })
 
+  // Send multi-line text as a bracketed paste. `terminal-send-text` appends a CR,
+  // which makes an agent TUI submit at every newline and shreds multi-line input
+  // (diff hunks, stack traces). Bracketed paste keeps it as one block.
+  ipcMain.handle(
+    'terminal-send-paste',
+    async (_, text: string, terminalId: string, submit: boolean = true) => {
+      const terminal = terminals.get(terminalId)
+      if (!terminal) return
+      try {
+        const body = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+        terminal.pty.write(`\x1b[200~${body}\x1b[201~`)
+        if (submit) terminal.pty.write('\r')
+      } catch (error) {
+        console.error(`Failed to paste into terminal ${terminalId}:`, error)
+      }
+    }
+  )
+
   // Get recent output buffer from a terminal
   ipcMain.handle('terminal-get-buffer', (_, terminalId: string, lines?: number) => {
     const buffer = terminalOutputBuffers.get(terminalId)

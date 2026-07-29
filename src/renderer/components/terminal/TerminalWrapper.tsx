@@ -34,6 +34,7 @@ import {
 
 import Terminal, { TerminalRef } from './Terminal'
 import PreviewBar from './PreviewBar'
+import PreviewPane from './PreviewPane'
 import PlanPanel, { PlanItem } from './PlanPanel'
 import TaskTimeline, { TimelineAction, ActionType, ActionStatus } from './TaskTimeline'
 import VoiceInput from './VoiceInput'
@@ -1903,47 +1904,11 @@ export default function TerminalWrapper({
         {previewUrl && (
           <>
             <div className="w-px bg-white/[0.06] hover:bg-[#cc785c]/40 hover:w-1 cursor-col-resize transition-all" />
-            <div className="h-full w-1/2 bg-[#0d0d0d] flex flex-col">
-              <div className="flex items-center justify-between px-3 py-2 bg-[#141414] border-b border-white/[0.06]">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#cc785c] animate-pulse" />
-                  <span className="text-xs text-gray-400">Preview</span>
-                  <span className="text-[10px] text-gray-600 font-mono truncate max-w-[200px]">{previewUrl.split('/').pop()}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => {
-                      const webview = document.getElementById('preview-iframe') as Electron.WebviewTag | null
-                      if (webview && 'reload' in webview) webview.reload()
-                    }}
-                    className="p-1 rounded hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors"
-                  >
-                    <RotateCcw size={12} />
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (previewUrl.startsWith('http')) window.api.openUrlExternal(previewUrl)
-                      else window.api.openFileExternal(previewUrl)
-                    }}
-                    className="p-1 rounded hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors"
-                  >
-                    <ExternalLink size={12} />
-                  </button>
-                  <button onClick={onClosePreview} className="p-1 rounded hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors">
-                    <X size={12} />
-                  </button>
-                </div>
-              </div>
-              <div className="flex-1 bg-white overflow-hidden">
-                <webview
-                  id="preview-iframe"
-                  src={previewUrl.startsWith('http') ? previewUrl : `local-file://${previewUrl.replace(/^file:\/\//, '')}`}
-                  className="w-full h-full"
-                  // @ts-ignore - webPreferences is valid for webview
-                  webpreferences="allowRunningInsecureContent=no"
-                />
-              </div>
-            </div>
+            <PreviewPane
+              url={previewUrl}
+              onClose={onClosePreview}
+              activeTerminalId={activeTerminalId}
+            />
           </>
         )}
 

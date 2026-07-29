@@ -33,7 +33,8 @@ import {
   Users,
   LayoutGrid,
   Terminal as TerminalIcon,
-  MessageSquare
+  MessageSquare,
+  FileDiff
 } from 'lucide-react'
 
 // Custom Bee Icon for Swarm
@@ -95,6 +96,7 @@ interface HeaderProps {
   onOpenTeams?: () => void
   viewMode?: 'terminal' | 'chat'
   onViewModeChange?: (mode: 'terminal' | 'chat') => void
+  onOpenDiff?: () => void
 }
 
 export default function Header({
@@ -112,6 +114,7 @@ export default function Header({
   onOpenBackgroundAgents,
   onOpenRepoVisualization,
   onOpenTeams,
+  onOpenDiff,
   viewMode = 'terminal',
   onViewModeChange
 }: HeaderProps) {
@@ -961,6 +964,14 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                 <div className="px-3 py-2 border-b border-white/[0.06] text-[10px] uppercase tracking-wider text-gray-500">
                   Git Actions {gitBranch && <span className="text-green-400 ml-1">({gitBranch})</span>}
                 </div>
+                {/* Review Changes is a real diff surface, not a prompt — keep it first */}
+                <button
+                  onClick={() => { onOpenDiff?.(); setShowGitMenu(false) }}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.06] transition-colors border-b border-white/[0.06]"
+                >
+                  <FileDiff size={14} className="text-[#cc785c]" />
+                  <span className="text-sm text-gray-200">Review Changes</span>
+                </button>
                 {gitActions.map(action => (
                   <button
                     key={action.id}

@@ -324,6 +324,52 @@ export interface GitFileStatusMap {
   [filePath: string]: GitFileStatusType
 }
 
+// Diff review
+export interface GitDiffFile {
+  /** Repo-relative path, as git reports it */
+  path: string
+  absolutePath: string
+  status: GitFileStatusType
+  /** Has changes in the index */
+  staged: boolean
+  /** Has changes in the working tree (or is untracked) */
+  unstaged: boolean
+  insertions: number
+  deletions: number
+  binary: boolean
+}
+
+export interface GitDiffResult {
+  success: boolean
+  diff?: string
+  binary?: boolean
+  error?: string
+}
+
+export interface GitApplyResult {
+  success: boolean
+  error?: string
+}
+
+// Preview screenshot capture
+export interface PreviewCaptureResult {
+  success: boolean
+  path?: string
+  error?: string
+}
+
+/** A console message or runtime error surfaced by the preview pane */
+export interface PreviewConsoleEntry {
+  id: string
+  level: 'log' | 'warn' | 'error'
+  message: string
+  source?: string
+  line?: number
+  stack?: string
+  timestamp: number
+  count: number
+}
+
 // IPC Channel types
 export interface IpcApi {
   // Terminal
@@ -333,6 +379,8 @@ export interface IpcApi {
   terminalResize: (cols: number, rows: number, terminalId: string) => Promise<void>
   getTerminals: () => Promise<Terminal[]>
   terminalSendText: (text: string, terminalId: string) => Promise<void>
+  /** Send multi-line text as a bracketed paste so a TUI keeps it as one input */
+  terminalSendPaste: (text: string, terminalId: string, submit?: boolean) => Promise<void>
   terminalGetBuffer: (terminalId: string, lines?: number) => Promise<string>
   terminalInterrupt: (terminalId: string) => Promise<void>
   terminalSendEscape: (terminalId: string) => Promise<void>
@@ -419,6 +467,15 @@ export interface IpcApi {
   gitPush: () => Promise<GitResult>
   gitPull: () => Promise<GitResult>
   gitFileStatus: () => Promise<GitFileStatusMap>
+  gitDiffSummary: () => Promise<GitDiffFile[]>
+  gitDiffFile: (relPath: string, staged: boolean, untracked: boolean) => Promise<GitDiffResult>
+  gitApplyPatch: (patch: string, options?: { reverse?: boolean; cached?: boolean }) => Promise<GitApplyResult>
+  gitStageFile: (relPath: string) => Promise<GitApplyResult>
+  gitUnstageFile: (relPath: string) => Promise<GitApplyResult>
+  gitDiscardFile: (relPath: string, untracked: boolean) => Promise<GitApplyResult>
+
+  // Preview
+  previewCapture: (webContentsId: number, label?: string) => Promise<PreviewCaptureResult>
 
   // System
   getHomeDir: () => Promise<string>
