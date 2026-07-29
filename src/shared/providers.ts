@@ -200,8 +200,11 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
       `${home}/.local/bin/gemini`
     ],
     models: [
-      { id: 'gemini-3-pro', name: 'Gemini 3 Pro', desc: 'Most capable', color: 'text-blue-400', bg: 'bg-blue-500/10' },
-      { id: 'gemini-3-flash', name: 'Gemini 3 Flash', desc: 'Fast', color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+      // These ids must stay inside the CLI's own VALID_GEMINI_MODELS allowlist
+      // (gemini-cli-core/dist/src/config/models.js) -- anything else is
+      // rejected. Note the Gemini 3 ids carry a mandatory -preview suffix.
+      { id: 'gemini-3-pro-preview', name: 'Gemini 3 Pro', desc: 'Most capable', color: 'text-blue-400', bg: 'bg-blue-500/10' },
+      { id: 'gemini-3-flash-preview', name: 'Gemini 3 Flash', desc: 'Fast', color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
       { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', desc: 'Previous gen', color: 'text-[#cc785c]', bg: 'bg-[#cc785c]/10' },
       { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', desc: 'Cheapest', color: 'text-amber-400', bg: 'bg-amber-500/10' }
     ],
@@ -221,14 +224,22 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
     supportsLocal: false,
     localUnavailableReason: 'Gemini CLI has no local-model option -- it always talks to Google.',
     configDir: '.gemini',
+    // Gemini's Ink input renders a literal '> ' (ui/components/InputPrompt.js).
     promptChar: />\s*$/m,
-    // NOTE: tuned by eye against Gemini's Ink TUI, same caveat as Kimi's.
     workingPatterns: [
       /\.\.\.\s*$/m,
+      // Model streaming uses ink-spinner 'dots' (the default in
+      // GeminiRespondingSpinner), i.e. the braille frames.
       /⠋|⠙|⠹|⠸|⠼|⠴|⠦|⠧|⠇|⠏/m,
+      // A tool mid-execution renders the 'toggle' spinner or the static
+      // TOOL_STATUS.EXECUTING glyph -- both from this pair (ui/constants.js).
+      // Deliberately NOT matching tool *names*: Gemini renders them as
+      // "ReadFile some/path" with no parens, and a finished call's name stays
+      // on screen, so keying off the name would pin the terminal to "working"
+      // forever after the first tool call.
+      /[⊶⊷]/m,
       /^\s*(?:thinking|analyzing|searching|reading|writing|running|executing|loading|processing|building|compiling|installing|fetching|creating|updating|downloading)\b/im,
-      /\[(?:thinking|analyzing|searching|reading|writing|running|executing|loading|processing|building|compiling|installing|fetching|creating|updating|downloading)\]/i,
-      /\b(?:ReadFile|WriteFile|Edit|Shell|SearchText|FindFiles|GoogleSearch|WebFetch)\s*\(/
+      /\[(?:thinking|analyzing|searching|reading|writing|running|executing|loading|processing|building|compiling|installing|fetching|creating|updating|downloading)\]/i
     ],
     waitingPatterns: [
       />\s*$/m,
@@ -237,8 +248,12 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
       /\[y\/N\]\s*$/im,
       /What would you like|How can I help|anything else|Do you want to/i,
       /Press Enter to continue/i,
-      // Gemini's tool-approval dialog
-      /Allow execution|Apply this change|Yes, allow (?:once|always)/i
+      // Real labels from ui/components/messages/ToolConfirmationMessage.js.
+      // "Do you want to proceed?" is already caught by the generic line above.
+      /Allow once|Allow for this session|Allow for all future sessions/i,
+      /Allow tool for (?:this session|all future sessions)/i,
+      /Allow all server tools for this session/i,
+      /No, suggest changes/i
     ]
   }
 }
