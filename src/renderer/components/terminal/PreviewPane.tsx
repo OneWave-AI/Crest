@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { useToast } from '../common/Toast'
 import type { PreviewConsoleEntry } from '../../../shared/types'
+import { PREVIEW_PARTITION } from '../../../shared/preview'
 
 interface PreviewPaneProps {
   url: string
@@ -335,8 +336,10 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
           ref={webviewRef}
           src={src}
           className="w-full h-full"
-          // Preview content gets its own storage jar instead of sharing the app session
-          partition="persist:crest-preview"
+          // Preview content gets its own storage jar instead of sharing the app
+          // session. Shared constant: main registers local-file: on this same
+          // partition, and the two must not drift.
+          partition={PREVIEW_PARTITION}
           // @ts-ignore - webpreferences is valid for webview
           webpreferences="allowRunningInsecureContent=no,contextIsolation=yes"
         />

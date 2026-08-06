@@ -6,6 +6,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { registerIpcHandlers } from './ipc'
 import { stopAllAcpSessions } from './ipc/acp'
 import { autoInstallStarterKit } from './ipc/skills'
+import { PREVIEW_PARTITION } from '../shared/preview'
 
 // Register custom protocol as privileged (must be before app ready)
 protocol.registerSchemesAsPrivileged([
@@ -118,9 +119,9 @@ app.whenReady().then(() => {
     })
   })
 
-  // Register custom protocol to serve local files in preview
-  // Scoped to home directory to prevent serving arbitrary system files
-  protocol.handle('local-file', (request) => {
+  // Serve local files to the preview pane.
+  // Scoped to home directory to prevent serving arbitrary system files.
+  const handleLocalFile = (request: Request): Response | Promise<Response> => {
     const filePath = decodeURIComponent(request.url.replace('local-file://', ''))
     const resolved = require('path').resolve(filePath)
     const home = homedir()
@@ -133,7 +134,16 @@ app.whenReady().then(() => {
       return new Response('Forbidden: sensitive file', { status: 403 })
     }
     return net.fetch(pathToFileURL(resolved).toString())
-  })
+  }
+
+  protocol.handle('local-file', handleLocalFile)
+
+  // The preview <webview> runs in its own partition (PreviewPane.tsx), and a
+  // custom scheme registered via the global `protocol` object only reaches the
+  // DEFAULT session. Without this second registration every non-http preview --
+  // i.e. every local file -- rendered a blank pane and emitted no did-fail-load
+  // at all, so the preview console had nothing to show either.
+  session.fromPartition(PREVIEW_PARTITION).protocol.handle('local-file', handleLocalFile)
 
   // Default open or close DevTools by F12 in development
   app.on('browser-window-created', (_, window) => {
