@@ -267,6 +267,62 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
       /Allow all server tools for this session/i,
       /No, suggest changes/i
     ]
+  },
+  qwen: {
+    id: 'qwen',
+    accentText: 'text-rose-400',
+    accentBg: 'bg-rose-400',
+    accentTint: 'bg-rose-500/10',
+    name: 'Qwen Code',
+    binaryName: 'qwen',
+    installCommand: 'npm install -g @qwen-code/qwen-code',
+    installPackage: '@qwen-code/qwen-code',
+    checkPaths: (home) => [
+      `${home}/.npm-global/bin/qwen`,
+      '/usr/local/bin/qwen',
+      '/opt/homebrew/bin/qwen',
+      `${home}/.local/bin/qwen`
+    ],
+    // Cloud ids are Alibaba ModelStudio's, reached with the `openai` auth type
+    // against coding.dashscope.aliyuncs.com. The free Qwen OAuth tier was
+    // discontinued 2026-04-15, so an API runtime here needs a ModelStudio key.
+    models: [
+      { id: 'qwen3-coder-plus', name: 'Qwen3 Coder Plus', desc: 'Most capable', color: 'text-rose-400', bg: 'bg-rose-500/10' },
+      { id: 'qwen3-coder-flash', name: 'Qwen3 Coder Flash', desc: 'Fast', color: 'text-amber-400', bg: 'bg-amber-500/10' }
+    ],
+    defaultModel: 'qwen3-coder-plus',
+    // Qwen Code is a Gemini CLI fork, so /model opens a picker dialog rather
+    // than taking an argument. Same reason as gemini: leave it disabled instead
+    // of typing a command that does nothing useful.
+    modelCommand: '',
+    hasPlanMode: false,
+    // The reason this provider exists. Qwen Code speaks OpenAI natively, so
+    // `qwen-local` points it straight at ollama's /v1 with no translation layer
+    // -- unlike claude-local, which goes through the Anthropic-compat shim.
+    supportsLocal: true,
+    localCommand: 'qwen-local',
+    configDir: '.qwen',
+    // Forked from Gemini CLI's Ink UI, so the TUI surface matches gemini's.
+    promptChar: />\s*$/m,
+    workingPatterns: [
+      /\.\.\.\s*$/m,
+      /⠋|⠙|⠹|⠸|⠼|⠴|⠦|⠧|⠇|⠏/m,
+      /[⊶⊷]/m,
+      /^\s*(?:thinking|analyzing|searching|reading|writing|running|executing|loading|processing|building|compiling|installing|fetching|creating|updating|downloading)\b/im,
+      /\[(?:thinking|analyzing|searching|reading|writing|running|executing|loading|processing|building|compiling|installing|fetching|creating|updating|downloading)\]/i
+    ],
+    waitingPatterns: [
+      />\s*$/m,
+      /\(y\/n\)\s*$/im,
+      /\[Y\/n\]\s*$/im,
+      /\[y\/N\]\s*$/im,
+      /What would you like|How can I help|anything else|Do you want to/i,
+      /Press Enter to continue/i,
+      /Allow once|Allow for this session|Allow for all future sessions/i,
+      /Allow tool for (?:this session|all future sessions)/i,
+      /Allow all server tools for this session/i,
+      /No, suggest changes/i
+    ]
   }
 }
 

@@ -220,7 +220,7 @@ export interface CustomTheme {
 }
 
 // CLI Provider types
-export type CLIProvider = 'claude' | 'codex' | 'kimi' | 'gemini'
+export type CLIProvider = 'claude' | 'codex' | 'kimi' | 'gemini' | 'qwen'
 
 /**
  * Where the model behind an agent actually runs.

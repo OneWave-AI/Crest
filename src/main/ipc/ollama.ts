@@ -9,7 +9,15 @@
 import { ipcMain } from 'electron'
 
 export const OLLAMA_HOST = process.env.OLLAMA_HOST?.replace(/\/$/, '') || 'http://127.0.0.1:11434'
-const PROBE_TIMEOUT_MS = 1500
+/**
+ * 1500ms was too tight: a daemon that is mid-load (or paging a 20GB model back
+ * in after a keep-alive expiry) can take several seconds to answer /api/tags,
+ * and the old timeout reported a perfectly healthy ollama as "not running".
+ */
+const PROBE_TIMEOUT_MS = 6000
+/** One retry, because the common failure was a single slow first response. */
+const PROBE_RETRIES = 1
+const RETRY_DELAY_MS = 400
 
 export interface OllamaModel {
   name: string
@@ -43,9 +51,24 @@ async function fetchWithTimeout(url: string): Promise<Response> {
   }
 }
 
+async function probeTags(): Promise<Response> {
+  let lastError: unknown
+  for (let attempt = 0; attempt <= PROBE_RETRIES; attempt++) {
+    try {
+      return await fetchWithTimeout(`${OLLAMA_HOST}/api/tags`)
+    } catch (error) {
+      lastError = error
+      if (attempt < PROBE_RETRIES) {
+        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS))
+      }
+    }
+  }
+  throw lastError
+}
+
 export async function getOllamaStatus(): Promise<OllamaStatus> {
   try {
-    const res = await fetchWithTimeout(`${OLLAMA_HOST}/api/tags`)
+    const res = await probeTags()
     if (!res.ok) {
       return { running: false, host: OLLAMA_HOST, models: [], error: `HTTP ${res.status}` }
     }
