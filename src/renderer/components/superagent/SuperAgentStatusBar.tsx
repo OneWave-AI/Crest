@@ -34,7 +34,7 @@ const LOG_CONFIG = {
   error: { icon: AlertCircle, color: 'text-red-400', bg: 'bg-red-400/10', border: 'border-red-400/20', label: 'Error' },
   complete: { icon: CheckCircle2, color: 'text-green-400', bg: 'bg-green-400/10', border: 'border-green-400/20', label: 'Done' },
   stop: { icon: Square, color: 'text-orange-400', bg: 'bg-orange-400/10', border: 'border-orange-400/20', label: 'Stopped' },
-  working: { icon: Loader2, color: 'text-[#cc785c]', bg: 'bg-[#cc785c]/10', border: 'border-[#cc785c]/20', label: 'Working' },
+  working: { icon: Loader2, color: 'text-accent', bg: 'bg-accent/10', border: 'border-accent/20', label: 'Working' },
   waiting: { icon: Clock, color: 'text-sand-400', bg: 'bg-sand-400/10', border: 'border-sand-400/20', label: 'Waiting' },
   default: { icon: Brain, color: 'text-gray-400', bg: 'bg-gray-400/10', border: 'border-gray-400/20', label: 'Info' }
 }
@@ -120,7 +120,7 @@ export function SuperAgentStatusBar({ onStop }: SuperAgentStatusBarProps) {
         </button>
 
         <div className="relative">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#cc785c] to-[#a55d45] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-accent-700 flex items-center justify-center">
             {isThinking ? (
               <Loader2 className="w-4 h-4 text-white animate-spin" />
             ) : (
@@ -154,7 +154,7 @@ export function SuperAgentStatusBar({ onStop }: SuperAgentStatusBarProps) {
       {progress !== null && (
         <div className="h-1 bg-black/30 shrink-0">
           <div
-            className="h-full bg-gradient-to-r from-[#cc785c] to-[#a55d45] transition-all duration-1000 relative"
+            className="h-full bg-gradient-to-r from-accent to-accent-700 transition-all duration-1000 relative"
             style={{ width: `${Math.min(progress, 100)}%` }}
           >
             <div className="absolute right-0 top-0 w-8 h-full bg-gradient-to-r from-transparent to-white/20 animate-pulse" />
@@ -167,7 +167,7 @@ export function SuperAgentStatusBar({ onStop }: SuperAgentStatusBarProps) {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <div className="relative">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#cc785c] to-[#a55d45] flex items-center justify-center shadow-lg">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-accent-700 flex items-center justify-center shadow-lg">
                 {isThinking ? (
                   <Loader2 className="w-4 h-4 text-white animate-spin" />
                 ) : (
@@ -194,7 +194,7 @@ export function SuperAgentStatusBar({ onStop }: SuperAgentStatusBarProps) {
         {/* Timer */}
         <div className="flex items-center justify-between px-2 py-1.5 bg-black/20 rounded-lg text-xs">
           <div className="flex items-center gap-1.5 text-gray-400">
-            <Clock size={12} className="text-[#cc785c]" />
+            <Clock size={12} className="text-accent" />
             <span>Elapsed</span>
           </div>
           <div className="font-mono">
@@ -288,7 +288,7 @@ export function SuperAgentStatusBar({ onStop }: SuperAgentStatusBarProps) {
         <button
           onClick={nudgeSuperAgent}
           disabled={isPaused}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-[#cc785c]/10 hover:bg-[#cc785c] border border-[#cc785c]/30 hover:border-[#cc785c] text-[#cc785c] hover:text-white rounded-lg text-xs font-medium transition-all group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#cc785c]/10 disabled:hover:text-[#cc785c]"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-accent/10 hover:bg-accent border border-accent/30 hover:border-accent text-accent hover:text-white rounded-lg text-xs font-medium transition-all group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-accent/10 disabled:hover:text-accent"
         >
           <Hand size={12} className="group-hover:scale-110 transition-transform" />
           <span>Nudge Agent</span>

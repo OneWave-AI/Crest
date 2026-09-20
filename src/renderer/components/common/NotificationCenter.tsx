@@ -103,9 +103,9 @@ const typeColors: Record<NotificationType, { bg: string; icon: string; border: s
     border: 'border-red-500/20'
   },
   system: {
-    bg: 'bg-[#cc785c]/10',
-    icon: 'text-[#cc785c]',
-    border: 'border-[#cc785c]/20'
+    bg: 'bg-accent/10',
+    icon: 'text-accent',
+    border: 'border-accent/20'
   }
 }
 
@@ -144,7 +144,7 @@ function NotificationItem({ notification, onMarkRead, onRemove, onNavigate }: No
       {/* Unread indicator */}
       {!notification.read && (
         <div
-          className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#cc785c] animate-pulse"
+          className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-accent animate-pulse"
           aria-hidden="true"
         />
       )}
@@ -170,7 +170,7 @@ function NotificationItem({ notification, onMarkRead, onRemove, onNavigate }: No
           </p>
         )}
         {notification.navigateTo && (
-          <div className="flex items-center gap-1 mt-1.5 text-[10px] text-[#cc785c]">
+          <div className="flex items-center gap-1 mt-1.5 text-[10px] text-accent">
             <span>Go to {notification.navigateTo}</span>
             <ChevronRight size={10} />
           </div>
@@ -290,7 +290,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
         onClick={() => setIsOpen(!isOpen)}
         className={`relative p-2 rounded-lg transition-all duration-150 focus-ring ${
           isOpen
-            ? 'bg-[#cc785c]/20 text-[#cc785c]'
+            ? 'bg-accent/20 text-accent'
             : 'text-gray-400 hover:bg-white/5 hover:text-white'
         }`}
         aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
@@ -303,7 +303,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
         {/* Badge */}
         {unreadCount > 0 && (
           <span
-            className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[16px] h-4 px-1 text-[10px] font-medium text-white bg-[#cc785c] rounded-full animate-bounce-in"
+            className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[16px] h-4 px-1 text-[10px] font-medium text-white bg-accent rounded-full animate-bounce-in"
             aria-hidden="true"
           >
             {unreadCount > 99 ? '99+' : unreadCount}
@@ -322,10 +322,10 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
             <div className="flex items-center gap-2">
-              <Bell size={16} className="text-[#cc785c]" aria-hidden="true" />
+              <Bell size={16} className="text-accent" aria-hidden="true" />
               <h3 className="font-medium text-white">Notifications</h3>
               {unreadCount > 0 && (
-                <span className="px-1.5 py-0.5 text-[10px] font-medium text-[#cc785c] bg-[#cc785c]/10 rounded-full">
+                <span className="px-1.5 py-0.5 text-[10px] font-medium text-accent bg-accent/10 rounded-full">
                   {unreadCount} new
                 </span>
               )}
@@ -337,7 +337,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
                 onClick={() => setSoundEnabled(!soundEnabled)}
                 className={`p-1.5 rounded-lg transition-colors ${
                   soundEnabled
-                    ? 'text-[#cc785c] hover:bg-[#cc785c]/10'
+                    ? 'text-accent hover:bg-accent/10'
                     : 'text-gray-500 hover:bg-white/5 hover:text-white'
                 }`}
                 aria-label={soundEnabled ? 'Mute notifications' : 'Unmute notifications'}
@@ -387,7 +387,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     activeTab === tab.id
-                      ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                      ? 'bg-accent/20 text-accent'
                       : 'text-gray-500 hover:text-white hover:bg-white/5'
                   }`}
                 >

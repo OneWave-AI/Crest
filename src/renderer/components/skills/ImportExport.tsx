@@ -153,7 +153,7 @@ export default function ImportExport({
                 onDragLeave={handleDragLeave}
                 className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
                   dragOver
-                    ? 'border-[#cc785c] bg-[#cc785c]/10'
+                    ? 'border-accent bg-accent/10'
                     : 'border-white/[0.1] hover:border-white/[0.2]'
                 }`}
               >
@@ -164,8 +164,8 @@ export default function ImportExport({
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
                 <div className="flex flex-col items-center gap-3">
-                  <div className={`p-4 rounded-2xl ${dragOver ? 'bg-[#cc785c]/20' : 'bg-white/[0.04]'}`}>
-                    <FileText size={32} className={dragOver ? 'text-[#cc785c]' : 'text-gray-500'} />
+                  <div className={`p-4 rounded-2xl ${dragOver ? 'bg-accent/20' : 'bg-white/[0.04]'}`}>
+                    <FileText size={32} className={dragOver ? 'text-accent' : 'text-gray-500'} />
                   </div>
                   <div>
                     <p className="text-white font-medium mb-1">
@@ -188,8 +188,8 @@ export default function ImportExport({
               {exportItem && (
                 <div className="space-y-4">
                   <div className="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                    <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-[#cc785c]/10' : 'bg-sand-500/10'}`}>
-                      <FileText size={18} className={itemType === 'skill' ? 'text-[#cc785c]' : 'text-sand-400'} />
+                    <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-accent/10' : 'bg-sand-500/10'}`}>
+                      <FileText size={18} className={itemType === 'skill' ? 'text-accent' : 'text-sand-400'} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-white truncate">{exportItem.name}</h3>
@@ -205,7 +205,7 @@ export default function ImportExport({
                   <button
                     onClick={handleExport}
                     disabled={loading}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[#cc785c] text-white font-medium hover:bg-[#d68a6e] transition-colors disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-accent text-white font-medium hover:bg-accent-400 transition-colors disabled:opacity-50"
                   >
                     {loading ? (
                       <Loader2 size={18} className="animate-spin" />

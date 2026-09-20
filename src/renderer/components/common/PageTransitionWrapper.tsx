@@ -243,7 +243,7 @@ function TransitionLoading({ isVisible }: TransitionLoadingProps) {
       <div className="relative">
         {/* Spinning ring */}
         <div
-          className="w-8 h-8 border-2 border-white/10 border-t-[#cc785c] rounded-full"
+          className="w-8 h-8 border-2 border-white/10 border-t-accent rounded-full"
           style={{
             animation: 'spin 0.8s linear infinite'
           }}

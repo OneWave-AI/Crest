@@ -197,11 +197,11 @@ export default function FileTabBar({
                 group relative flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium
                 transition-all duration-150 cursor-pointer select-none flex-shrink-0 max-w-[180px]
                 ${isActive
-                  ? 'bg-[#cc785c]/15 text-[#cc785c]'
+                  ? 'bg-accent/15 text-accent'
                   : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
                 }
                 ${isDragging ? 'opacity-50 scale-95' : ''}
-                ${isDropTarget ? 'ring-2 ring-[#cc785c]/50 ring-inset' : ''}
+                ${isDropTarget ? 'ring-2 ring-accent/50 ring-inset' : ''}
               `}
               onClick={() => onSelectFile(file.path)}
             >
@@ -212,14 +212,14 @@ export default function FileTabBar({
               />
 
               {/* File icon */}
-              <FileIcon size={14} className={isActive ? 'text-[#cc785c]' : extColor} />
+              <FileIcon size={14} className={isActive ? 'text-accent' : extColor} />
 
               {/* File name */}
               <span className="truncate">{file.name}</span>
 
               {/* Dirty indicator */}
               {file.isDirty && (
-                <div className="w-2 h-2 rounded-full bg-[#cc785c] flex-shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-accent flex-shrink-0" />
               )}
 
               {/* Close button */}
@@ -231,7 +231,7 @@ export default function FileTabBar({
                 className={`
                   p-0.5 rounded transition-all flex-shrink-0
                   ${isActive
-                    ? 'opacity-60 hover:opacity-100 hover:bg-[#cc785c]/20'
+                    ? 'opacity-60 hover:opacity-100 hover:bg-accent/20'
                     : 'opacity-0 group-hover:opacity-60 hover:opacity-100 hover:bg-white/10'
                   }
                 `}
@@ -241,7 +241,7 @@ export default function FileTabBar({
 
               {/* Active indicator line */}
               {isActive && (
-                <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#cc785c] rounded-full" />
+                <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-accent rounded-full" />
               )}
             </div>
           )
@@ -329,7 +329,7 @@ export default function FileTabBar({
                   }}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                     isActive
-                      ? 'bg-[#cc785c]/15 text-[#cc785c]'
+                      ? 'bg-accent/15 text-accent'
                       : 'text-gray-300 hover:bg-white/[0.06] hover:text-white'
                   }`}
                 >

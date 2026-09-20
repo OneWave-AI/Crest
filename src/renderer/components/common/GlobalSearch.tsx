@@ -140,7 +140,7 @@ function HighlightedText({ text, highlights }: { text: string; highlights: numbe
       {text.split('').map((char, i) => (
         <span
           key={i}
-          className={highlights.includes(i) ? 'text-[#cc785c] font-semibold' : ''}
+          className={highlights.includes(i) ? 'text-accent font-semibold' : ''}
         >
           {char}
         </span>
@@ -435,7 +435,7 @@ export default function GlobalSearch({
             title: cmd.label,
             subtitle: cmd.shortcut?.join(' + '),
             icon: cmd.icon,
-            iconColor: 'text-[#cc785c]',
+            iconColor: 'text-accent',
             data: { command: cmd, score },
             action: () => {
               onCommand?.(cmd.id)
@@ -680,7 +680,7 @@ export default function GlobalSearch({
                   onClick={() => setSelectedCategory(cat)}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     selectedCategory === cat
-                      ? 'bg-[#cc785c]/15 text-[#cc785c]'
+                      ? 'bg-accent/15 text-accent'
                       : 'text-gray-500 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -688,7 +688,7 @@ export default function GlobalSearch({
                   <span>{config.label}</span>
                   {count > 0 && (
                     <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
-                      selectedCategory === cat ? 'bg-[#cc785c]/20' : 'bg-white/5'
+                      selectedCategory === cat ? 'bg-accent/20' : 'bg-white/5'
                     }`}>
                       {count}
                     </span>
@@ -710,7 +710,7 @@ export default function GlobalSearch({
               {loading ? (
                 <div className="flex items-center justify-center py-12 text-gray-500">
                   <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                     <span className="text-sm">Searching...</span>
                   </div>
                 </div>
@@ -745,8 +745,8 @@ export default function GlobalSearch({
                     </>
                   ) : (
                     <>
-                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#cc785c]/10 mb-3">
-                        <Search size={20} className="text-[#cc785c]/60" />
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 mb-3">
+                        <Search size={20} className="text-accent/60" />
                       </div>
                       <div className="text-gray-500 text-sm">Start typing to search</div>
                       <div className="text-gray-600 text-xs mt-1">Search across files, conversations, skills, and more</div>
@@ -787,18 +787,18 @@ export default function GlobalSearch({
                           onClick={() => result.action()}
                           onMouseEnter={() => setSelectedIndex(currentIndex)}
                           className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all ${
-                            isSelected ? 'bg-[#cc785c]/10' : 'hover:bg-white/[0.02]'
+                            isSelected ? 'bg-accent/10' : 'hover:bg-white/[0.02]'
                           }`}
                         >
                           {/* Icon */}
                           <div
                             className={`flex items-center justify-center w-9 h-9 rounded-xl transition-colors ${
-                              isSelected ? 'bg-[#cc785c]/20' : 'bg-white/[0.03]'
+                              isSelected ? 'bg-accent/20' : 'bg-white/[0.03]'
                             }`}
                           >
                             <Icon
                               size={18}
-                              className={isSelected ? 'text-[#cc785c]' : result.iconColor || 'text-gray-400'}
+                              className={isSelected ? 'text-accent' : result.iconColor || 'text-gray-400'}
                             />
                           </div>
 
@@ -828,7 +828,7 @@ export default function GlobalSearch({
                                       e.stopPropagation()
                                       action.action()
                                     }}
-                                    className="p-1.5 rounded-lg text-gray-500 hover:text-[#cc785c] hover:bg-[#cc785c]/10 transition-colors"
+                                    className="p-1.5 rounded-lg text-gray-500 hover:text-accent hover:bg-accent/10 transition-colors"
                                     title={action.label}
                                   >
                                     <ActionIcon size={14} />
@@ -840,7 +840,7 @@ export default function GlobalSearch({
 
                           {/* Selection indicator */}
                           {isSelected && (
-                            <ChevronRight size={16} className="text-[#cc785c] flex-shrink-0" />
+                            <ChevronRight size={16} className="text-accent flex-shrink-0" />
                           )}
                         </button>
                       )
@@ -879,7 +879,7 @@ export default function GlobalSearch({
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Command size={12} className="text-[#cc785c]" />
+              <Command size={12} className="text-accent" />
               <span className="text-[10px] text-gray-600">Global Search</span>
             </div>
           </div>
@@ -939,8 +939,8 @@ function PreviewPanel({ item }: { item: SearchResult }) {
     <div className="h-full flex flex-col">
       {/* Preview Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-white/[0.04] mb-4">
-        <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#cc785c]/10">
-          <Icon size={20} className="text-[#cc785c]" />
+        <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent/10">
+          <Icon size={20} className="text-accent" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="text-sm font-medium text-white truncate">{item.title}</div>
@@ -954,7 +954,7 @@ function PreviewPanel({ item }: { item: SearchResult }) {
       <div className="flex-1 overflow-auto">
         {loading ? (
           <div className="flex items-center justify-center py-8">
-            <div className="w-5 h-5 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
           </div>
         ) : content ? (
           <pre className="text-xs text-gray-400 font-mono whitespace-pre-wrap break-words">

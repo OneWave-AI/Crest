@@ -16,8 +16,18 @@ module.exports = {
           hover: '#2a2a2a',
           border: '#333333'
         },
+        // Primary accent. Four different terracottas were in circulation as
+        // inline hex before this ramp existed -- #e8956e, #d68a6e, #cc785c,
+        // #b86a50 and #a55d45 all shipped as "the accent" in different files.
+        // They are now numbered, so "one step darker on hover" is a decision
+        // the palette makes once instead of a value each component picks.
         accent: {
+          300: '#e8956e',
+          400: '#d68a6e',
           DEFAULT: '#cc785c',
+          500: '#cc785c',
+          600: '#b86a50',
+          700: '#a55d45',
           hover: '#d68a6e',
           muted: 'rgba(204, 120, 92, 0.1)'
         },

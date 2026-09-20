@@ -120,8 +120,8 @@ export default function UsageDashboard({ className = '' }: UsageDashboardProps) 
       {/* Header with time range selector */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-[#cc785c]/20 rounded-lg">
-            <BarChart3 size={20} className="text-[#cc785c]" />
+          <div className="p-2 bg-accent/20 rounded-lg">
+            <BarChart3 size={20} className="text-accent" />
           </div>
           <div>
             <h2 className="text-lg font-semibold text-white">Usage Dashboard</h2>
@@ -137,7 +137,7 @@ export default function UsageDashboard({ className = '' }: UsageDashboardProps) 
                 onClick={() => setTimeRange(days)}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   timeRange === days
-                    ? 'bg-[#cc785c] text-white'
+                    ? 'bg-accent text-white'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -295,7 +295,7 @@ export default function UsageDashboard({ className = '' }: UsageDashboardProps) 
         {/* By Model */}
         <div className="bg-gradient-to-br from-white/[0.05] to-white/[0.02] rounded-xl p-6 border border-white/[0.06]">
           <div className="flex items-center gap-2 mb-4">
-            <PieChart size={16} className="text-[#cc785c]" />
+            <PieChart size={16} className="text-accent" />
             <h3 className="text-sm font-medium text-gray-400">Usage by Model</h3>
           </div>
 
@@ -310,7 +310,7 @@ export default function UsageDashboard({ className = '' }: UsageDashboardProps) 
 
                 const colors: Record<string, { bg: string; text: string }> = {
                   'Opus': { bg: 'bg-sand-500', text: 'text-sand-400' },
-                  'Sonnet': { bg: 'bg-[#cc785c]', text: 'text-[#cc785c]' },
+                  'Sonnet': { bg: 'bg-accent', text: 'text-accent' },
                   'Haiku': { bg: 'bg-emerald-500', text: 'text-emerald-400' }
                 }
                 const color = colors[model.model] || { bg: 'bg-gray-500', text: 'text-gray-400' }
@@ -341,7 +341,7 @@ export default function UsageDashboard({ className = '' }: UsageDashboardProps) 
         {/* Projections */}
         <div className="bg-gradient-to-br from-white/[0.05] to-white/[0.02] rounded-xl p-6 border border-white/[0.06]">
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={16} className="text-[#cc785c]" />
+            <TrendingUp size={16} className="text-accent" />
             <h3 className="text-sm font-medium text-gray-400">Projections</h3>
           </div>
 

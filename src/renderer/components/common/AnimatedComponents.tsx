@@ -247,7 +247,7 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
 
     const variantClasses = {
       primary:
-        'bg-[#cc785c] text-white hover:bg-[#d68a6e] border-transparent',
+        'bg-accent text-white hover:bg-accent-400 border-transparent',
       secondary:
         'bg-white/5 text-white border-white/[0.06] hover:bg-white/10 hover:border-white/[0.1]',
       ghost: 'bg-transparent text-gray-400 border-transparent hover:bg-white/5 hover:text-white',
@@ -480,7 +480,7 @@ export function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerPr
     <div
       className={`
         ${sizeClasses[size]}
-        border-2 border-white/20 border-t-[#cc785c]
+        border-2 border-white/20 border-t-accent
         rounded-full animate-spin
         ${className}
       `}
@@ -500,7 +500,7 @@ interface PulseDotProps {
 
 export function PulseDot({ color = 'accent', size = 'md', className = '' }: PulseDotProps) {
   const colorClasses = {
-    accent: 'bg-[#cc785c]',
+    accent: 'bg-accent',
     green: 'bg-green-400',
     red: 'bg-red-400',
     yellow: 'bg-yellow-400'

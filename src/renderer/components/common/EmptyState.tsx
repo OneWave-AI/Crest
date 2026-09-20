@@ -43,7 +43,7 @@ export default function EmptyState({
       {/* Icon Container */}
       <div className="relative mb-6">
         {/* Glow effect */}
-        <div className="absolute inset-0 rounded-full bg-[#cc785c]/20 blur-xl scale-150" />
+        <div className="absolute inset-0 rounded-full bg-accent/20 blur-xl scale-150" />
 
         {/* Icon circle */}
         <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-b from-[#1a1a1a] to-[#141414] border border-white/10 shadow-lg">
@@ -68,7 +68,7 @@ export default function EmptyState({
           {action && (
             <button
               onClick={action.onClick}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#cc785c] hover:bg-[#b86a50] text-white font-medium transition-all duration-200 shadow-[0_0_20px_rgba(204,120,92,0.2)] hover:shadow-[0_0_30px_rgba(204,120,92,0.3)]"
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-accent hover:bg-accent-600 text-white font-medium transition-all duration-200 shadow-[0_0_20px_rgba(204,120,92,0.2)] hover:shadow-[0_0_30px_rgba(204,120,92,0.3)]"
             >
               {action.label}
             </button>

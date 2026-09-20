@@ -261,7 +261,7 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
       {/* Toolbar */}
       <div className="flex items-center justify-between px-3 py-2 bg-[#141414] border-b border-white/[0.06]">
         <div className="flex items-center gap-2 min-w-0">
-          <div className="w-2 h-2 rounded-full bg-[#cc785c] animate-pulse flex-shrink-0" />
+          <div className="w-2 h-2 rounded-full bg-accent animate-pulse flex-shrink-0" />
           <span className="text-xs text-gray-400 flex-shrink-0">Preview</span>
           <span className="text-[10px] text-gray-600 font-mono truncate">{url.split('/').pop()}</span>
         </div>
@@ -354,7 +354,7 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
               {activeTerminalId && errors.length > 0 && (
                 <button
                   onClick={() => sendToSession(errors)}
-                  className="flex items-center gap-1 px-2 py-1 rounded text-[10px] text-[#cc785c] hover:bg-[#cc785c]/15 transition-colors"
+                  className="flex items-center gap-1 px-2 py-1 rounded text-[10px] text-accent hover:bg-accent/15 transition-colors"
                   title="Send every error to the running session"
                 >
                   <MessageSquare size={10} />
@@ -421,7 +421,7 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
                 {activeTerminalId && (
                   <button
                     onClick={() => sendToSession([entry])}
-                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 p-1 rounded text-gray-500 hover:text-[#cc785c] hover:bg-white/[0.06] transition-all"
+                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 p-1 rounded text-gray-500 hover:text-accent hover:bg-white/[0.06] transition-all"
                     title="Send this one to the session"
                   >
                     <MessageSquare size={11} />

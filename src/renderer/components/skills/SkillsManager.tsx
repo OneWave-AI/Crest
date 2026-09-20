@@ -442,7 +442,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-64 pl-10 pr-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50"
+              className="w-64 pl-10 pr-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50"
             />
           </div>
 
@@ -452,7 +452,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
               onClick={() => setShowCategoryFilter(!showCategoryFilter)}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
                 selectedCategory
-                  ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                  ? 'bg-accent/20 text-accent'
                   : 'bg-white/5 text-gray-400 hover:text-white'
               }`}
             >
@@ -468,7 +468,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
                     setShowCategoryFilter(false)
                   }}
                   className={`w-full px-4 py-2 text-left text-sm transition-colors ${
-                    !selectedCategory ? 'text-[#cc785c]' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    !selectedCategory ? 'text-accent' : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   All Categories
@@ -481,7 +481,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
                       setShowCategoryFilter(false)
                     }}
                     className={`w-full px-4 py-2 text-left text-sm transition-colors ${
-                      selectedCategory === cat ? 'text-[#cc785c]' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      selectedCategory === cat ? 'text-accent' : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                   >
                     {cat}
@@ -511,7 +511,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
                       setShowSortMenu(false)
                     }}
                     className={`w-full flex items-center gap-2 px-4 py-2 text-sm transition-colors ${
-                      sortOption === opt.id ? 'text-[#cc785c]' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      sortOption === opt.id ? 'text-accent' : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                   >
                     <opt.icon size={14} />
@@ -528,7 +528,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
             <button
               onClick={() => setViewMode('grid')}
               className={`p-2 rounded-md transition-colors ${
-                viewMode === 'grid' ? 'bg-[#cc785c]/20 text-[#cc785c]' : 'text-gray-500 hover:text-white'
+                viewMode === 'grid' ? 'bg-accent/20 text-accent' : 'text-gray-500 hover:text-white'
               }`}
             >
               <Grid size={16} />
@@ -536,7 +536,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
             <button
               onClick={() => setViewMode('list')}
               className={`p-2 rounded-md transition-colors ${
-                viewMode === 'list' ? 'bg-[#cc785c]/20 text-[#cc785c]' : 'text-gray-500 hover:text-white'
+                viewMode === 'list' ? 'bg-accent/20 text-accent' : 'text-gray-500 hover:text-white'
               }`}
             >
               <List size={16} />
@@ -564,14 +564,14 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 btn-scale-hover ${
               activeTab === tab.id
-                ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                ? 'bg-accent/20 text-accent'
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
             <tab.icon size={16} className={`transition-transform duration-200 ${activeTab === tab.id ? 'scale-110' : ''}`} />
             <span>{tab.label}</span>
             <span className={`px-1.5 py-0.5 rounded text-[10px] transition-colors ${
-              activeTab === tab.id ? 'bg-[#cc785c]/30' : 'bg-white/10'
+              activeTab === tab.id ? 'bg-accent/30' : 'bg-white/10'
             }`}>
               {tab.count}
             </span>
@@ -591,7 +591,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
           ) : loading ? (
             <div className="flex items-center justify-center h-full">
               <div className="flex flex-col items-center gap-3 text-gray-500">
-                <div className="w-8 h-8 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                 <span>Loading skills and agents...</span>
               </div>
             </div>
@@ -759,9 +759,9 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
           <div className="w-1/2 border-l border-white/[0.06] flex flex-col bg-white/[0.01]">
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${previewItem.type === 'skill' ? 'bg-[#cc785c]/10' : 'bg-sand-500/10'}`}>
+                <div className={`p-2 rounded-lg ${previewItem.type === 'skill' ? 'bg-accent/10' : 'bg-sand-500/10'}`}>
                   {previewItem.type === 'skill' ? (
-                    <Sparkles size={16} className="text-[#cc785c]" />
+                    <Sparkles size={16} className="text-accent" />
                   ) : (
                     <Bot size={16} className="text-sand-400" />
                   )}
@@ -828,7 +828,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
           <div className="relative w-full max-w-md bg-[#0d0d0d] border border-white/[0.08] rounded-2xl shadow-2xl">
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
               <div className="flex items-center gap-2">
-                <Tag size={18} className="text-[#cc785c]" />
+                <Tag size={18} className="text-accent" />
                 <h3 className="font-medium text-white">Edit Categories</h3>
               </div>
               <button
@@ -852,7 +852,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
                     }}
                     className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
                       tempCategories.includes(cat)
-                        ? 'bg-[#cc785c]/20 text-[#cc785c] border border-[#cc785c]/30'
+                        ? 'bg-accent/20 text-accent border border-accent/30'
                         : 'bg-white/5 text-gray-400 border border-white/10 hover:text-white'
                     }`}
                   >
@@ -869,7 +869,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
                 </button>
                 <button
                   onClick={() => handleUpdateCategories(editingCategories.id, editingCategories.type, tempCategories)}
-                  className="px-4 py-2 rounded-lg bg-[#cc785c] text-white font-medium hover:bg-[#d68a6e] transition-colors"
+                  className="px-4 py-2 rounded-lg bg-accent text-white font-medium hover:bg-accent-400 transition-colors"
                 >
                   Save
                 </button>
@@ -890,11 +890,11 @@ function HighlightedMarkdown({ content }: { content: string }) {
       let className = 'text-gray-300'
 
       if (line.startsWith('---')) {
-        className = 'text-[#cc785c]/60'
+        className = 'text-accent/60'
       } else if (line.startsWith('#')) {
-        className = 'text-[#cc785c] font-bold'
+        className = 'text-accent font-bold'
       } else if (line.match(/^[a-z]+:/i) && !line.startsWith(' ')) {
-        className = 'text-[#cc785c]'
+        className = 'text-accent'
       } else if (line.startsWith('```')) {
         className = 'text-sand-400'
       } else if (line.startsWith('- ') || line.startsWith('* ')) {
@@ -957,19 +957,19 @@ function SkillCard({
       onDragEnd={onDragEnd}
       className={`group p-4 rounded-xl border cursor-grab active:cursor-grabbing card-hover transition-all duration-200 ${
         isDragging
-          ? 'opacity-50 border-[#cc785c]/50 scale-105'
+          ? 'opacity-50 border-accent/50 scale-105'
           : isDragOver
-          ? 'border-[#cc785c] bg-[#cc785c]/5'
+          ? 'border-accent bg-accent/5'
           : isPreviewActive
-          ? 'border-[#cc785c]/50 bg-[#cc785c]/5'
+          ? 'border-accent/50 bg-accent/5'
           : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1] hover:bg-white/[0.04] hover:shadow-lg'
       }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <GripVertical size={14} className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="p-2 rounded-lg bg-[#cc785c]/10">
-            <Sparkles size={18} className="text-[#cc785c]" />
+          <div className="p-2 rounded-lg bg-accent/10">
+            <Sparkles size={18} className="text-accent" />
           </div>
         </div>
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -1072,18 +1072,18 @@ function SkillRow({
       onDragEnd={onDragEnd}
       className={`group flex items-center justify-between p-4 rounded-xl border transition-all cursor-grab active:cursor-grabbing ${
         isDragging
-          ? 'opacity-50 border-[#cc785c]/50'
+          ? 'opacity-50 border-accent/50'
           : isDragOver
-          ? 'border-[#cc785c] bg-[#cc785c]/5'
+          ? 'border-accent bg-accent/5'
           : isPreviewActive
-          ? 'border-[#cc785c]/50 bg-[#cc785c]/5'
+          ? 'border-accent/50 bg-accent/5'
           : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]'
       }`}
     >
       <div className="flex items-center gap-3">
         <GripVertical size={14} className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div className="p-2 rounded-lg bg-[#cc785c]/10">
-          <Sparkles size={16} className="text-[#cc785c]" />
+        <div className="p-2 rounded-lg bg-accent/10">
+          <Sparkles size={16} className="text-accent" />
         </div>
         <div>
           <h3 className="font-medium text-white">{skill.name}</h3>
@@ -1332,7 +1332,7 @@ function EmptyState({
       {showStarterKit && onInstallStarterKit && (
         <button
           onClick={onInstallStarterKit}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#cc785c] text-white font-medium hover:bg-[#d68a6e] transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-white font-medium hover:bg-accent-400 transition-colors"
         >
           <Package size={18} />
           Install Starter Kit

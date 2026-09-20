@@ -371,7 +371,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
       <button
         onClick={() => onChange(!enabled)}
         className={`relative w-11 h-6 rounded-full transition-colors ${
-          enabled ? 'bg-[#cc785c]' : 'bg-white/10'
+          enabled ? 'bg-accent' : 'bg-white/10'
         }`}
       >
         <div
@@ -395,7 +395,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
       <div className="flex items-center justify-between mb-3">
         <div className="text-sm text-white">{label}</div>
-        <div className="text-sm text-[#cc785c] font-medium">
+        <div className="text-sm text-accent font-medium">
           {formatValue ? formatValue(value) : value}
         </div>
       </div>
@@ -411,7 +411,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
           [&::-webkit-slider-thumb]:w-4
           [&::-webkit-slider-thumb]:h-4
           [&::-webkit-slider-thumb]:rounded-full
-          [&::-webkit-slider-thumb]:bg-[#cc785c]
+          [&::-webkit-slider-thumb]:bg-accent
           [&::-webkit-slider-thumb]:cursor-pointer
           [&::-webkit-slider-thumb]:transition-transform
           [&::-webkit-slider-thumb]:hover:scale-110"
@@ -484,7 +484,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   onClick={() => setActiveSection(item.id as SectionType)}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium ${
                     activeSection === item.id
-                      ? 'bg-[#cc785c]/15 text-[#cc785c]'
+                      ? 'bg-accent/15 text-accent'
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -506,7 +506,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     <h3 className="text-sm font-medium text-white">Terminal Theme</h3>
                     <button
                       onClick={() => setShowThemeCreator(true)}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#cc785c]/10 text-[#cc785c] text-xs font-medium hover:bg-[#cc785c]/20 transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/10 text-accent text-xs font-medium hover:bg-accent/20 transition-colors"
                     >
                       <Plus size={14} />
                       Create Theme
@@ -521,7 +521,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                             onClick={() => setTheme(t.id)}
                             className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-colors ${
                               theme === t.id
-                                ? 'border-[#cc785c] bg-[#cc785c]/10'
+                                ? 'border-accent bg-accent/10'
                                 : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]'
                             }`}
                           >
@@ -536,7 +536,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                             </div>
                             <span className="text-sm text-white">{t.name}</span>
                             {theme === t.id && (
-                              <Check size={16} className="absolute right-3 text-[#cc785c]" />
+                              <Check size={16} className="absolute right-3 text-accent" />
                             )}
                           </button>
                           {isCustom && (
@@ -571,7 +571,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                       {/* Header */}
                       <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-gradient-to-r from-[#1a1a1c] to-[#141416]">
                         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                          <Sparkles size={18} className="text-[#cc785c]" />
+                          <Sparkles size={18} className="text-accent" />
                           Create Custom Theme
                         </h3>
                         <button
@@ -591,7 +591,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                             value={newTheme.name}
                             onChange={(e) => setNewTheme({ ...newTheme, name: e.target.value })}
                             placeholder="My Custom Theme"
-                            className="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#cc785c]/50 focus:ring-1 focus:ring-[#cc785c]/20"
+                            className="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20"
                           />
                         </div>
 
@@ -608,7 +608,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 }}
                                 className={`px-3 py-2 rounded-lg text-xs font-medium transition-all flex items-center gap-2 ${
                                   selectedPreset === presetId
-                                    ? 'bg-[#cc785c] text-white ring-2 ring-[#cc785c]/50'
+                                    ? 'bg-accent text-white ring-2 ring-accent/50'
                                     : 'bg-black/30 text-gray-400 hover:bg-white/[0.06] hover:text-white border border-white/[0.06]'
                                 }`}
                               >
@@ -740,7 +740,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         </button>
                         <button
                           onClick={handleSaveCustomTheme}
-                          className="px-5 py-2.5 rounded-xl text-sm bg-[#cc785c] text-white hover:bg-[#b86a50] transition-colors flex items-center gap-2"
+                          className="px-5 py-2.5 rounded-xl text-sm bg-accent text-white hover:bg-accent-600 transition-colors flex items-center gap-2"
                         >
                           <Save size={14} />
                           Save Theme
@@ -765,7 +765,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         onClick={() => setFontFamily(family)}
                         className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                           fontFamily === family
-                            ? 'bg-[#cc785c] text-white'
+                            ? 'bg-accent text-white'
                             : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
                         }`}
                         style={{ fontFamily: family }}
@@ -786,7 +786,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         onClick={() => setFontSize(size)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           fontSize === size
-                            ? 'bg-[#cc785c] text-white'
+                            ? 'bg-accent text-white'
                             : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
                         }`}
                       >
@@ -806,7 +806,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         onClick={() => setLineHeight(height)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           lineHeight === height
-                            ? 'bg-[#cc785c] text-white'
+                            ? 'bg-accent text-white'
                             : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
                         }`}
                       >
@@ -826,7 +826,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         onClick={() => setCursorStyle(style)}
                         className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors capitalize ${
                           cursorStyle === style
-                            ? 'bg-[#cc785c] text-white'
+                            ? 'bg-accent text-white'
                             : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
                         }`}
                       >
@@ -852,7 +852,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         onClick={() => setScrollbackBuffer(size)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           scrollbackBuffer === size
-                            ? 'bg-[#cc785c] text-white'
+                            ? 'bg-accent text-white'
                             : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
                         }`}
                       >
@@ -891,14 +891,14 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         onClick={() => setCLIProvider(provider.id)}
                         className={`flex flex-col items-start gap-1.5 p-4 rounded-xl border-2 transition-all ${
                           cliProvider === provider.id
-                            ? 'border-[#cc785c] bg-[#cc785c]/10'
+                            ? 'border-accent bg-accent/10'
                             : 'border-white/10 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/20'
                         }`}
                       >
                         <div className="flex items-center gap-2 w-full">
                           <span className="text-sm font-semibold text-white">{provider.name}</span>
                           {cliProvider === provider.id && (
-                            <CheckCircle size={14} className="text-[#cc785c] ml-auto" />
+                            <CheckCircle size={14} className="text-accent ml-auto" />
                           )}
                         </div>
                         <span className="text-[11px] text-gray-500">{provider.binaryName} CLI</span>
@@ -943,8 +943,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 </button>
 
                 {updateInfo && updateInfo.hasUpdate && (
-                  <div className="p-4 rounded-xl bg-[#cc785c]/10 border border-[#cc785c]/20">
-                    <div className="flex items-center gap-2 text-[#cc785c] mb-2">
+                  <div className="p-4 rounded-xl bg-accent/10 border border-accent/20">
+                    <div className="flex items-center gap-2 text-accent mb-2">
                       <Sparkles size={16} />
                       <span className="font-medium">Update Available!</span>
                     </div>
@@ -954,7 +954,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     {updateInfo.releaseUrl && (
                       <button
                         onClick={() => window.api?.openUrlExternal(updateInfo.releaseUrl!)}
-                        className="flex items-center gap-2 text-sm text-[#cc785c] hover:underline"
+                        className="flex items-center gap-2 text-sm text-accent hover:underline"
                       >
                         <ExternalLink size={14} />
                         View Release Notes
@@ -982,7 +982,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                           onClick={() => setSessionContextDays(d)}
                           className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                             sessionContextDays === d
-                              ? 'bg-[#cc785c] text-white'
+                              ? 'bg-accent text-white'
                               : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
                           }`}
                         >
@@ -1018,7 +1018,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         }
                       }}
                       placeholder="sk-ant-..."
-                      className="w-full px-4 py-3 pr-12 rounded-lg bg-white/5 border border-white/[0.06] text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50 font-mono"
+                      className="w-full px-4 py-3 pr-12 rounded-lg bg-white/5 border border-white/[0.06] text-white text-sm placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono"
                     />
                     <button
                       type="button"
@@ -1035,7 +1035,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                 <button
                   onClick={() => window.api?.openUrlExternal('https://console.anthropic.com/settings/keys')}
-                  className="flex items-center gap-2 text-sm text-[#cc785c] hover:underline"
+                  className="flex items-center gap-2 text-sm text-accent hover:underline"
                 >
                   <ExternalLink size={14} />
                   Get API Key from Anthropic Console

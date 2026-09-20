@@ -669,7 +669,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
           className="titlebar-no-drag p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors"
           title="Home"
         >
-          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#cc785c] to-[#a55d45] flex items-center justify-center">
+          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-accent to-accent-700 flex items-center justify-center">
             <Home size={12} className="text-white" />
           </div>
         </button>
@@ -916,7 +916,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
           <button
             onClick={onOpenSuperAgent}
             disabled={!activeTerminalId}
-            className="titlebar-no-drag flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-gradient-to-r from-[#cc785c]/20 to-[#a55d45]/20 hover:from-[#cc785c]/30 hover:to-[#a55d45]/30 border border-[#cc785c]/30 text-[#cc785c] disabled:opacity-40 disabled:cursor-not-allowed"
+            className="titlebar-no-drag flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-gradient-to-r from-accent/20 to-accent-700/20 hover:from-accent/30 hover:to-accent-700/30 border border-accent/30 text-accent disabled:opacity-40 disabled:cursor-not-allowed"
             title="Launch Super Agent"
           >
             <Zap size={12} />
@@ -969,7 +969,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                   onClick={() => { onOpenDiff?.(); setShowGitMenu(false) }}
                   className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.06] transition-colors border-b border-white/[0.06]"
                 >
-                  <FileDiff size={14} className="text-[#cc785c]" />
+                  <FileDiff size={14} className="text-accent" />
                   <span className="text-sm text-gray-200">Review Changes</span>
                 </button>
                 {gitActions.map(action => (
@@ -1038,7 +1038,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
             <button
               onClick={() => setShowPreviewPopover(!showPreviewPopover)}
               className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs transition-colors ${
-                showPreviewPopover ? 'bg-[#cc785c]/20 text-[#cc785c]' : 'hover:bg-white/[0.06] text-gray-400'
+                showPreviewPopover ? 'bg-accent/20 text-accent' : 'hover:bg-white/[0.06] text-gray-400'
               }`}
               title="Preview file"
             >
@@ -1061,7 +1061,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                       value={previewPath}
                       onChange={(e) => setPreviewPath(e.target.value)}
                       placeholder="/path/to/file.html"
-                      className="flex-1 px-3 py-2 bg-[#141414] border border-white/[0.08] rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50"
+                      className="flex-1 px-3 py-2 bg-[#141414] border border-white/[0.08] rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50"
                       onKeyDown={(e) => e.key === 'Enter' && openPreviewFile()}
                     />
                     <button onClick={copyPath} className="p-2 bg-[#141414] border border-white/[0.08] rounded-lg hover:bg-white/[0.04] transition-colors" title="Copy path">
@@ -1069,7 +1069,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                     </button>
                   </div>
                   <div className="flex gap-2">
-                    <button onClick={openPreviewFile} disabled={!previewPath.trim()} className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[#cc785c] hover:bg-[#cc785c]/80 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm text-white transition-colors">
+                    <button onClick={openPreviewFile} disabled={!previewPath.trim()} className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-accent hover:bg-accent/80 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm text-white transition-colors">
                       <Eye size={14} /> Preview
                     </button>
                     <button onClick={openInExternalBrowser} disabled={!previewPath.trim()} className="flex items-center justify-center px-3 py-2 bg-[#141414] border border-white/[0.08] hover:bg-white/[0.04] disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm text-gray-300 transition-colors" title="Open in browser">
@@ -1152,7 +1152,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
               onClick={() => onViewModeChange('terminal')}
               className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${
                 viewMode === 'terminal'
-                  ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                  ? 'bg-accent/20 text-accent'
                   : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
               }`}
               title="Terminal view"
@@ -1165,7 +1165,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
               onClick={() => onViewModeChange('chat')}
               className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${
                 viewMode === 'chat'
-                  ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                  ? 'bg-accent/20 text-accent'
                   : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
               }`}
               title="Chat view"
@@ -1178,7 +1178,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
               onClick={() => onViewModeChange('acp')}
               className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${
                 viewMode === 'acp'
-                  ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                  ? 'bg-accent/20 text-accent'
                   : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
               }`}
               title="ACP view — structured agent session"

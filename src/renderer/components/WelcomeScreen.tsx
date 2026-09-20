@@ -29,8 +29,8 @@ const FEATURES = [
     title: 'Welcome to Crest',
     subtitle: 'Your Premium AI Terminal Experience',
     description: 'A powerful, feature-rich terminal interface for AI coding agents. Navigate through this guide to discover everything Crest has to offer.',
-    color: 'from-[#cc785c] to-[#e8956e]',
-    iconBg: 'bg-gradient-to-br from-[#cc785c]/20 to-[#e8956e]/20',
+    color: 'from-accent to-accent-300',
+    iconBg: 'bg-gradient-to-br from-accent/20 to-accent-300/20',
     tips: [
       'Built for developers who demand more',
       'Seamless Claude integration',

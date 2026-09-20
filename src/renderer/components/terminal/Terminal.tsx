@@ -803,7 +803,7 @@ const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEn
               )}
               <button
                 onClick={item.action}
-                className="w-full flex items-center justify-between px-3 py-1.5 text-sm text-gray-300 hover:bg-[#cc785c]/20 hover:text-white transition-colors"
+                className="w-full flex items-center justify-between px-3 py-1.5 text-sm text-gray-300 hover:bg-accent/20 hover:text-white transition-colors"
               >
                 <div className="flex items-center gap-2">
                   {item.icon}

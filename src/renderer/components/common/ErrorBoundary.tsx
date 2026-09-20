@@ -153,7 +153,7 @@ ${errorInfo?.componentStack}
                 <div className="flex flex-col gap-3 pt-2">
                   <button
                     onClick={this.handleReset}
-                    className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-[#cc785c] hover:bg-[#b86a50] text-white font-medium transition-all duration-200 shadow-[0_0_20px_rgba(204,120,92,0.2)] hover:shadow-[0_0_30px_rgba(204,120,92,0.3)]"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-accent hover:bg-accent-600 text-white font-medium transition-all duration-200 shadow-[0_0_20px_rgba(204,120,92,0.2)] hover:shadow-[0_0_30px_rgba(204,120,92,0.3)]"
                   >
                     <RotateCcw size={18} />
                     Try Again
@@ -187,7 +187,7 @@ ${errorInfo?.componentStack}
               If this keeps happening, try refreshing the app or{' '}
               <button
                 onClick={this.handleReportIssue}
-                className="text-[#cc785c] hover:text-[#e08a6c] underline underline-offset-2"
+                className="text-accent hover:text-[#e08a6c] underline underline-offset-2"
               >
                 report the issue
               </button>

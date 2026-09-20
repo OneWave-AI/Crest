@@ -581,7 +581,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 onClick={() => setActiveTab('conversations')}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs transition-all ${
                   activeTab === 'conversations'
-                    ? 'bg-[#cc785c] text-white shadow-sm'
+                    ? 'bg-accent text-white shadow-sm'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -601,7 +601,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
               </button>
             </div>
             {activeTab === 'conversations' && pinnedCount > 0 && (
-              <span className="flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-[#cc785c]/20 text-[#cc785c]">
+              <span className="flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-accent/20 text-accent">
                 <Pin size={10} />
                 {pinnedCount}
               </span>
@@ -620,11 +620,11 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-48 pl-8 pr-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50"
+                className="w-48 pl-8 pr-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50"
               />
               {searching && (
                 <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
-                  <div className="w-3 h-3 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin" />
+                  <div className="w-3 h-3 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                 </div>
               )}
             </div>
@@ -634,7 +634,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
               onClick={() => setShowPreviewPanel(!showPreviewPanel)}
               className={`p-1.5 rounded-lg transition-colors ${
                 showPreviewPanel
-                  ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                  ? 'bg-accent/20 text-accent'
                   : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
               }`}
               title={showPreviewPanel ? 'Hide preview' : 'Show preview'}
@@ -655,7 +655,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 onClick={() => setSortBy('newest')}
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   sortBy === 'newest'
-                    ? 'bg-[#cc785c] text-white shadow-sm'
+                    ? 'bg-accent text-white shadow-sm'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -665,7 +665,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 onClick={() => setSortBy('oldest')}
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   sortBy === 'oldest'
-                    ? 'bg-[#cc785c] text-white shadow-sm'
+                    ? 'bg-accent text-white shadow-sm'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -675,7 +675,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 onClick={() => setSortBy('project-asc')}
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   sortBy === 'project-asc'
-                    ? 'bg-[#cc785c] text-white shadow-sm'
+                    ? 'bg-accent text-white shadow-sm'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -685,7 +685,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 onClick={() => setSortBy('project-desc')}
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   sortBy === 'project-desc'
-                    ? 'bg-[#cc785c] text-white shadow-sm'
+                    ? 'bg-accent text-white shadow-sm'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -861,7 +861,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
           ) : loading ? (
             <div className="flex items-center justify-center h-full text-gray-500">
               <div className="flex flex-col items-center gap-3">
-                <div className="w-8 h-8 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                 <span className="text-sm">Loading conversations...</span>
               </div>
             </div>
@@ -884,9 +884,9 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                   {groupBy !== 'none' && (
                     <div className="flex items-center gap-2 mb-2">
                       {groupBy === 'project' ? (
-                        <Folder size={12} className="text-[#cc785c]" />
+                        <Folder size={12} className="text-accent" />
                       ) : (
-                        <Calendar size={12} className="text-[#cc785c]" />
+                        <Calendar size={12} className="text-accent" />
                       )}
                       <span className="text-xs font-medium text-gray-400">
                         {groupBy === 'project' ? group.split('/').pop() || group : group}
@@ -1011,14 +1011,14 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
 
                   {/* Right: Claude Conversation */}
                   <div className="w-1/2 overflow-y-auto p-4">
-                    <h4 className="text-xs font-medium text-[#cc785c] uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <h4 className="text-xs font-medium text-accent uppercase tracking-wider mb-3 flex items-center gap-2">
                       <MessageSquare size={12} />
                       Claude Conversation {linkedMessages.length > 0 ? `(${linkedMessages.length})` : ''}
                     </h4>
                     {loadingLinkedMessages ? (
                       <div className="flex items-center justify-center py-8">
                         <div className="flex flex-col items-center gap-3 text-gray-500">
-                          <div className="w-6 h-6 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin" />
+                          <div className="w-6 h-6 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                           <span className="text-xs">Loading conversation...</span>
                         </div>
                       </div>
@@ -1043,7 +1043,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                               {message.type === 'human' ? (
                                 <User size={10} className="text-blue-400" />
                               ) : (
-                                <Bot size={10} className="text-[#cc785c]" />
+                                <Bot size={10} className="text-accent" />
                               )}
                               <span className="text-[10px] font-medium opacity-70">
                                 {message.type === 'human' ? 'User' : 'Claude'}
@@ -1085,7 +1085,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                         {selectedConversation.projectFolder.split('/').pop() || selectedConversation.projectFolder}
                       </span>
                       {selectedConversation.pinned && (
-                        <Pin size={10} className="text-[#cc785c] flex-shrink-0" />
+                        <Pin size={10} className="text-accent flex-shrink-0" />
                       )}
                     </div>
                     <div className="flex items-center gap-3 text-xs text-gray-400">
@@ -1111,7 +1111,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                   </div>
                   <button
                     onClick={() => onResumeSession(selectedConversation)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#cc785c]/10 text-[#cc785c] text-sm font-medium hover:bg-[#cc785c]/20 transition-all"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 text-accent text-sm font-medium hover:bg-accent/20 transition-all"
                   >
                     <Play size={14} />
                     Resume
@@ -1126,7 +1126,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                   {loadingPreview ? (
                     <div className="flex items-center justify-center h-full">
                       <div className="flex flex-col items-center gap-3 text-gray-500">
-                        <div className="w-6 h-6 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin" />
+                        <div className="w-6 h-6 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                         <span className="text-sm">Loading messages...</span>
                       </div>
                     </div>
@@ -1324,16 +1324,16 @@ const ConversationListItem = memo(function ConversationListItem({
         isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
       } ${
         isSelected
-          ? 'border-[#cc785c]/50 bg-[#cc785c]/10'
+          ? 'border-accent/50 bg-accent/10'
           : conversation.pinned
-            ? 'border-[#cc785c]/20 bg-[#cc785c]/5 hover:border-[#cc785c]/40'
+            ? 'border-accent/20 bg-accent/5 hover:border-accent/40'
             : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1] hover:bg-white/[0.04]'
       }`}
       onClick={onSelect}
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 mb-0.5">
-          {conversation.pinned && <Pin size={10} className="text-[#cc785c]" />}
+          {conversation.pinned && <Pin size={10} className="text-accent" />}
           <Clock size={10} className="text-gray-500" />
           <span className="text-xs text-gray-500">{formatDate(conversation.timestamp)}</span>
           {conversation.stats && (
@@ -1354,7 +1354,7 @@ const ConversationListItem = memo(function ConversationListItem({
           onClick={onPin}
           className={`p-1.5 rounded transition-colors ${
             conversation.pinned
-              ? 'text-[#cc785c] hover:bg-[#cc785c]/20'
+              ? 'text-accent hover:bg-accent/20'
               : 'text-gray-400 hover:text-white hover:bg-white/10'
           }`}
           title={conversation.pinned ? 'Unpin' : 'Pin'}
@@ -1380,7 +1380,7 @@ const ConversationListItem = memo(function ConversationListItem({
             e.stopPropagation()
             onResume()
           }}
-          className="flex items-center gap-1 px-2 py-1 rounded bg-[#cc785c]/10 text-[#cc785c] text-xs font-medium hover:bg-[#cc785c]/20 transition-all ml-1"
+          className="flex items-center gap-1 px-2 py-1 rounded bg-accent/10 text-accent text-xs font-medium hover:bg-accent/20 transition-all ml-1"
         >
           <Play size={10} />
           Resume
@@ -1420,7 +1420,7 @@ function MessageBubble({
           {isHuman ? (
             <User size={14} className="text-blue-300" />
           ) : (
-            <Bot size={14} className="text-[#cc785c]" />
+            <Bot size={14} className="text-accent" />
           )}
         </div>
         <div className={`flex-1 max-w-[85%] ${isHuman ? 'items-end' : 'items-start'}`}>

@@ -64,8 +64,8 @@ function CommitModal({ isOpen, onClose, onCommit, isLoading, status }: CommitMod
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-[#cc785c]/20" aria-hidden="true">
-              <GitCommit size={18} className="text-[#cc785c]" />
+            <div className="p-2 rounded-lg bg-accent/20" aria-hidden="true">
+              <GitCommit size={18} className="text-accent" />
             </div>
             <div>
               <h2 id="commit-dialog-title" className="text-lg font-semibold text-white">Commit Changes</h2>
@@ -112,7 +112,7 @@ function CommitModal({ isOpen, onClose, onCommit, isLoading, status }: CommitMod
               placeholder="Describe your changes..."
               autoFocus
               rows={4}
-              className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50 focus:ring-2 focus:ring-[#cc785c]/20 resize-none transition-all"
+              className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 resize-none transition-all"
             />
           </div>
 
@@ -128,7 +128,7 @@ function CommitModal({ isOpen, onClose, onCommit, isLoading, status }: CommitMod
             <button
               type="submit"
               disabled={!message.trim() || isLoading}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white bg-[#cc785c] hover:bg-[#b86a50] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white bg-accent hover:bg-accent-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isLoading ? (
                 <>
@@ -266,7 +266,7 @@ export default function GitActionsCompact() {
           onClick={() => setExpanded(!expanded)}
           className={`flex items-center gap-1.5 px-2 py-1 rounded-lg border transition-all text-xs ${
             hasChanges
-              ? 'bg-[#cc785c]/10 border-[#cc785c]/30 text-[#cc785c]'
+              ? 'bg-accent/10 border-accent/30 text-accent'
               : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'
           }`}
           aria-label={`Git: ${status.branch}${hasChanges ? `, ${totalChanges} changes` : ''}. Click to ${expanded ? 'collapse' : 'expand'}`}
@@ -278,7 +278,7 @@ export default function GitActionsCompact() {
           {/* Status indicators */}
           {hasChanges && (
             <span className="flex items-center gap-0.5" aria-hidden="true">
-              <span className="w-1 h-1 rounded-full bg-[#cc785c] animate-pulse" />
+              <span className="w-1 h-1 rounded-full bg-accent animate-pulse" />
               <span className="text-[10px]">{totalChanges}</span>
             </span>
           )}
@@ -311,7 +311,7 @@ export default function GitActionsCompact() {
               disabled={!hasChanges || loadingAction !== null}
               className={`p-1.5 rounded-md transition-all focus-ring ${
                 hasChanges
-                  ? 'text-white hover:bg-[#cc785c]/20 hover:text-[#cc785c]'
+                  ? 'text-white hover:bg-accent/20 hover:text-accent'
                   : 'text-gray-600 cursor-not-allowed'
               }`}
               aria-label={hasChanges ? `Commit ${totalChanges} changes` : 'No changes to commit'}

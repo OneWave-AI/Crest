@@ -141,7 +141,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-[#cc785c] to-[#a55d45] rounded-xl">
+            <div className="p-2 bg-gradient-to-br from-accent to-accent-700 rounded-xl">
               <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -187,7 +187,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
               onClick={() => setLaunchMode('new')}
               className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                 launchMode === 'new'
-                  ? 'bg-[#cc785c] text-white'
+                  ? 'bg-accent text-white'
                   : 'text-gray-500 hover:text-gray-300'
               }`}
             >
@@ -215,7 +215,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
               placeholder={launchMode === 'takeover'
                 ? "Optional: Provide guidance..."
                 : "What should the terminal agent build?"}
-              className="w-full h-24 bg-[#0a0a0b] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#cc785c]/50 resize-none text-sm"
+              className="w-full h-24 bg-[#0a0a0b] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent/50 resize-none text-sm"
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && e.metaKey) handleStart()
@@ -267,7 +267,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
                       onClick={() => setTimeLimit(mins)}
                       className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
                         timeLimit === mins
-                          ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                          ? 'bg-accent/20 text-accent'
                           : 'text-gray-500 hover:text-gray-300'
                       }`}
                     >
@@ -320,7 +320,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
                 ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
                 : launchMode === 'takeover'
                   ? 'bg-sand-500 hover:bg-sand-400 text-white'
-                  : 'bg-[#cc785c] hover:bg-[#d88a6a] text-white'
+                  : 'bg-accent hover:bg-[#d88a6a] text-white'
             }`}
           >
             {isLoadingConfig ? (

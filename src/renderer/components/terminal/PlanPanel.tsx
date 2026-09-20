@@ -47,13 +47,13 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
   return (
     <div className="absolute top-0 right-0 bottom-0 w-80 flex flex-col bg-[#0d0d0d]/95 backdrop-blur-sm border-l border-white/[0.08] z-30 shadow-2xl shadow-black/50 animate-in slide-in-from-right-4 duration-200">
       {/* Subtle gradient accent */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-radial from-[#cc785c]/5 to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-radial from-accent/5 to-transparent pointer-events-none" />
 
       {/* Header */}
       <div className="relative flex items-center justify-between px-3 py-2.5 border-b border-white/[0.06]">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-md bg-[#cc785c]/10">
-            <ClipboardList size={12} className="text-[#cc785c]" />
+          <div className="p-1.5 rounded-md bg-accent/10">
+            <ClipboardList size={12} className="text-accent" />
           </div>
           <div>
             <span className="text-xs font-medium text-white">Current Plan</span>
@@ -115,7 +115,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
                 className={`flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] transition-colors ${
                   showCompleted
                     ? 'text-gray-500 hover:text-gray-400'
-                    : 'bg-[#cc785c]/20 text-[#cc785c]'
+                    : 'bg-accent/20 text-accent'
                 }`}
               >
                 {showCompleted ? 'Hide done' : 'Show done'}
@@ -132,7 +132,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
             </div>
             <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-[#cc785c] to-green-500 transition-all duration-500"
+                className="h-full rounded-full bg-gradient-to-r from-accent to-green-500 transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -207,7 +207,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
             <p className="text-xs text-gray-500 mb-1">All tasks completed</p>
             <button
               onClick={() => setShowCompleted(true)}
-              className="text-[10px] text-[#cc785c] hover:underline"
+              className="text-[10px] text-accent hover:underline"
             >
               Show completed tasks
             </button>

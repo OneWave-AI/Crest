@@ -99,7 +99,7 @@ export default function ErrorState({
               {onRetry && (
                 <button
                   onClick={onRetry}
-                  className="flex items-center justify-center gap-2 flex-1 px-4 py-2.5 rounded-xl bg-[#cc785c] hover:bg-[#b86a50] text-white font-medium text-sm transition-all duration-200 shadow-[0_0_20px_rgba(204,120,92,0.2)] hover:shadow-[0_0_30px_rgba(204,120,92,0.3)]"
+                  className="flex items-center justify-center gap-2 flex-1 px-4 py-2.5 rounded-xl bg-accent hover:bg-accent-600 text-white font-medium text-sm transition-all duration-200 shadow-[0_0_20px_rgba(204,120,92,0.2)] hover:shadow-[0_0_30px_rgba(204,120,92,0.3)]"
                 >
                   <RotateCcw size={16} />
                   {retryLabel}

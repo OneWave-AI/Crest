@@ -43,7 +43,7 @@ const STATUS_COLOR: Record<GitFileStatusType, string> = {
   deleted: 'text-red-400 bg-red-400/10',
   renamed: 'text-blue-400 bg-blue-400/10',
   untracked: 'text-gray-400 bg-white/[0.06]',
-  staged: 'text-[#cc785c] bg-[#cc785c]/10',
+  staged: 'text-accent bg-accent/10',
   conflict: 'text-red-400 bg-red-400/15'
 }
 
@@ -241,8 +241,8 @@ export default function DiffPanel({ isOpen, onClose, activeTerminalId }: DiffPan
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06]">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-[#cc785c]/10">
-              <FileDiff size={18} className="text-[#cc785c]" />
+            <div className="p-2 rounded-lg bg-accent/10">
+              <FileDiff size={18} className="text-accent" />
             </div>
             <div>
               <h2 className="text-sm font-medium text-white">Review Changes</h2>
@@ -259,7 +259,7 @@ export default function DiffPanel({ isOpen, onClose, activeTerminalId }: DiffPan
               <button
                 onClick={() => setViewMode('inline')}
                 className={`p-1.5 rounded transition-colors ${
-                  viewMode === 'inline' ? 'bg-[#cc785c]/20 text-[#cc785c]' : 'text-gray-500 hover:text-white'
+                  viewMode === 'inline' ? 'bg-accent/20 text-accent' : 'text-gray-500 hover:text-white'
                 }`}
                 title="Inline view"
               >
@@ -268,7 +268,7 @@ export default function DiffPanel({ isOpen, onClose, activeTerminalId }: DiffPan
               <button
                 onClick={() => setViewMode('split')}
                 className={`p-1.5 rounded transition-colors ${
-                  viewMode === 'split' ? 'bg-[#cc785c]/20 text-[#cc785c]' : 'text-gray-500 hover:text-white'
+                  viewMode === 'split' ? 'bg-accent/20 text-accent' : 'text-gray-500 hover:text-white'
                 }`}
                 title="Side-by-side view"
               >
@@ -325,7 +325,7 @@ export default function DiffPanel({ isOpen, onClose, activeTerminalId }: DiffPan
                   key={file.path}
                   onClick={() => setSelectedPath(file.path)}
                   className={`w-full text-left px-3 py-2.5 border-b border-white/[0.03] transition-colors ${
-                    isSelected ? 'bg-[#cc785c]/[0.08]' : 'hover:bg-white/[0.03]'
+                    isSelected ? 'bg-accent/[0.08]' : 'hover:bg-white/[0.03]'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -349,7 +349,7 @@ export default function DiffPanel({ isOpen, onClose, activeTerminalId }: DiffPan
                       </span>
                     )}
                     {file.staged && (
-                      <span className="text-[9px] uppercase tracking-wide text-[#cc785c]/80">staged</span>
+                      <span className="text-[9px] uppercase tracking-wide text-accent/80">staged</span>
                     )}
                   </div>
                 </button>
@@ -371,7 +371,7 @@ export default function DiffPanel({ isOpen, onClose, activeTerminalId }: DiffPan
                       <button
                         onClick={() => setSide('unstaged')}
                         className={`px-2 py-1 rounded text-[11px] transition-colors ${
-                          side === 'unstaged' ? 'bg-[#cc785c]/20 text-[#cc785c]' : 'text-gray-500 hover:text-white'
+                          side === 'unstaged' ? 'bg-accent/20 text-accent' : 'text-gray-500 hover:text-white'
                         }`}
                       >
                         Unstaged
@@ -379,7 +379,7 @@ export default function DiffPanel({ isOpen, onClose, activeTerminalId }: DiffPan
                       <button
                         onClick={() => setSide('staged')}
                         className={`px-2 py-1 rounded text-[11px] transition-colors ${
-                          side === 'staged' ? 'bg-[#cc785c]/20 text-[#cc785c]' : 'text-gray-500 hover:text-white'
+                          side === 'staged' ? 'bg-accent/20 text-accent' : 'text-gray-500 hover:text-white'
                         }`}
                       >
                         Staged
@@ -428,7 +428,7 @@ export default function DiffPanel({ isOpen, onClose, activeTerminalId }: DiffPan
             <div className="flex-1 overflow-auto">
               {loadingDiff && (
                 <div className="flex items-center justify-center h-full">
-                  <Loader2 size={24} className="text-[#cc785c] animate-spin" />
+                  <Loader2 size={24} className="text-accent animate-spin" />
                 </div>
               )}
 
@@ -458,7 +458,7 @@ export default function DiffPanel({ isOpen, onClose, activeTerminalId }: DiffPan
                       <span className="text-[11px] font-mono text-gray-500 truncate">{hunk.header}</span>
 
                       <div className="flex items-center gap-0.5 flex-shrink-0">
-                        {busyHunk === index && <Loader2 size={13} className="text-[#cc785c] animate-spin mr-1" />}
+                        {busyHunk === index && <Loader2 size={13} className="text-accent animate-spin mr-1" />}
 
                         {activeTerminalId && (
                           <button

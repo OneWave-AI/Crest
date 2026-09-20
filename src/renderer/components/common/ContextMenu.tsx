@@ -291,7 +291,7 @@ function ContextMenuItemComponent({
           : isFocused || isSubmenuOpen
             ? item.danger
               ? 'bg-red-500/20 text-red-400'
-              : 'bg-[#cc785c]/15 text-white'
+              : 'bg-accent/15 text-white'
             : item.danger
               ? 'text-red-400 hover:bg-red-500/20'
               : 'text-gray-300 hover:bg-white/[0.06] hover:text-white'
@@ -309,7 +309,7 @@ function ContextMenuItemComponent({
             item.danger
               ? 'text-red-400'
               : isFocused || isSubmenuOpen
-                ? 'text-[#cc785c]'
+                ? 'text-accent'
                 : 'text-gray-500 group-hover:text-gray-400'
           }`}
         />
@@ -330,14 +330,14 @@ function ContextMenuItemComponent({
         <ChevronRight
           size={14}
           className={`flex-shrink-0 transition-colors duration-100 ${
-            isFocused || isSubmenuOpen ? 'text-[#cc785c]' : 'text-gray-500'
+            isFocused || isSubmenuOpen ? 'text-accent' : 'text-gray-500'
           }`}
         />
       )}
 
       {/* Hover glow effect */}
       {!item.disabled && !item.danger && (isFocused || isSubmenuOpen) && (
-        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#cc785c]/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-accent/5 to-transparent pointer-events-none" />
       )}
     </div>
   )

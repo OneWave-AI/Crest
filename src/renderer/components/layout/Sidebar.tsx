@@ -364,7 +364,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                   if (e.key === 'Escape') setRenaming(null)
                 }}
                 onClick={e => e.stopPropagation()}
-                className="flex-1 min-w-0 px-1.5 py-0.5 text-xs bg-black/40 border border-[#cc785c]/50 rounded text-white focus:outline-none"
+                className="flex-1 min-w-0 px-1.5 py-0.5 text-xs bg-black/40 border border-accent/50 rounded text-white focus:outline-none"
               />
             ) : (
               <span className={`flex-1 truncate text-xs ${node.name.startsWith('.') ? 'text-gray-500' : 'text-gray-300'}`}>
@@ -404,7 +404,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                     e.stopPropagation()
                     handleFileClick(node.path)
                   }}
-                  className="p-0.5 rounded hover:bg-[#cc785c]/20 text-gray-500 hover:text-[#cc785c] transition-all"
+                  className="p-0.5 rounded hover:bg-accent/20 text-gray-500 hover:text-accent transition-all"
                   title="Preview in App"
                 >
                   <Monitor size={12} />
@@ -512,8 +512,8 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
       <div className="p-3 border-b border-white/[0.06]">
         {cwd ? (
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-7 h-7 rounded-lg bg-[#cc785c]/15 flex items-center justify-center">
-              <Folder size={14} className="text-[#cc785c]" />
+            <div className="w-7 h-7 rounded-lg bg-accent/15 flex items-center justify-center">
+              <Folder size={14} className="text-accent" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">{projectName}</p>
@@ -532,7 +532,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
             onClick={onSelectFolder}
             className="w-full flex items-center gap-2 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-white/[0.1] transition-all"
           >
-            <FolderOpen size={16} className="text-[#cc785c]" />
+            <FolderOpen size={16} className="text-accent" />
             <span className="text-xs text-gray-400">Open Folder</span>
           </button>
         )}
@@ -545,7 +545,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search files..."
-              className="w-full pl-8 pr-8 py-1.5 text-xs bg-white/[0.03] border border-white/[0.06] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#cc785c]/30"
+              className="w-full pl-8 pr-8 py-1.5 text-xs bg-white/[0.03] border border-white/[0.06] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-accent/30"
             />
             {search && (
               <button
@@ -579,7 +579,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
           <div className="flex-1" />
           <button
             onClick={() => setShowHidden(!showHidden)}
-            className={`p-1.5 rounded hover:bg-white/[0.06] transition-colors ${showHidden ? 'text-[#cc785c]' : 'text-gray-500 hover:text-gray-300'}`}
+            className={`p-1.5 rounded hover:bg-white/[0.06] transition-colors ${showHidden ? 'text-accent' : 'text-gray-500 hover:text-gray-300'}`}
             title={showHidden ? 'Hide Hidden' : 'Show Hidden'}
           >
             {showHidden ? <Eye size={14} /> : <EyeOff size={14} />}
@@ -646,7 +646,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                 if (e.key === 'Escape') { setCreateModal(null); setCreateName('') }
               }}
               placeholder={createModal.type === 'file' ? 'filename.txt' : 'folder-name'}
-              className="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/[0.08] text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50 mb-4"
+              className="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/[0.08] text-white text-sm placeholder-gray-500 focus:outline-none focus:border-accent/50 mb-4"
               autoFocus
             />
             <div className="flex justify-end gap-2">
@@ -659,7 +659,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
               <button
                 onClick={handleCreate}
                 disabled={!createName.trim()}
-                className="px-4 py-2 text-sm bg-[#cc785c] hover:bg-[#cc785c]/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                className="px-4 py-2 text-sm bg-accent hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
               >
                 Create
               </button>

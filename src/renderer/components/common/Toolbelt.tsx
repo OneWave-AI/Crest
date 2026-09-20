@@ -198,7 +198,7 @@ Format your response as a numbered list with skill name and use case.`
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all text-xs ${
           isOpen
-            ? 'bg-[#cc785c]/20 border-[#cc785c]/40 text-[#cc785c]'
+            ? 'bg-accent/20 border-accent/40 text-accent'
             : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white hover:border-white/20'
         }`}
         aria-label="Open toolbelt"
@@ -237,7 +237,7 @@ Format your response as a numbered list with skill name and use case.`
                 placeholder="Search tools..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-8 py-2 bg-white/[0.04] border border-white/[0.06] rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/40 focus:ring-1 focus:ring-[#cc785c]/20 transition-all"
+                className="w-full pl-9 pr-8 py-2 bg-white/[0.04] border border-white/[0.06] rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/20 transition-all"
               />
               {searchQuery && (
                 <button
@@ -257,7 +257,7 @@ Format your response as a numbered list with skill name and use case.`
                   onClick={() => { setActiveTab(tab); setSelectedIndex(0) }}
                   className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                     activeTab === tab
-                      ? 'bg-[#cc785c]/15 text-[#cc785c] border border-[#cc785c]/20'
+                      ? 'bg-accent/15 text-accent border border-accent/20'
                       : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
                   }`}
                 >
@@ -308,7 +308,7 @@ Format your response as a numbered list with skill name and use case.`
           {/* Loading state */}
           {isLoading && (
             <div className="px-3 py-8 text-center">
-              <div className="inline-block w-6 h-6 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin" />
+              <div className="inline-block w-6 h-6 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
               <p className="text-xs text-gray-500 mt-3">Loading tools...</p>
             </div>
           )}
@@ -332,7 +332,7 @@ Format your response as a numbered list with skill name and use case.`
               <p className="text-sm text-gray-400">No matches for "{searchQuery}"</p>
               <button
                 onClick={() => setSearchQuery('')}
-                className="text-xs text-[#cc785c] hover:underline mt-2"
+                className="text-xs text-accent hover:underline mt-2"
               >
                 Clear search
               </button>
@@ -356,7 +356,7 @@ Format your response as a numbered list with skill name and use case.`
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed group ${
                       isSelected
-                        ? 'bg-[#cc785c]/10'
+                        ? 'bg-accent/10'
                         : 'hover:bg-white/[0.04]'
                     }`}
                     role="menuitem"
@@ -365,12 +365,12 @@ Format your response as a numbered list with skill name and use case.`
                     <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all flex-shrink-0 ${
                       isAgent
                         ? `bg-sand-500/10 ${isSelected ? 'bg-sand-500/20' : ''}`
-                        : `bg-[#cc785c]/10 ${isSelected ? 'bg-[#cc785c]/20' : ''}`
+                        : `bg-accent/10 ${isSelected ? 'bg-accent/20' : ''}`
                     }`}>
                       {isAgent ? (
                         <Bot size={14} className="text-sand-400" />
                       ) : (
-                        <Zap size={14} className="text-[#cc785c]" />
+                        <Zap size={14} className="text-accent" />
                       )}
                     </div>
 
@@ -385,7 +385,7 @@ Format your response as a numbered list with skill name and use case.`
                         <span className={`text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-wider ${
                           isAgent
                             ? 'bg-sand-500/10 text-sand-400'
-                            : 'bg-[#cc785c]/10 text-[#cc785c]'
+                            : 'bg-accent/10 text-accent'
                         }`}>
                           {isAgent ? 'Agent' : 'Skill'}
                         </span>
@@ -401,7 +401,7 @@ Format your response as a numbered list with skill name and use case.`
                     <ArrowRight
                       size={12}
                       className={`flex-shrink-0 transition-all ${
-                        isSelected ? 'opacity-100 text-[#cc785c]' : 'opacity-0'
+                        isSelected ? 'opacity-100 text-accent' : 'opacity-0'
                       }`}
                     />
                   </button>

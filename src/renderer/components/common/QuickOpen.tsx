@@ -543,7 +543,7 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                 <div className="flex items-center justify-center py-12 text-gray-500" role="status" aria-live="polite">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-4 h-4 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin"
+                      className="w-4 h-4 border-2 border-accent/30 border-t-accent rounded-full animate-spin"
                       aria-hidden="true"
                     />
                     <span className="text-sm">Loading files...</span>
@@ -583,20 +583,20 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                             onClick={() => handleSelect(filePath)}
                             className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-150 focus-ring ${
                               isSelected
-                                ? 'bg-[#cc785c]/15'
+                                ? 'bg-accent/15'
                                 : 'hover:bg-white/[0.03]'
                             }`}
                           >
                             <div
                               className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-200 ${
                                 isSelected
-                                  ? 'bg-[#cc785c]/20 scale-110'
+                                  ? 'bg-accent/20 scale-110'
                                   : 'bg-white/[0.04]'
                               }`}
                             >
                               <FileIcon
                                 size={16}
-                                className={isSelected ? 'text-[#cc785c]' : 'text-gray-500'}
+                                className={isSelected ? 'text-accent' : 'text-gray-500'}
                                 aria-hidden="true"
                               />
                             </div>
@@ -611,7 +611,7 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                               </div>
                             </div>
                             {isSelected && (
-                              <ChevronRight size={14} className="text-[#cc785c] flex-shrink-0" aria-hidden="true" />
+                              <ChevronRight size={14} className="text-accent flex-shrink-0" aria-hidden="true" />
                             )}
                           </button>
                         )
@@ -653,7 +653,7 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                           return chars.map((char, i) => (
                             <span
                               key={i}
-                              className={matchedIndices.includes(i) ? 'text-[#cc785c] font-semibold' : ''}
+                              className={matchedIndices.includes(i) ? 'text-accent font-semibold' : ''}
                             >
                               {char}
                             </span>
@@ -670,20 +670,20 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                             onClick={() => handleSelect(file.path)}
                             className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-150 focus-ring ${
                               isSelected
-                                ? 'bg-[#cc785c]/15'
+                                ? 'bg-accent/15'
                                 : 'hover:bg-white/[0.03]'
                             }`}
                           >
                             <div
                               className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-200 ${
                                 isSelected
-                                  ? 'bg-[#cc785c]/20 scale-110'
+                                  ? 'bg-accent/20 scale-110'
                                   : 'bg-white/[0.04]'
                               }`}
                             >
                               <FileIcon
                                 size={16}
-                                className={isSelected ? 'text-[#cc785c]' : 'text-gray-500'}
+                                className={isSelected ? 'text-accent' : 'text-gray-500'}
                                 aria-hidden="true"
                               />
                             </div>
@@ -698,7 +698,7 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                               </div>
                             </div>
                             {isSelected && (
-                              <ChevronRight size={14} className="text-[#cc785c] flex-shrink-0" aria-hidden="true" />
+                              <ChevronRight size={14} className="text-accent flex-shrink-0" aria-hidden="true" />
                             )}
                           </button>
                         )
@@ -722,7 +722,7 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                           border: '1px solid rgba(204, 120, 92, 0.1)'
                         }}
                       >
-                        <Search size={20} className="text-[#cc785c]/60" />
+                        <Search size={20} className="text-accent/60" />
                       </div>
                       <p className="text-sm text-gray-500">
                         {query ? 'No files match your search' : 'No files found in this project'}

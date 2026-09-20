@@ -408,7 +408,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
                           onMouseEnter={() => setSelectedIndex(currentIndex)}
                           className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-150 focus-ring ${
                             isSelected
-                              ? 'bg-[#cc785c]/15'
+                              ? 'bg-accent/15'
                               : 'hover:bg-white/[0.04]'
                           }`}
                         >
@@ -416,7 +416,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
                           <div
                             className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-200 ${
                               isSelected
-                                ? 'bg-[#cc785c]/20 text-[#cc785c] scale-110'
+                                ? 'bg-accent/20 text-accent scale-110'
                                 : 'bg-white/[0.04] text-gray-400'
                             }`}
                             aria-hidden="true"
@@ -441,7 +441,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
                                   key={i}
                                   className={`px-1.5 py-0.5 rounded-md text-[10px] font-medium transition-all duration-200 ${
                                     isSelected
-                                      ? 'bg-[#cc785c]/20 text-[#cc785c] border border-[#cc785c]/30'
+                                      ? 'bg-accent/20 text-accent border border-accent/30'
                                       : 'bg-white/[0.04] text-gray-500 border border-white/[0.06]'
                                   }`}
                                   aria-hidden="true"
@@ -485,7 +485,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Terminal size={12} className="text-[#cc785c]" />
+              <Terminal size={12} className="text-accent" />
               <span className="text-[10px] text-gray-500">Command Palette</span>
             </div>
           </div>

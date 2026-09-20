@@ -162,7 +162,7 @@ export function AgentRuntimePicker({
 
           {status?.running === false && (
             <div className="text-[10px] text-gray-500 leading-snug">
-              Start it with <code className="text-[#cc785c]">brew services start ollama</code>
+              Start it with <code className="text-accent">brew services start ollama</code>
             </div>
           )}
 

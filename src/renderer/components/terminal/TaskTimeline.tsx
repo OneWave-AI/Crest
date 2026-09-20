@@ -166,13 +166,13 @@ export default function TaskTimeline({
   return (
     <div className="w-72 h-full min-h-0 flex flex-col bg-[#0d0d0d] border-l border-white/[0.06] relative">
       {/* Subtle gradient accent */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-radial from-[#cc785c]/5 to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-radial from-accent/5 to-transparent pointer-events-none" />
 
       {/* Header */}
       <div className="relative flex items-center justify-between px-3 py-2.5 border-b border-white/[0.06]">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-md bg-[#cc785c]/10">
-            <Activity size={12} className="text-[#cc785c]" />
+          <div className="p-1.5 rounded-md bg-accent/10">
+            <Activity size={12} className="text-accent" />
           </div>
           <div>
             <span className="text-xs font-medium text-white">Activity</span>
@@ -237,7 +237,7 @@ export default function TaskTimeline({
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] transition-colors ${
                 showFilters || filter !== 'all'
-                  ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                  ? 'bg-accent/20 text-accent'
                   : 'text-gray-500 hover:text-gray-400'
               }`}
             >
@@ -255,7 +255,7 @@ export default function TaskTimeline({
             onClick={() => setFilter('all')}
             className={`px-2 py-0.5 rounded text-[10px] transition-colors ${
               filter === 'all'
-                ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                ? 'bg-accent/20 text-accent'
                 : 'bg-white/[0.03] text-gray-500 hover:text-gray-300'
             }`}
           >

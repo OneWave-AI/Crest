@@ -332,7 +332,7 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
 
           {/* Accent glow blob */}
           <div
-            className="absolute -top-24 -right-24 w-48 h-48 bg-[#cc785c]/15 rounded-full blur-3xl pointer-events-none"
+            className="absolute -top-24 -right-24 w-48 h-48 bg-accent/15 rounded-full blur-3xl pointer-events-none"
             aria-hidden="true"
           />
 
@@ -342,13 +342,13 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-4">
                 <div
-                  className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#cc785c] to-[#a85f48] flex items-center justify-center shadow-xl shadow-[#cc785c]/25 transition-transform duration-300 hover:scale-105"
+                  className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-[#a85f48] flex items-center justify-center shadow-xl shadow-accent/25 transition-transform duration-300 hover:scale-105"
                   aria-hidden="true"
                 >
                   <Icon size={26} className="text-white" />
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase tracking-wider text-[#cc785c] font-semibold" aria-label={`Step ${currentStep + 1} of ${TOUR_STEPS.length}`}>
+                  <span className="text-[10px] uppercase tracking-wider text-accent font-semibold" aria-label={`Step ${currentStep + 1} of ${TOUR_STEPS.length}`}>
                     Step {currentStep + 1} of {TOUR_STEPS.length}
                   </span>
                   <h3 id="tour-step-title" className="text-lg font-semibold text-white mt-1">
@@ -387,7 +387,7 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
               className="h-1 bg-white/[0.06] rounded-full overflow-hidden mb-5"
             >
               <div
-                className="h-full bg-gradient-to-r from-[#cc785c] to-[#e8a088] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
+                className="h-full bg-gradient-to-r from-accent to-[#e8a088] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -407,9 +407,9 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
                   onClick={() => goToStep(index)}
                   className={`transition-all duration-300 ease-out rounded-full focus-ring ${
                     index === currentStep
-                      ? 'w-7 h-2 bg-gradient-to-r from-[#cc785c] to-[#e8a088]'
+                      ? 'w-7 h-2 bg-gradient-to-r from-accent to-[#e8a088]'
                       : index < currentStep
-                      ? 'w-2 h-2 bg-[#cc785c]/50 hover:bg-[#cc785c]/70 hover:scale-125'
+                      ? 'w-2 h-2 bg-accent/50 hover:bg-accent/70 hover:scale-125'
                       : 'w-2 h-2 bg-white/20 hover:bg-white/35 hover:scale-125'
                   }`}
                 />
@@ -440,7 +440,7 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
 
                 <button
                   onClick={handleNext}
-                  className="flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-[#cc785c] to-[#b86a50] hover:from-[#d8866a] hover:to-[#cc785c] rounded-xl shadow-lg shadow-[#cc785c]/25 hover:shadow-xl hover:shadow-[#cc785c]/30 transition-all duration-200 focus-ring active:scale-[0.98] hover:scale-[1.02]"
+                  className="flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-accent to-accent-600 hover:from-[#d8866a] hover:to-accent rounded-xl shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all duration-200 focus-ring active:scale-[0.98] hover:scale-[1.02]"
                   aria-label={isLastStep ? 'Complete tour and get started' : `Go to next step: ${TOUR_STEPS[currentStep + 1]?.title}`}
                 >
                   {isLastStep ? (

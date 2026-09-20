@@ -86,7 +86,7 @@ export default function DeployMenu() {
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all text-xs ${
           isOpen
-            ? 'bg-[#cc785c]/20 border-[#cc785c]/40 text-[#cc785c]'
+            ? 'bg-accent/20 border-accent/40 text-accent'
             : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white hover:border-white/20'
         }`}
         aria-label="Deploy actions (Cmd+Shift+D)"
@@ -113,8 +113,8 @@ export default function DeployMenu() {
           {/* Header */}
           <div className="flex items-center justify-between px-3 py-2 border-b border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent">
             <div className="flex items-center gap-2">
-              <div className="p-1 rounded bg-[#cc785c]/20">
-                <Rocket size={12} className="text-[#cc785c]" />
+              <div className="p-1 rounded bg-accent/20">
+                <Rocket size={12} className="text-accent" />
               </div>
               <span className="text-xs font-medium text-gray-300">Deploy Options</span>
             </div>
@@ -138,7 +138,7 @@ export default function DeployMenu() {
                 <div className={`p-1.5 rounded-lg transition-colors ${
                   option.id === 'pull-request'
                     ? 'bg-sand-500/10 text-sand-400 group-hover:bg-sand-500/20'
-                    : 'bg-[#cc785c]/10 text-[#cc785c] group-hover:bg-[#cc785c]/20'
+                    : 'bg-accent/10 text-accent group-hover:bg-accent/20'
                 }`}>
                   {option.icon}
                 </div>

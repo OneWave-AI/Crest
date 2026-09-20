@@ -420,7 +420,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
     if (loading) {
       return (
         <div className="flex items-center justify-center h-full">
-          <Loader2 size={32} className="text-[#cc785c] animate-spin" />
+          <Loader2 size={32} className="text-accent animate-spin" />
         </div>
       )
     }
@@ -615,8 +615,8 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06] bg-[#0d0d0d]/95 backdrop-blur-sm">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="p-2 rounded-lg bg-[#cc785c]/10">
-              <FileIcon size={18} className="text-[#cc785c]" />
+            <div className="p-2 rounded-lg bg-accent/10">
+              <FileIcon size={18} className="text-accent" />
             </div>
             <div className="min-w-0">
               <h2 className="text-sm font-medium text-white truncate">{fileName}</h2>

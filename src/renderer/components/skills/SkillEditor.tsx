@@ -21,11 +21,11 @@ function highlightMarkdown(content: string): string {
   // Frontmatter block
   html = html.replace(
     /^(---\n)([\s\S]*?)(\n---)/m,
-    '<span class="text-[#cc785c]/60">$1</span><span class="text-[#cc785c]">$2</span><span class="text-[#cc785c]/60">$3</span>'
+    '<span class="text-accent/60">$1</span><span class="text-accent">$2</span><span class="text-accent/60">$3</span>'
   )
 
   // Headers
-  html = html.replace(/^(#{1,6})\s(.+)$/gm, '<span class="text-[#cc785c] font-bold">$1 $2</span>')
+  html = html.replace(/^(#{1,6})\s(.+)$/gm, '<span class="text-accent font-bold">$1 $2</span>')
 
   // Bold
   html = html.replace(/\*\*(.+?)\*\*/g, '<span class="text-white font-bold">**$1**</span>')
@@ -43,8 +43,8 @@ function highlightMarkdown(content: string): string {
   html = html.replace(/`([^`]+)`/g, '<span class="text-emerald-400 bg-emerald-500/10 px-1 rounded">`$1`</span>')
 
   // Lists
-  html = html.replace(/^(\s*[-*+])\s/gm, '<span class="text-[#cc785c]">$1 </span>')
-  html = html.replace(/^(\s*\d+\.)\s/gm, '<span class="text-[#cc785c]">$1 </span>')
+  html = html.replace(/^(\s*[-*+])\s/gm, '<span class="text-accent">$1 </span>')
+  html = html.replace(/^(\s*\d+\.)\s/gm, '<span class="text-accent">$1 </span>')
 
   // Links
   html = html.replace(
@@ -91,7 +91,7 @@ function markdownToHtml(content: string): string {
   html = html.replace(/`([^`]+)`/g, '<code class="bg-white/10 text-emerald-400 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>')
 
   // Links
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-[#cc785c] hover:underline">$1</a>')
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-accent hover:underline">$1</a>')
 
   // Lists (unordered)
   html = html.replace(/^\s*[-*+]\s(.+)$/gm, '<li class="text-gray-300 ml-4">$1</li>')
@@ -100,7 +100,7 @@ function markdownToHtml(content: string): string {
   html = html.replace(/^\s*\d+\.\s(.+)$/gm, '<li class="text-gray-300 ml-4 list-decimal">$1</li>')
 
   // Blockquotes
-  html = html.replace(/^&gt;\s(.+)$/gm, '<blockquote class="border-l-2 border-[#cc785c] pl-4 text-gray-400 italic my-2">$1</blockquote>')
+  html = html.replace(/^&gt;\s(.+)$/gm, '<blockquote class="border-l-2 border-accent pl-4 text-gray-400 italic my-2">$1</blockquote>')
 
   // Paragraphs (simple approach)
   html = html.split('\n\n').map(p => {
@@ -221,8 +221,8 @@ export default function SkillEditor({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-white/[0.02]">
           <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-[#cc785c]/10' : 'bg-sand-500/10'}`}>
-              <FileText size={18} className={itemType === 'skill' ? 'text-[#cc785c]' : 'text-sand-400'} />
+            <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-accent/10' : 'bg-sand-500/10'}`}>
+              <FileText size={18} className={itemType === 'skill' ? 'text-accent' : 'text-sand-400'} />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-white">
@@ -239,7 +239,7 @@ export default function SkillEditor({
                 onClick={() => setViewMode('edit')}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   viewMode === 'edit'
-                    ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                    ? 'bg-accent/20 text-accent'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -250,7 +250,7 @@ export default function SkillEditor({
                 onClick={() => setViewMode('split')}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   viewMode === 'split'
-                    ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                    ? 'bg-accent/20 text-accent'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -260,7 +260,7 @@ export default function SkillEditor({
                 onClick={() => setViewMode('preview')}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   viewMode === 'preview'
-                    ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                    ? 'bg-accent/20 text-accent'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -275,7 +275,7 @@ export default function SkillEditor({
               disabled={!hasChanges || saving}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
                 hasChanges
-                  ? 'bg-[#cc785c] text-white hover:bg-[#d68a6e]'
+                  ? 'bg-accent text-white hover:bg-accent-400'
                   : 'bg-white/[0.04] text-gray-500 cursor-not-allowed'
               }`}
             >
@@ -301,7 +301,7 @@ export default function SkillEditor({
         <div className="flex-1 flex overflow-hidden">
           {loading ? (
             <div className="flex-1 flex items-center justify-center">
-              <Loader2 size={32} className="animate-spin text-[#cc785c]" />
+              <Loader2 size={32} className="animate-spin text-accent" />
             </div>
           ) : (
             <>
@@ -350,7 +350,7 @@ export default function SkillEditor({
           </div>
           <div className="flex items-center gap-2">
             {hasChanges && (
-              <span className="text-[#cc785c]">Unsaved changes</span>
+              <span className="text-accent">Unsaved changes</span>
             )}
             <span className="text-gray-600">Cmd+S to save</span>
           </div>

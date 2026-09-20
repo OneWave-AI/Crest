@@ -372,7 +372,7 @@ export default function HomeScreen({
         <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 20%, #0a0a12 0%, #030305 100%)' }} />
 
         {/* Static gradient orb */}
-        <div className="absolute w-96 h-96 -top-20 -left-20 rounded-full bg-[#cc785c]/5 blur-3xl" />
+        <div className="absolute w-96 h-96 -top-20 -left-20 rounded-full bg-accent/5 blur-3xl" />
 
         {/* Subtle grid */}
         <div className="absolute inset-0 opacity-[0.02]" style={{
@@ -389,7 +389,7 @@ export default function HomeScreen({
         {/* Compact Hero */}
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold mb-3 tracking-tight">
-            <span className="bg-gradient-to-r from-[#cc785c] to-[#e8956e] bg-clip-text text-transparent">Crest</span>
+            <span className="bg-gradient-to-r from-accent to-accent-300 bg-clip-text text-transparent">Crest</span>
           </h1>
           <p className="text-gray-400 text-sm max-w-md mx-auto">
             Your autonomous AI coding companion. Let Claude build, debug, and ship while you focus on what matters.
@@ -523,15 +523,15 @@ export default function HomeScreen({
               {/* Dashboard Header with View Details link */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-lg bg-[#cc785c]/10">
-                    <BarChart3 size={14} className="text-[#cc785c]" />
+                  <div className="p-1.5 rounded-lg bg-accent/10">
+                    <BarChart3 size={14} className="text-accent" />
                   </div>
                   <h3 className="text-sm font-semibold text-white">Your Activity</h3>
                 </div>
                 {onOpenAnalytics && (
                   <button
                     onClick={onOpenAnalytics}
-                    className="flex items-center gap-1 text-xs text-[#cc785c] hover:text-[#e8956e] transition-colors"
+                    className="flex items-center gap-1 text-xs text-accent hover:text-accent-300 transition-colors"
                   >
                     View Details <ArrowRight size={12} />
                   </button>
@@ -586,8 +586,8 @@ export default function HomeScreen({
                         <div key={day.date} className="flex-1 flex flex-col items-center gap-1" title={`${day.date}: ${day.sessions} sessions, ${day.minutes}m`}>
                           <div
                             className={`w-full rounded-sm transition-all ${
-                              isToday ? 'bg-gradient-to-t from-[#cc785c] to-[#e8956e]' :
-                              day.sessions > 0 ? 'bg-[#cc785c]/40' : 'bg-white/[0.06]'
+                              isToday ? 'bg-gradient-to-t from-accent to-accent-300' :
+                              day.sessions > 0 ? 'bg-accent/40' : 'bg-white/[0.06]'
                             }`}
                             style={{ height: `${height}%` }}
                           />
@@ -616,7 +616,7 @@ export default function HomeScreen({
                           <span className="text-[11px] text-gray-400 truncate flex-1">{project.name}</span>
                           <div className="w-16 h-1.5 rounded-full bg-white/[0.06] overflow-hidden flex-shrink-0">
                             <div
-                              className="h-full rounded-full bg-gradient-to-r from-[#cc785c] to-[#e8956e] transition-all"
+                              className="h-full rounded-full bg-gradient-to-r from-accent to-accent-300 transition-all"
                               style={{ width: `${percent}%` }}
                             />
                           </div>
@@ -640,7 +640,7 @@ export default function HomeScreen({
                 <div className="grid grid-cols-3 gap-4">
                   {/* Peak Hour */}
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-[#cc785c]">
+                    <div className="text-2xl font-bold text-accent">
                       {detailedStats.peakHour > 12 ? detailedStats.peakHour - 12 : detailedStats.peakHour || 12}
                       <span className="text-sm ml-1">{detailedStats.peakHour >= 12 ? 'PM' : 'AM'}</span>
                     </div>
@@ -648,12 +648,12 @@ export default function HomeScreen({
                   </div>
                   {/* Peak Day */}
                   <div className="text-center">
-                    <div className="text-lg font-bold text-[#cc785c]">{detailedStats.peakDay.slice(0, 3)}</div>
+                    <div className="text-lg font-bold text-accent">{detailedStats.peakDay.slice(0, 3)}</div>
                     <p className="text-[10px] text-gray-500 mt-1">Most Active Day</p>
                   </div>
                   {/* Productivity Score */}
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-[#cc785c]">{detailedStats.productivityScore}</div>
+                    <div className="text-2xl font-bold text-accent">{detailedStats.productivityScore}</div>
                     <p className="text-[10px] text-gray-500 mt-1">Consistency</p>
                   </div>
                 </div>
@@ -669,7 +669,7 @@ export default function HomeScreen({
                         <div
                           key={hour}
                           className={`flex-1 rounded-t-sm transition-all ${
-                            count > 0 ? (isWorkHour ? 'bg-[#cc785c]/60' : 'bg-[#cc785c]/30') : 'bg-white/[0.04]'
+                            count > 0 ? (isWorkHour ? 'bg-accent/60' : 'bg-accent/30') : 'bg-white/[0.04]'
                           }`}
                           style={{ height: `${height}%` }}
                           title={`${hour}:00 - ${count} sessions`}
@@ -708,19 +708,19 @@ export default function HomeScreen({
         {/* Main Card */}
         <div className="bg-[#111113] rounded-2xl border border-white/[0.06] p-6 mb-6">
           {/* Folder Selector - Premium */}
-          <button onClick={onSelectFolder} className="w-full group flex items-center gap-4 rounded-xl bg-black/40 hover:bg-black/60 border border-white/[0.08] hover:border-[#cc785c]/40 p-4 mb-4 transition-all duration-300 hover:shadow-lg hover:shadow-[#cc785c]/10">
+          <button onClick={onSelectFolder} className="w-full group flex items-center gap-4 rounded-xl bg-black/40 hover:bg-black/60 border border-white/[0.08] hover:border-accent/40 p-4 mb-4 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10">
             <div className="relative">
-              <div className="absolute inset-0 rounded-xl bg-[#cc785c]/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-[#cc785c]/20 to-[#cc785c]/5 flex items-center justify-center group-hover:scale-105 transition-all duration-300 border border-[#cc785c]/20">
-                <FolderOpen className="w-5 h-5 text-[#cc785c]" />
+              <div className="absolute inset-0 rounded-xl bg-accent/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center group-hover:scale-105 transition-all duration-300 border border-accent/20">
+                <FolderOpen className="w-5 h-5 text-accent" />
               </div>
             </div>
             <div className="flex-1 text-left min-w-0">
               <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1 font-medium">Project Folder</p>
               <p className="text-white text-sm font-mono truncate">{cwd || 'Select a folder...'}</p>
             </div>
-            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-[#cc785c]/20 transition-all duration-300">
-              <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-[#cc785c] group-hover:translate-x-0.5 transition-all duration-300" />
+            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-accent/20 transition-all duration-300">
+              <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-300" />
             </div>
           </button>
 
@@ -765,14 +765,14 @@ export default function HomeScreen({
             {/* Start with Project - Premium */}
             <div className="flex-1 relative group/start">
               {canStart && !isStarting && (
-                <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-[#cc785c] to-[#e8956e] opacity-75 blur-sm group-hover/start:opacity-100 transition-opacity" />
+                <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-accent to-accent-300 opacity-75 blur-sm group-hover/start:opacity-100 transition-opacity" />
               )}
               <button
                 onClick={handleStart}
                 disabled={!canStart || isStarting}
                 className={`relative w-full flex items-center justify-center gap-3 rounded-xl py-4 font-semibold text-lg transition-all duration-300 ${
                   canStart && !isStarting
-                    ? 'bg-gradient-to-r from-[#cc785c] to-[#e8956e] text-white shadow-xl shadow-[#cc785c]/30 hover:shadow-2xl hover:shadow-[#cc785c]/40 hover:scale-[1.02] active:scale-[0.98]'
+                    ? 'bg-gradient-to-r from-accent to-accent-300 text-white shadow-xl shadow-accent/30 hover:shadow-2xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98]'
                     : 'bg-gray-800/50 text-gray-500 cursor-not-allowed'
                 }`}
               >
@@ -799,7 +799,7 @@ export default function HomeScreen({
               disabled={claudeInstalled === false || isStarting}
               className={`group/chat px-6 py-4 flex items-center justify-center gap-3 rounded-xl font-medium transition-all duration-300 border ${
                 claudeInstalled !== false && !isStarting
-                  ? 'bg-gradient-to-r from-[#cc785c]/10 to-[#cc785c]/5 hover:from-[#cc785c]/20 hover:to-[#cc785c]/10 border-[#cc785c]/20 hover:border-[#cc785c]/40 text-gray-200 hover:text-white hover:scale-[1.02] backdrop-blur-sm'
+                  ? 'bg-gradient-to-r from-accent/10 to-accent/5 hover:from-accent/20 hover:to-accent/10 border-accent/20 hover:border-accent/40 text-gray-200 hover:text-white hover:scale-[1.02] backdrop-blur-sm'
                   : 'bg-gray-800/30 text-gray-600 cursor-not-allowed border-transparent'
               }`}
               title="Start with Chat UI"
@@ -868,7 +868,7 @@ export default function HomeScreen({
                           boxShadow: 'inset 0 1px 0 rgba(204,120,92,0.08)',
                         }}
                       >
-                        <Zap className="w-3.5 h-3.5 text-[#cc785c] opacity-80 group-hover/sa:opacity-100 transition-opacity duration-200" />
+                        <Zap className="w-3.5 h-3.5 text-accent opacity-80 group-hover/sa:opacity-100 transition-opacity duration-200" />
                       </div>
                       <div className="flex-1 text-left min-w-0">
                         <div className="text-[11px] font-semibold tracking-wide text-gray-400 group-hover/sa:text-gray-200 transition-colors duration-200 truncate">
@@ -876,7 +876,7 @@ export default function HomeScreen({
                         </div>
                         <div className="text-[10px] text-gray-600 truncate">AI task execution</div>
                       </div>
-                      <ChevronRight className="w-3 h-3 text-gray-700 group-hover/sa:text-[#cc785c] group-hover/sa:translate-x-0.5 transition-all duration-200 shrink-0" />
+                      <ChevronRight className="w-3 h-3 text-gray-700 group-hover/sa:text-accent group-hover/sa:translate-x-0.5 transition-all duration-200 shrink-0" />
                     </button>
                   )}
 
@@ -907,7 +907,7 @@ export default function HomeScreen({
                         </div>
                         <div className="text-[10px] text-gray-600 truncate">Multi-agent swarm</div>
                       </div>
-                      <ChevronRight className="w-3 h-3 text-gray-700 group-hover/orch:text-[#cc785c] group-hover/orch:translate-x-0.5 transition-all duration-200 shrink-0" />
+                      <ChevronRight className="w-3 h-3 text-gray-700 group-hover/orch:text-accent group-hover/orch:translate-x-0.5 transition-all duration-200 shrink-0" />
                     </button>
                   )}
                 </div>
@@ -927,17 +927,17 @@ export default function HomeScreen({
                 <button
                   key={project.folder}
                   onClick={() => handleProjectClick(project.folder)}
-                  className="w-full group flex items-center gap-3 rounded-xl bg-[#111113] hover:bg-[#111113]/80 border border-white/[0.06] hover:border-[#cc785c]/30 p-3.5 text-left transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-[#cc785c]/5"
+                  className="w-full group flex items-center gap-3 rounded-xl bg-[#111113] hover:bg-[#111113]/80 border border-white/[0.06] hover:border-accent/30 p-3.5 text-left transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-accent/5"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center group-hover:from-[#cc785c]/20 group-hover:to-[#cc785c]/5 transition-all duration-300 border border-white/5">
-                    <Code2 className="w-4 h-4 text-gray-500 group-hover:text-[#cc785c] transition-colors duration-300" />
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center group-hover:from-accent/20 group-hover:to-accent/5 transition-all duration-300 border border-white/5">
+                    <Code2 className="w-4 h-4 text-gray-500 group-hover:text-accent transition-colors duration-300" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <span className="block text-sm text-white truncate font-medium">{project.name}</span>
                     <span className="text-[11px] text-gray-600">{formatTime(project.timestamp)}</span>
                   </div>
                   <div className="w-7 h-7 rounded-lg bg-white/0 group-hover:bg-white/5 flex items-center justify-center transition-all duration-300">
-                    <ArrowRight className="w-3.5 h-3.5 text-gray-600 group-hover:text-[#cc785c] group-hover:translate-x-0.5 transition-all duration-300" />
+                    <ArrowRight className="w-3.5 h-3.5 text-gray-600 group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-300" />
                   </div>
                 </button>
               ))}
@@ -1023,10 +1023,10 @@ function StatCard({ icon: Icon, label, value }: {
   value: string | number
 }) {
   return (
-    <div className="relative bg-black/20 rounded-xl p-3 border border-white/[0.04] border-l-2 border-l-[#cc785c]/30 hover:border-white/[0.08] hover:border-l-[#cc785c]/50 transition-all hover:translate-y-[-1px]">
+    <div className="relative bg-black/20 rounded-xl p-3 border border-white/[0.04] border-l-2 border-l-accent/30 hover:border-white/[0.08] hover:border-l-accent/50 transition-all hover:translate-y-[-1px]">
       <div className="flex items-center gap-2 mb-2">
-        <div className="p-1.5 rounded-lg bg-[#cc785c]/10">
-          <Icon size={12} className="text-[#cc785c]" />
+        <div className="p-1.5 rounded-lg bg-accent/10">
+          <Icon size={12} className="text-accent" />
         </div>
         <span className="text-[11px] uppercase tracking-wider text-gray-500 font-medium">{label}</span>
       </div>
@@ -1484,11 +1484,11 @@ function QuickAction({ icon: Icon, label, onClick, color, badge }: {
       badge: 'bg-blue-500/20 text-blue-300'
     },
     orange: {
-      bg: 'bg-[#cc785c]/10 group-hover:bg-[#cc785c]/25',
-      icon: 'text-[#cc785c]',
-      border: 'hover:border-[#cc785c]/40',
-      glow: 'group-hover:shadow-[#cc785c]/20',
-      badge: 'bg-[#cc785c]/20 text-[#e8956e]'
+      bg: 'bg-accent/10 group-hover:bg-accent/25',
+      icon: 'text-accent',
+      border: 'hover:border-accent/40',
+      glow: 'group-hover:shadow-accent/20',
+      badge: 'bg-accent/20 text-accent-300'
     },
     sand: {
       bg: 'bg-sand-500/10 group-hover:bg-sand-500/20',

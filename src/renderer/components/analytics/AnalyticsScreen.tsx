@@ -435,8 +435,8 @@ export default function AnalyticsScreen({ onBack }: AnalyticsScreenProps) {
             <ArrowLeft size={16} />
           </button>
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-[#cc785c]/10">
-              <BarChart3 size={16} className="text-[#cc785c]" />
+            <div className="p-1.5 rounded-lg bg-accent/10">
+              <BarChart3 size={16} className="text-accent" />
             </div>
             <h1 className="text-lg font-semibold text-white">Analytics</h1>
           </div>
@@ -450,7 +450,7 @@ export default function AnalyticsScreen({ onBack }: AnalyticsScreenProps) {
               onClick={() => setPeriod(p)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
                 period === p
-                  ? 'bg-[#cc785c] text-white'
+                  ? 'bg-accent text-white'
                   : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
               }`}
             >
@@ -481,7 +481,7 @@ export default function AnalyticsScreen({ onBack }: AnalyticsScreenProps) {
       <div className="flex-1 overflow-y-auto p-6">
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <Loader2 className="w-8 h-8 text-[#cc785c] animate-spin" />
+            <Loader2 className="w-8 h-8 text-accent animate-spin" />
           </div>
         ) : analytics && filteredStats ? (
           <>
@@ -537,8 +537,8 @@ function ProjectDetailModal({ project, onClose }: { project: ProjectDetail; onCl
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#cc785c]/10 flex items-center justify-center">
-              <Code2 size={20} className="text-[#cc785c]" />
+            <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+              <Code2 size={20} className="text-accent" />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-white">{project.name}</h2>
@@ -593,8 +593,8 @@ function ProjectDetailModal({ project, onClose }: { project: ProjectDetail; onCl
                   >
                     <div
                       className={`w-full rounded-sm transition-all ${
-                        isToday ? 'bg-[#cc785c]' :
-                        day.minutes > 0 ? 'bg-[#cc785c]/40' : 'bg-white/[0.06]'
+                        isToday ? 'bg-accent' :
+                        day.minutes > 0 ? 'bg-accent/40' : 'bg-white/[0.06]'
                       }`}
                       style={{ height: `${(height / 100) * 80}px` }}
                     />
@@ -721,8 +721,8 @@ function OverviewTab({ analytics, filteredStats, period, onProjectClick, onViewA
                 >
                   <div
                     className={`w-full rounded-sm transition-all group-hover:opacity-80 ${
-                      isToday ? 'bg-gradient-to-t from-[#cc785c] to-[#e8956e]' :
-                      day.sessions > 0 ? 'bg-[#cc785c]/40' : 'bg-white/[0.06]'
+                      isToday ? 'bg-gradient-to-t from-accent to-accent-300' :
+                      day.sessions > 0 ? 'bg-accent/40' : 'bg-white/[0.06]'
                     }`}
                     style={{ height: `${(height / 100) * 128}px` }}
                   />
@@ -742,7 +742,7 @@ function OverviewTab({ analytics, filteredStats, period, onProjectClick, onViewA
             <h3 className="text-sm font-semibold text-white">Top Projects by Time</h3>
             <button
               onClick={onViewAllProjects}
-              className="text-xs text-[#cc785c] hover:underline"
+              className="text-xs text-accent hover:underline"
             >
               View All
             </button>
@@ -767,13 +767,13 @@ function OverviewTab({ analytics, filteredStats, period, onProjectClick, onViewA
                     </div>
                     <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-[#cc785c] to-[#e8956e] rounded-full"
+                        className="h-full bg-gradient-to-r from-accent to-accent-300 rounded-full"
                         style={{ width: `${percent}%` }}
                       />
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm font-medium text-[#cc785c]">{formatMinutes(project.totalTimeMinutes)}</span>
+                    <span className="text-sm font-medium text-accent">{formatMinutes(project.totalTimeMinutes)}</span>
                     <p className="text-[10px] text-gray-600">{project.totalSessions} sessions</p>
                   </div>
                   <ChevronRight size={14} className="text-gray-600" />
@@ -867,8 +867,8 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
                   size={16}
                   className={`text-gray-500 mr-3 transition-transform ${isExpanded ? '' : '-rotate-90'}`}
                 />
-                <div className="w-10 h-10 rounded-lg bg-[#cc785c]/10 flex items-center justify-center mr-3">
-                  <Code2 size={18} className="text-[#cc785c]" />
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mr-3">
+                  <Code2 size={18} className="text-accent" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
@@ -883,7 +883,7 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
                 </div>
                 <div className="grid grid-cols-4 gap-6 text-right">
                   <div>
-                    <p className="text-sm font-medium text-[#cc785c]">{formatMinutes(project.totalTimeMinutes)}</p>
+                    <p className="text-sm font-medium text-accent">{formatMinutes(project.totalTimeMinutes)}</p>
                     <p className="text-[10px] text-gray-600">time</p>
                   </div>
                   <div>
@@ -934,7 +934,7 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
                           <div
                             key={day.date}
                             className={`flex-1 rounded-sm ${
-                              day.minutes > 0 ? 'bg-[#cc785c]/50' : 'bg-white/[0.06]'
+                              day.minutes > 0 ? 'bg-accent/50' : 'bg-white/[0.06]'
                             }`}
                             style={{ height: `${(height / 100) * 48}px` }}
                             title={`${day.date}: ${day.minutes}m`}
@@ -946,7 +946,7 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
 
                   <button
                     onClick={(e) => { e.stopPropagation(); onProjectClick(project) }}
-                    className="w-full py-2 text-sm text-[#cc785c] hover:bg-[#cc785c]/10 rounded-lg transition-colors"
+                    className="w-full py-2 text-sm text-accent hover:bg-accent/10 rounded-lg transition-colors"
                   >
                     View Full Details
                   </button>
@@ -983,8 +983,8 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
                 <div className="relative w-full">
                   <div
                     className={`w-full rounded-sm transition-all group-hover:opacity-80 ${
-                      isToday ? 'bg-gradient-to-t from-[#cc785c] to-[#e8956e]' :
-                      day.sessions > 0 ? 'bg-[#cc785c]/40' : 'bg-white/[0.06]'
+                      isToday ? 'bg-gradient-to-t from-accent to-accent-300' :
+                      day.sessions > 0 ? 'bg-accent/40' : 'bg-white/[0.06]'
                     }`}
                     style={{ height: `${(height / 100) * 140}px` }}
                   />
@@ -1075,17 +1075,17 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
         <div className="grid grid-cols-3 gap-8">
           <div>
             <p className="text-xs text-gray-500 mb-1">Last 7 Days</p>
-            <p className="text-2xl font-bold text-[#cc785c]">{formatMinutes(analytics.time7Days)}</p>
+            <p className="text-2xl font-bold text-accent">{formatMinutes(analytics.time7Days)}</p>
             <p className="text-xs text-gray-500 mt-1">{analytics.sessions7Days} sessions</p>
           </div>
           <div>
             <p className="text-xs text-gray-500 mb-1">Last 30 Days</p>
-            <p className="text-2xl font-bold text-[#cc785c]">{formatMinutes(analytics.time30Days)}</p>
+            <p className="text-2xl font-bold text-accent">{formatMinutes(analytics.time30Days)}</p>
             <p className="text-xs text-gray-500 mt-1">{analytics.sessions30Days} sessions</p>
           </div>
           <div>
             <p className="text-xs text-gray-500 mb-1">All Time</p>
-            <p className="text-2xl font-bold text-[#cc785c]">{formatMinutes(analytics.totalTimeMinutes)}</p>
+            <p className="text-2xl font-bold text-accent">{formatMinutes(analytics.totalTimeMinutes)}</p>
             <p className="text-xs text-gray-500 mt-1">{analytics.totalSessions} sessions</p>
           </div>
         </div>
@@ -1103,7 +1103,7 @@ function LargeStatCard({ icon: Icon, label, value, trend, color }: {
   color: 'orange' | 'blue' | 'green' | 'sand'
 }) {
   const colors = {
-    orange: { bg: 'bg-[#cc785c]/10', icon: 'text-[#cc785c]' },
+    orange: { bg: 'bg-accent/10', icon: 'text-accent' },
     blue: { bg: 'bg-blue-500/10', icon: 'text-blue-400' },
     green: { bg: 'bg-emerald-500/10', icon: 'text-emerald-400' },
     sand: { bg: 'bg-sand-500/10', icon: 'text-sand-400' }
@@ -1132,7 +1132,7 @@ function LargeStatCard({ icon: Icon, label, value, trend, color }: {
 
 function StatBox({ label, value, color }: { label: string; value: string | number; color: 'orange' | 'blue' | 'green' | 'sand' }) {
   const colors = {
-    orange: 'bg-[#cc785c]/10 border-[#cc785c]/20',
+    orange: 'bg-accent/10 border-accent/20',
     blue: 'bg-blue-500/10 border-blue-500/20',
     green: 'bg-emerald-500/10 border-emerald-500/20',
     sand: 'bg-sand-500/10 border-sand-500/20'

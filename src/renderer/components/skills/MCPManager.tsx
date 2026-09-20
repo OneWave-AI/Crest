@@ -291,7 +291,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="flex flex-col items-center gap-3 text-gray-500">
-          <div className="w-8 h-8 border-2 border-[#cc785c]/30 border-t-[#cc785c] rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
           <span>Loading MCP configuration...</span>
         </div>
       </div>
@@ -311,7 +311,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
         <p className="text-xs text-gray-600 mb-6 font-mono">{configPath}</p>
         <button
           onClick={handleInitConfig}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#cc785c] text-white font-medium hover:bg-[#d68a6e] transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-white font-medium hover:bg-accent-400 transition-colors"
         >
           <Plus size={18} />
           Create Configuration
@@ -337,20 +337,20 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                 disabled={isInstalled}
                 className={`group relative p-4 rounded-xl border transition-all ${
                   isInstalled
-                    ? 'border-[#cc785c]/30 bg-[#cc785c]/5 cursor-default'
-                    : 'border-white/[0.06] bg-white/[0.02] hover:border-[#cc785c]/50 hover:bg-white/[0.04]'
+                    ? 'border-accent/30 bg-accent/5 cursor-default'
+                    : 'border-white/[0.06] bg-white/[0.02] hover:border-accent/50 hover:bg-white/[0.04]'
                 }`}
               >
                 <div className={`p-2 rounded-lg mb-2 inline-block ${
-                  isInstalled ? 'bg-[#cc785c]/20' : 'bg-white/5 group-hover:bg-[#cc785c]/10'
+                  isInstalled ? 'bg-accent/20' : 'bg-white/5 group-hover:bg-accent/10'
                 }`}>
-                  <Icon size={18} className={isInstalled ? 'text-[#cc785c]' : 'text-gray-400 group-hover:text-[#cc785c]'} />
+                  <Icon size={18} className={isInstalled ? 'text-accent' : 'text-gray-400 group-hover:text-accent'} />
                 </div>
                 <h4 className="font-medium text-white text-sm">{preset.name}</h4>
                 <p className="text-[10px] text-gray-500 mt-1 line-clamp-2">{preset.description}</p>
                 {isInstalled && (
                   <div className="absolute top-2 right-2">
-                    <Check size={14} className="text-[#cc785c]" />
+                    <Check size={14} className="text-accent" />
                   </div>
                 )}
               </button>
@@ -389,15 +389,15 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                   key={server.name}
                   className={`rounded-xl border transition-all ${
                     server.enabled
-                      ? 'border-[#cc785c]/20 bg-[#cc785c]/[0.02]'
+                      ? 'border-accent/20 bg-accent/[0.02]'
                       : 'border-white/[0.06] bg-white/[0.02]'
                   }`}
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between p-4">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${server.enabled ? 'bg-[#cc785c]/10' : 'bg-white/5'}`}>
-                        <Icon size={18} className={server.enabled ? 'text-[#cc785c]' : 'text-gray-500'} />
+                      <div className={`p-2 rounded-lg ${server.enabled ? 'bg-accent/10' : 'bg-white/5'}`}>
+                        <Icon size={18} className={server.enabled ? 'text-accent' : 'text-gray-500'} />
                       </div>
                       <div>
                         <h4 className="font-medium text-white">{server.name}</h4>
@@ -410,7 +410,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                       <button
                         onClick={() => handleToggleServer(server.name, !server.enabled)}
                         className={`w-10 h-6 rounded-full transition-colors ${
-                          server.enabled ? 'bg-[#cc785c]' : 'bg-gray-700'
+                          server.enabled ? 'bg-accent' : 'bg-gray-700'
                         }`}
                       >
                         <div
@@ -509,7 +509,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
               <div className="flex items-center gap-2">
-                <Plug size={18} className="text-[#cc785c]" />
+                <Plug size={18} className="text-accent" />
                 <h3 className="font-medium text-white">
                   {editingServer ? 'Edit MCP Server' : 'Add MCP Server'}
                 </h3>
@@ -526,8 +526,8 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {/* Preset Info */}
               {selectedPreset && (
-                <div className="p-3 rounded-lg bg-[#cc785c]/10 border border-[#cc785c]/20">
-                  <div className="flex items-center gap-2 text-[#cc785c] text-sm">
+                <div className="p-3 rounded-lg bg-accent/10 border border-accent/20">
+                  <div className="flex items-center gap-2 text-accent text-sm">
                     <AlertCircle size={14} />
                     <span>Using {MCP_PRESETS[selectedPreset].name} preset</span>
                   </div>
@@ -543,7 +543,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                   onChange={(e) => setFormName(e.target.value)}
                   disabled={!!editingServer}
                   placeholder="my-server"
-                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50 disabled:opacity-50"
+                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 disabled:opacity-50"
                 />
               </div>
 
@@ -555,7 +555,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                   value={formCommand}
                   onChange={(e) => setFormCommand(e.target.value)}
                   placeholder="npx"
-                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50 font-mono"
+                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono"
                 />
               </div>
 
@@ -567,7 +567,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                   value={formArgs}
                   onChange={(e) => setFormArgs(e.target.value)}
                   placeholder="-y @modelcontextprotocol/server-name"
-                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50 font-mono"
+                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono"
                 />
               </div>
 
@@ -577,7 +577,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                   <label className="text-sm text-gray-400">Environment Variables</label>
                   <button
                     onClick={handleAddEnvVar}
-                    className="text-xs text-[#cc785c] hover:text-[#d68a6e] transition-colors"
+                    className="text-xs text-accent hover:text-accent-400 transition-colors"
                   >
                     + Add Variable
                   </button>
@@ -590,14 +590,14 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                         value={env.key}
                         onChange={(e) => handleEnvChange(index, 'key', e.target.value)}
                         placeholder="KEY"
-                        className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50 font-mono text-sm"
+                        className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono text-sm"
                       />
                       <input
                         type="password"
                         value={env.value}
                         onChange={(e) => handleEnvChange(index, 'value', e.target.value)}
                         placeholder="value"
-                        className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#cc785c]/50 font-mono text-sm"
+                        className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono text-sm"
                       />
                       <button
                         onClick={() => handleRemoveEnvVar(index)}
@@ -624,7 +624,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
               </button>
               <button
                 onClick={handleSaveServer}
-                className="px-4 py-2 rounded-lg bg-[#cc785c] text-white font-medium hover:bg-[#d68a6e] transition-colors"
+                className="px-4 py-2 rounded-lg bg-accent text-white font-medium hover:bg-accent-400 transition-colors"
               >
                 {editingServer ? 'Save Changes' : 'Add Server'}
               </button>

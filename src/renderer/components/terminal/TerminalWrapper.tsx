@@ -1446,7 +1446,7 @@ export default function TerminalWrapper({
     return (
       <div
         key={panel.id}
-        className={`h-full flex flex-col bg-[#0d0d0d] ${isGrid ? '' : isOnly ? 'flex-1' : 'w-1/2'} ${isDropping ? 'ring-2 ring-[#cc785c]/50 ring-inset' : ''}`}
+        className={`h-full flex flex-col bg-[#0d0d0d] ${isGrid ? '' : isOnly ? 'flex-1' : 'w-1/2'} ${isDropping ? 'ring-2 ring-accent/50 ring-inset' : ''}`}
         onDragOver={(e) => handleTabDragOver(e, panel.id, 'tab')}
         onDragLeave={handleTabDragLeave}
         onDrop={(e) => handleTabDrop(e, panel.id)}
@@ -1797,7 +1797,7 @@ export default function TerminalWrapper({
                     onClick={() => setViewportMode('mobile')}
                     className={`p-1 rounded transition-colors ${
                       viewportMode === 'mobile'
-                        ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                        ? 'bg-accent/20 text-accent'
                         : 'hover:bg-white/5 text-gray-500 hover:text-white'
                     }`}
                     title="Mobile View (375px)"
@@ -1808,7 +1808,7 @@ export default function TerminalWrapper({
                     onClick={() => setViewportMode('desktop')}
                     className={`p-1 rounded transition-colors ${
                       viewportMode === 'desktop'
-                        ? 'bg-[#cc785c]/20 text-[#cc785c]'
+                        ? 'bg-accent/20 text-accent'
                         : 'hover:bg-white/5 text-gray-500 hover:text-white'
                     }`}
                     title="Desktop View (Full Width)"
@@ -1865,8 +1865,8 @@ export default function TerminalWrapper({
       {/* File Drop Overlay */}
       {isDraggingFile && (
         <div className="absolute inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center">
-          <div className="text-center p-8 rounded-xl border-2 border-dashed border-[#cc785c]/60 bg-[#cc785c]/5">
-            <FileUp size={40} className="mx-auto mb-3 text-[#cc785c]/80" />
+          <div className="text-center p-8 rounded-xl border-2 border-dashed border-accent/60 bg-accent/5">
+            <FileUp size={40} className="mx-auto mb-3 text-accent/80" />
             <p className="text-sm font-medium text-white mb-0.5">Drop files here</p>
             <p className="text-xs text-gray-500">Files will be sent to the active session</p>
           </div>
@@ -1875,8 +1875,8 @@ export default function TerminalWrapper({
 
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#cc785c]/20 to-transparent" />
-        <div className="absolute top-0 left-0 w-48 h-48 bg-gradient-radial from-[#cc785c]/[0.03] to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
+        <div className="absolute top-0 left-0 w-48 h-48 bg-gradient-radial from-accent/[0.03] to-transparent" />
         <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-radial from-cyan-500/[0.03] to-transparent" />
       </div>
 
@@ -1896,23 +1896,23 @@ export default function TerminalWrapper({
         {draggedTab && panels.length < 2 && layoutMode === 'default' && (
           <>
             <div
-              className={`absolute left-0 top-0 bottom-0 w-16 z-40 flex items-center justify-center transition-all ${dropTarget?.position === 'left' ? 'bg-[#cc785c]/20' : 'bg-transparent hover:bg-[#cc785c]/10'}`}
+              className={`absolute left-0 top-0 bottom-0 w-16 z-40 flex items-center justify-center transition-all ${dropTarget?.position === 'left' ? 'bg-accent/20' : 'bg-transparent hover:bg-accent/10'}`}
               onDragOver={(e) => { e.preventDefault(); setDropTarget({ panelId: 'new', position: 'left' }) }}
               onDragLeave={handleTabDragLeave}
               onDrop={(e) => handlePanelDrop(e, 'left')}
             >
-              <div className={`p-2 rounded-lg ${dropTarget?.position === 'left' ? 'bg-[#cc785c]/30' : ''}`}>
-                <PanelLeft size={20} className="text-[#cc785c]" />
+              <div className={`p-2 rounded-lg ${dropTarget?.position === 'left' ? 'bg-accent/30' : ''}`}>
+                <PanelLeft size={20} className="text-accent" />
               </div>
             </div>
             <div
-              className={`absolute right-0 top-0 bottom-0 w-16 z-40 flex items-center justify-center transition-all ${dropTarget?.position === 'right' ? 'bg-[#cc785c]/20' : 'bg-transparent hover:bg-[#cc785c]/10'}`}
+              className={`absolute right-0 top-0 bottom-0 w-16 z-40 flex items-center justify-center transition-all ${dropTarget?.position === 'right' ? 'bg-accent/20' : 'bg-transparent hover:bg-accent/10'}`}
               onDragOver={(e) => { e.preventDefault(); setDropTarget({ panelId: 'new', position: 'right' }) }}
               onDragLeave={handleTabDragLeave}
               onDrop={(e) => handlePanelDrop(e, 'right')}
             >
-              <div className={`p-2 rounded-lg ${dropTarget?.position === 'right' ? 'bg-[#cc785c]/30' : ''}`}>
-                <PanelRight size={20} className="text-[#cc785c]" />
+              <div className={`p-2 rounded-lg ${dropTarget?.position === 'right' ? 'bg-accent/30' : ''}`}>
+                <PanelRight size={20} className="text-accent" />
               </div>
             </div>
           </>
@@ -1926,7 +1926,7 @@ export default function TerminalWrapper({
             <div key={panel.id} className="contents">
               {renderPanel(panel, panels.length === 1)}
               {index < panels.length - 1 && (
-                <div className="w-px bg-white/[0.06] hover:bg-[#cc785c]/40 hover:w-1 cursor-col-resize transition-all" />
+                <div className="w-px bg-white/[0.06] hover:bg-accent/40 hover:w-1 cursor-col-resize transition-all" />
               )}
             </div>
           ))
@@ -1935,7 +1935,7 @@ export default function TerminalWrapper({
         {/* Preview pane (for file/localhost previews) */}
         {previewUrl && (
           <>
-            <div className="w-px bg-white/[0.06] hover:bg-[#cc785c]/40 hover:w-1 cursor-col-resize transition-all" />
+            <div className="w-px bg-white/[0.06] hover:bg-accent/40 hover:w-1 cursor-col-resize transition-all" />
             <PreviewPane
               url={previewUrl}
               onClose={onClosePreview}
@@ -1949,11 +1949,11 @@ export default function TerminalWrapper({
 
         {/* HTML file detection bar */}
         {detectedHtmlFile && (
-          <div className="absolute bottom-16 left-4 right-4 bg-[#1a1a1c] border border-[#cc785c]/30 rounded-xl shadow-xl z-40 overflow-hidden animate-slide-up">
+          <div className="absolute bottom-16 left-4 right-4 bg-[#1a1a1c] border border-accent/30 rounded-xl shadow-xl z-40 overflow-hidden animate-slide-up">
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-[#cc785c]/20 rounded-lg">
-                  <Monitor size={16} className="text-[#cc785c]" />
+                <div className="p-2 bg-accent/20 rounded-lg">
+                  <Monitor size={16} className="text-accent" />
                 </div>
                 <div>
                   <p className="text-sm text-white font-medium">HTML file created</p>
@@ -1963,7 +1963,7 @@ export default function TerminalWrapper({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handlePreviewHtmlFile(detectedHtmlFile)}
-                  className="px-3 py-1.5 bg-[#cc785c] hover:bg-[#b86a50] text-white text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5"
+                  className="px-3 py-1.5 bg-accent hover:bg-accent-600 text-white text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5"
                 >
                   <ExternalLink size={12} />
                   Preview
@@ -2052,7 +2052,7 @@ export default function TerminalWrapper({
               }`}
               title="Switch model"
             >
-              <Zap size={11} className={activeTabProvider === 'codex' ? 'text-emerald-400' : 'text-[#cc785c]'} />
+              <Zap size={11} className={activeTabProvider === 'codex' ? 'text-emerald-400' : 'text-accent'} />
               <span className="text-[11px] font-medium">{currentModel}</span>
               <ChevronDown size={9} className={`transition-transform duration-150 ${showModelMenu ? 'rotate-180' : ''}`} />
             </button>
@@ -2161,14 +2161,14 @@ export default function TerminalWrapper({
             }}
             className={`p-1.5 rounded-md transition-all relative ${
               showTimeline
-                ? 'bg-[#cc785c]/15 text-[#cc785c]'
+                ? 'bg-accent/15 text-accent'
                 : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.06]'
             }`}
             title="Activity Timeline"
           >
             <ListOrdered size={13} />
             {timelineActions.length > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-[#cc785c] text-white text-[8px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-accent text-white text-[8px] font-bold rounded-full flex items-center justify-center">
                 {timelineActions.length > 99 ? '+' : timelineActions.length}
               </span>
             )}
@@ -2186,7 +2186,7 @@ export default function TerminalWrapper({
               disabled={!activeTerminalId}
               className={`p-1.5 rounded-md transition-all ${
                 showUploadMenu
-                  ? 'bg-[#cc785c]/15 text-[#cc785c]'
+                  ? 'bg-accent/15 text-accent'
                   : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] disabled:opacity-30 disabled:cursor-not-allowed'
               }`}
               title="Upload files"

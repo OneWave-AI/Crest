@@ -195,7 +195,7 @@ export default function AcpView({ cwd, sessionId = 'acp-main' }: AcpViewProps) {
               type="checkbox"
               checked={state?.autoApprove ?? false}
               onChange={(e) => void setAutoApprove(e.target.checked)}
-              className="accent-[#cc785c]"
+              className="accent-accent"
             />
             Auto-approve
           </label>

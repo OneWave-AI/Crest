@@ -257,10 +257,10 @@ export function ModalButton({
   const variantStyles = {
     primary: `
       text-white
-      bg-gradient-to-r from-[#cc785c] to-[#b86a50]
-      hover:from-[#d8866a] hover:to-[#cc785c]
-      shadow-lg shadow-[#cc785c]/20
-      hover:shadow-xl hover:shadow-[#cc785c]/30
+      bg-gradient-to-r from-accent to-accent-600
+      hover:from-[#d8866a] hover:to-accent
+      shadow-lg shadow-accent/20
+      hover:shadow-xl hover:shadow-accent/30
       active:scale-[0.98]
       hover:scale-[1.02]
     `,
