@@ -18,8 +18,13 @@ export interface AcpAgentSpec {
   label: string
   /** Package that provides the ACP bridge, run through npx when not installed. */
   package?: string
-  /** Binary name to look for on PATH / in the usual npm-global spots. */
-  binary?: string
+  /**
+   * Binary names to look for on PATH / in the usual npm-global spots, most
+   * preferred first. Both bridges were renamed in 2026, so the older binary is
+   * kept as a fallback rather than forcing an npx download on anyone who already
+   * has it installed.
+   */
+  binaries?: string[]
   command?: string
   args?: string[]
   experimental?: boolean
@@ -29,20 +34,20 @@ export const ACP_AGENTS: Record<Exclude<AcpAgentId, 'custom'>, AcpAgentSpec> = {
   claude: {
     id: 'claude',
     label: 'Claude Code',
-    package: '@zed-industries/claude-code-acp',
-    binary: 'claude-code-acp'
+    package: '@agentclientprotocol/claude-agent-acp',
+    binaries: ['claude-agent-acp', 'claude-code-acp']
   },
   codex: {
     id: 'codex',
     label: 'Codex',
-    package: '@zed-industries/codex-acp',
-    binary: 'codex-acp',
+    package: '@agentclientprotocol/codex-acp',
+    binaries: ['codex-acp'],
     experimental: true
   },
   gemini: {
     id: 'gemini',
     label: 'Gemini CLI',
-    binary: 'gemini',
+    binaries: ['gemini'],
     args: ['--experimental-acp'],
     experimental: true
   }
@@ -262,7 +267,19 @@ export type AcpEvent =
   | { type: 'state'; sessionId: string; state: AcpSessionState }
   | { type: 'update'; sessionId: string; update: AcpSessionUpdate }
   | { type: 'permission'; sessionId: string; request: AcpPermissionRequest }
-  | { type: 'permission-resolved'; sessionId: string; requestId: string }
+  | {
+      type: 'permission-resolved'
+      sessionId: string
+      requestId: string
+      /** null when the request was cancelled rather than answered. */
+      optionId: string | null
+      optionName: string | null
+      /** Whichever option kind was chosen, so the UI can say allowed vs rejected. */
+      optionKind: AcpPermissionKind | null
+      toolTitle: string
+      /** True when auto-approve answered instead of the user. */
+      auto: boolean
+    }
   | { type: 'turn-end'; sessionId: string; stopReason: AcpStopReason }
   | { type: 'log'; sessionId: string; level: 'info' | 'error'; message: string }
   | { type: 'terminal'; sessionId: string; terminal: AcpTerminalState }

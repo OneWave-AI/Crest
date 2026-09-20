@@ -4,7 +4,7 @@
 
 The premium native desktop experience for [Claude Code](https://github.com/anthropics/claude-code) and [OpenAI Codex](https://github.com/openai/codex). Multi-agent swarms, analytics, per-tab CLI provider selection, and a beautiful zero-config environment that lets you build faster—whether you're a developer or just getting started.
 
-[![Version](https://img.shields.io/badge/version-2.3.1-red)](https://github.com/OneWave-AI/Crest/releases)
+[![Version](https://img.shields.io/badge/version-2.5.0-red)](https://github.com/OneWave-AI/Crest/releases)
 [![Made by OneWave AI](https://img.shields.io/badge/made%20by-OneWave--AI-orange)](https://onewave-ai.com)
 
 ## Screenshots

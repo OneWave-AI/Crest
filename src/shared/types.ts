@@ -426,6 +426,12 @@ export interface IpcApi {
   /** Send multi-line text as a bracketed paste so a TUI keeps it as one input */
   terminalSendPaste: (text: string, terminalId: string, submit?: boolean) => Promise<void>
   terminalGetBuffer: (terminalId: string, lines?: number) => Promise<string>
+  /** Incremental read: everything written since `sinceTotal`. `dropped` > 0 means the ring buffer lost output first. */
+  terminalGetBufferDelta: (terminalId: string, sinceTotal: number) => Promise<{
+    data: string
+    total: number
+    dropped: number
+  }>
   terminalInterrupt: (terminalId: string) => Promise<void>
   terminalSendEscape: (terminalId: string) => Promise<void>
   terminalGetClaudeStatus: (terminalId: string) => Promise<{
@@ -621,9 +627,20 @@ export interface IpcApi {
   memoryListProjects: () => Promise<{ projectPath: string; hasMemory: boolean }[]>
 
   // Chat Mode
-  chatSendPrompt: (options: { sessionId: string; prompt: string; cwd: string; model?: string; resumeSessionId?: string }) => Promise<void>
+  chatSendPrompt: (options: {
+    sessionId: string
+    prompt: string
+    cwd: string
+    model?: string
+    resumeSessionId?: string
+    /** See ChatPermissionMode in main/ipc/chat.ts — decided up front, print mode never prompts. */
+    permissionMode?: string
+    allowedTools?: string[]
+    disallowedTools?: string[]
+    addDirs?: string[]
+  }) => Promise<void>
   chatStop: (sessionId: string) => Promise<boolean>
-  chatPermissionResponse: (sessionId: string, toolUseId: string, allowed: boolean) => Promise<boolean>
+  chatPermissionModes: () => Promise<string[]>
   onChatStreamEvent: (callback: (sessionId: string, event: any) => void) => () => void
 
   // ACP (Agent Client Protocol)

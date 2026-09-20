@@ -29,7 +29,8 @@ import {
   Hammer,
   Database,
   LayoutGrid,
-  ListOrdered
+  ListOrdered,
+  HardDrive
 } from 'lucide-react'
 
 import Terminal, { TerminalRef } from './Terminal'
@@ -40,8 +41,8 @@ import TaskTimeline, { TimelineAction, ActionType, ActionStatus } from './TaskTi
 import VoiceInput from './VoiceInput'
 import { HybridChatView } from './HybridChatView'
 import { useAppStore } from '../../store'
-import { CLI_PROVIDERS } from '../../../shared/providers'
-import type { CLIProvider, CLIProviderConfig } from '../../../shared/types'
+import { CLI_PROVIDERS, supportsLocalRuntime } from '../../../shared/providers'
+import type { CLIProvider, CLIProviderConfig, ModelRuntime } from '../../../shared/types'
 
 interface Tab {
   id: string
@@ -50,6 +51,14 @@ interface Tab {
   url?: string
   active: boolean
   cliProvider?: import('../../../shared/types').CLIProvider
+  /**
+   * Where this tab's model runs. Per-tab because the agent already is: reading
+   * the runtime off the global setting meant a Local toggle left on from an
+   * earlier session silently applied to every new tab, whatever agent you
+   * picked. Undefined falls back to the global default, which is the behaviour
+   * for tabs restored from a layout saved before this existed.
+   */
+  runtime?: import('../../../shared/types').ModelRuntime
 }
 
 interface Panel {
@@ -284,6 +293,8 @@ export default function TerminalWrapper({
 
   // CLI Provider from global store (used as default for new tabs)
   const cliProvider = useAppStore((state) => state.cliProvider)
+  const modelRuntime = useAppStore((state) => state.modelRuntime)
+  const localModel = useAppStore((state) => state.localModel)
 
   // Token and cost tracking
   const [tokenCount, setTokenCount] = useState(0)
@@ -427,10 +438,14 @@ export default function TerminalWrapper({
   }, [planItems, onPlanItemsChange])
 
   // Add tab to panel
-  const addTab = useCallback((panelId: string, type: 'terminal' | 'browser', provider?: CLIProvider) => {
+  const addTab = useCallback((panelId: string, type: 'terminal' | 'browser', provider?: CLIProvider, runtime?: ModelRuntime) => {
     setShowPlusMenu(null)
     const tabProvider = provider || cliProvider || 'claude'
     const providerName = CLI_PROVIDERS[tabProvider].name
+    // An explicit choice from the menu wins; otherwise inherit the global, and
+    // never hand 'local' to an agent that has no local command.
+    const tabRuntime: ModelRuntime =
+      supportsLocalRuntime(tabProvider) ? (runtime ?? modelRuntime ?? 'api') : 'api'
 
     setPanels(prev => prev.map(panel => {
       if (panel.id !== panelId) return panel
@@ -438,11 +453,14 @@ export default function TerminalWrapper({
       const termCount = panel.tabs.filter(t => t.type === 'terminal' && t.cliProvider === tabProvider).length + 1
       const newTab: Tab = {
         id: Date.now().toString(),
-        name: type === 'terminal' ? `${providerName} ${termCount}` : 'New Tab',
+        name: type === 'terminal'
+          ? `${providerName}${tabRuntime === 'local' ? ' (local)' : ''} ${termCount}`
+          : 'New Tab',
         type,
         url: type === 'browser' ? '' : undefined,
         active: true,
-        cliProvider: type === 'terminal' ? tabProvider : undefined
+        cliProvider: type === 'terminal' ? tabProvider : undefined,
+        runtime: type === 'terminal' ? tabRuntime : undefined
       }
 
       return {
@@ -451,7 +469,7 @@ export default function TerminalWrapper({
         activeTabId: newTab.id
       }
     }))
-  }, [cliProvider])
+  }, [cliProvider, modelRuntime])
 
   // Add second panel
   const addPanel = useCallback((type: 'terminal' | 'browser', provider?: CLIProvider) => {
@@ -1552,21 +1570,33 @@ export default function TerminalWrapper({
               </button>
 
               {showPlusMenu === panel.id && (
-                <div className="absolute top-full right-0 mt-1.5 w-48 bg-[#1a1a1a] border border-white/[0.08] rounded-lg shadow-2xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute top-full right-0 mt-1.5 w-60 bg-[#1a1a1a] border border-white/[0.08] rounded-lg shadow-2xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="p-1">
-                    {/* Every registered agent, so a panel can mix them. This
-                        used to list Claude and Codex only, which left Kimi (and
-                        any agent added later) reachable solely by changing the
-                        global default in Settings. */}
+                    {/* Every registered agent, so a panel can mix them. Each row
+                        opens on the cloud runtime; the Local chip opens the same
+                        agent against ollama. Both are one click, and the choice
+                        is per-tab -- it used to be read off a global toggle, so a
+                        Local session left on quietly applied to every new tab. */}
                     {(Object.values(CLI_PROVIDERS) as CLIProviderConfig[]).map((p) => (
-                      <button
-                        key={p.id}
-                        onClick={() => addTab(panel.id, 'terminal', p.id)}
-                        className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
-                      >
-                        <TerminalIcon size={14} className={p.accentText} />
-                        <span>{p.name}</span>
-                      </button>
+                      <div key={p.id} className="flex items-center gap-1">
+                        <button
+                          onClick={() => addTab(panel.id, 'terminal', p.id, 'api')}
+                          className="flex-1 min-w-0 flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
+                        >
+                          <TerminalIcon size={14} className={p.accentText} />
+                          <span className="truncate">{p.name}</span>
+                        </button>
+                        {supportsLocalRuntime(p.id) && (
+                          <button
+                            onClick={() => addTab(panel.id, 'terminal', p.id, 'local')}
+                            title={`${p.name} against local ollama (${localModel || 'default model'})`}
+                            className="shrink-0 flex items-center gap-1 px-1.5 py-1 mr-1 rounded-md text-[10px] font-medium text-gray-500 hover:text-gray-200 hover:bg-white/[0.06] border border-white/[0.06] transition-colors"
+                          >
+                            <HardDrive size={10} />
+                            <span>Local</span>
+                          </button>
+                        )}
+                      </div>
                     ))}
                     <button
                       onClick={() => addTab(panel.id, 'browser')}
@@ -1670,6 +1700,7 @@ export default function TerminalWrapper({
                   if (ref) terminalRefs.current.set(tab.id, ref)
                 }}
                 cliProvider={tab.cliProvider}
+                runtime={tab.runtime}
                 existingTerminalId={terminalIdMapRef.current[tab.id] || undefined}
                 onResize={(cols, rows) => setTerminalSize({ cols, rows })}
                 onLocalhostDetected={handleLocalhostDetected}

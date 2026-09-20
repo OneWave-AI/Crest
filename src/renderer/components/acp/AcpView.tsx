@@ -16,12 +16,17 @@ import {
 import { ACP_AGENTS, type AcpAgentId, type AcpContentBlock } from '@shared/acp'
 import { useAcp } from '../../hooks/useAcp'
 import AcpToolCall from './AcpToolCall'
-import AcpPlanPanel from './AcpPlanPanel'
+import { AgentRail } from '../rail/AgentRail'
+import { useAcpRail } from '../rail/useAcpRail'
 
 interface AcpViewProps {
   cwd: string
   sessionId?: string
 }
+
+/** ACP forwards `mcpServers` per session; Crest doesn't send any yet. */
+const ACP_CONNECTOR_NOTE =
+  'This agent loads MCP servers from its own config. Crest does not forward the list over ACP yet, so toggles here take effect the next time the agent starts.'
 
 const STATUS_LABEL: Record<string, string> = {
   idle: 'Not connected',
@@ -55,6 +60,7 @@ export default function AcpView({ cwd, sessionId = 'acp-main' }: AcpViewProps) {
     respondPermission
   } = useAcp(sessionId)
 
+  const rail = useAcpRail(sessionId)
   const [agentId, setAgentId] = useState<AcpAgentId>('claude')
   const [draft, setDraft] = useState('')
   const [attachments, setAttachments] = useState<{ name: string; block: AcpContentBlock }[]>([])
@@ -379,7 +385,9 @@ export default function AcpView({ cwd, sessionId = 'acp-main' }: AcpViewProps) {
           </div>
         </div>
 
-        {plan.length > 0 && <AcpPlanPanel entries={plan} />}
+        <div className="w-72 shrink-0 h-full">
+          <AgentRail data={rail} connectorNote={ACP_CONNECTOR_NOTE} />
+        </div>
       </div>
 
       {/* Composer */}

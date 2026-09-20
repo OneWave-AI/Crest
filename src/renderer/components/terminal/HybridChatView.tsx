@@ -58,19 +58,23 @@ export function HybridChatView({ terminalId, onSendMessage, claudeStatus }: Hybr
     const poll = async () => {
       if (!active) return
       try {
-        const buffer = await window.api.terminalGetBuffer(terminalId)
-        if (!buffer) return
+        // Diffing by buffer *length* breaks the moment the 50KB ring buffer
+        // saturates: the length stops growing, so a live session looks finished
+        // and this view freezes. Track the absolute byte offset instead.
+        const { data, total, dropped } = await window.api.terminalGetBufferDelta(
+          terminalId,
+          processedLengthRef.current,
+        )
+        processedLengthRef.current = total
 
-        // Ring buffer can wrap (50KB max) -- if buffer shrank, reset tracking
-        if (buffer.length < processedLengthRef.current) {
-          processedLengthRef.current = 0
+        if (dropped > 0) {
+          // Output scrolled out before we read it; the parser's partial state is
+          // no longer trustworthy, so start clean rather than splice a fake message.
+          parserRef.current = createParserState()
         }
 
-        if (buffer.length > processedLengthRef.current) {
-          const newData = buffer.slice(processedLengthRef.current)
-          processedLengthRef.current = buffer.length
-
-          const { state, newMessages } = parseTerminalChunk(parserRef.current, newData)
+        if (data) {
+          const { state, newMessages } = parseTerminalChunk(parserRef.current, data)
           parserRef.current = state
 
           if (newMessages.length > 0) {

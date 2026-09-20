@@ -37,7 +37,19 @@ import { AcpTerminalRegistry } from './acpTerminals'
 interface PendingRequest {
   resolve: (value: unknown) => void
   reject: (error: Error) => void
+  timer: NodeJS.Timeout | null
 }
+
+/**
+ * Handshake calls get a deadline: an agent that accepts stdio but never answers
+ * `initialize` would otherwise leave the session stuck on "starting" forever with
+ * nothing for the user to cancel. Turn-length calls (`session/prompt`) are exempt
+ * — those are long by design and the UI can cancel them.
+ */
+const HANDSHAKE_TIMEOUT_MS = 30_000
+
+/** A single line this large means the agent is malfunctioning; don't buffer it. */
+const MAX_BUFFERED_LINE = 8 * 1024 * 1024
 
 interface JsonRpcMessage {
   jsonrpc?: string
@@ -95,17 +107,18 @@ export function resolveAgentCommand(options: AcpStartOptions): { command: string
   const spec = ACP_AGENTS[options.agentId]
   if (!spec) throw new Error(`Unknown ACP agent: ${options.agentId}`)
 
-  if (spec.binary) {
-    const found = findBinary(spec.binary)
+  for (const name of spec.binaries ?? []) {
+    const found = findBinary(name)
     if (found) return { command: found, args: spec.args ?? [] }
   }
   if (spec.package) {
     const npx = findBinary('npx') ?? 'npx'
     return { command: npx, args: ['-y', spec.package, ...(spec.args ?? [])] }
   }
-  if (spec.binary) {
+  const [fallback] = spec.binaries ?? []
+  if (fallback) {
     // Not found on disk; let PATH resolution have a go and surface a real error.
-    return { command: spec.binary, args: spec.args ?? [] }
+    return { command: fallback, args: spec.args ?? [] }
   }
   throw new Error(`ACP agent ${options.agentId} has no launch configuration`)
 }
@@ -117,10 +130,19 @@ function toLocalPath(pathOrUri: string, cwd: string): string {
   return resolvePath(cwd, pathOrUri)
 }
 
+/** What a permission request resolved to, for the session's decision log. */
+export interface AcpPermissionOutcome {
+  requestId: string
+  optionId: string | null
+  optionName: string | null
+  optionKind: AcpPermissionRequest['options'][number]['kind'] | null
+  toolTitle: string
+}
+
 export declare interface AcpConnection {
   on(event: 'update', listener: (update: AcpSessionUpdate) => void): this
   on(event: 'permission', listener: (request: AcpPermissionRequest) => void): this
-  on(event: 'permission-resolved', listener: (requestId: string) => void): this
+  on(event: 'permission-resolved', listener: (outcome: AcpPermissionOutcome) => void): this
   on(event: 'state', listener: (patch: Partial<AcpSessionState>) => void): this
   on(event: 'log', listener: (level: 'info' | 'error', message: string) => void): this
   on(event: 'terminal', listener: (state: AcpTerminalState) => void): this
@@ -136,7 +158,11 @@ export class AcpConnection extends EventEmitter {
   private nextRequestId = 1
   private readonly pending = new Map<number, PendingRequest>()
   private readonly permissionResolvers = new Map<string, (optionId: string | null) => void>()
+  /** Kept alongside the resolver so a resolution can describe what it answered. */
+  private readonly permissionRequests = new Map<string, AcpPermissionRequest>()
   private stdoutBuffer = ''
+  /** Set after discarding a partial line; drops bytes until the next newline. */
+  private resyncing = false
   private nextPermissionId = 1
   private acpSessionId: string | null = null
   private stopped = false
@@ -321,10 +347,13 @@ export class AcpConnection extends EventEmitter {
   async prompt(blocks: AcpContentBlock[]): Promise<AcpStopReason> {
     if (!this.acpSessionId) throw new Error('ACP session not established')
     if (blocks.length === 0) throw new Error('Prompt is empty')
-    const result = (await this.request('session/prompt', {
-      sessionId: this.acpSessionId,
-      prompt: blocks
-    })) as { stopReason: AcpStopReason }
+    // No deadline: a turn legitimately runs for as long as the agent needs, and
+    // the user can cancel it.
+    const result = (await this.request(
+      'session/prompt',
+      { sessionId: this.acpSessionId, prompt: blocks },
+      null
+    )) as { stopReason: AcpStopReason }
     return result.stopReason ?? 'end_turn'
   }
 
@@ -356,6 +385,19 @@ export class AcpConnection extends EventEmitter {
     resolver(optionId)
   }
 
+  /** Describes a resolution for the decision log; call before dropping the request. */
+  private describeResolution(requestId: string, optionId: string | null): AcpPermissionOutcome {
+    const request = this.permissionRequests.get(requestId)
+    const option = request?.options.find((candidate) => candidate.optionId === optionId) ?? null
+    return {
+      requestId,
+      optionId,
+      optionName: option?.name ?? null,
+      optionKind: option?.kind ?? null,
+      toolTitle: request?.toolCall?.title ?? request?.toolCall?.toolCallId ?? 'Tool call'
+    }
+  }
+
   stop(): void {
     this.stopped = true
     // Answer anything still in flight so the agent doesn't hang on shutdown.
@@ -370,6 +412,27 @@ export class AcpConnection extends EventEmitter {
 
   private onStdout(chunk: string): void {
     this.stdoutBuffer += chunk
+
+    // Finish discarding a line we already gave up on. Without this, the tail of
+    // the abandoned line would be glued onto the next real message and take a
+    // valid response down with it.
+    if (this.resyncing) {
+      const boundary = this.stdoutBuffer.indexOf('\n')
+      if (boundary === -1) {
+        this.stdoutBuffer = ''
+        return
+      }
+      this.stdoutBuffer = this.stdoutBuffer.slice(boundary + 1)
+      this.resyncing = false
+    }
+
+    if (this.stdoutBuffer.length > MAX_BUFFERED_LINE && !this.stdoutBuffer.includes('\n')) {
+      this.emit('log', 'error', `discarded ${this.stdoutBuffer.length} bytes of unterminated agent output`)
+      this.stdoutBuffer = ''
+      this.resyncing = true
+      return
+    }
+
     let newline = this.stdoutBuffer.indexOf('\n')
     while (newline !== -1) {
       const line = this.stdoutBuffer.slice(0, newline).trim()
@@ -385,16 +448,45 @@ export class AcpConnection extends EventEmitter {
     }
   }
 
-  private write(message: Record<string, unknown>): void {
-    if (!this.proc?.stdin?.writable) return
+  private write(message: Record<string, unknown>): boolean {
+    if (!this.proc?.stdin?.writable) return false
     this.proc.stdin.write(`${JSON.stringify(message)}\n`)
+    return true
   }
 
-  private request(method: string, params: Record<string, unknown>): Promise<unknown> {
+  private request(
+    method: string,
+    params: Record<string, unknown>,
+    timeoutMs: number | null = HANDSHAKE_TIMEOUT_MS
+  ): Promise<unknown> {
     const id = this.nextRequestId++
     return new Promise((resolve, reject) => {
-      this.pending.set(id, { resolve, reject })
-      this.write({ jsonrpc: '2.0', id, method, params })
+      const settle = (fn: () => void): void => {
+        const entry = this.pending.get(id)
+        if (entry?.timer) clearTimeout(entry.timer)
+        this.pending.delete(id)
+        fn()
+      }
+
+      const timer = timeoutMs
+        ? setTimeout(
+            () => settle(() => reject(new Error(`ACP request timed out after ${timeoutMs}ms: ${method}`))),
+            timeoutMs
+          )
+        : null
+
+      this.pending.set(id, {
+        resolve: (value) => settle(() => resolve(value)),
+        reject: (error) => settle(() => reject(error)),
+        timer
+      })
+
+      // A closed stdin means the agent is gone; failing loudly beats a promise
+      // that can never settle.
+      if (!this.write({ jsonrpc: '2.0', id, method, params })) {
+        const entry = this.pending.get(id)
+        entry?.reject(new Error(`ACP agent is not accepting input (${method})`))
+      }
     })
   }
 
@@ -420,7 +512,7 @@ export class AcpConnection extends EventEmitter {
     if (message.id !== undefined && message.method === undefined) {
       const pending = this.pending.get(message.id as number)
       if (!pending) return
-      this.pending.delete(message.id as number)
+      // resolve/reject clear the timeout and drop the entry themselves.
       if (message.error) {
         pending.reject(new AcpRequestError(message.error.code, message.error.message, message.error.data))
       } else {
@@ -533,9 +625,12 @@ export class AcpConnection extends EventEmitter {
       toolCall: (params.toolCall as AcpPermissionRequest['toolCall']) ?? { toolCallId: 'unknown' }
     }
 
+    this.permissionRequests.set(requestId, request)
+
     return new Promise((resolve) => {
       this.permissionResolvers.set(requestId, (optionId) => {
-        this.emit('permission-resolved', requestId)
+        this.emit('permission-resolved', this.describeResolution(requestId, optionId))
+        this.permissionRequests.delete(requestId)
         resolve(optionId)
       })
       this.emit('permission', request)

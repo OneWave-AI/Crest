@@ -339,10 +339,19 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   cliProvider: 'claude' as CLIProvider,
   setCLIProvider: (cliProvider) => {
+    const previous = get().cliProvider
     set({ cliProvider })
-    // Switching to an agent that cannot run locally must not leave the runtime
-    // stuck on 'local' -- that combination has no valid launch command.
-    const modelRuntime = supportsLocalRuntime(cliProvider) ? get().modelRuntime : 'api'
+    // The runtime axis is chosen for a specific agent, so it must not ride along
+    // to the next one. Every agent except Gemini can go local, so the old
+    // "reset only when the agent can't go local" rule left the toggle on after,
+    // say, a Qwen session -- and picking Claude then launched `claude-local`,
+    // i.e. Claude Code driving qwen3-coder on ollama. That reads as "Claude is
+    // broken": a ~22k-token agent system prompt needs ~80s of prompt eval
+    // locally before the first token, so the session just sits there.
+    // Picking an agent means picking its normal cloud runtime; opting into
+    // local stays one visible click away.
+    const keepsRuntime = previous === cliProvider && supportsLocalRuntime(cliProvider)
+    const modelRuntime = keepsRuntime ? get().modelRuntime : 'api'
     const settings = { ...get().settings, cliProvider, modelRuntime }
     set({ settings, modelRuntime })
     get().saveAllSettings()

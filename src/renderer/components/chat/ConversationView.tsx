@@ -5,7 +5,7 @@ import remarkGfm from 'remark-gfm'
 import {
   FileText, PencilSimple, FileArrowUp, Terminal, MagnifyingGlass, Globe,
   Robot, Question, Wrench, FolderOpen, Copy, Check, CaretRight, CaretDown,
-  SpinnerGap, Square, ShieldCheck, ShieldSlash, Warning,
+  SpinnerGap, Square,
 } from '@phosphor-icons/react'
 import { useChatStore, type ChatMessage } from './chatStore'
 import { useChatColors } from './chatTheme'
@@ -19,7 +19,6 @@ type GroupedItem =
   | { kind: 'assistant'; message: ChatMessage }
   | { kind: 'system'; message: ChatMessage }
   | { kind: 'tool-group'; messages: ChatMessage[] }
-  | { kind: 'permission'; message: ChatMessage }
 
 function groupMessages(messages: ChatMessage[]): GroupedItem[] {
   const result: GroupedItem[] = []
@@ -33,11 +32,10 @@ function groupMessages(messages: ChatMessage[]): GroupedItem[] {
   }
 
   for (const msg of messages) {
+    // Rail-routed calls (TodoWrite) render as the task list, not as a tool row.
+    if (msg.hidden) continue
     if (msg.role === 'tool') {
       toolBuf.push(msg)
-    } else if (msg.role === 'permission') {
-      flushTools()
-      result.push({ kind: 'permission', message: msg })
     } else {
       flushTools()
       if (msg.role === 'user') result.push({ kind: 'user', message: msg })
@@ -55,7 +53,6 @@ export function ConversationView() {
   const status = useChatStore((s) => s.status)
   const currentActivity = useChatStore((s) => s.currentActivity)
   const stopSession = useChatStore((s) => s.stopSession)
-  const respondToPermission = useChatStore((s) => s.respondToPermission)
   const scrollRef = useRef<HTMLDivElement>(null)
   const isNearBottomRef = useRef(true)
   const colors = useChatColors()
@@ -117,21 +114,26 @@ export function ConversationView() {
           {grouped.map((item, idx) => {
             const msgIndex = startIndex + idx
             const isHistorical = msgIndex < historicalThreshold
+            // Anchor every row so the rail's decision log can scroll to the exact
+            // tool call it is describing.
+            const anchor = item.kind === 'tool-group' ? item.messages[0].id : item.message.id
 
-            switch (item.kind) {
-              case 'user':
-                return <UserMessage key={item.message.id} message={item.message} skipMotion={isHistorical} colors={colors} />
-              case 'assistant':
-                return <AssistantMessage key={item.message.id} message={item.message} skipMotion={isHistorical} colors={colors} />
-              case 'tool-group':
-                return <ToolGroup key={`tg-${item.messages[0].id}`} tools={item.messages} skipMotion={isHistorical} colors={colors} />
-              case 'permission':
-                return <PermissionPrompt key={item.message.id} message={item.message} onRespond={respondToPermission} skipMotion={isHistorical} colors={colors} />
-              case 'system':
-                return <SystemMessage key={item.message.id} message={item.message} skipMotion={isHistorical} colors={colors} />
-              default:
-                return null
-            }
+            const body = (() => {
+              switch (item.kind) {
+                case 'user':
+                  return <UserMessage message={item.message} skipMotion={isHistorical} colors={colors} />
+                case 'assistant':
+                  return <AssistantMessage message={item.message} skipMotion={isHistorical} colors={colors} />
+                case 'tool-group':
+                  return <ToolGroup tools={item.messages} skipMotion={isHistorical} colors={colors} />
+                case 'system':
+                  return <SystemMessage message={item.message} skipMotion={isHistorical} colors={colors} />
+                default:
+                  return null
+              }
+            })()
+
+            return <div key={anchor} id={`chat-msg-${anchor}`}>{body}</div>
           })}
         </div>
       </div>
@@ -402,123 +404,6 @@ function ToolGroup({ tools, skipMotion, colors }: { tools: ChatMessage[]; skipMo
   )
   if (skipMotion) return <div className="py-0.5">{inner}</div>
   return <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.12 }} className="py-0.5">{inner}</motion.div>
-}
-
-function PermissionPrompt({
-  message, onRespond, skipMotion, colors,
-}: {
-  message: ChatMessage
-  onRespond: (messageId: string, toolUseId: string, allowed: boolean) => void
-  skipMotion?: boolean
-  colors: ReturnType<typeof useChatColors>
-}) {
-  const isPending = message.permissionStatus === 'pending'
-  const isAllowed = message.permissionStatus === 'allowed'
-  const isDenied = message.permissionStatus === 'denied'
-  const toolUseId = message.toolUseId || ''
-
-  // Try to parse tool input for display
-  let inputPreview = ''
-  try {
-    const parsed = JSON.parse(message.content)
-    if (parsed.command) inputPreview = parsed.command
-    else if (parsed.file_path) inputPreview = parsed.file_path
-    else if (parsed.pattern) inputPreview = parsed.pattern
-    else if (parsed.url) inputPreview = parsed.url
-  } catch {
-    if (message.content.length < 200) inputPreview = message.content
-  }
-
-  const inner = (
-    <div
-      className="rounded-xl overflow-hidden"
-      style={{
-        border: `1px solid ${isPending ? colors.permissionBorder : isDenied ? colors.permissionDenyBorder : colors.permissionAllowBorder}`,
-        boxShadow: isPending ? colors.permissionShadow : 'none',
-      }}
-    >
-      {/* Header */}
-      <div
-        className="flex items-center gap-2 px-3 py-2"
-        style={{ background: colors.permissionHeaderBg }}
-      >
-        <Warning size={14} style={{ color: '#f59e0b' }} />
-        <span className="text-[12px] font-medium" style={{ color: colors.textSecondary }}>
-          {message.permissionDescription || `Allow ${message.permissionTool}?`}
-        </span>
-      </div>
-
-      {/* Input preview */}
-      {inputPreview && (
-        <div className="px-3 py-2" style={{ background: colors.codeBg }}>
-          <pre
-            className="text-[11px] font-mono whitespace-pre-wrap break-all"
-            style={{ color: colors.textTertiary, maxHeight: 120, overflow: 'auto' }}
-          >
-            {inputPreview}
-          </pre>
-        </div>
-      )}
-
-      {/* Action buttons */}
-      {isPending && (
-        <div className="flex items-center gap-2 px-3 py-2" style={{ background: colors.surfacePrimary }}>
-          <button
-            onClick={() => onRespond(message.id, toolUseId, true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors"
-            style={{
-              background: colors.permissionAllowBg,
-              color: colors.statusComplete,
-              border: `1px solid ${colors.permissionAllowBorder}`,
-            }}
-          >
-            <ShieldCheck size={13} />
-            Allow
-          </button>
-          <button
-            onClick={() => onRespond(message.id, toolUseId, false)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors"
-            style={{
-              background: colors.permissionDenyBg,
-              color: colors.statusError,
-              border: `1px solid ${colors.permissionDenyBorder}`,
-            }}
-          >
-            <ShieldSlash size={13} />
-            Deny
-          </button>
-        </div>
-      )}
-
-      {/* Resolved state */}
-      {!isPending && (
-        <div className="flex items-center gap-1.5 px-3 py-1.5" style={{ background: colors.surfacePrimary }}>
-          {isAllowed ? (
-            <span className="flex items-center gap-1 text-[11px]" style={{ color: colors.statusComplete }}>
-              <ShieldCheck size={12} /> Allowed
-            </span>
-          ) : (
-            <span className="flex items-center gap-1 text-[11px]" style={{ color: colors.statusError }}>
-              <ShieldSlash size={12} /> Denied
-            </span>
-          )}
-        </div>
-      )}
-    </div>
-  )
-
-  if (skipMotion) return <div className="py-1.5 max-w-[92%]">{inner}</div>
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
-      className="py-1.5 max-w-[92%]"
-    >
-      {inner}
-    </motion.div>
-  )
 }
 
 function SystemMessage({ message, skipMotion, colors }: { message: ChatMessage; skipMotion?: boolean; colors: ReturnType<typeof useChatColors> }) {

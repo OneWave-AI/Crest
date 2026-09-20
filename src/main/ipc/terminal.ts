@@ -17,6 +17,12 @@ interface Terminal {
 
 const terminals = new Map<string, Terminal>()
 const terminalOutputBuffers = new Map<string, string>()
+/**
+ * Total characters ever written to a terminal, which the ring buffer's length
+ * cannot express. Readers diff against this: once the buffer saturates its
+ * length stops changing, so length alone makes a live stream look finished.
+ */
+const terminalTotalWritten = new Map<string, number>()
 const MAX_OUTPUT_BUFFER = 50_000 // 50KB ring buffer per terminal
 const CLAUDE_CRASH_TIMEOUT = 120_000 // 2min with no output while Claude is "working" = likely crash
 let terminalCounter = 0
@@ -86,6 +92,7 @@ export function registerTerminalHandlers(): void {
 
       // Initialize output buffer for this terminal
       terminalOutputBuffers.set(id, '')
+      terminalTotalWritten.set(id, 0)
 
       // Forward data to renderer and track in ring buffer
       const dataDisposable = ptyProcess.onData((data) => {
@@ -109,6 +116,7 @@ export function registerTerminalHandlers(): void {
           id,
           updated.length > MAX_OUTPUT_BUFFER ? updated.slice(-MAX_OUTPUT_BUFFER) : updated
         )
+        terminalTotalWritten.set(id, (terminalTotalWritten.get(id) || 0) + data.length)
 
         try {
           const window = BrowserWindow.fromWebContents(event.sender)
@@ -221,6 +229,26 @@ export function registerTerminalHandlers(): void {
     return buffer
   })
 
+  /**
+   * Everything written since `sinceTotal`, for readers that parse the stream
+   * incrementally. `dropped` is how many characters fell out of the ring buffer
+   * before the reader got to them, so it can flag the gap instead of silently
+   * stitching unrelated output together.
+   */
+  ipcMain.handle('terminal-get-buffer-delta', (_, terminalId: string, sinceTotal: number) => {
+    const buffer = terminalOutputBuffers.get(terminalId)
+    if (buffer === undefined) return { data: '', total: 0, dropped: 0 }
+
+    const total = terminalTotalWritten.get(terminalId) || 0
+    const oldestAvailable = total - buffer.length
+    const from = Math.max(sinceTotal, oldestAvailable)
+    return {
+      data: buffer.slice(from - oldestAvailable),
+      total,
+      dropped: Math.max(0, oldestAvailable - sinceTotal),
+    }
+  })
+
   // Send interrupt (Ctrl+C) to terminal -- essential for stopping Claude mid-operation
   ipcMain.handle('terminal-interrupt', (_, terminalId: string) => {
     const terminal = terminals.get(terminalId)
@@ -303,6 +331,7 @@ function cleanupTerminal(terminalId: string): void {
   // Remove from maps
   terminals.delete(terminalId)
   terminalOutputBuffers.delete(terminalId)
+  terminalTotalWritten.delete(terminalId)
 }
 
 /**

@@ -88,17 +88,6 @@ const chatColors = {
   btnHoverColor: '#b0b0b0',
   btnHoverBg: '#242426',
   accentBorder: 'rgba(204, 120, 92, 0.19)',
-
-  // Permission (amber)
-  permissionBorder: 'rgba(245, 158, 11, 0.3)',
-  permissionShadow: '0 2px 12px rgba(245, 158, 11, 0.08)',
-  permissionHeaderBg: 'rgba(245, 158, 11, 0.06)',
-  permissionAllowBg: 'rgba(34, 197, 94, 0.1)',
-  permissionAllowHoverBg: 'rgba(34, 197, 94, 0.22)',
-  permissionAllowBorder: 'rgba(34, 197, 94, 0.25)',
-  permissionDenyBg: 'rgba(239, 68, 68, 0.08)',
-  permissionDenyHoverBg: 'rgba(239, 68, 68, 0.18)',
-  permissionDenyBorder: 'rgba(239, 68, 68, 0.22)',
 } as const
 
 export type ChatColors = typeof chatColors

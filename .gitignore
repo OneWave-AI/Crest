@@ -50,3 +50,6 @@ temp/
 # the shipping cut lives at website/assets/media/crest-launch.mp4)
 video/**/out/
 video/**/.thumbnails/
+
+# Stray esbuild output at repo root
+/index.js

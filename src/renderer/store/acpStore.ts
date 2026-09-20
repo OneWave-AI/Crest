@@ -29,6 +29,16 @@ export type AcpTimelineItem =
     }
   | { kind: 'error'; id: string; text: string }
 
+/** One resolved permission or session-level switch, for the rail's audit trail. */
+export interface AcpDecision {
+  id: string
+  kind: 'permission' | 'mode' | 'cancel'
+  label: string
+  detail?: string
+  timestamp: number
+  allowed: boolean | null
+}
+
 export interface AcpSessionSlice {
   state: AcpSessionState | null
   items: AcpTimelineItem[]
@@ -36,6 +46,7 @@ export interface AcpSessionSlice {
   permission: AcpPermissionRequest | null
   logs: { level: 'info' | 'error'; message: string }[]
   terminals: Record<string, AcpTerminalState>
+  decisions: AcpDecision[]
 }
 
 const EMPTY_SLICE: AcpSessionSlice = {
@@ -44,7 +55,8 @@ const EMPTY_SLICE: AcpSessionSlice = {
   plan: [],
   permission: null,
   logs: [],
-  terminals: {}
+  terminals: {},
+  decisions: []
 }
 
 interface AcpStore {
@@ -191,8 +203,23 @@ function applyEvent(event: AcpEvent): void {
       case 'permission':
         return { ...slice, permission: event.request }
 
-      case 'permission-resolved':
-        return slice.permission?.requestId === event.requestId ? { ...slice, permission: null } : slice
+      case 'permission-resolved': {
+        const allowed = event.optionKind
+          ? event.optionKind === 'allow_once' || event.optionKind === 'allow_always'
+          : null
+        const decision: AcpDecision = {
+          id: nextId('decision'),
+          kind: 'permission',
+          label: `${event.toolTitle} ${allowed === null ? 'cancelled' : allowed ? 'allowed' : 'rejected'}`,
+          detail: [event.optionName, event.auto ? 'auto-approved' : null].filter(Boolean).join(' · ') || undefined,
+          timestamp: Date.now(),
+          allowed
+        }
+        const cleared = slice.permission?.requestId === event.requestId
+          ? { ...slice, permission: null }
+          : slice
+        return { ...cleared, decisions: [...cleared.decisions, decision] }
+      }
 
       case 'log':
         return { ...slice, logs: [...slice.logs.slice(-199), { level: event.level, message: event.message }] }
@@ -210,6 +237,24 @@ function applyEvent(event: AcpEvent): void {
       case 'update':
         if (event.update.sessionUpdate === 'plan') {
           return { ...slice, plan: event.update.entries }
+        }
+        if (event.update.sessionUpdate === 'current_mode_update') {
+          const modeId = event.update.currentModeId
+          const name = slice.state?.modes.find((mode) => mode.id === modeId)?.name ?? modeId
+          return {
+            ...slice,
+            decisions: [
+              ...slice.decisions,
+              {
+                id: nextId('decision'),
+                kind: 'mode',
+                label: 'Session mode set',
+                detail: name,
+                timestamp: Date.now(),
+                allowed: null
+              }
+            ]
+          }
         }
         return { ...slice, items: reduceUpdate(slice.items, event.update) }
 

@@ -13,6 +13,8 @@ const api: IpcApi = {
   terminalSendPaste: (text, terminalId, submit) =>
     ipcRenderer.invoke('terminal-send-paste', text, terminalId, submit),
   terminalGetBuffer: (terminalId, lines) => ipcRenderer.invoke('terminal-get-buffer', terminalId, lines),
+  terminalGetBufferDelta: (terminalId, sinceTotal) =>
+    ipcRenderer.invoke('terminal-get-buffer-delta', terminalId, sinceTotal),
   terminalInterrupt: (terminalId) => ipcRenderer.invoke('terminal-interrupt', terminalId),
   terminalSendEscape: (terminalId) => ipcRenderer.invoke('terminal-send-escape', terminalId),
   terminalGetClaudeStatus: (terminalId) => ipcRenderer.invoke('terminal-get-claude-status', terminalId),
@@ -243,11 +245,19 @@ const api: IpcApi = {
     ipcRenderer.invoke('write-session-context', projectPath, content),
 
   // Chat Mode
-  chatSendPrompt: (options: { sessionId: string; prompt: string; cwd: string; model?: string; resumeSessionId?: string }) =>
-    ipcRenderer.invoke('chat:send-prompt', options),
+  chatSendPrompt: (options: {
+    sessionId: string
+    prompt: string
+    cwd: string
+    model?: string
+    resumeSessionId?: string
+    permissionMode?: string
+    allowedTools?: string[]
+    disallowedTools?: string[]
+    addDirs?: string[]
+  }) => ipcRenderer.invoke('chat:send-prompt', options),
   chatStop: (sessionId: string) => ipcRenderer.invoke('chat:stop', sessionId),
-  chatPermissionResponse: (sessionId: string, toolUseId: string, allowed: boolean) =>
-    ipcRenderer.invoke('chat:permission-response', sessionId, toolUseId, allowed),
+  chatPermissionModes: () => ipcRenderer.invoke('chat:permission-modes'),
   onChatStreamEvent: (callback: (sessionId: string, event: any) => void) => {
     const handler = (_: Electron.IpcRendererEvent, sessionId: string, event: any) => callback(sessionId, event)
     ipcRenderer.on('chat:stream-event', handler)

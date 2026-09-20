@@ -77,6 +77,8 @@ export function registerAcpHandlers(): void {
     stopSession(options.sessionId)
 
     const connection = new AcpConnection(options)
+    // Requests answered by auto-approve, so the decision log can say so.
+    const autoApproved = new Set<string>()
     const session: ManagedSession = { connection, state: initialState(options) }
     sessions.set(options.sessionId, session)
     broadcast({ type: 'state', sessionId: session.state.id, state: session.state })
@@ -100,6 +102,7 @@ export function registerAcpHandlers(): void {
           request.options.find((option) => option.kind === 'allow_always') ??
           request.options.find((option) => option.kind === 'allow_once')
         if (allow) {
+          autoApproved.add(request.requestId)
           connection.resolvePermission(request.requestId, allow.optionId)
           return
         }
@@ -109,8 +112,17 @@ export function registerAcpHandlers(): void {
     connection.on('terminal', (terminal) => {
       broadcast({ type: 'terminal', sessionId: options.sessionId, terminal })
     })
-    connection.on('permission-resolved', (requestId) => {
-      broadcast({ type: 'permission-resolved', sessionId: options.sessionId, requestId })
+    connection.on('permission-resolved', (outcome) => {
+      broadcast({
+        type: 'permission-resolved',
+        sessionId: options.sessionId,
+        requestId: outcome.requestId,
+        optionId: outcome.optionId,
+        optionName: outcome.optionName,
+        optionKind: outcome.optionKind,
+        toolTitle: outcome.toolTitle,
+        auto: autoApproved.delete(outcome.requestId)
+      })
     })
     connection.on('state', (patch) => patchState(session, patch))
     connection.on('log', (level, message) => {

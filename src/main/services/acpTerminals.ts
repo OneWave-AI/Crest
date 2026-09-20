@@ -13,6 +13,9 @@ import type { AcpTerminalState } from '../../shared/acp'
 
 const DEFAULT_OUTPUT_BYTE_LIMIT = 1024 * 1024
 
+/** Grace period between SIGTERM and SIGKILL when tearing down a terminal. */
+const KILL_ESCALATION_MS = 3_000
+
 interface TerminalRecord {
   id: string
   command: string
@@ -156,16 +159,26 @@ export class AcpTerminalRegistry extends EventEmitter {
   }
 
   private killProcessTree(record: TerminalRecord): void {
-    try {
-      if (process.platform !== 'win32' && record.proc.pid) {
-        process.kill(-record.proc.pid, 'SIGTERM')
-      } else {
-        record.proc.kill('SIGTERM')
+    const signal = (sig: NodeJS.Signals): void => {
+      try {
+        if (process.platform !== 'win32' && record.proc.pid) {
+          process.kill(-record.proc.pid, sig)
+        } else {
+          record.proc.kill(sig)
+        }
+      } catch {
+        // Already gone — the exit handler settles the record.
       }
-    } catch {
-      // Process already gone — the exit handler will settle the record.
-      record.proc.kill('SIGKILL')
     }
+
+    signal('SIGTERM')
+
+    // A build script that traps SIGTERM would otherwise keep running (and keep
+    // holding its port) long after the agent released the terminal.
+    const escalation = setTimeout(() => {
+      if (record.running) signal('SIGKILL')
+    }, KILL_ESCALATION_MS)
+    record.proc.once('exit', () => clearTimeout(escalation))
   }
 
   private require(terminalId: string): TerminalRecord {
