@@ -7,32 +7,35 @@ Target: v3.0.0.
 
 ---
 
-## Phase 0 — Clean the decks (1 day)
+## Phase 0 — Clean the decks — DONE (2026-09-20)
 
-Nothing new. Just stop bleeding.
+Nothing new. Just stop bleeding. All five items shipped on `feat/agent-rail`:
+`605a9a7` (land the rail), `69c0ce6` (purple + emoji), `7163c38` (pricing),
+plus the updater commit. Build and typecheck green; the compiled CSS bundle
+carries the full sand ramp and zero purple.
 
-### 0.1 Land the in-flight work
+### 0.1 Land the in-flight work — done
 24 modified files sit uncommitted on `main`, including an untracked `src/renderer/components/rail/` (AgentRail + useAcpRail + useChatRail) and a deleted `AcpPlanPanel.tsx`. That's a whole feature half-landed on the default branch.
 
 - Branch it: `git checkout -b feat/agent-rail`, commit, PR, merge.
 - `index.js` at repo root is untracked junk — delete or gitignore.
 
-### 0.2 Purge purple
+### 0.2 Purge purple — done
 `--accent-purple: #a855f7` is defined in `globals.css` and referenced across 20+ components. Against house rules.
 
 Worst offenders: `HistoryBrowser.tsx` (19), `SettingsPanel.tsx` (16), `SkillsManager.tsx` (15), `MemoryPanelNatural.tsx` (15), `MemoryPanel.tsx` (15), `SuperAgentSettings.tsx` (11), `AnalyticsScreen.tsx` (9), `Toolbelt.tsx` (8).
 
 Replace with the second accent chosen in Phase 1.1. One pass, mechanical.
 
-### 0.3 Purge emoji
+### 0.3 Purge emoji — done
 Shipped emoji in `hives.ts` (swarm prompts), `HiveManager.tsx`, `Header.tsx`, `Toolbelt.tsx`, `providers.ts`, `errorLogger.ts`. Swap to Lucide icons (already a dependency).
 
-### 0.4 Fix the pricing table
+### 0.4 Fix the pricing table — done
 `conversations.ts:839` `MODEL_PRICING` knows only Claude 3.5 / 4 era models. No Opus 5, Sonnet 5, Haiku 4.5, Fable 5.1. Every cost number in the Analytics dashboard is currently wrong for anything you actually run.
 
 Fix: replace the hardcoded map with a `pricing.ts` module keyed on real model ids, and default-case to Sonnet pricing with a visible "unknown model" flag instead of silently guessing.
 
-### 0.5 Auto-update
+### 0.5 Auto-update — done
 Crest has no `electron-updater`. Every release is a cold DMG download. Add `electron-updater` + `app-update.yml` + a GitHub Releases feed. Hive's `src/main/services/updater.ts` and `updater-events.ts` are a 200-line drop-in.
 
 **Done when:** clean `git status`, zero purple, zero emoji, correct costs, app self-updates.
@@ -171,7 +174,7 @@ Don't start this until Phases 0–4 ship.
 
 | Phase | Effort | Ship |
 |---|---|---|
-| 0 — Clean decks | 1 day | immediately |
+| 0 — Clean decks | 1 day | **DONE 2026-09-20** |
 | 1 — Fresh paint | 3–4 days | v2.6 |
 | 2 — Foundation | 1.5 weeks | v2.7 |
 | 3 — Remote control | 1 week | **v3.0** |

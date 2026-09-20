@@ -24,6 +24,7 @@
     "@xterm/addon-search": "^0.16.0",
     "@xterm/addon-web-links": "^0.11.0",
     "@xterm/xterm": "^5.5.0",
+    "electron-updater": "^6.8.9",
     "framer-motion": "^12.37.0",
     "html-to-image": "^1.11.13",
     "lucide-react": "^0.468.0",
@@ -97,6 +98,11 @@
         "AppImage"
       ],
       "icon": "assets/icon.png"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "OneWave-AI",
+      "repo": "Crest"
     }
   }
 }

@@ -6,6 +6,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { registerIpcHandlers } from './ipc'
 import { stopAllAcpSessions } from './ipc/acp'
 import { autoInstallStarterKit } from './ipc/skills'
+import { initAutoUpdater } from './services/updater'
 import { PREVIEW_PARTITION } from '../shared/preview'
 
 // Register custom protocol as privileged (must be before app ready)
@@ -159,6 +160,8 @@ app.whenReady().then(() => {
   })
 
   createWindow()
+
+  initAutoUpdater(() => mainWindow)
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

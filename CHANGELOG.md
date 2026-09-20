@@ -7,6 +7,33 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Self-update against GitHub Releases (`electron-updater`). Crest ships
+  unsigned, and macOS refuses an in-place swap of an unsigned bundle, so the
+  updater currently detects the release and opens the download page rather
+  than pretending to install; the real download/install path is behind one
+  flag, ready for when signing lands.
+- `src/shared/pricing.ts` -- current per-model rates with a confidence signal
+  on every lookup (`exact`, `tier`, `unknown`).
+- `sand`, a full 100-900 accent ramp in `tailwind.config.js`.
+
+### Fixed
+- **Opus sessions were costed at 3x.** The pricing resolver mapped any model
+  containing "opus" to Opus 4 rates ($15/$75); Opus 5, 4.8, 4.7, 4.6 and 4.5
+  all bill $5/$25. Anything that was neither Opus nor Haiku fell through to
+  Sonnet 4 ($3/$15) regardless of what ran. Model ids now resolve by longest
+  prefix, so dated snapshots match, and an unrecognised future model falls
+  back to the *current* generation's tier instead of three-year-old rates.
+
+### Changed
+- Retired purple (`#a855f7`) as the second accent -- it was defined in
+  `globals.css` and reached 20+ components as loose Tailwind classes.
+  Replaced by `sand` (#c2a87e), declared once in the Tailwind config.
+- Crest no longer emits emoji in any string it produces -- swarm prompts,
+  the Toolbelt skill request, and console severity markers are text now. The
+  emoji remaining in `providers.ts` are regex literals matching the CLI's own
+  output and are commented as such.
+
 ## [2.5.0] – 2026-08-05
 
 ### Added
