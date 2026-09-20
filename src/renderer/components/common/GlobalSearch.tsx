@@ -341,7 +341,7 @@ export default function GlobalSearch({
             title: conv.preview?.slice(0, 60) || 'Conversation',
             subtitle: `${conv.projectFolder} - ${formatDate(conv.timestamp)}`,
             icon: MessageSquare,
-            iconColor: 'text-purple-400',
+            iconColor: 'text-sand-400',
             path: conv.projectFolder,
             data: { conversation: conv, score },
             action: () => {

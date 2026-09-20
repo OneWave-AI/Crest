@@ -35,7 +35,7 @@ const LOG_CONFIG = {
   complete: { icon: CheckCircle2, color: 'text-green-400', bg: 'bg-green-400/10', border: 'border-green-400/20', label: 'Done' },
   stop: { icon: Square, color: 'text-orange-400', bg: 'bg-orange-400/10', border: 'border-orange-400/20', label: 'Stopped' },
   working: { icon: Loader2, color: 'text-[#cc785c]', bg: 'bg-[#cc785c]/10', border: 'border-[#cc785c]/20', label: 'Working' },
-  waiting: { icon: Clock, color: 'text-purple-400', bg: 'bg-purple-400/10', border: 'border-purple-400/20', label: 'Waiting' },
+  waiting: { icon: Clock, color: 'text-sand-400', bg: 'bg-sand-400/10', border: 'border-sand-400/20', label: 'Waiting' },
   default: { icon: Brain, color: 'text-gray-400', bg: 'bg-gray-400/10', border: 'border-gray-400/20', label: 'Info' }
 }
 
@@ -299,7 +299,7 @@ export function SuperAgentStatusBar({ onStop }: SuperAgentStatusBarProps) {
           className={`w-full flex items-center justify-center gap-2 px-3 py-2 border rounded-lg text-xs font-medium transition-all group ${
             isPaused
               ? 'bg-green-500/10 hover:bg-green-500 border-green-500/30 hover:border-green-500 text-green-400 hover:text-white'
-              : 'bg-purple-500/10 hover:bg-purple-500 border-purple-500/30 hover:border-purple-500 text-purple-400 hover:text-white'
+              : 'bg-sand-500/10 hover:bg-sand-500 border-sand-500/30 hover:border-sand-500 text-sand-400 hover:text-white'
           }`}
         >
           {isPaused ? (

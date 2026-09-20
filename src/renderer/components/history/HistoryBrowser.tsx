@@ -592,7 +592,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 onClick={() => setActiveTab('superagent')}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs transition-all ${
                   activeTab === 'superagent'
-                    ? 'bg-purple-600 text-white shadow-sm'
+                    ? 'bg-sand-600 text-white shadow-sm'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -704,7 +704,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 onClick={() => setGroupBy('none')}
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   groupBy === 'none'
-                    ? 'bg-purple-500 text-white shadow-sm'
+                    ? 'bg-sand-500 text-white shadow-sm'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -714,7 +714,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 onClick={() => setGroupBy('project')}
                 className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs transition-all ${
                   groupBy === 'project'
-                    ? 'bg-purple-500 text-white shadow-sm'
+                    ? 'bg-sand-500 text-white shadow-sm'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -725,7 +725,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 onClick={() => setGroupBy('date')}
                 className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs transition-all ${
                   groupBy === 'date'
-                    ? 'bg-purple-500 text-white shadow-sm'
+                    ? 'bg-sand-500 text-white shadow-sm'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -774,14 +774,14 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
             loadingSuperAgent ? (
               <div className="flex items-center justify-center h-full text-gray-500">
                 <div className="flex flex-col items-center gap-3">
-                  <div className="w-8 h-8 border-2 border-purple-600/30 border-t-purple-600 rounded-full animate-spin" />
+                  <div className="w-8 h-8 border-2 border-sand-600/30 border-t-sand-600 rounded-full animate-spin" />
                   <span className="text-sm">Loading Super Agent sessions...</span>
                 </div>
               </div>
             ) : superAgentSessions.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-600/20 to-purple-600/10 mb-4">
-                  <Zap size={32} className="text-purple-400" />
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-sand-600/20 to-sand-600/10 mb-4">
+                  <Zap size={32} className="text-sand-400" />
                 </div>
                 <h3 className="text-base font-medium text-white mb-1">No Super Agent sessions yet</h3>
                 <p className="text-xs text-gray-500 max-w-xs">
@@ -796,7 +796,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                     onClick={() => setSelectedSession(session)}
                     className={`p-3 rounded-lg border cursor-pointer transition-all hover:bg-white/[0.02] ${
                       selectedSession?.id === session.id
-                        ? 'bg-purple-600/10 border-purple-600/30'
+                        ? 'bg-sand-600/10 border-sand-600/30'
                         : 'bg-white/[0.02] border-white/[0.06]'
                     }`}
                   >
@@ -804,16 +804,16 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                       <div className="flex items-center gap-2">
                         <div className={`p-1.5 rounded-lg ${
                           session.status === 'completed' ? 'bg-green-500/20' :
-                          session.status === 'error' ? 'bg-red-500/20' : 'bg-purple-500/20'
+                          session.status === 'error' ? 'bg-red-500/20' : 'bg-sand-500/20'
                         }`}>
                           <Zap size={12} className={
                             session.status === 'completed' ? 'text-green-400' :
-                            session.status === 'error' ? 'text-red-400' : 'text-purple-400'
+                            session.status === 'error' ? 'text-red-400' : 'text-sand-400'
                           } />
                         </div>
                         <span className={`text-[10px] uppercase tracking-wider ${
                           session.status === 'completed' ? 'text-green-400' :
-                          session.status === 'error' ? 'text-red-400' : 'text-purple-400'
+                          session.status === 'error' ? 'text-red-400' : 'text-sand-400'
                         }`}>
                           {session.status}
                         </span>
@@ -940,16 +940,16 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                   <div className="flex items-center gap-2 mb-2">
                     <div className={`p-1.5 rounded-lg ${
                       selectedSession.status === 'completed' ? 'bg-green-500/20' :
-                      selectedSession.status === 'error' ? 'bg-red-500/20' : 'bg-purple-500/20'
+                      selectedSession.status === 'error' ? 'bg-red-500/20' : 'bg-sand-500/20'
                     }`}>
                       <Zap size={14} className={
                         selectedSession.status === 'completed' ? 'text-green-400' :
-                        selectedSession.status === 'error' ? 'text-red-400' : 'text-purple-400'
+                        selectedSession.status === 'error' ? 'text-red-400' : 'text-sand-400'
                       } />
                     </div>
                     <span className={`text-xs font-medium uppercase tracking-wider ${
                       selectedSession.status === 'completed' ? 'text-green-400' :
-                      selectedSession.status === 'error' ? 'text-red-400' : 'text-purple-400'
+                      selectedSession.status === 'error' ? 'text-red-400' : 'text-sand-400'
                     }`}>
                       {selectedSession.status}
                     </span>
@@ -977,7 +977,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 <div className="flex-1 flex overflow-hidden">
                   {/* Left: Activity Log */}
                   <div className="w-1/2 border-r border-white/[0.06] overflow-y-auto p-4">
-                    <h4 className="text-xs font-medium text-purple-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <h4 className="text-xs font-medium text-sand-400 uppercase tracking-wider mb-3 flex items-center gap-2">
                       <Zap size={12} />
                       Super Agent Log ({selectedSession.activityLog.length})
                     </h4>
@@ -988,7 +988,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                           className={`p-2.5 rounded-lg border text-xs ${
                             entry.type === 'start' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-300' :
                             entry.type === 'ready' ? 'bg-green-500/10 border-green-500/20 text-green-300' :
-                            entry.type === 'stop' || entry.type === 'complete' ? 'bg-purple-500/10 border-purple-500/20 text-purple-300' :
+                            entry.type === 'stop' || entry.type === 'complete' ? 'bg-sand-500/10 border-sand-500/20 text-sand-300' :
                             entry.type === 'error' ? 'bg-red-500/10 border-red-500/20 text-red-300' :
                             entry.type === 'input' ? 'bg-blue-500/10 border-blue-500/20 text-blue-300' :
                             entry.type === 'working' ? 'bg-orange-500/10 border-orange-500/20 text-orange-300' :
@@ -1068,8 +1068,8 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
               </>
             ) : activeTab === 'superagent' ? (
               <div className="flex-1 flex flex-col items-center justify-center text-gray-500">
-                <div className="p-4 rounded-2xl bg-purple-500/10 mb-4">
-                  <Zap size={40} strokeWidth={1.5} className="text-purple-400" />
+                <div className="p-4 rounded-2xl bg-sand-500/10 mb-4">
+                  <Zap size={40} strokeWidth={1.5} className="text-sand-400" />
                 </div>
                 <h3 className="text-base font-medium text-gray-400 mb-1">Select a session</h3>
                 <p className="text-sm text-gray-600">Click on a session to view its activity log</p>
@@ -1243,7 +1243,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                   <Zap size={12} />
                   <span className={
                     deleteSuperAgentTarget.status === 'completed' ? 'text-green-400' :
-                    deleteSuperAgentTarget.status === 'error' ? 'text-red-400' : 'text-purple-400'
+                    deleteSuperAgentTarget.status === 'error' ? 'text-red-400' : 'text-sand-400'
                   }>
                     {deleteSuperAgentTarget.status}
                   </span>

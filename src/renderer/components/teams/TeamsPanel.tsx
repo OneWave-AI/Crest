@@ -190,7 +190,7 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
       cyan: 'bg-cyan-500',
       magenta: 'bg-pink-500',
       orange: 'bg-orange-500',
-      purple: 'bg-purple-500',
+      sand: 'bg-sand-500',
     }
     return colors[color || ''] || 'bg-teal-500'
   }

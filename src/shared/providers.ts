@@ -1,6 +1,10 @@
 import type { CLIProvider, CLIProviderConfig, ModelRuntime } from './types'
 
-// Claude Code-specific patterns for parsing structured terminal output
+// Claude Code-specific patterns for parsing structured terminal output.
+//
+// The emoji and box-drawing glyphs below are NOT ours to style -- they are
+// literals the CLI prints, and the patterns only match because they are here.
+// Crest never emits emoji of its own; do not "clean" these up.
 export const CLAUDE_PATTERNS = {
   // Context window usage: "Context: 45.2k/200k tokens (23%)" or "87% context used"
   contextUsage: /(?:Context|context)[\s:]+[\d.]+[km]?\s*\/\s*[\d.]+[km]?\s*(?:tokens?\s*)?\((\d+)%\)/i,
@@ -56,7 +60,7 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
       `${home}/.local/bin/claude`
     ],
     models: [
-      { id: 'opus', name: 'Opus 4.6', desc: 'Most intelligent', color: 'text-purple-400', bg: 'bg-purple-500/10' },
+      { id: 'opus', name: 'Opus 4.6', desc: 'Most intelligent', color: 'text-sand-400', bg: 'bg-sand-500/10' },
       { id: 'sonnet', name: 'Sonnet 4.6', desc: 'Speed + intelligence', color: 'text-[#cc785c]', bg: 'bg-[#cc785c]/10' },
       { id: 'haiku', name: 'Haiku 4.5', desc: 'Fastest', color: 'text-emerald-400', bg: 'bg-emerald-500/10' }
     ],
@@ -115,7 +119,7 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
     models: [
       { id: 'gpt-5.3-codex', name: 'GPT-5.3 Codex', desc: 'Most capable', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
       { id: 'gpt-5.3-codex-spark', name: 'GPT-5.3 Spark', desc: 'Fast real-time', color: 'text-[#cc785c]', bg: 'bg-[#cc785c]/10' },
-      { id: 'gpt-5.2-codex', name: 'GPT-5.2 Codex', desc: 'Previous gen', color: 'text-purple-400', bg: 'bg-purple-500/10' },
+      { id: 'gpt-5.2-codex', name: 'GPT-5.2 Codex', desc: 'Previous gen', color: 'text-sand-400', bg: 'bg-sand-500/10' },
       { id: 'gpt-5.1-codex-max', name: 'GPT-5.1 Max', desc: 'Long-horizon', color: 'text-blue-400', bg: 'bg-blue-500/10' }
     ],
     defaultModel: 'gpt-5.3-codex',

@@ -1472,7 +1472,7 @@ function QuickAction({ icon: Icon, label, onClick, color, badge }: {
   icon: React.ComponentType<{ className?: string }>
   label: string
   onClick: () => void
-  color: 'blue' | 'orange' | 'purple' | 'gray'
+  color: 'blue' | 'orange' | 'sand' | 'gray'
   badge?: number
 }) {
   const colors = {
@@ -1490,12 +1490,12 @@ function QuickAction({ icon: Icon, label, onClick, color, badge }: {
       glow: 'group-hover:shadow-[#cc785c]/20',
       badge: 'bg-[#cc785c]/20 text-[#e8956e]'
     },
-    purple: {
-      bg: 'bg-purple-500/10 group-hover:bg-purple-500/20',
-      icon: 'text-purple-400',
-      border: 'hover:border-purple-500/40',
-      glow: 'group-hover:shadow-purple-500/20',
-      badge: 'bg-purple-500/20 text-purple-300'
+    sand: {
+      bg: 'bg-sand-500/10 group-hover:bg-sand-500/20',
+      icon: 'text-sand-400',
+      border: 'hover:border-sand-500/40',
+      glow: 'group-hover:shadow-sand-500/20',
+      badge: 'bg-sand-500/20 text-sand-300'
     },
     gray: {
       bg: 'bg-gray-500/10 group-hover:bg-gray-500/20',

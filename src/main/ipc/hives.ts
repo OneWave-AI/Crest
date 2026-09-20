@@ -21,14 +21,14 @@ const DEFAULT_HIVES: Hive[] = [
     enabled: true,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    prompt: `🐝 **SWARM AUDIT MODE ACTIVATED**
+    prompt: `**SWARM AUDIT MODE ACTIVATED**
 
 Analyze the current situation, our recent conversation, and the codebase context. You need to launch a coordinated agent swarm (minimum 3 agents) to audit and review.
 
 **YOUR TASK:**
 1. First, briefly analyze what we've been working on and what needs attention
 2. Then CHOOSE 3-5 specialized agents that are most relevant to THIS specific situation
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent perform their analysis and report findings
 
 **AGENT SELECTION GUIDELINES:**
@@ -45,7 +45,7 @@ Pick agents based on what's actually needed. Examples of agent types you might c
 For each agent, provide:
 - Agent name and role
 - Key findings (with file:line references)
-- Severity: 🔴 Critical | 🟠 Warning | 🟡 Info
+- Severity: CRITICAL | WARNING | INFO
 - Recommended actions
 
 Begin by analyzing the context and selecting your agents now.`
@@ -60,14 +60,14 @@ Begin by analyzing the context and selecting your agents now.`
     enabled: true,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    prompt: `🐝 **SWARM ACTION MODE ACTIVATED**
+    prompt: `**SWARM ACTION MODE ACTIVATED**
 
 Based on our conversation and any previous audit findings, launch a coordinated agent swarm (minimum 3 agents) to take action and implement improvements.
 
 **YOUR TASK:**
 1. First, summarize what needs to be fixed/improved based on context
 2. Then CHOOSE 3-5 specialized agents that can best address these issues
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Mission]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Mission]"
 4. Have each agent execute their tasks and show the changes
 
 **AGENT SELECTION GUIDELINES:**
@@ -81,7 +81,7 @@ Pick agents based on what actions are actually needed. Examples:
 - Error Handler (add try/catch, improve error messages)
 
 **EXECUTION RULES:**
-- Prioritize: 🔴 Security first → 🟠 Bugs → 🟡 Improvements
+- Prioritize: Security first -> Bugs -> Improvements
 - Show each change with file:line references
 - Explain what was changed and why
 - Each agent should complete their task before the next begins
@@ -98,14 +98,14 @@ Begin by analyzing what needs action and selecting your agents now.`
     enabled: true,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    prompt: `🎨 **SWARM DESIGN POLISH MODE ACTIVATED**
+    prompt: `**SWARM DESIGN POLISH MODE ACTIVATED**
 
 Analyze the UI/UX and visual design of the current codebase. You need to launch a coordinated agent swarm (minimum 3 agents) to polish the design.
 
 **YOUR TASK:**
 1. First, analyze the current visual design and identify areas for improvement
 2. Then CHOOSE 3-5 specialized design agents that can best address these issues
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent make specific improvements
 
 **FOCUS AREAS:**
@@ -133,14 +133,14 @@ Begin by analyzing the design and selecting your agents now.`
     enabled: true,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    prompt: `🔧 **SWARM UI FIX MODE ACTIVATED**
+    prompt: `**SWARM UI FIX MODE ACTIVATED**
 
 Scan for and fix UI bugs and layout issues. You need to launch a coordinated agent swarm (minimum 3 agents) to fix UI problems.
 
 **YOUR TASK:**
 1. First, scan the codebase for UI bugs and layout issues
 2. Then CHOOSE 3-5 specialized agents that can best fix these issues
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Mission]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Mission]"
 4. Have each agent fix their assigned issues
 
 **FOCUS AREAS:**
@@ -156,7 +156,7 @@ For each agent, provide:
 - Agent name and mission
 - Issues found (with file:line references)
 - Fixes applied
-- Severity: 🔴 Critical | 🟠 Warning | 🟡 Info
+- Severity: CRITICAL | WARNING | INFO
 
 Begin scanning for UI bugs and selecting your agents now.`
   },
@@ -170,14 +170,14 @@ Begin scanning for UI bugs and selecting your agents now.`
     enabled: true,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    prompt: `🗺️ **SWARM ROUTE MODE ACTIVATED**
+    prompt: `**SWARM ROUTE MODE ACTIVATED**
 
 Analyze and improve routing and navigation. You need to launch a coordinated agent swarm (minimum 3 agents) to improve the routing architecture.
 
 **YOUR TASK:**
 1. First, analyze the current routing structure and navigation patterns
 2. Then CHOOSE 3-5 specialized agents to audit and improve routing
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent analyze/improve their assigned area
 
 **FOCUS AREAS:**
@@ -207,14 +207,14 @@ Begin by analyzing the routing architecture and selecting your agents now.`
     enabled: true,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    prompt: `🔌 **SWARM API AUDIT MODE ACTIVATED**
+    prompt: `**SWARM API AUDIT MODE ACTIVATED**
 
 Audit all API endpoints, contracts, and data handling. You need to launch a coordinated agent swarm (minimum 3 agents) to review the API layer.
 
 **YOUR TASK:**
 1. First, identify all API endpoints and data contracts in the codebase
 2. Then CHOOSE 3-5 specialized agents to audit different API aspects
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent perform their analysis
 
 **FOCUS AREAS:**
@@ -231,7 +231,7 @@ For each agent, provide:
 - Agent name and role
 - Endpoints reviewed
 - Issues found (with file:line references)
-- Severity: 🔴 Critical | 🟠 Warning | 🟡 Info
+- Severity: CRITICAL | WARNING | INFO
 - Recommendations
 
 Begin by analyzing the API layer and selecting your agents now.`
@@ -246,14 +246,14 @@ Begin by analyzing the API layer and selecting your agents now.`
     enabled: true,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    prompt: `🔗 **SWARM CONNECTOR MODE ACTIVATED**
+    prompt: `**SWARM CONNECTOR MODE ACTIVATED**
 
 Analyze and improve all external integrations and connections. You need to launch a coordinated agent swarm (minimum 3 agents) to audit integrations.
 
 **YOUR TASK:**
 1. First, identify all external integrations (APIs, databases, services)
 2. Then CHOOSE 3-5 specialized agents to improve different integrations
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent analyze/improve their assigned integration
 
 **FOCUS AREAS:**
@@ -284,14 +284,14 @@ Begin by identifying integrations and selecting your agents now.`
     enabled: true,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    prompt: `📚 **SWARM RESEARCH MODE ACTIVATED**
+    prompt: `**SWARM RESEARCH MODE ACTIVATED**
 
 Perform a deep research analysis of the codebase. You need to launch a coordinated agent swarm (minimum 3 agents) to understand and document.
 
 **YOUR TASK:**
 1. First, identify the main areas that need understanding or documentation
 2. Then CHOOSE 3-5 specialized research agents based on the codebase
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent perform their research and report findings
 
 **FOCUS AREAS:**

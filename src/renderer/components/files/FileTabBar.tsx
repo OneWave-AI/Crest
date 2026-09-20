@@ -85,7 +85,7 @@ const getExtColor = (fileName: string): string => {
     py: 'text-green-400',
     json: 'text-yellow-500',
     md: 'text-gray-400',
-    css: 'text-purple-400',
+    css: 'text-sand-400',
     scss: 'text-pink-400',
     html: 'text-orange-400',
   }

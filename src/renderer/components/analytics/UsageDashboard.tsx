@@ -235,7 +235,7 @@ export default function UsageDashboard({ className = '' }: UsageDashboardProps) 
               <span className="text-gray-500">Input</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-purple-400" />
+              <div className="w-2 h-2 rounded-full bg-sand-400" />
               <span className="text-gray-500">Output</span>
             </div>
           </div>
@@ -260,13 +260,13 @@ export default function UsageDashboard({ className = '' }: UsageDashboardProps) 
                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#1a1a1a] border border-white/10 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
                     <div className="font-medium text-white">{day.date}</div>
                     <div className="text-cyan-400">In: {formatNumber(day.inputTokens)}</div>
-                    <div className="text-purple-400">Out: {formatNumber(day.outputTokens)}</div>
+                    <div className="text-sand-400">Out: {formatNumber(day.outputTokens)}</div>
                     <div className="text-green-400">{formatCurrency(day.cost)}</div>
                   </div>
 
                   {/* Bars */}
                   <div
-                    className="w-full bg-purple-500/60 rounded-t transition-all group-hover:bg-purple-400"
+                    className="w-full bg-sand-500/60 rounded-t transition-all group-hover:bg-sand-400"
                     style={{ height: `${outputHeight}%`, minHeight: outputHeight > 0 ? '2px' : '0' }}
                   />
                   <div
@@ -309,7 +309,7 @@ export default function UsageDashboard({ className = '' }: UsageDashboardProps) 
                   : 0
 
                 const colors: Record<string, { bg: string; text: string }> = {
-                  'Opus': { bg: 'bg-purple-500', text: 'text-purple-400' },
+                  'Opus': { bg: 'bg-sand-500', text: 'text-sand-400' },
                   'Sonnet': { bg: 'bg-[#cc785c]', text: 'text-[#cc785c]' },
                   'Haiku': { bg: 'bg-emerald-500', text: 'text-emerald-400' }
                 }

@@ -1047,13 +1047,13 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             {activeSection === 'superagent' && (
               <div className="space-y-6">
                 {/* Header */}
-                <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-purple-900/30 to-pink-900/30 border border-purple-500/30">
-                  <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
+                <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-sand-900/30 to-pink-900/30 border border-sand-500/30">
+                  <div className="p-2 bg-gradient-to-br from-sand-500 to-pink-500 rounded-lg">
                     <Zap className="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <h3 className="text-sm font-semibold text-white">Super Agent Mode</h3>
-                    <p className="text-xs text-purple-300/70">Configure LLM providers for autonomous operation</p>
+                    <p className="text-xs text-sand-300/70">Configure LLM providers for autonomous operation</p>
                   </div>
                 </div>
 
@@ -1068,7 +1068,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         </h4>
                         <button
                           onClick={() => window.api.ollamaStatus().then(setSupervisorOllamaStatus)}
-                          className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1"
+                          className="text-xs text-sand-400 hover:text-sand-300 flex items-center gap-1"
                         >
                           <RefreshCw size={12} />
                           Re-check
@@ -1094,7 +1094,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 setSuperAgentConfig({ ...superAgentConfig, ollamaModel: e.target.value })
                                 setSuperAgentSaved(false)
                               }}
-                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-purple-500/50"
+                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
                             >
                               {!supervisorOllamaStatus.models.some((model) => model.name === superAgentConfig.ollamaModel) && (
                                 <option value={superAgentConfig.ollamaModel}>{superAgentConfig.ollamaModel} (not pulled)</option>
@@ -1115,7 +1115,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 setSuperAgentSaved(false)
                               }}
                               placeholder="qwen3-coder:30b"
-                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-purple-500/50 font-mono"
+                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-sand-500/50 font-mono"
                             />
                           )}
                         </div>
@@ -1135,7 +1135,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                             e.preventDefault()
                             window.api?.openUrlExternal('https://console.groq.com/keys')
                           }}
-                          className="text-xs text-purple-400 hover:text-purple-300"
+                          className="text-xs text-sand-400 hover:text-sand-300"
                         >
                           Get API Key →
                         </a>
@@ -1153,7 +1153,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 setSuperAgentSaved(false)
                               }}
                               placeholder="gsk_..."
-                              className="w-full px-4 py-2.5 pr-12 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-purple-500/50 font-mono"
+                              className="w-full px-4 py-2.5 pr-12 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-sand-500/50 font-mono"
                             />
                             <button
                               onClick={() => setShowGroqKey(!showGroqKey)}
@@ -1172,7 +1172,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                               setSuperAgentConfig({ ...superAgentConfig, groqModel: e.target.value })
                               setSuperAgentSaved(false)
                             }}
-                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-purple-500/50"
+                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
                           >
                             <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Recommended)</option>
                             <option value="llama-3.1-70b-versatile">Llama 3.1 70B</option>
@@ -1196,7 +1196,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                             e.preventDefault()
                             window.api?.openUrlExternal('https://platform.openai.com/api-keys')
                           }}
-                          className="text-xs text-purple-400 hover:text-purple-300"
+                          className="text-xs text-sand-400 hover:text-sand-300"
                         >
                           Get API Key →
                         </a>
@@ -1214,7 +1214,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 setSuperAgentSaved(false)
                               }}
                               placeholder="sk-..."
-                              className="w-full px-4 py-2.5 pr-12 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-purple-500/50 font-mono"
+                              className="w-full px-4 py-2.5 pr-12 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-sand-500/50 font-mono"
                             />
                             <button
                               onClick={() => setShowOpenAIKey(!showOpenAIKey)}
@@ -1233,7 +1233,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                               setSuperAgentConfig({ ...superAgentConfig, openaiModel: e.target.value })
                               setSuperAgentSaved(false)
                             }}
-                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-purple-500/50"
+                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
                           >
                             <option value="gpt-4o-mini">GPT-4o Mini (Recommended)</option>
                             <option value="gpt-4o">GPT-4o</option>
@@ -1256,7 +1256,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                             }}
                             className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-colors text-sm ${
                               superAgentConfig.defaultProvider === provider
-                                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                                ? 'bg-gradient-to-r from-sand-500 to-pink-500 text-white'
                                 : 'bg-black/30 text-gray-400 hover:bg-black/50 hover:text-white'
                             }`}
                           >
@@ -1278,7 +1278,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                               setSuperAgentConfig({ ...superAgentConfig, idleTimeout: parseInt(e.target.value) })
                               setSuperAgentSaved(false)
                             }}
-                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-purple-500/50"
+                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
                           >
                             <option value={3}>3 seconds</option>
                             <option value={5}>5 seconds (Recommended)</option>
@@ -1296,7 +1296,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                               setSuperAgentConfig({ ...superAgentConfig, defaultSafetyLevel: e.target.value as SafetyLevel })
                               setSuperAgentSaved(false)
                             }}
-                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-purple-500/50"
+                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
                           >
                             <option value="safe">Safe - Block dangerous commands</option>
                             <option value="moderate">Moderate - Allow with caution</option>
@@ -1321,7 +1321,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         }
                       }}
                       disabled={savingSuperAgent}
-                      className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                      className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-sand-500 to-pink-500 hover:from-sand-600 hover:to-pink-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
                     >
                       {superAgentSaved ? (
                         <>

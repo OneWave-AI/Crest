@@ -259,14 +259,14 @@ export default function Header({
     ]
     setSwarmAgents(placeholderAgents)
 
-    const swarmPrompt = `🐝 **SWARM AUDIT MODE ACTIVATED**
+    const swarmPrompt = `**SWARM AUDIT MODE ACTIVATED**
 
 Analyze the current situation, our recent conversation, and the codebase context. You need to launch a coordinated agent swarm (minimum 3 agents) to audit and review.
 
 **YOUR TASK:**
 1. First, briefly analyze what we've been working on and what needs attention
 2. Then CHOOSE 3-5 specialized agents that are most relevant to THIS specific situation
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent perform their analysis and report findings
 
 **AGENT SELECTION GUIDELINES:**
@@ -283,7 +283,7 @@ Pick agents based on what's actually needed. Examples of agent types you might c
 For each agent, provide:
 - Agent name and role
 - Key findings (with file:line references)
-- Severity: 🔴 Critical | 🟠 Warning | 🟡 Info
+- Severity: CRITICAL | WARNING | INFO
 - Recommended actions
 
 Begin by analyzing the context and selecting your agents now.`
@@ -320,14 +320,14 @@ Begin by analyzing the context and selecting your agents now.`
     ]
     setSwarmAgents(placeholderAgents)
 
-    const actionPrompt = `🐝 **SWARM ACTION MODE ACTIVATED**
+    const actionPrompt = `**SWARM ACTION MODE ACTIVATED**
 
 Based on our conversation and any previous audit findings, launch a coordinated agent swarm (minimum 3 agents) to take action and implement improvements.
 
 **YOUR TASK:**
 1. First, summarize what needs to be fixed/improved based on context
 2. Then CHOOSE 3-5 specialized agents that can best address these issues
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Mission]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Mission]"
 4. Have each agent execute their tasks and show the changes
 
 **AGENT SELECTION GUIDELINES:**
@@ -341,7 +341,7 @@ Pick agents based on what actions are actually needed. Examples:
 - Error Handler (add try/catch, improve error messages)
 
 **EXECUTION RULES:**
-- Prioritize: 🔴 Security first → 🟠 Bugs → 🟡 Improvements
+- Prioritize: Security first -> Bugs -> Improvements
 - Show each change with file:line references
 - Explain what was changed and why
 - Each agent should complete their task before the next begins
@@ -378,14 +378,14 @@ Begin by analyzing what needs action and selecting your agents now.`
       { id: '3', name: 'Analyzing...', role: 'Claude is selecting agents', status: 'pending' },
     ])
 
-    const designPrompt = `🎨 **SWARM DESIGN POLISH MODE ACTIVATED**
+    const designPrompt = `**SWARM DESIGN POLISH MODE ACTIVATED**
 
 Analyze the UI/UX and visual design of the current codebase. You need to launch a coordinated agent swarm (minimum 3 agents) to polish the design.
 
 **YOUR TASK:**
 1. First, analyze the current visual design and identify areas for improvement
 2. Then CHOOSE 3-5 specialized design agents that can best address these issues
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent make specific improvements
 
 **FOCUS AREAS:**
@@ -422,14 +422,14 @@ Begin by analyzing the design and selecting your agents now.`
       { id: '3', name: 'Analyzing...', role: 'Claude is selecting agents', status: 'pending' },
     ])
 
-    const uiFixPrompt = `🔧 **SWARM UI FIX MODE ACTIVATED**
+    const uiFixPrompt = `**SWARM UI FIX MODE ACTIVATED**
 
 Scan for and fix UI bugs and layout issues. You need to launch a coordinated agent swarm (minimum 3 agents) to fix UI problems.
 
 **YOUR TASK:**
 1. First, scan the codebase for UI bugs and layout issues
 2. Then CHOOSE 3-5 specialized agents that can best fix these issues
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Mission]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Mission]"
 4. Have each agent fix their assigned issues
 
 **FOCUS AREAS:**
@@ -445,7 +445,7 @@ For each agent, provide:
 - Agent name and mission
 - Issues found (with file:line references)
 - Fixes applied
-- Severity: 🔴 Critical | 🟠 Warning | 🟡 Info
+- Severity: CRITICAL | WARNING | INFO
 
 Begin scanning for UI bugs and selecting your agents now.`
 
@@ -468,14 +468,14 @@ Begin scanning for UI bugs and selecting your agents now.`
       { id: '3', name: 'Analyzing...', role: 'Claude is selecting agents', status: 'pending' },
     ])
 
-    const routePrompt = `🗺️ **SWARM ROUTE MODE ACTIVATED**
+    const routePrompt = `**SWARM ROUTE MODE ACTIVATED**
 
 Analyze and improve routing and navigation. You need to launch a coordinated agent swarm (minimum 3 agents) to improve the routing architecture.
 
 **YOUR TASK:**
 1. First, analyze the current routing and navigation patterns
 2. Then CHOOSE 3-5 specialized agents that can best improve these areas
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent implement their improvements
 
 **FOCUS AREAS:**
@@ -514,14 +514,14 @@ Begin analyzing the routing and selecting your agents now.`
       { id: '3', name: 'Analyzing...', role: 'Claude is selecting agents', status: 'pending' },
     ])
 
-    const apiPrompt = `⚡ **SWARM API MODE ACTIVATED**
+    const apiPrompt = `**SWARM API MODE ACTIVATED**
 
 Analyze and improve the API layer. You need to launch a coordinated agent swarm (minimum 3 agents) to improve the API architecture.
 
 **YOUR TASK:**
 1. First, analyze the current API layer and data fetching patterns
 2. Then CHOOSE 3-5 specialized agents that can best improve these areas
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent implement their improvements
 
 **FOCUS AREAS:**
@@ -560,14 +560,14 @@ Begin analyzing the API layer and selecting your agents now.`
       { id: '3', name: 'Analyzing...', role: 'Claude is selecting agents', status: 'pending' },
     ])
 
-    const connectorPrompt = `🔗 **SWARM CONNECTOR MODE ACTIVATED**
+    const connectorPrompt = `**SWARM CONNECTOR MODE ACTIVATED**
 
 Analyze and improve integrations. You need to launch a coordinated agent swarm (minimum 3 agents) to improve the integration architecture.
 
 **YOUR TASK:**
 1. First, analyze the current integrations and connection patterns
 2. Then CHOOSE 3-5 specialized agents that can best improve these areas
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent implement their improvements
 
 **FOCUS AREAS:**
@@ -606,14 +606,14 @@ Begin analyzing the integrations and selecting your agents now.`
       { id: '3', name: 'Analyzing...', role: 'Claude is selecting agents', status: 'pending' },
     ])
 
-    const researchPrompt = `🔍 **SWARM RESEARCH MODE ACTIVATED**
+    const researchPrompt = `**SWARM RESEARCH MODE ACTIVATED**
 
 You are now in DEEP RESEARCH MODE. Your task is to conduct comprehensive research using all available tools.
 
 **YOUR TASK:**
 1. First, identify what needs to be researched based on our conversation
 2. Then CHOOSE 3-5 specialized research agents
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Research Focus]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Research Focus]"
 4. Have each agent conduct their research and report findings
 
 **RESEARCH STRATEGY:**
@@ -824,13 +824,13 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                     <button
                       onClick={launchSwarmAPI}
                       disabled={!activeTerminalId}
-                      className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-purple-500/10 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-all text-left group"
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-sand-500/10 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-all text-left group"
                     >
-                      <div className="p-1.5 rounded-lg bg-purple-500/15 text-purple-400 group-hover:bg-purple-500/25 transition-all">
+                      <div className="p-1.5 rounded-lg bg-sand-500/15 text-sand-400 group-hover:bg-sand-500/25 transition-all">
                         <Server size={12} />
                       </div>
                       <div className="flex-1">
-                        <span className="text-xs font-medium text-white group-hover:text-purple-300">API</span>
+                        <span className="text-xs font-medium text-white group-hover:text-sand-300">API</span>
                         <p className="text-[9px] text-gray-500">Data fetching, IPC, handlers</p>
                       </div>
                     </button>
@@ -1091,7 +1091,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
         {screen === 'terminal' && (
           <button
             onClick={onOpenMemory}
-            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-purple-500/10 text-gray-400 hover:text-purple-400 transition-colors"
+            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-sand-500/10 text-gray-400 hover:text-sand-400 transition-colors"
             title="Project Memory"
           >
             <Brain size={14} />

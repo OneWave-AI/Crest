@@ -95,7 +95,7 @@ function MemoryCard({
 
   const categoryStyles: Record<MemoryCategory, { bg: string; icon: typeof Brain; color: string }> = {
     context: { bg: 'bg-blue-500/10', icon: Lightbulb, color: 'text-blue-400' },
-    architecture: { bg: 'bg-purple-500/10', icon: FolderHeart, color: 'text-purple-400' },
+    architecture: { bg: 'bg-sand-500/10', icon: FolderHeart, color: 'text-sand-400' },
     conventions: { bg: 'bg-green-500/10', icon: Code2, color: 'text-green-400' },
     commands: { bg: 'bg-orange-500/10', icon: Zap, color: 'text-orange-400' },
     preferences: { bg: 'bg-pink-500/10', icon: Heart, color: 'text-pink-400' },
@@ -288,8 +288,8 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
       icon: FolderHeart,
       label: 'This Project',
       desc: 'Shared with your team via CLAUDE.md',
-      color: 'text-purple-400',
-      bg: 'bg-purple-500/20'
+      color: 'text-sand-400',
+      bg: 'bg-sand-500/20'
     },
     private: {
       icon: Lock,
@@ -320,13 +320,13 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
         <div className="px-6 py-5 border-b border-white/[0.06]">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-xl">
-                <Brain size={22} className="text-purple-300" />
+              <div className="p-2.5 bg-gradient-to-br from-sand-500/30 to-pink-500/30 rounded-xl">
+                <Brain size={22} className="text-sand-300" />
               </div>
               <div>
                 <h2 className="text-xl font-semibold text-white">Claude's Memory</h2>
                 <p className="text-sm text-gray-500 flex items-center gap-1.5">
-                  <Sparkles size={12} className="text-purple-400" />
+                  <Sparkles size={12} className="text-sand-400" />
                   Teach Claude about your preferences
                 </p>
               </div>
@@ -375,14 +375,14 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={editingItem ? "Update this memory..." : "Tell Claude something to remember..."}
-                className="w-full h-24 bg-black/30 border border-white/[0.08] rounded-2xl px-4 py-3 pr-12 text-sm text-white placeholder-gray-500 resize-none focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all"
+                className="w-full h-24 bg-black/30 border border-white/[0.08] rounded-2xl px-4 py-3 pr-12 text-sm text-white placeholder-gray-500 resize-none focus:outline-none focus:border-sand-500/50 focus:ring-2 focus:ring-sand-500/20 transition-all"
               />
               <button
                 onClick={handleAdd}
                 disabled={!input.trim() || saving}
                 className={`absolute bottom-3 right-3 p-2.5 rounded-xl transition-all ${
                   input.trim()
-                    ? 'bg-purple-500 text-white hover:bg-purple-600 shadow-lg shadow-purple-500/25'
+                    ? 'bg-sand-500 text-white hover:bg-sand-600 shadow-lg shadow-sand-500/25'
                     : 'bg-white/[0.06] text-gray-500'
                 }`}
               >
@@ -409,7 +409,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                 onClick={() => setShowExamples(!showExamples)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs transition-colors ${
                   showExamples
-                    ? 'bg-purple-500/20 text-purple-400'
+                    ? 'bg-sand-500/20 text-sand-400'
                     : 'bg-white/[0.04] hover:bg-white/[0.08] text-gray-400 hover:text-white'
                 }`}
               >
@@ -420,8 +420,8 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
 
             {/* Example prompts dropdown */}
             {showExamples && (
-              <div className="mt-3 p-3 bg-purple-500/10 rounded-xl border border-purple-500/20">
-                <p className="text-xs text-purple-300 mb-2 font-medium">Try saying something like:</p>
+              <div className="mt-3 p-3 bg-sand-500/10 rounded-xl border border-sand-500/20">
+                <p className="text-xs text-sand-300 mb-2 font-medium">Try saying something like:</p>
                 <div className="flex flex-wrap gap-2">
                   {examplePrompts.map((example, i) => (
                     <button
@@ -454,13 +454,13 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
           <div className="p-6">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-                <RefreshCw size={24} className="animate-spin mb-3 text-purple-400" />
+                <RefreshCw size={24} className="animate-spin mb-3 text-sand-400" />
                 <p className="text-sm">Loading memories...</p>
               </div>
             ) : memories.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="p-4 bg-purple-500/10 rounded-2xl mb-4">
-                  <Coffee size={32} className="text-purple-400" />
+                <div className="p-4 bg-sand-500/10 rounded-2xl mb-4">
+                  <Coffee size={32} className="text-sand-400" />
                 </div>
                 <h3 className="text-lg font-medium text-white mb-2">No memories yet</h3>
                 <p className="text-sm text-gray-500 max-w-sm mb-4">
@@ -473,7 +473,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                     <button
                       key={i}
                       onClick={() => handleExample(example)}
-                      className="px-3 py-1.5 bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 rounded-lg text-xs transition-colors"
+                      className="px-3 py-1.5 bg-sand-500/20 text-sand-300 hover:bg-sand-500/30 rounded-lg text-xs transition-colors"
                     >
                       + {example}
                     </button>

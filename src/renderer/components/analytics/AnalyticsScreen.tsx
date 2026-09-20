@@ -556,7 +556,7 @@ function ProjectDetailModal({ project, onClose }: { project: ProjectDetail; onCl
           <div className="grid grid-cols-4 gap-4 mb-6">
             <StatBox label="Total Time" value={formatMinutes(project.totalTimeMinutes)} color="orange" />
             <StatBox label="Sessions" value={project.totalSessions} color="blue" />
-            <StatBox label="Messages" value={project.totalMessages} color="purple" />
+            <StatBox label="Messages" value={project.totalMessages} color="sand" />
             <StatBox label="Tokens" value={formatNumber(project.totalTokens)} color="green" />
           </div>
 
@@ -665,7 +665,7 @@ function OverviewTab({ analytics, filteredStats, period, onProjectClick, onViewA
           icon={Timer}
           label="Time Coded"
           value={formatMinutes(filteredStats.time)}
-          color="purple"
+          color="sand"
         />
         <LargeStatCard
           icon={Folder}
@@ -822,7 +822,7 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
       <div className="grid grid-cols-4 gap-4 mb-6">
         <StatBox label="Total Time" value={formatMinutes(totals.time)} color="orange" />
         <StatBox label="Total Sessions" value={totals.sessions} color="blue" />
-        <StatBox label="Total Messages" value={formatNumber(totals.messages)} color="purple" />
+        <StatBox label="Total Messages" value={formatNumber(totals.messages)} color="sand" />
         <StatBox label="Total Tokens" value={formatNumber(totals.tokens)} color="green" />
       </div>
 
@@ -1023,8 +1023,8 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
                 <div key={hour} className="flex-1 flex flex-col items-center group" title={`${formatHour(hour)}: ${count} sessions`}>
                   <div
                     className={`w-full rounded-sm transition-all ${
-                      isPeak ? 'bg-purple-500' :
-                      count > 0 ? 'bg-purple-500/40' : 'bg-white/[0.06]'
+                      isPeak ? 'bg-sand-500' :
+                      count > 0 ? 'bg-sand-500/40' : 'bg-white/[0.06]'
                     }`}
                     style={{ height: `${(height / 100) * 96}px` }}
                   />
@@ -1100,13 +1100,13 @@ function LargeStatCard({ icon: Icon, label, value, trend, color }: {
   label: string
   value: string | number
   trend?: number
-  color: 'orange' | 'blue' | 'green' | 'purple'
+  color: 'orange' | 'blue' | 'green' | 'sand'
 }) {
   const colors = {
     orange: { bg: 'bg-[#cc785c]/10', icon: 'text-[#cc785c]' },
     blue: { bg: 'bg-blue-500/10', icon: 'text-blue-400' },
     green: { bg: 'bg-emerald-500/10', icon: 'text-emerald-400' },
-    purple: { bg: 'bg-purple-500/10', icon: 'text-purple-400' }
+    sand: { bg: 'bg-sand-500/10', icon: 'text-sand-400' }
   }
 
   return (
@@ -1130,12 +1130,12 @@ function LargeStatCard({ icon: Icon, label, value, trend, color }: {
   )
 }
 
-function StatBox({ label, value, color }: { label: string; value: string | number; color: 'orange' | 'blue' | 'green' | 'purple' }) {
+function StatBox({ label, value, color }: { label: string; value: string | number; color: 'orange' | 'blue' | 'green' | 'sand' }) {
   const colors = {
     orange: 'bg-[#cc785c]/10 border-[#cc785c]/20',
     blue: 'bg-blue-500/10 border-blue-500/20',
     green: 'bg-emerald-500/10 border-emerald-500/20',
-    purple: 'bg-purple-500/10 border-purple-500/20'
+    sand: 'bg-sand-500/10 border-sand-500/20'
   }
 
   return (

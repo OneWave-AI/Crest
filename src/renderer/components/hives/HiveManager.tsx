@@ -49,7 +49,7 @@ const CATEGORY_OPTIONS: Array<{ value: Hive['category']; label: string }> = [
 const COLOR_OPTIONS = [
   '#3b82f6', // blue
   '#10b981', // green
-  '#8b5cf6', // purple
+  '#8b5cf6', // sand
   '#f59e0b', // amber
   '#ec4899', // pink
   '#06b6d4', // cyan
@@ -128,14 +128,14 @@ export default function HiveManager({ onBack }: HiveManagerProps) {
       name: '',
       icon: 'Zap',
       description: '',
-      prompt: `🐝 **SWARM [YOUR MODE] ACTIVATED**
+      prompt: `**SWARM [YOUR MODE] ACTIVATED**
 
 [Describe what this swarm should do]
 
 **YOUR TASK:**
 1. First, analyze the current codebase context
 2. Then CHOOSE 3-5 specialized agents for this task
-3. For each agent you spawn, clearly announce: "🐝 Spawning Agent: [Name] - [Role]"
+3. For each agent you spawn, clearly announce: "Spawning Agent: [Name] - [Role]"
 4. Have each agent complete their task
 
 **FOCUS AREAS:**

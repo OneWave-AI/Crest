@@ -57,8 +57,8 @@ const FEATURES = [
     title: 'Super Agent',
     subtitle: 'Autonomous AI Task Completion',
     description: 'Let AI handle complex, multi-step tasks autonomously. Super Agent monitors Claude\'s output and provides intelligent guidance.',
-    color: 'from-purple-500 to-pink-500',
-    iconBg: 'bg-gradient-to-br from-purple-500/20 to-pink-500/20',
+    color: 'from-sand-500 to-pink-500',
+    iconBg: 'bg-gradient-to-br from-sand-500/20 to-pink-500/20',
     tips: [
       'Set goals and let AI work autonomously',
       'Smart context injection and guidance',
@@ -250,7 +250,7 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
                   style={{
                     color: feature.color.includes('cc785c') ? '#cc785c' :
                            feature.color.includes('blue') ? '#3b82f6' :
-                           feature.color.includes('purple') ? '#a855f7' :
+                           feature.color.includes('sand') ? '#a855f7' :
                            feature.color.includes('amber') ? '#f59e0b' :
                            feature.color.includes('emerald') ? '#10b981' :
                            feature.color.includes('rose') ? '#f43f5e' :

@@ -50,7 +50,7 @@ export function SuperAgentSettings() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
+        <div className="p-2 bg-gradient-to-br from-sand-500 to-pink-500 rounded-lg">
           <Zap className="w-5 h-5 text-white" />
         </div>
         <div>
@@ -68,7 +68,7 @@ export function SuperAgentSettings() {
           value={config.ollamaModel}
           onChange={(e) => updateConfig({ ollamaModel: e.target.value })}
           placeholder="qwen3-coder:30b"
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
+          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-sand-500"
         />
         <p className="text-xs text-gray-500 mt-1">
           Runs the terminal-watching Super Agent locally with no API key.
@@ -88,7 +88,7 @@ export function SuperAgentSettings() {
             value={config.groqApiKey}
             onChange={(e) => updateConfig({ groqApiKey: e.target.value })}
             placeholder="gsk_..."
-            className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
+            className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-sand-500"
           />
           <button
             onClick={() => setShowGroqKey(!showGroqKey)}
@@ -105,7 +105,7 @@ export function SuperAgentSettings() {
               e.preventDefault()
               window.api.openUrlExternal('https://console.groq.com/keys')
             }}
-            className="text-purple-400 hover:underline"
+            className="text-sand-400 hover:underline"
           >
             console.groq.com
           </a>
@@ -120,7 +120,7 @@ export function SuperAgentSettings() {
         <select
           value={config.groqModel}
           onChange={(e) => updateConfig({ groqModel: e.target.value })}
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500"
+          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sand-500"
         >
           <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Recommended)</option>
           <option value="llama-3.1-70b-versatile">Llama 3.1 70B</option>
@@ -143,7 +143,7 @@ export function SuperAgentSettings() {
             value={config.openaiApiKey}
             onChange={(e) => updateConfig({ openaiApiKey: e.target.value })}
             placeholder="sk-..."
-            className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
+            className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-sand-500"
           />
           <button
             onClick={() => setShowOpenAIKey(!showOpenAIKey)}
@@ -165,7 +165,7 @@ export function SuperAgentSettings() {
         <select
           value={config.openaiModel}
           onChange={(e) => updateConfig({ openaiModel: e.target.value })}
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500"
+          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sand-500"
         >
           <option value="gpt-4o-mini">GPT-4o Mini (Recommended)</option>
           <option value="gpt-4o">GPT-4o</option>
@@ -188,7 +188,7 @@ export function SuperAgentSettings() {
               onClick={() => updateConfig({ defaultProvider: p })}
               className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
                 config.defaultProvider === p
-                  ? 'bg-purple-500 text-white'
+                  ? 'bg-sand-500 text-white'
                   : 'bg-black/30 text-gray-400 hover:bg-black/50'
               }`}
             >
@@ -206,7 +206,7 @@ export function SuperAgentSettings() {
         <select
           value={config.idleTimeout}
           onChange={(e) => updateConfig({ idleTimeout: parseInt(e.target.value) })}
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500"
+          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sand-500"
         >
           <option value={3}>3 seconds</option>
           <option value={5}>5 seconds (Recommended)</option>
@@ -226,7 +226,7 @@ export function SuperAgentSettings() {
         <select
           value={config.defaultSafetyLevel}
           onChange={(e) => updateConfig({ defaultSafetyLevel: e.target.value as SafetyLevel })}
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500"
+          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sand-500"
         >
           <option value="safe">Safe - Block dangerous commands</option>
           <option value="moderate">Moderate - Allow with caution</option>
@@ -238,7 +238,7 @@ export function SuperAgentSettings() {
       <button
         onClick={handleSave}
         disabled={saving}
-        className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-sand-500 hover:bg-sand-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
       >
         {saved ? (
           <>

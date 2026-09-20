@@ -36,7 +36,7 @@ function highlightMarkdown(content: string): string {
   // Code blocks (triple backticks)
   html = html.replace(
     /```(\w*)\n([\s\S]*?)```/g,
-    '<span class="text-purple-400">```$1</span>\n<span class="text-emerald-400">$2</span><span class="text-purple-400">```</span>'
+    '<span class="text-sand-400">```$1</span>\n<span class="text-emerald-400">$2</span><span class="text-sand-400">```</span>'
   )
 
   // Inline code
@@ -221,8 +221,8 @@ export default function SkillEditor({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-white/[0.02]">
           <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-[#cc785c]/10' : 'bg-purple-500/10'}`}>
-              <FileText size={18} className={itemType === 'skill' ? 'text-[#cc785c]' : 'text-purple-400'} />
+            <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-[#cc785c]/10' : 'bg-sand-500/10'}`}>
+              <FileText size={18} className={itemType === 'skill' ? 'text-[#cc785c]' : 'text-sand-400'} />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-white">

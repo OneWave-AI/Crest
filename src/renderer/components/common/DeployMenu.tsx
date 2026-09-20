@@ -137,7 +137,7 @@ export default function DeployMenu() {
               >
                 <div className={`p-1.5 rounded-lg transition-colors ${
                   option.id === 'pull-request'
-                    ? 'bg-purple-500/10 text-purple-400 group-hover:bg-purple-500/20'
+                    ? 'bg-sand-500/10 text-sand-400 group-hover:bg-sand-500/20'
                     : 'bg-[#cc785c]/10 text-[#cc785c] group-hover:bg-[#cc785c]/20'
                 }`}>
                   {option.icon}

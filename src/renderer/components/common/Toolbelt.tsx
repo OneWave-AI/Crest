@@ -167,7 +167,7 @@ export default function Toolbelt({ activeTerminalId }: ToolbeltProps) {
     }
 
     setIsOpen(false)
-    const prompt = `🔍 **Skill Recommendation Request**
+    const prompt = `**Skill Recommendation Request**
 
 Analyze our current work session and conversation context. Based on what we're working on, recommend the most relevant skills (slash commands) that could help.
 
@@ -280,19 +280,19 @@ Format your response as a numbered list with skill name and use case.`
               disabled={!activeTerminalId}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed group ${
                 activeTerminalId
-                  ? 'bg-gradient-to-r from-purple-500/15 to-pink-500/15 border border-purple-500/25 hover:from-purple-500/25 hover:to-pink-500/25 hover:border-purple-500/40'
+                  ? 'bg-gradient-to-r from-sand-500/15 to-pink-500/15 border border-sand-500/25 hover:from-sand-500/25 hover:to-pink-500/25 hover:border-sand-500/40'
                   : 'bg-white/[0.02] border border-white/[0.04]'
               }`}
             >
               <div className={`flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br transition-all ${
                 activeTerminalId
-                  ? 'from-purple-500/30 to-pink-500/30 group-hover:from-purple-500/40 group-hover:to-pink-500/40'
+                  ? 'from-sand-500/30 to-pink-500/30 group-hover:from-sand-500/40 group-hover:to-pink-500/40'
                   : 'from-white/[0.04] to-white/[0.02]'
               }`}>
-                <Sparkles size={16} className={activeTerminalId ? 'text-purple-300' : 'text-gray-600'} />
+                <Sparkles size={16} className={activeTerminalId ? 'text-sand-300' : 'text-gray-600'} />
               </div>
               <div className="flex-1 text-left">
-                <span className={`text-sm font-semibold ${activeTerminalId ? 'text-purple-200' : 'text-gray-500'}`}>
+                <span className={`text-sm font-semibold ${activeTerminalId ? 'text-sand-200' : 'text-gray-500'}`}>
                   Find Me a Skill
                 </span>
                 <p className="text-[10px] text-gray-500 mt-0.5">
@@ -300,7 +300,7 @@ Format your response as a numbered list with skill name and use case.`
                 </p>
               </div>
               <ArrowRight size={14} className={`transition-all ${
-                activeTerminalId ? 'text-purple-400 group-hover:translate-x-1' : 'text-gray-600'
+                activeTerminalId ? 'text-sand-400 group-hover:translate-x-1' : 'text-gray-600'
               }`} />
             </button>
           </div>
@@ -364,11 +364,11 @@ Format your response as a numbered list with skill name and use case.`
                     {/* Icon */}
                     <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all flex-shrink-0 ${
                       isAgent
-                        ? `bg-purple-500/10 ${isSelected ? 'bg-purple-500/20' : ''}`
+                        ? `bg-sand-500/10 ${isSelected ? 'bg-sand-500/20' : ''}`
                         : `bg-[#cc785c]/10 ${isSelected ? 'bg-[#cc785c]/20' : ''}`
                     }`}>
                       {isAgent ? (
-                        <Bot size={14} className="text-purple-400" />
+                        <Bot size={14} className="text-sand-400" />
                       ) : (
                         <Zap size={14} className="text-[#cc785c]" />
                       )}
@@ -384,7 +384,7 @@ Format your response as a numbered list with skill name and use case.`
                         </span>
                         <span className={`text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-wider ${
                           isAgent
-                            ? 'bg-purple-500/10 text-purple-400'
+                            ? 'bg-sand-500/10 text-sand-400'
                             : 'bg-[#cc785c]/10 text-[#cc785c]'
                         }`}>
                           {isAgent ? 'Agent' : 'Skill'}

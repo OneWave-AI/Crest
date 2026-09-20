@@ -89,33 +89,33 @@ function formatConsoleOutput(error: LoggedError): string[] {
 function getConsoleConfig(severity: ErrorSeverity): {
   method: typeof console.log
   style: string
-  emoji: string
+  tag: string
 } {
-  const configs: Record<ErrorSeverity, { method: typeof console.log; style: string; emoji: string }> = {
+  const configs: Record<ErrorSeverity, { method: typeof console.log; style: string; tag: string }> = {
     debug: {
       method: console.debug,
       style: 'color: #888',
-      emoji: '🔍'
+      tag: 'DEBUG'
     },
     info: {
       method: console.info,
       style: 'color: #3b82f6',
-      emoji: 'ℹ️'
+      tag: 'INFO'
     },
     warning: {
       method: console.warn,
       style: 'color: #eab308',
-      emoji: '⚠️'
+      tag: 'WARN'
     },
     error: {
       method: console.error,
       style: 'color: #ef4444',
-      emoji: '❌'
+      tag: 'ERROR'
     },
     critical: {
       method: console.error,
       style: 'color: #dc2626; font-weight: bold',
-      emoji: '🚨'
+      tag: 'CRITICAL'
     }
   }
 
@@ -172,7 +172,7 @@ export function logError(
     const config = getConsoleConfig(severity)
     const lines = formatConsoleOutput(loggedError)
 
-    console.group(`%c${config.emoji} ${loggedError.message}`, config.style)
+    console.group(`%c[${config.tag}] ${loggedError.message}`, config.style)
     lines.forEach(line => console.log(line))
     if (loggedError.stack) {
       console.log('Stack:', loggedError.stack)

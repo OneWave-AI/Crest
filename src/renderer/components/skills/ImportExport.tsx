@@ -188,8 +188,8 @@ export default function ImportExport({
               {exportItem && (
                 <div className="space-y-4">
                   <div className="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                    <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-[#cc785c]/10' : 'bg-purple-500/10'}`}>
-                      <FileText size={18} className={itemType === 'skill' ? 'text-[#cc785c]' : 'text-purple-400'} />
+                    <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-[#cc785c]/10' : 'bg-sand-500/10'}`}>
+                      <FileText size={18} className={itemType === 'skill' ? 'text-[#cc785c]' : 'text-sand-400'} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-white truncate">{exportItem.name}</h3>

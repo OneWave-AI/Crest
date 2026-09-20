@@ -198,7 +198,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
               onClick={() => setLaunchMode('takeover')}
               className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                 launchMode === 'takeover'
-                  ? 'bg-purple-500 text-white'
+                  ? 'bg-sand-500 text-white'
                   : 'text-gray-500 hover:text-gray-300'
               }`}
             >
@@ -319,7 +319,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
               isStarting || isLoadingConfig || orchestratorRunning || (launchMode === 'new' && !task.trim())
                 ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
                 : launchMode === 'takeover'
-                  ? 'bg-purple-500 hover:bg-purple-400 text-white'
+                  ? 'bg-sand-500 hover:bg-sand-400 text-white'
                   : 'bg-[#cc785c] hover:bg-[#d88a6a] text-white'
             }`}
           >

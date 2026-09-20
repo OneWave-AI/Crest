@@ -759,11 +759,11 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
           <div className="w-1/2 border-l border-white/[0.06] flex flex-col bg-white/[0.01]">
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${previewItem.type === 'skill' ? 'bg-[#cc785c]/10' : 'bg-purple-500/10'}`}>
+                <div className={`p-2 rounded-lg ${previewItem.type === 'skill' ? 'bg-[#cc785c]/10' : 'bg-sand-500/10'}`}>
                   {previewItem.type === 'skill' ? (
                     <Sparkles size={16} className="text-[#cc785c]" />
                   ) : (
-                    <Bot size={16} className="text-purple-400" />
+                    <Bot size={16} className="text-sand-400" />
                   )}
                 </div>
                 <h3 className="font-medium text-white">{previewItem.name}</h3>
@@ -896,7 +896,7 @@ function HighlightedMarkdown({ content }: { content: string }) {
       } else if (line.match(/^[a-z]+:/i) && !line.startsWith(' ')) {
         className = 'text-[#cc785c]'
       } else if (line.startsWith('```')) {
-        className = 'text-purple-400'
+        className = 'text-sand-400'
       } else if (line.startsWith('- ') || line.startsWith('* ')) {
         className = 'text-gray-300'
       } else if (line.startsWith('>')) {
@@ -1162,19 +1162,19 @@ function AgentCard({
       onDragEnd={onDragEnd}
       className={`group p-4 rounded-xl border transition-all cursor-grab active:cursor-grabbing ${
         isDragging
-          ? 'opacity-50 border-purple-500/50'
+          ? 'opacity-50 border-sand-500/50'
           : isDragOver
-          ? 'border-purple-500 bg-purple-500/5'
+          ? 'border-sand-500 bg-sand-500/5'
           : isPreviewActive
-          ? 'border-purple-500/50 bg-purple-500/5'
+          ? 'border-sand-500/50 bg-sand-500/5'
           : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1] hover:bg-white/[0.04]'
       }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <GripVertical size={14} className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="p-2 rounded-lg bg-purple-500/10">
-            <Bot size={18} className="text-purple-400" />
+          <div className="p-2 rounded-lg bg-sand-500/10">
+            <Bot size={18} className="text-sand-400" />
           </div>
         </div>
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -1202,7 +1202,7 @@ function AgentCard({
       <p className="text-xs text-gray-500 line-clamp-2 mb-2">{agent.description}</p>
       <div className="flex flex-wrap gap-1">
         {agent.model && (
-          <span className="px-2 py-0.5 rounded text-[10px] bg-purple-500/10 text-purple-400">
+          <span className="px-2 py-0.5 rounded text-[10px] bg-sand-500/10 text-sand-400">
             {agent.model}
           </span>
         )}
@@ -1256,18 +1256,18 @@ function AgentRow({
       onDragEnd={onDragEnd}
       className={`group flex items-center justify-between p-4 rounded-xl border transition-all cursor-grab active:cursor-grabbing ${
         isDragging
-          ? 'opacity-50 border-purple-500/50'
+          ? 'opacity-50 border-sand-500/50'
           : isDragOver
-          ? 'border-purple-500 bg-purple-500/5'
+          ? 'border-sand-500 bg-sand-500/5'
           : isPreviewActive
-          ? 'border-purple-500/50 bg-purple-500/5'
+          ? 'border-sand-500/50 bg-sand-500/5'
           : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]'
       }`}
     >
       <div className="flex items-center gap-3">
         <GripVertical size={14} className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div className="p-2 rounded-lg bg-purple-500/10">
-          <Bot size={16} className="text-purple-400" />
+        <div className="p-2 rounded-lg bg-sand-500/10">
+          <Bot size={16} className="text-sand-400" />
         </div>
         <div>
           <h3 className="font-medium text-white">{agent.name}</h3>
@@ -1275,7 +1275,7 @@ function AgentRow({
         </div>
         <div className="flex gap-1 ml-4">
           {agent.model && (
-            <span className="px-2 py-0.5 rounded text-[10px] bg-purple-500/10 text-purple-400">
+            <span className="px-2 py-0.5 rounded text-[10px] bg-sand-500/10 text-sand-400">
               {agent.model}
             </span>
           )}

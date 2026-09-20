@@ -32,7 +32,7 @@ type Tab = 'project' | 'local' | 'user'
 
 const categoryInfo: Record<MemoryCategory, { label: string; description: string; color: string }> = {
   context: { label: 'Context', description: 'Project overview and key information', color: 'text-blue-400' },
-  architecture: { label: 'Architecture', description: 'Project structure and patterns', color: 'text-purple-400' },
+  architecture: { label: 'Architecture', description: 'Project structure and patterns', color: 'text-sand-400' },
   conventions: { label: 'Conventions', description: 'Code style and naming rules', color: 'text-green-400' },
   commands: { label: 'Commands', description: 'Common build/test commands', color: 'text-orange-400' },
   preferences: { label: 'Preferences', description: 'Your preferences for Claude', color: 'text-yellow-400' },
@@ -210,8 +210,8 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-purple-500/20 rounded-lg">
-              <Brain size={20} className="text-purple-400" />
+            <div className="p-2 bg-sand-500/20 rounded-lg">
+              <Brain size={20} className="text-sand-400" />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-white">Project Memory</h2>
@@ -246,7 +246,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             onClick={() => setActiveTab('project')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === 'project'
-                ? 'text-purple-400 border-purple-400'
+                ? 'text-sand-400 border-sand-400'
                 : 'text-gray-400 border-transparent hover:text-white'
             }`}
           >
@@ -258,7 +258,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             onClick={() => setActiveTab('local')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === 'local'
-                ? 'text-purple-400 border-purple-400'
+                ? 'text-sand-400 border-sand-400'
                 : 'text-gray-400 border-transparent hover:text-white'
             }`}
           >
@@ -270,7 +270,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             onClick={() => setActiveTab('user')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === 'user'
-                ? 'text-purple-400 border-purple-400'
+                ? 'text-sand-400 border-sand-400'
                 : 'text-gray-400 border-transparent hover:text-white'
             }`}
           >
@@ -293,8 +293,8 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
               onClick={() => setShowAddForm(!showAddForm)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 showAddForm
-                  ? 'bg-purple-500 text-white'
-                  : 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
+                  ? 'bg-sand-500 text-white'
+                  : 'bg-sand-500/20 text-sand-400 hover:bg-sand-500/30'
               }`}
             >
               <Plus size={14} />
@@ -353,7 +353,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
 
         {/* Add Form */}
         {showAddForm && (
-          <div className="px-6 py-4 border-b border-white/[0.06] bg-purple-500/5">
+          <div className="px-6 py-4 border-b border-white/[0.06] bg-sand-500/5">
             <div className="space-y-3">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
@@ -385,7 +385,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
                 value={newContent}
                 onChange={e => setNewContent(e.target.value)}
                 placeholder="What should Claude remember?"
-                className="w-full h-20 bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 resize-none focus:outline-none focus:border-purple-500/50"
+                className="w-full h-20 bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 resize-none focus:outline-none focus:border-sand-500/50"
                 autoFocus
               />
               <div className="flex justify-end gap-2">
@@ -398,7 +398,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
                 <button
                   onClick={handleAdd}
                   disabled={!newContent.trim()}
-                  className="px-3 py-1.5 bg-purple-500 text-white text-sm rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50"
+                  className="px-3 py-1.5 bg-sand-500 text-white text-sm rounded-lg hover:bg-sand-600 transition-colors disabled:opacity-50"
                 >
                   Add
                 </button>
@@ -411,14 +411,14 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
         <div className="flex-1 overflow-y-auto p-6">
           {loading ? (
             <div className="flex items-center justify-center h-32">
-              <RefreshCw className="w-6 h-6 text-purple-400 animate-spin" />
+              <RefreshCw className="w-6 h-6 text-sand-400 animate-spin" />
             </div>
           ) : editMode === activeTab ? (
             // Raw edit mode
             <textarea
               value={editContent}
               onChange={e => setEditContent(e.target.value)}
-              className="w-full h-full min-h-[300px] bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-sm text-gray-200 font-mono resize-none focus:outline-none focus:border-purple-500/50"
+              className="w-full h-full min-h-[300px] bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-sm text-gray-200 font-mono resize-none focus:outline-none focus:border-sand-500/50"
               placeholder="# Project Memory\n\n## Context\n\n- Your project context here..."
             />
           ) : !hasContent(activeTab) ? (
@@ -437,7 +437,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
               </p>
               <button
                 onClick={() => activeTab === 'project' ? handleInit() : handleOpenEditor(activeTab)}
-                className="px-4 py-2 bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 rounded-lg text-sm font-medium transition-colors"
+                className="px-4 py-2 bg-sand-500/20 text-sand-400 hover:bg-sand-500/30 rounded-lg text-sm font-medium transition-colors"
               >
                 {activeTab === 'project' ? 'Create CLAUDE.md' : 'Create File'}
               </button>
@@ -451,7 +451,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
                   <p className="text-sm">File exists but has no parsed sections</p>
                   <button
                     onClick={() => handleStartEdit(activeTab)}
-                    className="text-purple-400 text-sm mt-2 hover:underline"
+                    className="text-sand-400 text-sm mt-2 hover:underline"
                   >
                     Edit raw content
                   </button>

@@ -10,8 +10,8 @@
   --accent-red: #cc785c;
   --accent-red-glow: rgba(204, 120, 92, 0.4);
   --accent-red-hover: #b86a50;
-  --accent-purple: #a855f7;
-  --accent-purple-glow: rgba(168, 85, 247, 0.4);
+  --accent-sand: #c2a87e;
+  --accent-sand-glow: rgba(194, 168, 126, 0.4);
 
   /* Grayscale */
   --gray-10: #f4f4f4;
@@ -787,7 +787,7 @@ select:focus-visible {
 
 /* Gradient text */
 .text-gradient {
-  background: linear-gradient(135deg, var(--accent-red), var(--accent-purple));
+  background: linear-gradient(135deg, var(--accent-red), var(--accent-sand));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

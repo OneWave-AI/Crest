@@ -88,12 +88,12 @@ const ACTION_COLORS: Record<ActionType, string> = {
   read: '#60a5fa',     // blue-400
   write: '#4ade80',    // green-400
   edit: '#cc785c',     // app accent
-  bash: '#a78bfa',     // purple-400
+  bash: '#a78bfa',     // sand-400
   search: '#22d3ee',   // cyan-400
   git: '#fb923c',      // orange-400
   browser: '#f472b6',  // pink-400
   tool: '#818cf8',     // indigo-400
-  thinking: '#c084fc', // purple-400
+  thinking: '#c084fc', // sand-400
   message: '#94a3b8'   // slate-400
 }
 
