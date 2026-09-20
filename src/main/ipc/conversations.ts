@@ -3,6 +3,7 @@ import * as fs from 'fs/promises'
 import { join } from 'path'
 import { homedir } from 'os'
 import type { Conversation, ConversationMessage, ConversationStats, ConversationExportOptions } from '../../shared/types'
+import { calculateCost } from '../../shared/pricing'
 
 const CLAUDE_DIR = join(homedir(), '.claude')
 const PINNED_FILE = join(CLAUDE_DIR, 'pinned-conversations.json')
@@ -833,48 +834,6 @@ interface DetailedUsageStats {
     monthlyProjection: number
     costPerSession: number
   }
-}
-
-// Pricing per 1M tokens (as of 2025)
-const MODEL_PRICING: Record<string, { input: number; output: number; cacheCreation: number; cacheRead: number }> = {
-  'claude-3-5-sonnet': { input: 3, output: 15, cacheCreation: 3.75, cacheRead: 0.3 },
-  'claude-sonnet-4': { input: 3, output: 15, cacheCreation: 3.75, cacheRead: 0.3 },
-  'claude-3-opus': { input: 15, output: 75, cacheCreation: 18.75, cacheRead: 1.5 },
-  'claude-opus-4': { input: 15, output: 75, cacheCreation: 18.75, cacheRead: 1.5 },
-  'claude-3-5-haiku': { input: 0.8, output: 4, cacheCreation: 1, cacheRead: 0.08 },
-  'claude-3-haiku': { input: 0.25, output: 1.25, cacheCreation: 0.3, cacheRead: 0.03 }
-}
-
-function getModelPricing(model: string): { input: number; output: number; cacheCreation: number; cacheRead: number } {
-  // Normalize model name
-  const normalized = model.toLowerCase()
-
-  if (normalized.includes('opus')) {
-    return MODEL_PRICING['claude-opus-4']
-  } else if (normalized.includes('haiku')) {
-    return MODEL_PRICING['claude-3-5-haiku']
-  } else {
-    // Default to Sonnet pricing
-    return MODEL_PRICING['claude-sonnet-4']
-  }
-}
-
-function calculateCost(
-  inputTokens: number,
-  outputTokens: number,
-  cacheCreationInputTokens: number,
-  cacheReadInputTokens: number,
-  model: string
-): number {
-  const pricing = getModelPricing(model)
-
-  // Cost per 1M tokens, so divide by 1,000,000
-  const inputCost = (inputTokens / 1_000_000) * pricing.input
-  const outputCost = (outputTokens / 1_000_000) * pricing.output
-  const cacheCreationCost = (cacheCreationInputTokens / 1_000_000) * pricing.cacheCreation
-  const cacheReadCost = (cacheReadInputTokens / 1_000_000) * pricing.cacheRead
-
-  return inputCost + outputCost + cacheCreationCost + cacheReadCost
 }
 
 ipcMain.handle('get-detailed-usage-stats', async (_, days: number = 30): Promise<DetailedUsageStats> => {
