@@ -365,7 +365,7 @@ export default function HomeScreen({
   }, [])
 
   return (
-    <div ref={containerRef} className="h-full overflow-auto bg-[#030305]">
+    <div ref={containerRef} className="h-full overflow-auto bg-surface-void">
       {/* Layered Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         {/* Base gradient */}
@@ -391,18 +391,18 @@ export default function HomeScreen({
           <h1 className="text-3xl font-bold mb-3 tracking-tight">
             <span className="bg-gradient-to-r from-accent to-accent-300 bg-clip-text text-transparent">Crest</span>
           </h1>
-          <p className="text-gray-400 text-sm max-w-md mx-auto">
+          <p className="text-ink-muted text-sm max-w-md mx-auto">
             Your autonomous AI coding companion. Let Claude build, debug, and ship while you focus on what matters.
           </p>
 
           {/* Stats summary - always shown */}
           {loadingState === 'loaded' && (
             <div className="flex items-center justify-center gap-4 mt-4 text-xs">
-              <span className="text-gray-500"><span className="text-white font-medium">{stats.conversations}</span> chats</span>
-              <span className="text-gray-700">•</span>
-              <span className="text-gray-500"><span className="text-white font-medium">{stats.skills + stats.agents}</span> tools</span>
-              <span className="text-gray-700">•</span>
-              <span className="text-gray-500"><span className="text-white font-medium">{stats.mcpServers}</span> MCP</span>
+              <span className="text-ink-subtle"><span className="text-ink-bright font-medium">{stats.conversations}</span> chats</span>
+              <span className="text-ink-ghost">•</span>
+              <span className="text-ink-subtle"><span className="text-ink-bright font-medium">{stats.skills + stats.agents}</span> tools</span>
+              <span className="text-ink-ghost">•</span>
+              <span className="text-ink-subtle"><span className="text-ink-bright font-medium">{stats.mcpServers}</span> MCP</span>
             </div>
           )}
         </div>
@@ -410,60 +410,60 @@ export default function HomeScreen({
         {/* Analytics Dashboard - Skeleton Loader */}
         {loadingState === 'loading' && (
           <div className="mb-6 animate-pulse">
-            <div className="bg-[#111113] rounded-2xl border border-white/[0.06] p-5">
+            <div className="bg-surface-2 rounded-2xl border border-overlay/[0.06] p-5">
               {/* Header skeleton */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-white/[0.06]" />
-                  <div className="w-24 h-4 rounded bg-white/[0.06]" />
+                  <div className="w-8 h-8 rounded-lg bg-overlay/[0.06]" />
+                  <div className="w-24 h-4 rounded bg-overlay/[0.06]" />
                 </div>
-                <div className="w-20 h-3 rounded bg-white/[0.06]" />
+                <div className="w-20 h-3 rounded bg-overlay/[0.06]" />
               </div>
 
               {/* Stats Cards skeleton */}
               <div className="grid grid-cols-4 gap-3 mb-5">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="bg-black/20 rounded-xl p-3 border border-white/[0.04]">
+                  <div key={i} className="bg-black/20 rounded-xl p-3 border border-overlay/[0.04]">
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="w-5 h-5 rounded bg-white/[0.06]" />
-                      <div className="w-12 h-2 rounded bg-white/[0.06]" />
+                      <div className="w-5 h-5 rounded bg-overlay/[0.06]" />
+                      <div className="w-12 h-2 rounded bg-overlay/[0.06]" />
                     </div>
-                    <div className="w-16 h-6 rounded bg-white/[0.08]" />
+                    <div className="w-16 h-6 rounded bg-overlay/[0.08]" />
                   </div>
                 ))}
               </div>
 
               {/* Two columns skeleton */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-black/20 rounded-xl p-4 border border-white/[0.04]">
+                <div className="bg-black/20 rounded-xl p-4 border border-overlay/[0.04]">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="w-20 h-2 rounded bg-white/[0.06]" />
-                    <div className="w-3 h-3 rounded bg-white/[0.06]" />
+                    <div className="w-20 h-2 rounded bg-overlay/[0.06]" />
+                    <div className="w-3 h-3 rounded bg-overlay/[0.06]" />
                   </div>
                   <div className="flex items-end gap-1 h-16">
                     {[1, 2, 3, 4, 5, 6, 7].map((i) => (
                       <div key={i} className="flex-1 flex flex-col items-center gap-1">
                         <div
-                          className="w-full rounded-sm bg-white/[0.06]"
+                          className="w-full rounded-sm bg-overlay/[0.06]"
                           style={{ height: `${20 + i * 10}%` }}
                         />
-                        <div className="w-2 h-2 rounded bg-white/[0.04]" />
+                        <div className="w-2 h-2 rounded bg-overlay/[0.04]" />
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="bg-black/20 rounded-xl p-4 border border-white/[0.04]">
+                <div className="bg-black/20 rounded-xl p-4 border border-overlay/[0.04]">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="w-20 h-2 rounded bg-white/[0.06]" />
-                    <div className="w-3 h-3 rounded bg-white/[0.06]" />
+                    <div className="w-20 h-2 rounded bg-overlay/[0.06]" />
+                    <div className="w-3 h-3 rounded bg-overlay/[0.06]" />
                   </div>
                   <div className="space-y-2">
                     {[1, 2, 3, 4].map((i) => (
                       <div key={i} className="flex items-center gap-2">
-                        <div className="w-2.5 h-2.5 rounded bg-white/[0.06]" />
-                        <div className="flex-1 h-2 rounded bg-white/[0.06]" />
-                        <div className="w-16 h-1.5 rounded bg-white/[0.06]" />
-                        <div className="w-8 h-2 rounded bg-white/[0.06]" />
+                        <div className="w-2.5 h-2.5 rounded bg-overlay/[0.06]" />
+                        <div className="flex-1 h-2 rounded bg-overlay/[0.06]" />
+                        <div className="w-16 h-1.5 rounded bg-overlay/[0.06]" />
+                        <div className="w-8 h-2 rounded bg-overlay/[0.06]" />
                       </div>
                     ))}
                   </div>
@@ -471,46 +471,46 @@ export default function HomeScreen({
               </div>
 
               {/* Time Analysis Section skeleton */}
-              <div className="mt-4 bg-black/20 rounded-xl p-4 border border-white/[0.04]">
+              <div className="mt-4 bg-black/20 rounded-xl p-4 border border-overlay/[0.04]">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-24 h-2 rounded bg-white/[0.06]" />
-                  <div className="w-3 h-3 rounded bg-white/[0.06]" />
+                  <div className="w-24 h-2 rounded bg-overlay/[0.06]" />
+                  <div className="w-3 h-3 rounded bg-overlay/[0.06]" />
                 </div>
                 <div className="grid grid-cols-3 gap-4 mb-4">
                   {[1, 2, 3].map((i) => (
                     <div key={i} className="text-center">
-                      <div className="w-12 h-8 rounded bg-white/[0.08] mx-auto mb-1" />
-                      <div className="w-16 h-2 rounded bg-white/[0.04] mx-auto" />
+                      <div className="w-12 h-8 rounded bg-overlay/[0.08] mx-auto mb-1" />
+                      <div className="w-16 h-2 rounded bg-overlay/[0.04] mx-auto" />
                     </div>
                   ))}
                 </div>
                 {/* 24h Activity skeleton */}
                 <div className="mt-4">
-                  <div className="w-16 h-2 rounded bg-white/[0.04] mb-2" />
+                  <div className="w-16 h-2 rounded bg-overlay/[0.04] mb-2" />
                   <div className="flex items-end gap-0.5 h-8">
                     {Array.from({ length: 24 }).map((_, i) => (
                       <div
                         key={i}
-                        className="flex-1 rounded-t-sm bg-white/[0.04]"
+                        className="flex-1 rounded-t-sm bg-overlay/[0.04]"
                         style={{ height: `${10 + (i % 5) * 15}%` }}
                       />
                     ))}
                   </div>
                   <div className="flex justify-between mt-1">
                     {['12am', '6am', '12pm', '6pm', '12am'].map((t) => (
-                      <div key={t} className="w-6 h-1.5 rounded bg-white/[0.03]" />
+                      <div key={t} className="w-6 h-1.5 rounded bg-overlay/[0.03]" />
                     ))}
                   </div>
                 </div>
               </div>
 
               {/* Footer skeleton */}
-              <div className="mt-4 pt-4 border-t border-white/[0.04] flex items-center justify-between">
+              <div className="mt-4 pt-4 border-t border-overlay/[0.04] flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-24 h-2 rounded bg-white/[0.06]" />
-                  <div className="w-28 h-2 rounded bg-white/[0.06]" />
+                  <div className="w-24 h-2 rounded bg-overlay/[0.06]" />
+                  <div className="w-28 h-2 rounded bg-overlay/[0.06]" />
                 </div>
-                <div className="w-16 h-2 rounded bg-white/[0.04]" />
+                <div className="w-16 h-2 rounded bg-overlay/[0.04]" />
               </div>
             </div>
           </div>
@@ -519,14 +519,14 @@ export default function HomeScreen({
         {/* Analytics Dashboard - Actual Content */}
         {loadingState === 'loaded' && (
           <div className="mb-6 animate-in fade-in duration-500">
-            <div className="bg-[#111113] rounded-2xl border border-white/[0.06] p-5">
+            <div className="bg-surface-2 rounded-2xl border border-overlay/[0.06] p-5">
               {/* Dashboard Header with View Details link */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
                   <div className="p-1.5 rounded-lg bg-accent/10">
                     <BarChart3 size={14} className="text-accent" />
                   </div>
-                  <h3 className="text-sm font-semibold text-white">Your Activity</h3>
+                  <h3 className="text-sm font-semibold text-ink-bright">Your Activity</h3>
                 </div>
                 {onOpenAnalytics && (
                   <button
@@ -565,10 +565,10 @@ export default function HomeScreen({
               {/* Two columns: Activity Chart + Top Projects */}
               <div className="grid grid-cols-2 gap-4">
                 {/* Activity Chart */}
-                <div className="bg-black/20 rounded-xl p-4 border border-white/[0.04]">
+                <div className="bg-black/20 rounded-xl p-4 border border-overlay/[0.04]">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-[11px] uppercase tracking-wider text-gray-500 font-medium">7-Day Activity</span>
-                    <TrendingUp size={12} className="text-gray-400" />
+                    <span className="text-[11px] uppercase tracking-wider text-ink-subtle font-medium">7-Day Activity</span>
+                    <TrendingUp size={12} className="text-ink-muted" />
                   </div>
                   <div className="flex items-end gap-1 h-16">
                     {(detailedStats.recentActivity.length > 0 ? detailedStats.recentActivity :
@@ -587,11 +587,11 @@ export default function HomeScreen({
                           <div
                             className={`w-full rounded-sm transition-all ${
                               isToday ? 'bg-gradient-to-t from-accent to-accent-300' :
-                              day.sessions > 0 ? 'bg-accent/40' : 'bg-white/[0.06]'
+                              day.sessions > 0 ? 'bg-accent/40' : 'bg-overlay/[0.06]'
                             }`}
                             style={{ height: `${height}%` }}
                           />
-                          <span className="text-[10px] text-gray-600">
+                          <span className="text-[10px] text-ink-faint">
                             {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }).charAt(0)}
                           </span>
                         </div>
@@ -601,10 +601,10 @@ export default function HomeScreen({
                 </div>
 
                 {/* Top Projects by TIME */}
-                <div className="bg-black/20 rounded-xl p-4 border border-white/[0.04]">
+                <div className="bg-black/20 rounded-xl p-4 border border-overlay/[0.04]">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-[11px] uppercase tracking-wider text-gray-500 font-medium">Top Projects</span>
-                    <Clock size={12} className="text-gray-400" />
+                    <span className="text-[11px] uppercase tracking-wider text-ink-subtle font-medium">Top Projects</span>
+                    <Clock size={12} className="text-ink-muted" />
                   </div>
                   <div className="space-y-2">
                     {detailedStats.topProjects.slice(0, 4).map((project) => {
@@ -612,30 +612,30 @@ export default function HomeScreen({
                       const percent = (project.timeMinutes / maxTime) * 100
                       return (
                         <div key={project.folder} className="flex items-center gap-2">
-                          <Code2 size={10} className="text-gray-500 flex-shrink-0" />
-                          <span className="text-[11px] text-gray-400 truncate flex-1">{project.name}</span>
-                          <div className="w-16 h-1.5 rounded-full bg-white/[0.06] overflow-hidden flex-shrink-0">
+                          <Code2 size={10} className="text-ink-subtle flex-shrink-0" />
+                          <span className="text-[11px] text-ink-muted truncate flex-1">{project.name}</span>
+                          <div className="w-16 h-1.5 rounded-full bg-overlay/[0.06] overflow-hidden flex-shrink-0">
                             <div
                               className="h-full rounded-full bg-gradient-to-r from-accent to-accent-300 transition-all"
                               style={{ width: `${percent}%` }}
                             />
                           </div>
-                          <span className="text-[10px] text-gray-500 w-10 text-right flex-shrink-0">{formatMinutes(project.timeMinutes)}</span>
+                          <span className="text-[10px] text-ink-subtle w-10 text-right flex-shrink-0">{formatMinutes(project.timeMinutes)}</span>
                         </div>
                       )
                     })}
                     {detailedStats.topProjects.length === 0 && (
-                      <p className="text-[11px] text-gray-600 text-center py-2">No project data yet</p>
+                      <p className="text-[11px] text-ink-faint text-center py-2">No project data yet</p>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* Time Analysis Section */}
-              <div className="mt-4 bg-black/20 rounded-xl p-4 border border-white/[0.04]">
+              <div className="mt-4 bg-black/20 rounded-xl p-4 border border-overlay/[0.04]">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-[11px] uppercase tracking-wider text-gray-500 font-medium">Work Patterns</span>
-                  <Clock size={12} className="text-gray-400" />
+                  <span className="text-[11px] uppercase tracking-wider text-ink-subtle font-medium">Work Patterns</span>
+                  <Clock size={12} className="text-ink-muted" />
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   {/* Peak Hour */}
@@ -644,22 +644,22 @@ export default function HomeScreen({
                       {detailedStats.peakHour > 12 ? detailedStats.peakHour - 12 : detailedStats.peakHour || 12}
                       <span className="text-sm ml-1">{detailedStats.peakHour >= 12 ? 'PM' : 'AM'}</span>
                     </div>
-                    <p className="text-[10px] text-gray-500 mt-1">Peak Hour</p>
+                    <p className="text-[10px] text-ink-subtle mt-1">Peak Hour</p>
                   </div>
                   {/* Peak Day */}
                   <div className="text-center">
                     <div className="text-lg font-bold text-accent">{detailedStats.peakDay.slice(0, 3)}</div>
-                    <p className="text-[10px] text-gray-500 mt-1">Most Active Day</p>
+                    <p className="text-[10px] text-ink-subtle mt-1">Most Active Day</p>
                   </div>
                   {/* Productivity Score */}
                   <div className="text-center">
                     <div className="text-2xl font-bold text-accent">{detailedStats.productivityScore}</div>
-                    <p className="text-[10px] text-gray-500 mt-1">Consistency</p>
+                    <p className="text-[10px] text-ink-subtle mt-1">Consistency</p>
                   </div>
                 </div>
                 {/* Hourly Distribution Mini Chart */}
                 <div className="mt-4">
-                  <p className="text-[10px] text-gray-600 mb-2">24h Activity</p>
+                  <p className="text-[10px] text-ink-faint mb-2">24h Activity</p>
                   <div className="flex items-end gap-0.5 h-8">
                     {detailedStats.hourlyDistribution.map((count, hour) => {
                       const max = Math.max(...detailedStats.hourlyDistribution, 1)
@@ -669,7 +669,7 @@ export default function HomeScreen({
                         <div
                           key={hour}
                           className={`flex-1 rounded-t-sm transition-all ${
-                            count > 0 ? (isWorkHour ? 'bg-accent/60' : 'bg-accent/30') : 'bg-white/[0.04]'
+                            count > 0 ? (isWorkHour ? 'bg-accent/60' : 'bg-accent/30') : 'bg-overlay/[0.04]'
                           }`}
                           style={{ height: `${height}%` }}
                           title={`${hour}:00 - ${count} sessions`}
@@ -678,37 +678,37 @@ export default function HomeScreen({
                     })}
                   </div>
                   <div className="flex justify-between mt-1">
-                    <span className="text-[9px] text-gray-600">12am</span>
-                    <span className="text-[9px] text-gray-600">6am</span>
-                    <span className="text-[9px] text-gray-600">12pm</span>
-                    <span className="text-[9px] text-gray-600">6pm</span>
-                    <span className="text-[9px] text-gray-600">12am</span>
+                    <span className="text-[9px] text-ink-faint">12am</span>
+                    <span className="text-[9px] text-ink-faint">6am</span>
+                    <span className="text-[9px] text-ink-faint">12pm</span>
+                    <span className="text-[9px] text-ink-faint">6pm</span>
+                    <span className="text-[9px] text-ink-faint">12am</span>
                   </div>
                 </div>
               </div>
 
               {/* Footer Insights */}
-              <div className="mt-4 pt-4 border-t border-white/[0.04] flex items-center justify-between">
-                <div className="flex items-center gap-4 text-[11px] text-gray-500">
+              <div className="mt-4 pt-4 border-t border-overlay/[0.04] flex items-center justify-between">
+                <div className="flex items-center gap-4 text-[11px] text-ink-subtle">
                   <span className="flex items-center gap-1">
-                    <Cpu size={10} className="text-gray-400" />
-                    Avg session: <span className="text-gray-400">{detailedStats.avgSessionLength}m</span>
+                    <Cpu size={10} className="text-ink-muted" />
+                    Avg session: <span className="text-ink-muted">{detailedStats.avgSessionLength}m</span>
                   </span>
                   <span className="flex items-center gap-1">
-                    <Plug size={10} className="text-gray-400" />
-                    30-day: <span className="text-gray-400">{detailedStats.sessions30Days} sessions</span>
+                    <Plug size={10} className="text-ink-muted" />
+                    30-day: <span className="text-ink-muted">{detailedStats.sessions30Days} sessions</span>
                   </span>
                 </div>
-                <span className="text-[10px] text-gray-700">Updated just now</span>
+                <span className="text-[10px] text-ink-ghost">Updated just now</span>
               </div>
             </div>
           </div>
         )}
 
         {/* Main Card */}
-        <div className="bg-[#111113] rounded-2xl border border-white/[0.06] p-6 mb-6">
+        <div className="bg-surface-2 rounded-2xl border border-overlay/[0.06] p-6 mb-6">
           {/* Folder Selector - Premium */}
-          <button onClick={onSelectFolder} className="w-full group flex items-center gap-4 rounded-xl bg-black/40 hover:bg-black/60 border border-white/[0.08] hover:border-accent/40 p-4 mb-4 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10">
+          <button onClick={onSelectFolder} className="w-full group flex items-center gap-4 rounded-xl bg-black/40 hover:bg-black/60 border border-overlay/[0.08] hover:border-accent/40 p-4 mb-4 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10">
             <div className="relative">
               <div className="absolute inset-0 rounded-xl bg-accent/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center group-hover:scale-105 transition-all duration-300 border border-accent/20">
@@ -716,11 +716,11 @@ export default function HomeScreen({
               </div>
             </div>
             <div className="flex-1 text-left min-w-0">
-              <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1 font-medium">Project Folder</p>
-              <p className="text-white text-sm font-mono truncate">{cwd || 'Select a folder...'}</p>
+              <p className="text-[11px] text-ink-subtle uppercase tracking-wider mb-1 font-medium">Project Folder</p>
+              <p className="text-ink-bright text-sm font-mono truncate">{cwd || 'Select a folder...'}</p>
             </div>
-            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-accent/20 transition-all duration-300">
-              <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-300" />
+            <div className="w-8 h-8 rounded-lg bg-overlay/5 flex items-center justify-center group-hover:bg-accent/20 transition-all duration-300">
+              <ChevronRight className="w-4 h-4 text-ink-subtle group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-300" />
             </div>
           </button>
 
@@ -747,7 +747,7 @@ export default function HomeScreen({
           )}
 
           {/* Agent + runtime -- which CLI drives the session, and where its model runs */}
-          <div className="rounded-xl bg-black/30 border border-white/[0.06] p-3 mb-4">
+          <div className="rounded-xl bg-black/30 border border-overlay/[0.06] p-3 mb-4">
             <AgentRuntimePicker
               provider={cliProvider}
               runtime={modelRuntime}
@@ -773,7 +773,7 @@ export default function HomeScreen({
                 className={`relative w-full flex items-center justify-center gap-3 rounded-xl py-4 font-semibold text-lg transition-all duration-300 ${
                   canStart && !isStarting
                     ? 'bg-gradient-to-r from-accent to-accent-300 text-white shadow-xl shadow-accent/30 hover:shadow-2xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98]'
-                    : 'bg-gray-800/50 text-gray-500 cursor-not-allowed'
+                    : 'bg-ink-trace/50 text-ink-subtle cursor-not-allowed'
                 }`}
               >
                 {isStarting ? (
@@ -799,8 +799,8 @@ export default function HomeScreen({
               disabled={claudeInstalled === false || isStarting}
               className={`group/chat px-6 py-4 flex items-center justify-center gap-3 rounded-xl font-medium transition-all duration-300 border ${
                 claudeInstalled !== false && !isStarting
-                  ? 'bg-gradient-to-r from-accent/10 to-accent/5 hover:from-accent/20 hover:to-accent/10 border-accent/20 hover:border-accent/40 text-gray-200 hover:text-white hover:scale-[1.02] backdrop-blur-sm'
-                  : 'bg-gray-800/30 text-gray-600 cursor-not-allowed border-transparent'
+                  ? 'bg-gradient-to-r from-accent/10 to-accent/5 hover:from-accent/20 hover:to-accent/10 border-accent/20 hover:border-accent/40 text-ink-bright hover:text-ink-bright hover:scale-[1.02] backdrop-blur-sm'
+                  : 'bg-ink-trace/30 text-ink-faint cursor-not-allowed border-transparent'
               }`}
               title="Start with Chat UI"
             >
@@ -809,18 +809,18 @@ export default function HomeScreen({
               <ArrowRight className="w-4 h-4 transition-transform group-hover/chat:translate-x-1 opacity-50" />
             </button>
           </div>
-          <p className="text-center text-[11px] text-gray-600 mt-3">
-            <kbd className="px-1.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-500 font-mono shadow-sm">⌘</kbd>
+          <p className="text-center text-[11px] text-ink-faint mt-3">
+            <kbd className="px-1.5 py-1 rounded-md bg-overlay/5 border border-overlay/10 text-ink-subtle font-mono shadow-sm">⌘</kbd>
             <span className="mx-1">+</span>
-            <kbd className="px-1.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-500 font-mono shadow-sm">↵</kbd>
-            <span className="ml-2 text-gray-500">to start with project</span>
+            <kbd className="px-1.5 py-1 rounded-md bg-overlay/5 border border-overlay/10 text-ink-subtle font-mono shadow-sm">↵</kbd>
+            <span className="ml-2 text-ink-subtle">to start with project</span>
           </p>
         </div>
 
         {/* Command Panel */}
         <div className="flex justify-center mb-8">
           <div className="relative max-w-md w-full">
-            <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl">
+            <div className="bg-overlay/[0.03] border border-overlay/[0.08] rounded-2xl">
               <div className="relative px-2 py-2.5">
                 {/* Top row */}
                 <div className="grid grid-cols-4 gap-0.5">
@@ -871,12 +871,12 @@ export default function HomeScreen({
                         <Zap className="w-3.5 h-3.5 text-accent opacity-80 group-hover/sa:opacity-100 transition-opacity duration-200" />
                       </div>
                       <div className="flex-1 text-left min-w-0">
-                        <div className="text-[11px] font-semibold tracking-wide text-gray-400 group-hover/sa:text-gray-200 transition-colors duration-200 truncate">
+                        <div className="text-[11px] font-semibold tracking-wide text-ink-muted group-hover/sa:text-ink-bright transition-colors duration-200 truncate">
                           Super Agent
                         </div>
-                        <div className="text-[10px] text-gray-600 truncate">AI task execution</div>
+                        <div className="text-[10px] text-ink-faint truncate">AI task execution</div>
                       </div>
-                      <ChevronRight className="w-3 h-3 text-gray-700 group-hover/sa:text-accent group-hover/sa:translate-x-0.5 transition-all duration-200 shrink-0" />
+                      <ChevronRight className="w-3 h-3 text-ink-ghost group-hover/sa:text-accent group-hover/sa:translate-x-0.5 transition-all duration-200 shrink-0" />
                     </button>
                   )}
 
@@ -902,12 +902,12 @@ export default function HomeScreen({
                         </div>
                       </div>
                       <div className="flex-1 text-left min-w-0">
-                        <div className="text-[11px] font-semibold tracking-wide text-gray-400 group-hover/orch:text-gray-200 transition-colors duration-200 truncate">
+                        <div className="text-[11px] font-semibold tracking-wide text-ink-muted group-hover/orch:text-ink-bright transition-colors duration-200 truncate">
                           Orchestrator
                         </div>
-                        <div className="text-[10px] text-gray-600 truncate">Multi-agent swarm</div>
+                        <div className="text-[10px] text-ink-faint truncate">Multi-agent swarm</div>
                       </div>
-                      <ChevronRight className="w-3 h-3 text-gray-700 group-hover/orch:text-accent group-hover/orch:translate-x-0.5 transition-all duration-200 shrink-0" />
+                      <ChevronRight className="w-3 h-3 text-ink-ghost group-hover/orch:text-accent group-hover/orch:translate-x-0.5 transition-all duration-200 shrink-0" />
                     </button>
                   )}
                 </div>
@@ -919,25 +919,25 @@ export default function HomeScreen({
         {/* Recent Projects - Premium */}
         {recentProjects.length > 0 && (
           <div className="mb-6">
-            <h3 className="text-[11px] uppercase tracking-wider text-gray-500 mb-3 flex items-center gap-2 font-medium">
-              <Clock size={10} className="text-gray-600" /> Recent Projects
+            <h3 className="text-[11px] uppercase tracking-wider text-ink-subtle mb-3 flex items-center gap-2 font-medium">
+              <Clock size={10} className="text-ink-faint" /> Recent Projects
             </h3>
             <div className="space-y-2">
               {recentProjects.map((project, index) => (
                 <button
                   key={project.folder}
                   onClick={() => handleProjectClick(project.folder)}
-                  className="w-full group flex items-center gap-3 rounded-xl bg-[#111113] hover:bg-[#111113]/80 border border-white/[0.06] hover:border-accent/30 p-3.5 text-left transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-accent/5"
+                  className="w-full group flex items-center gap-3 rounded-xl bg-surface-2 hover:bg-surface-2/80 border border-overlay/[0.06] hover:border-accent/30 p-3.5 text-left transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-accent/5"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center group-hover:from-accent/20 group-hover:to-accent/5 transition-all duration-300 border border-white/5">
-                    <Code2 className="w-4 h-4 text-gray-500 group-hover:text-accent transition-colors duration-300" />
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-ink-trace to-ink-void flex items-center justify-center group-hover:from-accent/20 group-hover:to-accent/5 transition-all duration-300 border border-overlay/5">
+                    <Code2 className="w-4 h-4 text-ink-subtle group-hover:text-accent transition-colors duration-300" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="block text-sm text-white truncate font-medium">{project.name}</span>
-                    <span className="text-[11px] text-gray-600">{formatTime(project.timestamp)}</span>
+                    <span className="block text-sm text-ink-bright truncate font-medium">{project.name}</span>
+                    <span className="text-[11px] text-ink-faint">{formatTime(project.timestamp)}</span>
                   </div>
-                  <div className="w-7 h-7 rounded-lg bg-white/0 group-hover:bg-white/5 flex items-center justify-center transition-all duration-300">
-                    <ArrowRight className="w-3.5 h-3.5 text-gray-600 group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-300" />
+                  <div className="w-7 h-7 rounded-lg bg-overlay/0 group-hover:bg-overlay/5 flex items-center justify-center transition-all duration-300">
+                    <ArrowRight className="w-3.5 h-3.5 text-ink-faint group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-300" />
                   </div>
                 </button>
               ))}
@@ -947,7 +947,7 @@ export default function HomeScreen({
 
         {/* Footer */}
         <div className="text-center">
-          <span className="text-[11px] text-gray-700">Crest • Built with <Rocket className="w-2.5 h-2.5 inline text-gray-400" /></span>
+          <span className="text-[11px] text-ink-ghost">Crest • Built with <Rocket className="w-2.5 h-2.5 inline text-ink-muted" /></span>
         </div>
       </div>
 
@@ -1023,14 +1023,14 @@ function StatCard({ icon: Icon, label, value }: {
   value: string | number
 }) {
   return (
-    <div className="relative bg-black/20 rounded-xl p-3 border border-white/[0.04] border-l-2 border-l-accent/30 hover:border-white/[0.08] hover:border-l-accent/50 transition-all hover:translate-y-[-1px]">
+    <div className="relative bg-black/20 rounded-xl p-3 border border-overlay/[0.04] border-l-2 border-l-accent/30 hover:border-overlay/[0.08] hover:border-l-accent/50 transition-all hover:translate-y-[-1px]">
       <div className="flex items-center gap-2 mb-2">
         <div className="p-1.5 rounded-lg bg-accent/10">
           <Icon size={12} className="text-accent" />
         </div>
-        <span className="text-[11px] uppercase tracking-wider text-gray-500 font-medium">{label}</span>
+        <span className="text-[11px] uppercase tracking-wider text-ink-subtle font-medium">{label}</span>
       </div>
-      <p className="text-xl font-bold text-white">{value}</p>
+      <p className="text-xl font-bold text-ink-bright">{value}</p>
     </div>
   )
 }
@@ -1498,17 +1498,17 @@ function QuickAction({ icon: Icon, label, onClick, color, badge }: {
       badge: 'bg-sand-500/20 text-sand-300'
     },
     gray: {
-      bg: 'bg-gray-500/10 group-hover:bg-gray-500/20',
-      icon: 'text-gray-400',
-      border: 'hover:border-gray-500/30',
-      glow: 'group-hover:shadow-gray-500/10',
-      badge: 'bg-gray-500/20 text-gray-400'
+      bg: 'bg-ink-subtle/10 group-hover:bg-ink-subtle/20',
+      icon: 'text-ink-muted',
+      border: 'hover:border-ink-subtle/30',
+      glow: 'group-hover:shadow-ink-subtle/10',
+      badge: 'bg-ink-subtle/20 text-ink-muted'
     }
   }
   return (
     <button
       onClick={onClick}
-      className={`group relative flex flex-col items-center gap-2.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] border border-white/[0.06] ${colors[color].border} p-4 transition-all duration-300 hover:scale-105 hover:shadow-lg ${colors[color].glow} backdrop-blur-sm`}
+      className={`group relative flex flex-col items-center gap-2.5 rounded-xl bg-overlay/[0.02] hover:bg-overlay/[0.06] border border-overlay/[0.06] ${colors[color].border} p-4 transition-all duration-300 hover:scale-105 hover:shadow-lg ${colors[color].glow} backdrop-blur-sm`}
     >
       {badge !== undefined && (
         <div className={`absolute -top-1.5 -right-1.5 px-2 py-0.5 rounded-full ${colors[color].badge} text-[10px] font-semibold shadow-lg`}>
@@ -1518,7 +1518,7 @@ function QuickAction({ icon: Icon, label, onClick, color, badge }: {
       <div className={`relative w-11 h-11 rounded-xl ${colors[color].bg} flex items-center justify-center transition-all duration-300 group-hover:scale-110`}>
         <Icon className={`w-5 h-5 ${colors[color].icon} transition-all duration-300`} />
       </div>
-      <span className="text-xs font-medium text-gray-400 group-hover:text-white transition-colors duration-300">{label}</span>
+      <span className="text-xs font-medium text-ink-muted group-hover:text-ink-bright transition-colors duration-300">{label}</span>
     </button>
   )
 }

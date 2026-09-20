@@ -117,9 +117,9 @@ export default function ImportExport({
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-md bg-[#0d0d0d] border border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden">
+      <div className="relative w-full max-w-md bg-surface-1 border border-overlay/[0.08] rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
           <div className="flex items-center gap-3">
             {mode === 'import' ? (
               <div className="p-2 rounded-lg bg-emerald-500/10">
@@ -130,13 +130,13 @@ export default function ImportExport({
                 <Download size={18} className="text-blue-400" />
               </div>
             )}
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="text-lg font-semibold text-ink-bright">
               {mode === 'import' ? 'Import' : 'Export'} {itemType === 'skill' ? 'Skill' : 'Agent'}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-white/[0.06] transition-colors"
+            className="p-2 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/[0.06] transition-colors"
           >
             <X size={18} />
           </button>
@@ -154,7 +154,7 @@ export default function ImportExport({
                 className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
                   dragOver
                     ? 'border-accent bg-accent/10'
-                    : 'border-white/[0.1] hover:border-white/[0.2]'
+                    : 'border-overlay/[0.1] hover:border-overlay/[0.2]'
                 }`}
               >
                 <input
@@ -164,21 +164,21 @@ export default function ImportExport({
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
                 <div className="flex flex-col items-center gap-3">
-                  <div className={`p-4 rounded-2xl ${dragOver ? 'bg-accent/20' : 'bg-white/[0.04]'}`}>
-                    <FileText size={32} className={dragOver ? 'text-accent' : 'text-gray-500'} />
+                  <div className={`p-4 rounded-2xl ${dragOver ? 'bg-accent/20' : 'bg-overlay/[0.04]'}`}>
+                    <FileText size={32} className={dragOver ? 'text-accent' : 'text-ink-subtle'} />
                   </div>
                   <div>
-                    <p className="text-white font-medium mb-1">
+                    <p className="text-ink-bright font-medium mb-1">
                       Drop your .md file here
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-ink-subtle">
                       or click to browse
                     </p>
                   </div>
                 </div>
               </div>
 
-              <p className="text-xs text-gray-500 mt-4 text-center">
+              <p className="text-xs text-ink-subtle mt-4 text-center">
                 Import a markdown file with frontmatter containing name and description
               </p>
             </>
@@ -187,17 +187,17 @@ export default function ImportExport({
               {/* Export preview */}
               {exportItem && (
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                  <div className="flex items-start gap-3 p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.06]">
                     <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-accent/10' : 'bg-sand-500/10'}`}>
                       <FileText size={18} className={itemType === 'skill' ? 'text-accent' : 'text-sand-400'} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-white truncate">{exportItem.name}</h3>
-                      <p className="text-xs text-gray-500 font-mono truncate mt-1">{exportItem.path}</p>
+                      <h3 className="font-medium text-ink-bright truncate">{exportItem.name}</h3>
+                      <p className="text-xs text-ink-subtle font-mono truncate mt-1">{exportItem.path}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <div className="flex items-center gap-2 text-sm text-ink-muted">
                     <Folder size={14} />
                     <span>Will be saved to Downloads folder</span>
                   </div>

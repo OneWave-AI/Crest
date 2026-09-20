@@ -257,13 +257,13 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
   const src = isHttp ? url : `local-file://${url.replace(/^file:\/\//, '')}`
 
   return (
-    <div className="h-full w-1/2 bg-[#0d0d0d] flex flex-col">
+    <div className="h-full w-1/2 bg-surface-1 flex flex-col">
       {/* Toolbar */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[#141414] border-b border-white/[0.06]">
+      <div className="flex items-center justify-between px-3 py-2 bg-surface-3 border-b border-overlay/[0.06]">
         <div className="flex items-center gap-2 min-w-0">
           <div className="w-2 h-2 rounded-full bg-accent animate-pulse flex-shrink-0" />
-          <span className="text-xs text-gray-400 flex-shrink-0">Preview</span>
-          <span className="text-[10px] text-gray-600 font-mono truncate">{url.split('/').pop()}</span>
+          <span className="text-xs text-ink-muted flex-shrink-0">Preview</span>
+          <span className="text-[10px] text-ink-faint font-mono truncate">{url.split('/').pop()}</span>
         </div>
 
         <div className="flex items-center gap-1 flex-shrink-0">
@@ -292,7 +292,7 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
           <button
             onClick={capture}
             disabled={capturing}
-            className="p-1 rounded hover:bg-white/[0.06] text-gray-500 hover:text-white disabled:opacity-40 transition-colors"
+            className="p-1 rounded hover:bg-overlay/[0.06] text-ink-subtle hover:text-ink-bright disabled:opacity-40 transition-colors"
             title={activeTerminalId ? 'Screenshot and send to session' : 'Screenshot preview'}
           >
             {capturing ? <Loader2 size={12} className="animate-spin" /> : <Camera size={12} />}
@@ -300,7 +300,7 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
 
           <button
             onClick={reload}
-            className="p-1 rounded hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors"
+            className="p-1 rounded hover:bg-overlay/[0.06] text-ink-subtle hover:text-ink-bright transition-colors"
             title="Reload"
           >
             <RotateCcw size={12} />
@@ -311,7 +311,7 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
               if (isHttp) window.api.openUrlExternal(url)
               else window.api.openFileExternal(url)
             }}
-            className="p-1 rounded hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors"
+            className="p-1 rounded hover:bg-overlay/[0.06] text-ink-subtle hover:text-ink-bright transition-colors"
             title="Open externally"
           >
             <ExternalLink size={12} />
@@ -320,7 +320,7 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
           {onClose && (
             <button
               onClick={onClose}
-              className="p-1 rounded hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors"
+              className="p-1 rounded hover:bg-overlay/[0.06] text-ink-subtle hover:text-ink-bright transition-colors"
               title="Close preview"
             >
               <X size={12} />
@@ -347,9 +347,9 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
 
       {/* Console drawer */}
       {consoleOpen && entries.length > 0 && (
-        <div className="h-56 flex flex-col border-t border-white/[0.06] bg-[#0a0a0a]">
-          <div className="flex items-center justify-between px-3 py-1.5 bg-[#141414] border-b border-white/[0.06]">
-            <span className="text-[10px] uppercase tracking-wider text-gray-500">Preview Console</span>
+        <div className="h-56 flex flex-col border-t border-overlay/[0.06] bg-surface-0">
+          <div className="flex items-center justify-between px-3 py-1.5 bg-surface-3 border-b border-overlay/[0.06]">
+            <span className="text-[10px] uppercase tracking-wider text-ink-subtle">Preview Console</span>
             <div className="flex items-center gap-1">
               {activeTerminalId && errors.length > 0 && (
                 <button
@@ -363,20 +363,20 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
               )}
               <button
                 onClick={copyAll}
-                className="px-2 py-1 rounded text-[10px] text-gray-500 hover:text-white hover:bg-white/[0.06] transition-colors"
+                className="px-2 py-1 rounded text-[10px] text-ink-subtle hover:text-ink-bright hover:bg-overlay/[0.06] transition-colors"
               >
                 Copy
               </button>
               <button
                 onClick={() => setEntries([])}
-                className="p-1 rounded text-gray-500 hover:text-white hover:bg-white/[0.06] transition-colors"
+                className="p-1 rounded text-ink-subtle hover:text-ink-bright hover:bg-overlay/[0.06] transition-colors"
                 title="Clear"
               >
                 <Trash2 size={11} />
               </button>
               <button
                 onClick={() => setConsoleOpen(false)}
-                className="p-1 rounded text-gray-500 hover:text-white hover:bg-white/[0.06] transition-colors"
+                className="p-1 rounded text-ink-subtle hover:text-ink-bright hover:bg-overlay/[0.06] transition-colors"
                 title="Hide console"
               >
                 <X size={11} />
@@ -388,11 +388,11 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
             {entries.map((entry) => (
               <div
                 key={entry.id}
-                className={`group flex items-start gap-2 px-3 py-1.5 border-b border-white/[0.03] ${
+                className={`group flex items-start gap-2 px-3 py-1.5 border-b border-overlay/[0.03] ${
                   entry.level === 'error' ? 'text-red-300' : 'text-amber-300/90'
                 }`}
               >
-                <span className="flex-shrink-0 mt-0.5 w-9 text-[9px] uppercase text-gray-600">
+                <span className="flex-shrink-0 mt-0.5 w-9 text-[9px] uppercase text-ink-faint">
                   {entry.level}
                 </span>
 
@@ -400,19 +400,19 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
                   <div className="whitespace-pre-wrap break-words">
                     {entry.message}
                     {entry.count > 1 && (
-                      <span className="ml-2 px-1.5 rounded-full bg-white/10 text-[9px] text-gray-400">
+                      <span className="ml-2 px-1.5 rounded-full bg-overlay/10 text-[9px] text-ink-muted">
                         {entry.count}
                       </span>
                     )}
                   </div>
                   {entry.source && (
-                    <div className="text-[10px] text-gray-600 truncate mt-0.5">
+                    <div className="text-[10px] text-ink-faint truncate mt-0.5">
                       {entry.source}
                       {entry.line ? `:${entry.line}` : ''}
                     </div>
                   )}
                   {entry.stack && (
-                    <pre className="mt-1 text-[10px] text-gray-500 whitespace-pre-wrap break-words max-h-24 overflow-y-auto">
+                    <pre className="mt-1 text-[10px] text-ink-subtle whitespace-pre-wrap break-words max-h-24 overflow-y-auto">
                       {entry.stack}
                     </pre>
                   )}
@@ -421,7 +421,7 @@ export default function PreviewPane({ url, onClose, activeTerminalId }: PreviewP
                 {activeTerminalId && (
                   <button
                     onClick={() => sendToSession([entry])}
-                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 p-1 rounded text-gray-500 hover:text-accent hover:bg-white/[0.06] transition-all"
+                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 p-1 rounded text-ink-subtle hover:text-accent hover:bg-overlay/[0.06] transition-all"
                     title="Send this one to the session"
                   >
                     <MessageSquare size={11} />

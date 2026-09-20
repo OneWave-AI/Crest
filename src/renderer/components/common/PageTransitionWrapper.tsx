@@ -243,7 +243,7 @@ function TransitionLoading({ isVisible }: TransitionLoadingProps) {
       <div className="relative">
         {/* Spinning ring */}
         <div
-          className="w-8 h-8 border-2 border-white/10 border-t-accent rounded-full"
+          className="w-8 h-8 border-2 border-overlay/10 border-t-accent rounded-full"
           style={{
             animation: 'spin 0.8s linear infinite'
           }}
@@ -493,7 +493,7 @@ export function PageTransitionWrapper({
 
   return (
     <PageTransitionContext.Provider value={contextValue}>
-      <div className="relative h-full w-full overflow-hidden bg-[#0d0d0d]">
+      <div className="relative h-full w-full overflow-hidden bg-surface-1">
         {/* Transition backdrop blur */}
         <TransitionBackdrop
           isVisible={transitionState === 'exiting' || transitionState === 'entering'}

@@ -6,6 +6,46 @@
 @tailwind utilities;
 
 :root {
+  /* ---------------------------------------------------------------
+     Theme channels. RGB triplets, not hex, because Tailwind composes
+     them with an alpha channel (`rgb(var(--c-x) / <alpha-value>)`) --
+     that is what makes bg-overlay/[0.06] work. A theme redefines these
+     under [data-theme="..."]; nothing else needs to change.
+     --------------------------------------------------------------- */
+
+  /* The tint laid over a surface for hairlines and subtle fills. White
+     on a dark ground, black on a light one -- which is the whole reason
+     it cannot stay the literal `white` it was in 737 class names. */
+  --c-overlay: 255 255 255;
+
+  /* Surface ladder, darkest to lightest. `void` sits below the ladder --
+     it is only ever a gradient endpoint, never a panel ground. */
+  --c-surface-void: 3 3 5;
+  --c-surface-0: 10 10 11;
+  --c-surface-1: 13 13 13;
+  --c-surface-2: 17 17 19;
+  --c-surface-3: 20 20 22;
+  --c-surface-4: 26 26 28;
+  --c-surface-5: 30 30 30;
+  --c-surface-6: 37 37 40;
+  --c-surface-7: 43 43 43;
+
+  /* Ink ladder -- the text hierarchy, brightest to faintest. On a light
+     theme these invert; that is why 1,148 hardcoded Tailwind greys had to
+     stop being the text colour. */
+  --c-ink-bright: 229 231 235;
+  --c-ink: 209 213 219;
+  --c-ink-muted: 156 163 175;
+  /* subtle and faint are nudged up from the Tailwind greys they replaced:
+     text-gray-500 was the app's most-used text colour at 503 sites and came
+     in at 4.02:1, under the 4.5:1 AA floor. These are the darkest values
+     that clear AA (subtle) and AA-large (faint). */
+  --c-ink-subtle: 115 122 136;
+  --c-ink-faint: 85 95 109;
+  --c-ink-ghost: 55 65 81;
+  --c-ink-trace: 31 41 55;
+  --c-ink-void: 17 24 39;
+
   /* Brand Colors */
   --accent-red: #cc785c;
   --accent-red-glow: rgba(204, 120, 92, 0.4);
@@ -13,29 +53,29 @@
   --accent-sand: #c2a87e;
   --accent-sand-glow: rgba(194, 168, 126, 0.4);
 
-  /* Grayscale */
-  --gray-10: #f4f4f4;
-  --gray-20: #e0e0e0;
-  --gray-50: #8d8d8d;
-  --gray-70: #525252;
-  --gray-80: #393939;
-  --gray-85: #2a2a2a;
-  --gray-90: #262626;
-  --gray-95: #1a1a1a;
-  --gray-100: #161616;
-  --gray-110: #0d0d0d;
+  /* Legacy names kept for the hand-written component classes further down
+     this file (.btn, .input-field, the scrollbar). They resolve through the
+     channels above, so a theme overrides the channels and these follow. */
+  --gray-10: rgb(var(--c-ink-bright));
+  --gray-20: rgb(var(--c-ink));
+  --gray-50: rgb(var(--c-ink-subtle));
+  --gray-70: rgb(var(--c-ink-faint));
+  --gray-80: rgb(var(--c-ink-ghost));
+  --gray-85: rgb(var(--c-surface-7));
+  --gray-90: rgb(var(--c-surface-6));
+  --gray-95: rgb(var(--c-surface-4));
+  --gray-100: rgb(var(--c-surface-3));
+  --gray-110: rgb(var(--c-surface-1));
 
-  /* Surface colors */
-  --surface-base: #0d0d0d;
-  --surface-raised: #141416;
-  --surface-overlay: #1a1a1c;
-  --surface-hover: rgba(255, 255, 255, 0.04);
-  --surface-active: rgba(255, 255, 255, 0.08);
+  --surface-base: rgb(var(--c-surface-1));
+  --surface-raised: rgb(var(--c-surface-3));
+  --surface-overlay: rgb(var(--c-surface-4));
+  --surface-hover: rgb(var(--c-overlay) / 0.04);
+  --surface-active: rgb(var(--c-overlay) / 0.08);
 
-  /* Glass effects */
-  --glass-bg: rgba(38, 38, 38, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgb(var(--c-surface-6) / 0.7);
+  --glass-border: rgb(var(--c-overlay) / 0.08);
+  --glass-highlight: rgb(var(--c-overlay) / 0.05);
 
   /* Shadows */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -45,6 +85,72 @@
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --shadow-glow: 0 0 20px var(--accent-red-glow);
 }
+
+/* ===========================================
+   THEMES
+   A theme overrides channels only. No component knows a theme exists.
+   =========================================== */
+
+/* Slate -- cooler, flatter dark. */
+[data-theme='slate'] {
+  --c-surface-void: 2 4 8;
+  --c-surface-0: 9 11 16;
+  --c-surface-1: 12 15 21;
+  --c-surface-2: 16 19 26;
+  --c-surface-3: 19 23 31;
+  --c-surface-4: 24 29 39;
+  --c-surface-5: 29 35 46;
+  --c-surface-6: 36 43 56;
+  --c-surface-7: 43 51 66;
+}
+
+/* Ember -- warmer dark, brown-black rather than blue-black. */
+[data-theme='ember'] {
+  --c-surface-void: 6 4 3;
+  --c-surface-0: 13 10 8;
+  --c-surface-1: 17 13 11;
+  --c-surface-2: 22 17 14;
+  --c-surface-3: 26 20 17;
+  --c-surface-4: 33 26 22;
+  --c-surface-5: 38 30 25;
+  --c-surface-6: 46 36 30;
+  --c-surface-7: 54 43 36;
+}
+
+/* Paper -- the light theme. Overlay flips to black and the ink ladder
+   inverts; that inversion is the entire theme, which is the point of
+   having tokenised them. */
+[data-theme='paper'] {
+  --c-overlay: 17 20 24;
+
+  --c-surface-void: 255 255 255;
+  --c-surface-0: 253 252 250;
+  --c-surface-1: 250 249 246;
+  --c-surface-2: 246 244 240;
+  --c-surface-3: 242 240 235;
+  --c-surface-4: 236 233 227;
+  --c-surface-5: 230 226 219;
+  --c-surface-6: 221 216 207;
+  --c-surface-7: 210 204 194;
+
+  --c-ink-bright: 23 23 25;
+  --c-ink: 44 45 48;
+  --c-ink-muted: 82 85 90;
+  --c-ink-subtle: 111 115 122;
+  --c-ink-faint: 141 145 152;
+  --c-ink-ghost: 175 179 186;
+  --c-ink-trace: 205 208 213;
+  --c-ink-void: 228 230 234;
+
+  /* The terracotta darkens on a light ground -- the dark-theme value is
+     too pale against paper to carry a button. */
+  --accent-red: #b3624a;
+  --accent-red-hover: #9c523c;
+  --accent-sand: #8a7149;
+
+  color-scheme: light;
+}
+
 
 * {
   margin: 0;

@@ -69,7 +69,7 @@ export default function PreviewBar({
             style={{ backgroundColor: '#cc785c' }}
             aria-hidden="true"
           />
-          <span className="text-xs font-medium text-gray-400">Preview available</span>
+          <span className="text-xs font-medium text-ink-muted">Preview available</span>
         </div>
 
         {/* URL display */}
@@ -127,7 +127,7 @@ export default function PreviewBar({
           {/* Close button */}
           <button
             onClick={handleDismiss}
-            className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-all duration-200 focus-ring ml-1"
+            className="p-1.5 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/10 transition-all duration-200 focus-ring ml-1"
             title="Dismiss"
             aria-label="Dismiss preview bar"
           >

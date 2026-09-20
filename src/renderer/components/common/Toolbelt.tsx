@@ -199,7 +199,7 @@ Format your response as a numbered list with skill name and use case.`
         className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all text-xs ${
           isOpen
             ? 'bg-accent/20 border-accent/40 text-accent'
-            : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white hover:border-white/20'
+            : 'bg-overlay/5 border-overlay/10 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright hover:border-overlay/20'
         }`}
         aria-label="Open toolbelt"
         aria-haspopup="menu"
@@ -209,7 +209,7 @@ Format your response as a numbered list with skill name and use case.`
         <Wrench size={12} aria-hidden="true" />
         <span className="font-medium">Tools</span>
         {totalCount > 0 && (
-          <span className="px-1.5 py-0.5 rounded-full bg-white/10 text-[10px] font-medium">
+          <span className="px-1.5 py-0.5 rounded-full bg-overlay/10 text-[10px] font-medium">
             {totalCount}
           </span>
         )}
@@ -223,26 +223,26 @@ Format your response as a numbered list with skill name and use case.`
       {/* Dropdown Menu */}
       {isOpen && (
         <div
-          className="absolute top-full right-0 mt-2 w-80 bg-[#0d0d0f]/98 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-2xl shadow-black/60 overflow-hidden z-50 animate-fade-in-down"
+          className="absolute top-full right-0 mt-2 w-80 bg-surface-1/98 backdrop-blur-xl border border-overlay/[0.08] rounded-2xl shadow-2xl shadow-black/60 overflow-hidden z-50 animate-fade-in-down"
           role="menu"
           aria-label="Toolbelt options"
         >
           {/* Search Header */}
-          <div className="p-3 border-b border-white/[0.06]">
+          <div className="p-3 border-b border-overlay/[0.06]">
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-subtle" />
               <input
                 ref={searchInputRef}
                 type="text"
                 placeholder="Search tools..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-8 py-2 bg-white/[0.04] border border-white/[0.06] rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/20 transition-all"
+                className="w-full pl-9 pr-8 py-2 bg-overlay/[0.04] border border-overlay/[0.06] rounded-lg text-sm text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/20 transition-all"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-subtle hover:text-ink-bright transition-colors"
                 >
                   <X size={12} />
                 </button>
@@ -258,7 +258,7 @@ Format your response as a numbered list with skill name and use case.`
                   className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                     activeTab === tab
                       ? 'bg-accent/15 text-accent border border-accent/20'
-                      : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                      : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.04]'
                   }`}
                 >
                   {tab === 'agents' && <Bot size={11} />}
@@ -274,33 +274,33 @@ Format your response as a numbered list with skill name and use case.`
           </div>
 
           {/* Find Me a Skill - Featured Action */}
-          <div className="px-3 py-2 border-b border-white/[0.06]">
+          <div className="px-3 py-2 border-b border-overlay/[0.06]">
             <button
               onClick={handleFindSkill}
               disabled={!activeTerminalId}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed group ${
                 activeTerminalId
                   ? 'bg-gradient-to-r from-sand-500/15 to-pink-500/15 border border-sand-500/25 hover:from-sand-500/25 hover:to-pink-500/25 hover:border-sand-500/40'
-                  : 'bg-white/[0.02] border border-white/[0.04]'
+                  : 'bg-overlay/[0.02] border border-overlay/[0.04]'
               }`}
             >
               <div className={`flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br transition-all ${
                 activeTerminalId
                   ? 'from-sand-500/30 to-pink-500/30 group-hover:from-sand-500/40 group-hover:to-pink-500/40'
-                  : 'from-white/[0.04] to-white/[0.02]'
+                  : 'from-overlay/[0.04] to-overlay/[0.02]'
               }`}>
-                <Sparkles size={16} className={activeTerminalId ? 'text-sand-300' : 'text-gray-600'} />
+                <Sparkles size={16} className={activeTerminalId ? 'text-sand-300' : 'text-ink-faint'} />
               </div>
               <div className="flex-1 text-left">
-                <span className={`text-sm font-semibold ${activeTerminalId ? 'text-sand-200' : 'text-gray-500'}`}>
+                <span className={`text-sm font-semibold ${activeTerminalId ? 'text-sand-200' : 'text-ink-subtle'}`}>
                   Find Me a Skill
                 </span>
-                <p className="text-[10px] text-gray-500 mt-0.5">
+                <p className="text-[10px] text-ink-subtle mt-0.5">
                   Claude analyzes your work & suggests skills
                 </p>
               </div>
               <ArrowRight size={14} className={`transition-all ${
-                activeTerminalId ? 'text-sand-400 group-hover:translate-x-1' : 'text-gray-600'
+                activeTerminalId ? 'text-sand-400 group-hover:translate-x-1' : 'text-ink-faint'
               }`} />
             </button>
           </div>
@@ -309,18 +309,18 @@ Format your response as a numbered list with skill name and use case.`
           {isLoading && (
             <div className="px-3 py-8 text-center">
               <div className="inline-block w-6 h-6 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
-              <p className="text-xs text-gray-500 mt-3">Loading tools...</p>
+              <p className="text-xs text-ink-subtle mt-3">Loading tools...</p>
             </div>
           )}
 
           {/* Empty state */}
           {!isLoading && !hasItems && (
             <div className="px-4 py-8 text-center">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-white/[0.04] flex items-center justify-center">
-                <Wrench size={20} className="text-gray-600" />
+              <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-overlay/[0.04] flex items-center justify-center">
+                <Wrench size={20} className="text-ink-faint" />
               </div>
-              <p className="text-sm text-gray-400 font-medium">No tools available</p>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-sm text-ink-muted font-medium">No tools available</p>
+              <p className="text-xs text-ink-faint mt-1">
                 Create agents or skills to see them here
               </p>
             </div>
@@ -329,7 +329,7 @@ Format your response as a numbered list with skill name and use case.`
           {/* No results */}
           {!isLoading && hasItems && filteredItems.length === 0 && (
             <div className="px-4 py-8 text-center">
-              <p className="text-sm text-gray-400">No matches for "{searchQuery}"</p>
+              <p className="text-sm text-ink-muted">No matches for "{searchQuery}"</p>
               <button
                 onClick={() => setSearchQuery('')}
                 className="text-xs text-accent hover:underline mt-2"
@@ -357,7 +357,7 @@ Format your response as a numbered list with skill name and use case.`
                     className={`w-full flex items-center gap-3 px-3 py-2.5 text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed group ${
                       isSelected
                         ? 'bg-accent/10'
-                        : 'hover:bg-white/[0.04]'
+                        : 'hover:bg-overlay/[0.04]'
                     }`}
                     role="menuitem"
                   >
@@ -378,7 +378,7 @@ Format your response as a numbered list with skill name and use case.`
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className={`text-sm font-medium truncate transition-colors ${
-                          isSelected ? 'text-white' : 'text-gray-300'
+                          isSelected ? 'text-ink-bright' : 'text-ink'
                         }`}>
                           {isAgent ? agent?.name : `/${skill?.id}`}
                         </span>
@@ -391,7 +391,7 @@ Format your response as a numbered list with skill name and use case.`
                         </span>
                       </div>
                       {(isAgent ? agent?.description : skill?.description) && (
-                        <p className="text-[10px] text-gray-500 truncate mt-0.5">
+                        <p className="text-[10px] text-ink-subtle truncate mt-0.5">
                           {isAgent ? agent?.description : skill?.description}
                         </p>
                       )}
@@ -411,7 +411,7 @@ Format your response as a numbered list with skill name and use case.`
           )}
 
           {/* Footer */}
-          <div className="px-3 py-2 border-t border-white/[0.06] bg-white/[0.02]">
+          <div className="px-3 py-2 border-t border-overlay/[0.06] bg-overlay/[0.02]">
             {!activeTerminalId ? (
               <div className="flex items-center gap-2">
                 <AlertCircle size={11} className="text-amber-500/80 flex-shrink-0" />
@@ -420,19 +420,19 @@ Format your response as a numbered list with skill name and use case.`
                 </p>
               </div>
             ) : (
-              <div className="flex items-center justify-between text-[10px] text-gray-500">
+              <div className="flex items-center justify-between text-[10px] text-ink-subtle">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1 py-0.5 rounded bg-white/[0.06] text-gray-400">↑↓</kbd>
+                    <kbd className="px-1 py-0.5 rounded bg-overlay/[0.06] text-ink-muted">↑↓</kbd>
                     Navigate
                   </span>
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1 py-0.5 rounded bg-white/[0.06] text-gray-400">↵</kbd>
+                    <kbd className="px-1 py-0.5 rounded bg-overlay/[0.06] text-ink-muted">↵</kbd>
                     Select
                   </span>
                 </div>
                 <span className="flex items-center gap-1">
-                  <kbd className="px-1 py-0.5 rounded bg-white/[0.06] text-gray-400">Tab</kbd>
+                  <kbd className="px-1 py-0.5 rounded bg-overlay/[0.06] text-ink-muted">Tab</kbd>
                   Switch
                 </span>
               </div>

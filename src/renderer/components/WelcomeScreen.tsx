@@ -127,8 +127,8 @@ const FEATURES = [
     title: 'Conversation History',
     subtitle: 'Never Lose Your Work',
     description: 'All conversations are automatically saved and searchable. Resume any previous session instantly with full context preserved.',
-    color: 'from-slate-500 to-gray-500',
-    iconBg: 'bg-gradient-to-br from-slate-500/20 to-gray-500/20',
+    color: 'from-slate-500 to-ink-subtle',
+    iconBg: 'bg-gradient-to-br from-slate-500/20 to-ink-subtle/20',
     tips: [
       'Automatic conversation saving',
       'Search across all sessions',
@@ -212,9 +212,9 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
-      <div className="relative w-full max-w-xl mx-4 bg-[#141414] rounded-2xl border border-white/10 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="relative w-full max-w-xl mx-4 bg-surface-3 rounded-2xl border border-overlay/10 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
         {/* Progress bar */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-white/5">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-overlay/5">
           <div
             className={`h-full bg-gradient-to-r ${feature.color} transition-all duration-500 ease-out`}
             style={{ width: `${progress}%` }}
@@ -224,14 +224,14 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
         {/* Skip button */}
         <button
           onClick={handleDismiss}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-colors z-10"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/10 transition-colors z-10"
           title="Skip (Esc)"
         >
           <X size={18} />
         </button>
 
         {/* Step counter */}
-        <div className="absolute top-4 left-4 px-2 py-1 rounded-md bg-white/5 text-xs text-gray-500">
+        <div className="absolute top-4 left-4 px-2 py-1 rounded-md bg-overlay/5 text-xs text-ink-subtle">
           {currentStep + 1} / {FEATURES.length}
         </div>
 
@@ -259,7 +259,7 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
                   }}
                 />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-1">
+              <h2 className="text-2xl font-bold text-ink-bright mb-1">
                 {feature.title}
               </h2>
               <p className={`text-sm font-medium bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`}>
@@ -268,7 +268,7 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
             </div>
 
             {/* Description */}
-            <p className="text-gray-400 text-center mb-6 leading-relaxed">
+            <p className="text-ink-muted text-center mb-6 leading-relaxed">
               {feature.description}
             </p>
 
@@ -277,12 +277,12 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
               {feature.tips.map((tip, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5"
+                  className="flex items-center gap-3 p-3 rounded-xl bg-overlay/5 border border-overlay/5"
                 >
                   <div className={`w-5 h-5 rounded-full bg-gradient-to-r ${feature.color} flex items-center justify-center flex-shrink-0`}>
-                    <span className="text-white text-xs font-bold">{index + 1}</span>
+                    <span className="text-ink-bright text-xs font-bold">{index + 1}</span>
                   </div>
-                  <p className="text-sm text-gray-300">{tip}</p>
+                  <p className="text-sm text-ink">{tip}</p>
                 </div>
               ))}
             </div>
@@ -297,7 +297,7 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   index === currentStep
                     ? `w-6 bg-gradient-to-r ${feature.color}`
-                    : 'bg-white/20 hover:bg-white/40'
+                    : 'bg-overlay/20 hover:bg-overlay/40'
                 }`}
                 title={FEATURES[index].title}
               />
@@ -311,8 +311,8 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
               disabled={currentStep === 0}
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border transition-all ${
                 currentStep === 0
-                  ? 'border-white/5 text-gray-600 cursor-not-allowed'
-                  : 'border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/20'
+                  ? 'border-overlay/5 text-ink-faint cursor-not-allowed'
+                  : 'border-overlay/10 text-ink hover:bg-overlay/5 hover:border-overlay/20'
               }`}
             >
               <ChevronLeft size={18} />
@@ -329,14 +329,14 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
           </div>
 
           {/* Keyboard hints */}
-          <div className="flex items-center justify-center gap-4 mt-4 text-[10px] text-gray-600">
+          <div className="flex items-center justify-center gap-4 mt-4 text-[10px] text-ink-faint">
             <span>
-              <kbd className="px-1.5 py-0.5 rounded bg-white/5 text-gray-500">←</kbd>
-              <kbd className="px-1.5 py-0.5 rounded bg-white/5 text-gray-500 ml-1">→</kbd>
+              <kbd className="px-1.5 py-0.5 rounded bg-overlay/5 text-ink-subtle">←</kbd>
+              <kbd className="px-1.5 py-0.5 rounded bg-overlay/5 text-ink-subtle ml-1">→</kbd>
               {' '}to navigate
             </span>
             <span>
-              <kbd className="px-1.5 py-0.5 rounded bg-white/5 text-gray-500">Esc</kbd>
+              <kbd className="px-1.5 py-0.5 rounded bg-overlay/5 text-ink-subtle">Esc</kbd>
               {' '}to skip
             </span>
           </div>

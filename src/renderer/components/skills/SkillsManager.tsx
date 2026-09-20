@@ -418,31 +418,31 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
   }, [])
 
   return (
-    <div className={`h-full flex flex-col bg-[#0d0d0d] transition-all duration-500 ease-out ${
+    <div className={`h-full flex flex-col bg-surface-1 transition-all duration-500 ease-out ${
       pageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
     }`}>
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
         <div className="flex items-center gap-4">
           <button
             onClick={onBack}
-            className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+            className="p-2 rounded-lg text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors"
           >
             <ArrowLeft size={20} />
           </button>
-          <h1 className="text-xl font-semibold text-white">Skills & Agents</h1>
+          <h1 className="text-xl font-semibold text-ink-bright">Skills & Agents</h1>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Search */}
           <div className="relative">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-subtle" />
             <input
               type="text"
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-64 pl-10 pr-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50"
+              className="w-64 pl-10 pr-4 py-2 rounded-lg bg-overlay/5 border border-overlay/10 text-sm text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-accent/50"
             />
           </div>
 
@@ -453,7 +453,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
               className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
                 selectedCategory
                   ? 'bg-accent/20 text-accent'
-                  : 'bg-white/5 text-gray-400 hover:text-white'
+                  : 'bg-overlay/5 text-ink-muted hover:text-ink-bright'
               }`}
             >
               <Filter size={16} />
@@ -461,14 +461,14 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
               <ChevronDown size={14} />
             </button>
             {showCategoryFilter && (
-              <div className="absolute right-0 top-full mt-2 w-48 bg-[#1a1a1a] border border-white/[0.08] rounded-xl shadow-xl z-20 py-2">
+              <div className="absolute right-0 top-full mt-2 w-48 bg-surface-4 border border-overlay/[0.08] rounded-xl shadow-xl z-20 py-2">
                 <button
                   onClick={() => {
                     setSelectedCategory(null)
                     setShowCategoryFilter(false)
                   }}
                   className={`w-full px-4 py-2 text-left text-sm transition-colors ${
-                    !selectedCategory ? 'text-accent' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    !selectedCategory ? 'text-accent' : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/5'
                   }`}
                 >
                   All Categories
@@ -481,7 +481,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
                       setShowCategoryFilter(false)
                     }}
                     className={`w-full px-4 py-2 text-left text-sm transition-colors ${
-                      selectedCategory === cat ? 'text-accent' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      selectedCategory === cat ? 'text-accent' : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/5'
                     }`}
                   >
                     {cat}
@@ -495,14 +495,14 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
           <div className="relative">
             <button
               onClick={() => setShowSortMenu(!showSortMenu)}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 text-gray-400 hover:text-white text-sm transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-overlay/5 text-ink-muted hover:text-ink-bright text-sm transition-colors"
             >
               <ArrowUpDown size={16} />
               Sort
               <ChevronDown size={14} />
             </button>
             {showSortMenu && (
-              <div className="absolute right-0 top-full mt-2 w-48 bg-[#1a1a1a] border border-white/[0.08] rounded-xl shadow-xl z-20 py-2">
+              <div className="absolute right-0 top-full mt-2 w-48 bg-surface-4 border border-overlay/[0.08] rounded-xl shadow-xl z-20 py-2">
                 {sortOptions.map(opt => (
                   <button
                     key={opt.id}
@@ -511,7 +511,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
                       setShowSortMenu(false)
                     }}
                     className={`w-full flex items-center gap-2 px-4 py-2 text-sm transition-colors ${
-                      sortOption === opt.id ? 'text-accent' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      sortOption === opt.id ? 'text-accent' : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/5'
                     }`}
                   >
                     <opt.icon size={14} />
@@ -524,11 +524,11 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
           </div>
 
           {/* View Toggle */}
-          <div className="flex items-center bg-white/[0.04] rounded-lg p-1">
+          <div className="flex items-center bg-overlay/[0.04] rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
               className={`p-2 rounded-md transition-colors ${
-                viewMode === 'grid' ? 'bg-accent/20 text-accent' : 'text-gray-500 hover:text-white'
+                viewMode === 'grid' ? 'bg-accent/20 text-accent' : 'text-ink-subtle hover:text-white'
               }`}
             >
               <Grid size={16} />
@@ -536,7 +536,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
             <button
               onClick={() => setViewMode('list')}
               className={`p-2 rounded-md transition-colors ${
-                viewMode === 'list' ? 'bg-accent/20 text-accent' : 'text-gray-500 hover:text-white'
+                viewMode === 'list' ? 'bg-accent/20 text-accent' : 'text-ink-subtle hover:text-white'
               }`}
             >
               <List size={16} />
@@ -547,7 +547,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
           {activeTab !== 'plugins' && activeTab !== 'mcp' && (
             <button
               onClick={handleImport}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 text-gray-400 hover:text-white text-sm transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-overlay/5 text-ink-muted hover:text-ink-bright text-sm transition-colors"
             >
               <Upload size={16} />
               Import
@@ -557,7 +557,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 px-6 py-3 border-b border-white/[0.06]">
+      <div className="flex gap-1 px-6 py-3 border-b border-overlay/[0.06]">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -565,13 +565,13 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 btn-scale-hover ${
               activeTab === tab.id
                 ? 'bg-accent/20 text-accent'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
+                : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/5'
             }`}
           >
             <tab.icon size={16} className={`transition-transform duration-200 ${activeTab === tab.id ? 'scale-110' : ''}`} />
             <span>{tab.label}</span>
             <span className={`px-1.5 py-0.5 rounded text-[10px] transition-colors ${
-              activeTab === tab.id ? 'bg-accent/30' : 'bg-white/10'
+              activeTab === tab.id ? 'bg-accent/30' : 'bg-overlay/10'
             }`}>
               {tab.count}
             </span>
@@ -590,7 +590,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
             />
           ) : loading ? (
             <div className="flex items-center justify-center h-full">
-              <div className="flex flex-col items-center gap-3 text-gray-500">
+              <div className="flex flex-col items-center gap-3 text-ink-subtle">
                 <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                 <span>Loading skills and agents...</span>
               </div>
@@ -722,21 +722,21 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
               {/* Plugins Tab */}
               {activeTab === 'plugins' && (
                 <div className="flex flex-col items-center justify-center h-64 text-center">
-                  <Puzzle className="w-12 h-12 text-gray-600 mb-4" />
-                  <h3 className="text-lg font-medium text-white mb-2">Plugins</h3>
-                  <p className="text-gray-500 text-sm max-w-md">
+                  <Puzzle className="w-12 h-12 text-ink-faint mb-4" />
+                  <h3 className="text-lg font-medium text-ink-bright mb-2">Plugins</h3>
+                  <p className="text-ink-subtle text-sm max-w-md">
                     Plugins extend Claude Code with additional functionality.
                     {plugins.length === 0 ? ' No plugins installed yet.' : ` ${plugins.length} plugins installed.`}
                   </p>
                   {plugins.length > 0 && (
                     <div className="mt-4 space-y-2 w-full max-w-md">
                       {plugins.map((plugin) => (
-                        <div key={plugin.id} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                        <div key={plugin.id} className="flex items-center justify-between p-3 rounded-lg bg-overlay/5 border border-overlay/10">
                           <div>
-                            <p className="text-sm font-medium text-white">{plugin.name}</p>
-                            <p className="text-xs text-gray-500">{plugin.description}</p>
+                            <p className="text-sm font-medium text-ink-bright">{plugin.name}</p>
+                            <p className="text-xs text-ink-subtle">{plugin.description}</p>
                           </div>
-                          <span className={`px-2 py-1 rounded text-xs ${plugin.enabled ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'}`}>
+                          <span className={`px-2 py-1 rounded text-xs ${plugin.enabled ? 'bg-green-500/20 text-green-400' : 'bg-ink-subtle/20 text-ink-muted'}`}>
                             {plugin.enabled ? 'Enabled' : 'Disabled'}
                           </span>
                         </div>
@@ -756,8 +756,8 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
 
         {/* Preview Panel */}
         {previewItem && (
-          <div className="w-1/2 border-l border-white/[0.06] flex flex-col bg-white/[0.01]">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+          <div className="w-1/2 border-l border-overlay/[0.06] flex flex-col bg-overlay/[0.01]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-lg ${previewItem.type === 'skill' ? 'bg-accent/10' : 'bg-sand-500/10'}`}>
                   {previewItem.type === 'skill' ? (
@@ -766,22 +766,22 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
                     <Bot size={16} className="text-sand-400" />
                   )}
                 </div>
-                <h3 className="font-medium text-white">{previewItem.name}</h3>
+                <h3 className="font-medium text-ink-bright">{previewItem.name}</h3>
               </div>
               <button
                 onClick={() => setPreviewItem(null)}
-                className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-white/5 transition-colors"
+                className="p-2 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/5 transition-colors"
               >
                 <X size={18} />
               </button>
             </div>
             <div className="flex-1 overflow-auto p-6">
               {previewLoading ? (
-                <div className="flex items-center justify-center h-full text-gray-500">
+                <div className="flex items-center justify-center h-full text-ink-subtle">
                   Loading preview...
                 </div>
               ) : (
-                <pre className="text-sm font-mono text-gray-300 whitespace-pre-wrap">
+                <pre className="text-sm font-mono text-ink whitespace-pre-wrap">
                   <HighlightedMarkdown content={previewContent} />
                 </pre>
               )}
@@ -825,15 +825,15 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setEditingCategories(null)}
           />
-          <div className="relative w-full max-w-md bg-[#0d0d0d] border border-white/[0.08] rounded-2xl shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+          <div className="relative w-full max-w-md bg-surface-1 border border-overlay/[0.08] rounded-2xl shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
               <div className="flex items-center gap-2">
                 <Tag size={18} className="text-accent" />
-                <h3 className="font-medium text-white">Edit Categories</h3>
+                <h3 className="font-medium text-ink-bright">Edit Categories</h3>
               </div>
               <button
                 onClick={() => setEditingCategories(null)}
-                className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-white/5 transition-colors"
+                className="p-2 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/5 transition-colors"
               >
                 <X size={18} />
               </button>
@@ -853,7 +853,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
                     className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
                       tempCategories.includes(cat)
                         ? 'bg-accent/20 text-accent border border-accent/30'
-                        : 'bg-white/5 text-gray-400 border border-white/10 hover:text-white'
+                        : 'bg-overlay/5 text-ink-muted border border-overlay/10 hover:text-ink-bright'
                     }`}
                   >
                     {cat}
@@ -863,7 +863,7 @@ export default function SkillsManager({ onBack }: SkillsManagerProps) {
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setEditingCategories(null)}
-                  className="px-4 py-2 rounded-lg text-gray-400 hover:text-white transition-colors"
+                  className="px-4 py-2 rounded-lg text-ink-muted hover:text-ink-bright transition-colors"
                 >
                   Cancel
                 </button>
@@ -887,7 +887,7 @@ function HighlightedMarkdown({ content }: { content: string }) {
   const highlightMarkdown = (text: string): React.ReactNode[] => {
     const lines = text.split('\n')
     return lines.map((line, i) => {
-      let className = 'text-gray-300'
+      let className = 'text-ink'
 
       if (line.startsWith('---')) {
         className = 'text-accent/60'
@@ -898,9 +898,9 @@ function HighlightedMarkdown({ content }: { content: string }) {
       } else if (line.startsWith('```')) {
         className = 'text-sand-400'
       } else if (line.startsWith('- ') || line.startsWith('* ')) {
-        className = 'text-gray-300'
+        className = 'text-ink'
       } else if (line.startsWith('>')) {
-        className = 'text-gray-500 italic'
+        className = 'text-ink-subtle italic'
       }
 
       return (
@@ -962,12 +962,12 @@ function SkillCard({
           ? 'border-accent bg-accent/5'
           : isPreviewActive
           ? 'border-accent/50 bg-accent/5'
-          : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1] hover:bg-white/[0.04] hover:shadow-lg'
+          : 'border-overlay/[0.06] bg-overlay/[0.02] hover:border-overlay/[0.1] hover:bg-overlay/[0.04] hover:shadow-lg'
       }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
-          <GripVertical size={14} className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <GripVertical size={14} className="text-ink-faint opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="p-2 rounded-lg bg-accent/10">
             <Sparkles size={18} className="text-accent" />
           </div>
@@ -975,54 +975,54 @@ function SkillCard({
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={onPreview}
-            className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white"
+            className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright"
             title="Preview"
           >
             <Eye size={14} />
           </button>
           <button
             onClick={onEdit}
-            className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white"
+            className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright"
             title="Edit"
           >
             <Edit3 size={14} />
           </button>
           <button
             onClick={onDuplicate}
-            className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white"
+            className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright"
             title="Duplicate"
           >
             <Copy size={14} />
           </button>
           <button
             onClick={onExport}
-            className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white"
+            className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright"
             title="Export"
           >
             <Download size={14} />
           </button>
           <button
             onClick={onEditCategories}
-            className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white"
+            className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright"
             title="Categories"
           >
             <Tag size={14} />
           </button>
           <button
             onClick={onDelete}
-            className="p-1.5 rounded-lg hover:bg-red-500/20 text-gray-500 hover:text-red-400"
+            className="p-1.5 rounded-lg hover:bg-red-500/20 text-ink-subtle hover:text-red-400"
             title="Delete"
           >
             <Trash2 size={14} />
           </button>
         </div>
       </div>
-      <h3 className="font-medium text-white mb-1">{skill.name}</h3>
-      <p className="text-xs text-gray-500 line-clamp-2 mb-2">{skill.description}</p>
+      <h3 className="font-medium text-ink-bright mb-1">{skill.name}</h3>
+      <p className="text-xs text-ink-subtle line-clamp-2 mb-2">{skill.description}</p>
       {metadata.categories && metadata.categories.length > 0 && (
         <div className="flex flex-wrap gap-1">
           {metadata.categories.map(cat => (
-            <span key={cat} className="px-2 py-0.5 rounded text-[10px] bg-white/5 text-gray-400">
+            <span key={cat} className="px-2 py-0.5 rounded text-[10px] bg-overlay/5 text-ink-muted">
               {cat}
             </span>
           ))}
@@ -1077,22 +1077,22 @@ function SkillRow({
           ? 'border-accent bg-accent/5'
           : isPreviewActive
           ? 'border-accent/50 bg-accent/5'
-          : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]'
+          : 'border-overlay/[0.06] bg-overlay/[0.02] hover:border-overlay/[0.1]'
       }`}
     >
       <div className="flex items-center gap-3">
-        <GripVertical size={14} className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <GripVertical size={14} className="text-ink-faint opacity-0 group-hover:opacity-100 transition-opacity" />
         <div className="p-2 rounded-lg bg-accent/10">
           <Sparkles size={16} className="text-accent" />
         </div>
         <div>
-          <h3 className="font-medium text-white">{skill.name}</h3>
-          <p className="text-xs text-gray-500">{skill.description}</p>
+          <h3 className="font-medium text-ink-bright">{skill.name}</h3>
+          <p className="text-xs text-ink-subtle">{skill.description}</p>
         </div>
         {metadata.categories && metadata.categories.length > 0 && (
           <div className="flex gap-1 ml-4">
             {metadata.categories.map(cat => (
-              <span key={cat} className="px-2 py-0.5 rounded text-[10px] bg-white/5 text-gray-400">
+              <span key={cat} className="px-2 py-0.5 rounded text-[10px] bg-overlay/5 text-ink-muted">
                 {cat}
               </span>
             ))}
@@ -1100,19 +1100,19 @@ function SkillRow({
         )}
       </div>
       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        <button onClick={onPreview} className="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white">
+        <button onClick={onPreview} className="p-2 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright">
           <Eye size={16} />
         </button>
-        <button onClick={onEdit} className="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white">
+        <button onClick={onEdit} className="p-2 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright">
           <Edit3 size={16} />
         </button>
-        <button onClick={onDuplicate} className="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white">
+        <button onClick={onDuplicate} className="p-2 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright">
           <Copy size={16} />
         </button>
-        <button onClick={onExport} className="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white">
+        <button onClick={onExport} className="p-2 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright">
           <Download size={16} />
         </button>
-        <button onClick={onDelete} className="p-2 rounded-lg hover:bg-red-500/20 text-gray-500 hover:text-red-400">
+        <button onClick={onDelete} className="p-2 rounded-lg hover:bg-red-500/20 text-ink-subtle hover:text-red-400">
           <Trash2 size={16} />
         </button>
       </div>
@@ -1167,39 +1167,39 @@ function AgentCard({
           ? 'border-sand-500 bg-sand-500/5'
           : isPreviewActive
           ? 'border-sand-500/50 bg-sand-500/5'
-          : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1] hover:bg-white/[0.04]'
+          : 'border-overlay/[0.06] bg-overlay/[0.02] hover:border-overlay/[0.1] hover:bg-overlay/[0.04]'
       }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
-          <GripVertical size={14} className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <GripVertical size={14} className="text-ink-faint opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="p-2 rounded-lg bg-sand-500/10">
             <Bot size={18} className="text-sand-400" />
           </div>
         </div>
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button onClick={onPreview} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white" title="Preview">
+          <button onClick={onPreview} className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright" title="Preview">
             <Eye size={14} />
           </button>
-          <button onClick={onEdit} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white" title="Edit">
+          <button onClick={onEdit} className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright" title="Edit">
             <Edit3 size={14} />
           </button>
-          <button onClick={onDuplicate} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white" title="Duplicate">
+          <button onClick={onDuplicate} className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright" title="Duplicate">
             <Copy size={14} />
           </button>
-          <button onClick={onExport} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white" title="Export">
+          <button onClick={onExport} className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright" title="Export">
             <Download size={14} />
           </button>
-          <button onClick={onEditCategories} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white" title="Categories">
+          <button onClick={onEditCategories} className="p-1.5 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright" title="Categories">
             <Tag size={14} />
           </button>
-          <button onClick={onDelete} className="p-1.5 rounded-lg hover:bg-red-500/20 text-gray-500 hover:text-red-400" title="Delete">
+          <button onClick={onDelete} className="p-1.5 rounded-lg hover:bg-red-500/20 text-ink-subtle hover:text-red-400" title="Delete">
             <Trash2 size={14} />
           </button>
         </div>
       </div>
-      <h3 className="font-medium text-white mb-1">{agent.name}</h3>
-      <p className="text-xs text-gray-500 line-clamp-2 mb-2">{agent.description}</p>
+      <h3 className="font-medium text-ink-bright mb-1">{agent.name}</h3>
+      <p className="text-xs text-ink-subtle line-clamp-2 mb-2">{agent.description}</p>
       <div className="flex flex-wrap gap-1">
         {agent.model && (
           <span className="px-2 py-0.5 rounded text-[10px] bg-sand-500/10 text-sand-400">
@@ -1207,7 +1207,7 @@ function AgentCard({
           </span>
         )}
         {metadata.categories?.map(cat => (
-          <span key={cat} className="px-2 py-0.5 rounded text-[10px] bg-white/5 text-gray-400">
+          <span key={cat} className="px-2 py-0.5 rounded text-[10px] bg-overlay/5 text-ink-muted">
             {cat}
           </span>
         ))}
@@ -1261,17 +1261,17 @@ function AgentRow({
           ? 'border-sand-500 bg-sand-500/5'
           : isPreviewActive
           ? 'border-sand-500/50 bg-sand-500/5'
-          : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]'
+          : 'border-overlay/[0.06] bg-overlay/[0.02] hover:border-overlay/[0.1]'
       }`}
     >
       <div className="flex items-center gap-3">
-        <GripVertical size={14} className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <GripVertical size={14} className="text-ink-faint opacity-0 group-hover:opacity-100 transition-opacity" />
         <div className="p-2 rounded-lg bg-sand-500/10">
           <Bot size={16} className="text-sand-400" />
         </div>
         <div>
-          <h3 className="font-medium text-white">{agent.name}</h3>
-          <p className="text-xs text-gray-500">{agent.description}</p>
+          <h3 className="font-medium text-ink-bright">{agent.name}</h3>
+          <p className="text-xs text-ink-subtle">{agent.description}</p>
         </div>
         <div className="flex gap-1 ml-4">
           {agent.model && (
@@ -1280,26 +1280,26 @@ function AgentRow({
             </span>
           )}
           {metadata.categories?.map(cat => (
-            <span key={cat} className="px-2 py-0.5 rounded text-[10px] bg-white/5 text-gray-400">
+            <span key={cat} className="px-2 py-0.5 rounded text-[10px] bg-overlay/5 text-ink-muted">
               {cat}
             </span>
           ))}
         </div>
       </div>
       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        <button onClick={onPreview} className="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white">
+        <button onClick={onPreview} className="p-2 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright">
           <Eye size={16} />
         </button>
-        <button onClick={onEdit} className="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white">
+        <button onClick={onEdit} className="p-2 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright">
           <Edit3 size={16} />
         </button>
-        <button onClick={onDuplicate} className="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white">
+        <button onClick={onDuplicate} className="p-2 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright">
           <Copy size={16} />
         </button>
-        <button onClick={onExport} className="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white">
+        <button onClick={onExport} className="p-2 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright">
           <Download size={16} />
         </button>
-        <button onClick={onDelete} className="p-2 rounded-lg hover:bg-red-500/20 text-gray-500 hover:text-red-400">
+        <button onClick={onDelete} className="p-2 rounded-lg hover:bg-red-500/20 text-ink-subtle hover:text-red-400">
           <Trash2 size={16} />
         </button>
       </div>
@@ -1323,11 +1323,11 @@ function EmptyState({
 }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="p-4 rounded-2xl bg-white/5 mb-4">
-        <Icon size={32} className="text-gray-500" />
+      <div className="p-4 rounded-2xl bg-overlay/5 mb-4">
+        <Icon size={32} className="text-ink-subtle" />
       </div>
-      <h3 className="text-lg font-medium text-white mb-2">{title}</h3>
-      <p className="text-sm text-gray-500 mb-6 max-w-sm">{description}</p>
+      <h3 className="text-lg font-medium text-ink-bright mb-2">{title}</h3>
+      <p className="text-sm text-ink-subtle mb-6 max-w-sm">{description}</p>
 
       {showStarterKit && onInstallStarterKit && (
         <button

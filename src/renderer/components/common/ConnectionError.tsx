@@ -140,10 +140,10 @@ export default function ConnectionError({
             </div>
 
             {/* Status */}
-            <h3 className="text-lg font-semibold text-white mb-1">
+            <h3 className="text-lg font-semibold text-ink-bright mb-1">
               {displayTitle}
             </h3>
-            <p className="text-sm text-gray-400 text-center px-6">
+            <p className="text-sm text-ink-muted text-center px-6">
               {displayMessage}
             </p>
           </div>
@@ -151,7 +151,7 @@ export default function ConnectionError({
           {/* Retry Status */}
           {autoRetry && !hasReachedMaxRetries && (
             <div className="px-6 pb-4">
-              <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+              <div className="flex items-center justify-center gap-2 text-sm text-ink-subtle">
                 {isRetrying ? (
                   <>
                     <RotateCcw size={14} className="animate-spin" />
@@ -201,7 +201,7 @@ export default function ConnectionError({
               <button
                 onClick={onCancel}
                 disabled={isRetrying}
-                className="flex items-center justify-center gap-2 flex-1 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 disabled:bg-white/5 text-gray-300 hover:text-white disabled:text-gray-500 font-medium text-sm transition-all duration-200 border border-white/10"
+                className="flex items-center justify-center gap-2 flex-1 px-4 py-2.5 rounded-xl bg-overlay/5 hover:bg-overlay/10 disabled:bg-overlay/5 text-ink hover:text-ink-bright disabled:text-ink-subtle font-medium text-sm transition-all duration-200 border border-overlay/10"
               >
                 Cancel
               </button>
@@ -211,13 +211,13 @@ export default function ConnectionError({
 
         {/* Help text */}
         {type === 'network' && (
-          <p className="text-center text-xs text-gray-500 mt-4">
+          <p className="text-center text-xs text-ink-subtle mt-4">
             Try checking your Wi-Fi or Ethernet connection
           </p>
         )}
 
         {type === 'ipc' && (
-          <p className="text-center text-xs text-gray-500 mt-4">
+          <p className="text-center text-xs text-ink-subtle mt-4">
             If this persists, try restarting the application
           </p>
         )}

@@ -290,7 +290,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="flex flex-col items-center gap-3 text-gray-500">
+        <div className="flex flex-col items-center gap-3 text-ink-subtle">
           <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
           <span>Loading MCP configuration...</span>
         </div>
@@ -301,14 +301,14 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
   if (!configExists) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <div className="p-4 rounded-2xl bg-white/5 mb-4">
-          <Plug size={32} className="text-gray-500" />
+        <div className="p-4 rounded-2xl bg-overlay/5 mb-4">
+          <Plug size={32} className="text-ink-subtle" />
         </div>
-        <h3 className="text-lg font-medium text-white mb-2">No MCP Configuration</h3>
-        <p className="text-sm text-gray-500 mb-2 max-w-md">
+        <h3 className="text-lg font-medium text-ink-bright mb-2">No MCP Configuration</h3>
+        <p className="text-sm text-ink-subtle mb-2 max-w-md">
           MCP (Model Context Protocol) servers extend Claude's capabilities with external tools and data sources.
         </p>
-        <p className="text-xs text-gray-600 mb-6 font-mono">{configPath}</p>
+        <p className="text-xs text-ink-faint mb-6 font-mono">{configPath}</p>
         <button
           onClick={handleInitConfig}
           className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-white font-medium hover:bg-accent-400 transition-colors"
@@ -324,7 +324,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
     <div className="space-y-6">
       {/* Quick Add Presets */}
       <div>
-        <h3 className="text-sm font-medium text-gray-400 mb-3">Quick Add</h3>
+        <h3 className="text-sm font-medium text-ink-muted mb-3">Quick Add</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {(Object.entries(MCP_PRESETS) as [PresetKey, typeof MCP_PRESETS[PresetKey]][]).map(([key, preset]) => {
             const isInstalled = servers.some(s => s.name === key)
@@ -338,16 +338,16 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                 className={`group relative p-4 rounded-xl border transition-all ${
                   isInstalled
                     ? 'border-accent/30 bg-accent/5 cursor-default'
-                    : 'border-white/[0.06] bg-white/[0.02] hover:border-accent/50 hover:bg-white/[0.04]'
+                    : 'border-overlay/[0.06] bg-overlay/[0.02] hover:border-accent/50 hover:bg-overlay/[0.04]'
                 }`}
               >
                 <div className={`p-2 rounded-lg mb-2 inline-block ${
-                  isInstalled ? 'bg-accent/20' : 'bg-white/5 group-hover:bg-accent/10'
+                  isInstalled ? 'bg-accent/20' : 'bg-overlay/5 group-hover:bg-accent/10'
                 }`}>
-                  <Icon size={18} className={isInstalled ? 'text-accent' : 'text-gray-400 group-hover:text-accent'} />
+                  <Icon size={18} className={isInstalled ? 'text-accent' : 'text-ink-muted group-hover:text-accent'} />
                 </div>
-                <h4 className="font-medium text-white text-sm">{preset.name}</h4>
-                <p className="text-[10px] text-gray-500 mt-1 line-clamp-2">{preset.description}</p>
+                <h4 className="font-medium text-ink-bright text-sm">{preset.name}</h4>
+                <p className="text-[10px] text-ink-subtle mt-1 line-clamp-2">{preset.description}</p>
                 {isInstalled && (
                   <div className="absolute top-2 right-2">
                     <Check size={14} className="text-accent" />
@@ -362,10 +362,10 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
       {/* Installed Servers */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-gray-400">Installed Servers ({servers.length})</h3>
+          <h3 className="text-sm font-medium text-ink-muted">Installed Servers ({servers.length})</h3>
           <button
             onClick={() => openAddModal()}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white text-sm transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-overlay/5 text-ink-muted hover:text-ink-bright text-sm transition-colors"
           >
             <Plus size={14} />
             Add Custom
@@ -373,7 +373,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
         </div>
 
         {servers.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-ink-subtle">
             <p>No MCP servers configured yet.</p>
             <p className="text-sm mt-1">Add a server from the presets above or create a custom one.</p>
           </div>
@@ -390,18 +390,18 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                   className={`rounded-xl border transition-all ${
                     server.enabled
                       ? 'border-accent/20 bg-accent/[0.02]'
-                      : 'border-white/[0.06] bg-white/[0.02]'
+                      : 'border-overlay/[0.06] bg-overlay/[0.02]'
                   }`}
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between p-4">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${server.enabled ? 'bg-accent/10' : 'bg-white/5'}`}>
-                        <Icon size={18} className={server.enabled ? 'text-accent' : 'text-gray-500'} />
+                      <div className={`p-2 rounded-lg ${server.enabled ? 'bg-accent/10' : 'bg-overlay/5'}`}>
+                        <Icon size={18} className={server.enabled ? 'text-accent' : 'text-ink-subtle'} />
                       </div>
                       <div>
-                        <h4 className="font-medium text-white">{server.name}</h4>
-                        <p className="text-xs text-gray-500 font-mono">{server.command} {server.args.join(' ')}</p>
+                        <h4 className="font-medium text-ink-bright">{server.name}</h4>
+                        <p className="text-xs text-ink-subtle font-mono">{server.command} {server.args.join(' ')}</p>
                       </div>
                     </div>
 
@@ -410,7 +410,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                       <button
                         onClick={() => handleToggleServer(server.name, !server.enabled)}
                         className={`w-10 h-6 rounded-full transition-colors ${
-                          server.enabled ? 'bg-accent' : 'bg-gray-700'
+                          server.enabled ? 'bg-accent' : 'bg-ink-ghost'
                         }`}
                       >
                         <div
@@ -423,7 +423,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                       {/* Expand */}
                       <button
                         onClick={() => setExpandedServer(isExpanded ? null : server.name)}
-                        className="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white transition-colors"
+                        className="p-2 rounded-lg hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright transition-colors"
                       >
                         {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                       </button>
@@ -432,21 +432,21 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
 
                   {/* Expanded Details */}
                   {isExpanded && (
-                    <div className="px-4 pb-4 border-t border-white/[0.06]">
+                    <div className="px-4 pb-4 border-t border-overlay/[0.06]">
                       <div className="pt-4 space-y-3">
                         {/* Command */}
                         <div>
-                          <label className="text-xs text-gray-500 uppercase tracking-wide">Command</label>
-                          <p className="text-sm text-white font-mono mt-1">{server.command}</p>
+                          <label className="text-xs text-ink-subtle uppercase tracking-wide">Command</label>
+                          <p className="text-sm text-ink-bright font-mono mt-1">{server.command}</p>
                         </div>
 
                         {/* Args */}
                         {server.args.length > 0 && (
                           <div>
-                            <label className="text-xs text-gray-500 uppercase tracking-wide">Arguments</label>
+                            <label className="text-xs text-ink-subtle uppercase tracking-wide">Arguments</label>
                             <div className="flex flex-wrap gap-1 mt-1">
                               {server.args.map((arg, i) => (
-                                <span key={i} className="px-2 py-0.5 rounded bg-white/5 text-xs text-gray-400 font-mono">
+                                <span key={i} className="px-2 py-0.5 rounded bg-overlay/5 text-xs text-ink-muted font-mono">
                                   {arg}
                                 </span>
                               ))}
@@ -457,12 +457,12 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                         {/* Env */}
                         {Object.keys(server.env).length > 0 && (
                           <div>
-                            <label className="text-xs text-gray-500 uppercase tracking-wide">Environment Variables</label>
+                            <label className="text-xs text-ink-subtle uppercase tracking-wide">Environment Variables</label>
                             <div className="mt-1 space-y-1">
                               {Object.entries(server.env).map(([key, value]) => (
                                 <div key={key} className="flex items-center gap-2">
-                                  <span className="text-xs text-gray-400 font-mono">{key}:</span>
-                                  <span className="text-xs text-gray-500 font-mono">
+                                  <span className="text-xs text-ink-muted font-mono">{key}:</span>
+                                  <span className="text-xs text-ink-subtle font-mono">
                                     {value ? '********' : <span className="text-yellow-500">(not set)</span>}
                                   </span>
                                 </div>
@@ -475,7 +475,7 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                         <div className="flex gap-2 pt-2">
                           <button
                             onClick={() => openEditModal(server)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 hover:text-white text-sm transition-colors"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-overlay/5 text-ink-muted hover:text-ink-bright text-sm transition-colors"
                           >
                             <Edit3 size={14} />
                             Edit
@@ -505,18 +505,18 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={closeModal}
           />
-          <div className="relative w-full max-w-lg bg-[#0d0d0d] border border-white/[0.08] rounded-2xl shadow-2xl max-h-[80vh] overflow-hidden flex flex-col">
+          <div className="relative w-full max-w-lg bg-surface-1 border border-overlay/[0.08] rounded-2xl shadow-2xl max-h-[80vh] overflow-hidden flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
               <div className="flex items-center gap-2">
                 <Plug size={18} className="text-accent" />
-                <h3 className="font-medium text-white">
+                <h3 className="font-medium text-ink-bright">
                   {editingServer ? 'Edit MCP Server' : 'Add MCP Server'}
                 </h3>
               </div>
               <button
                 onClick={closeModal}
-                className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-white/5 transition-colors"
+                className="p-2 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/5 transition-colors"
               >
                 <X size={18} />
               </button>
@@ -536,45 +536,45 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
 
               {/* Name */}
               <div>
-                <label className="block text-sm text-gray-400 mb-1.5">Server Name</label>
+                <label className="block text-sm text-ink-muted mb-1.5">Server Name</label>
                 <input
                   type="text"
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   disabled={!!editingServer}
                   placeholder="my-server"
-                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 disabled:opacity-50"
+                  className="w-full px-3 py-2 rounded-lg bg-overlay/5 border border-overlay/10 text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-accent/50 disabled:opacity-50"
                 />
               </div>
 
               {/* Command */}
               <div>
-                <label className="block text-sm text-gray-400 mb-1.5">Command</label>
+                <label className="block text-sm text-ink-muted mb-1.5">Command</label>
                 <input
                   type="text"
                   value={formCommand}
                   onChange={(e) => setFormCommand(e.target.value)}
                   placeholder="npx"
-                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono"
+                  className="w-full px-3 py-2 rounded-lg bg-overlay/5 border border-overlay/10 text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-accent/50 font-mono"
                 />
               </div>
 
               {/* Arguments */}
               <div>
-                <label className="block text-sm text-gray-400 mb-1.5">Arguments (space-separated)</label>
+                <label className="block text-sm text-ink-muted mb-1.5">Arguments (space-separated)</label>
                 <input
                   type="text"
                   value={formArgs}
                   onChange={(e) => setFormArgs(e.target.value)}
                   placeholder="-y @modelcontextprotocol/server-name"
-                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono"
+                  className="w-full px-3 py-2 rounded-lg bg-overlay/5 border border-overlay/10 text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-accent/50 font-mono"
                 />
               </div>
 
               {/* Environment Variables */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-sm text-gray-400">Environment Variables</label>
+                  <label className="text-sm text-ink-muted">Environment Variables</label>
                   <button
                     onClick={handleAddEnvVar}
                     className="text-xs text-accent hover:text-accent-400 transition-colors"
@@ -590,35 +590,35 @@ export default function MCPManager({ onBack }: MCPManagerProps) {
                         value={env.key}
                         onChange={(e) => handleEnvChange(index, 'key', e.target.value)}
                         placeholder="KEY"
-                        className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono text-sm"
+                        className="flex-1 px-3 py-2 rounded-lg bg-overlay/5 border border-overlay/10 text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-accent/50 font-mono text-sm"
                       />
                       <input
                         type="password"
                         value={env.value}
                         onChange={(e) => handleEnvChange(index, 'value', e.target.value)}
                         placeholder="value"
-                        className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono text-sm"
+                        className="flex-1 px-3 py-2 rounded-lg bg-overlay/5 border border-overlay/10 text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-accent/50 font-mono text-sm"
                       />
                       <button
                         onClick={() => handleRemoveEnvVar(index)}
-                        className="p-2 rounded-lg hover:bg-red-500/20 text-gray-500 hover:text-red-400 transition-colors"
+                        className="p-2 rounded-lg hover:bg-red-500/20 text-ink-subtle hover:text-red-400 transition-colors"
                       >
                         <X size={16} />
                       </button>
                     </div>
                   ))}
                   {formEnv.length === 0 && (
-                    <p className="text-xs text-gray-600 italic">No environment variables configured</p>
+                    <p className="text-xs text-ink-faint italic">No environment variables configured</p>
                   )}
                 </div>
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="flex justify-end gap-2 px-6 py-4 border-t border-white/[0.06]">
+            <div className="flex justify-end gap-2 px-6 py-4 border-t border-overlay/[0.06]">
               <button
                 onClick={closeModal}
-                className="px-4 py-2 rounded-lg text-gray-400 hover:text-white transition-colors"
+                className="px-4 py-2 rounded-lg text-ink-muted hover:text-ink-bright transition-colors"
               >
                 Cancel
               </button>

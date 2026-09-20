@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { AppSettings, CustomTheme, CLIProvider, ModelRuntime } from '../../shared/types'
 import { supportsLocalRuntime } from '../../shared/providers'
+import { applyAppTheme } from '../utils/appTheme'
 
 /** Sensible starting point; the picker replaces this with whatever ollama reports. */
 const DEFAULT_LOCAL_MODEL = 'qwen3-coder:30b'
@@ -102,6 +103,7 @@ interface AppState {
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
+  appTheme: 'default',
   theme: 'default',
   customThemes: [],
   windowOpacity: 1.0,
@@ -215,6 +217,7 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   settings: DEFAULT_SETTINGS,
   setSettings: (settings) => {
+    applyAppTheme(settings.appTheme)
     set({
       settings,
       theme: settings.theme,
@@ -239,6 +242,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   updateSetting: (key, value) => {
+    if (key === 'appTheme') applyAppTheme(value as AppSettings['appTheme'])
     const settings = { ...get().settings, [key]: value }
     set({ settings, [key]: value })
     get().saveAllSettings()

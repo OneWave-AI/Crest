@@ -267,24 +267,24 @@ Begin by analyzing the context and selecting your agents now.`,
   // Editor view
   if (editingHive || isCreating) {
     return (
-      <div className="flex h-full flex-col bg-[#0d0d0d]">
+      <div className="flex h-full flex-col bg-surface-1">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-overlay/10 px-6 py-4">
           <div className="flex items-center gap-3">
             <button
               onClick={cancelEdit}
-              className="flex items-center gap-2 text-white/60 hover:text-white transition-colors"
+              className="flex items-center gap-2 text-overlay/60 hover:text-ink-bright transition-colors"
             >
               <ArrowLeft size={20} />
             </button>
-            <h1 className="text-xl font-semibold text-white">
+            <h1 className="text-xl font-semibold text-ink-bright">
               {isCreating ? 'Create New Hive' : `Edit: ${editingHive?.name}`}
             </h1>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={cancelEdit}
-              className="flex items-center gap-2 px-4 py-2 text-white/60 hover:text-white transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-overlay/60 hover:text-ink-bright transition-colors"
             >
               <X size={16} />
               Cancel
@@ -303,40 +303,40 @@ Begin by analyzing the context and selecting your agents now.`,
         <div className="flex-1 overflow-y-auto p-6">
           <div className="max-w-3xl mx-auto space-y-6">
             {/* Basic Info */}
-            <div className="bg-white/5 rounded-xl p-6 space-y-4">
-              <h2 className="text-lg font-medium text-white mb-4">Basic Info</h2>
+            <div className="bg-overlay/5 rounded-xl p-6 space-y-4">
+              <h2 className="text-lg font-medium text-ink-bright mb-4">Basic Info</h2>
 
               {/* Name */}
               <div>
-                <label className="block text-sm text-white/60 mb-2">Name</label>
+                <label className="block text-sm text-overlay/60 mb-2">Name</label>
                 <input
                   type="text"
                   value={formData.name || ''}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="My Custom Hive"
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-black/40 border border-overlay/10 rounded-lg px-4 py-3 text-ink-bright placeholder-overlay/30 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-sm text-white/60 mb-2">Description</label>
+                <label className="block text-sm text-overlay/60 mb-2">Description</label>
                 <input
                   type="text"
                   value={formData.description || ''}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Short description of what this hive does"
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-black/40 border border-overlay/10 rounded-lg px-4 py-3 text-ink-bright placeholder-overlay/30 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               {/* Category */}
               <div>
-                <label className="block text-sm text-white/60 mb-2">Category</label>
+                <label className="block text-sm text-overlay/60 mb-2">Category</label>
                 <select
                   value={formData.category || 'custom'}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value as Hive['category'] })}
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-black/40 border border-overlay/10 rounded-lg px-4 py-3 text-ink-bright focus:outline-none focus:border-blue-500"
                 >
                   {CATEGORY_OPTIONS.map(opt => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -347,7 +347,7 @@ Begin by analyzing the context and selecting your agents now.`,
               {/* Icon and Color */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-white/60 mb-2">Icon</label>
+                  <label className="block text-sm text-overlay/60 mb-2">Icon</label>
                   <div className="flex flex-wrap gap-2">
                     {ICON_OPTIONS.map(icon => {
                       const IconComponent = getIcon(icon)
@@ -358,7 +358,7 @@ Begin by analyzing the context and selecting your agents now.`,
                           className={`p-3 rounded-lg transition-colors ${
                             formData.icon === icon
                               ? 'bg-blue-600 text-white'
-                              : 'bg-black/40 text-white/60 hover:bg-white/10'
+                              : 'bg-black/40 text-overlay/60 hover:bg-overlay/10'
                           }`}
                         >
                           <IconComponent size={20} />
@@ -368,14 +368,14 @@ Begin by analyzing the context and selecting your agents now.`,
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm text-white/60 mb-2">Color</label>
+                  <label className="block text-sm text-overlay/60 mb-2">Color</label>
                   <div className="flex flex-wrap gap-2">
                     {COLOR_OPTIONS.map(color => (
                       <button
                         key={color}
                         onClick={() => setFormData({ ...formData, color })}
                         className={`w-10 h-10 rounded-lg transition-all ${
-                          formData.color === color ? 'ring-2 ring-white ring-offset-2 ring-offset-[#0d0d0d]' : ''
+                          formData.color === color ? 'ring-2 ring-white ring-offset-2 ring-offset-surface-1' : ''
                         }`}
                         style={{ backgroundColor: color }}
                       />
@@ -389,7 +389,7 @@ Begin by analyzing the context and selecting your agents now.`,
                 <button
                   onClick={() => setFormData({ ...formData, enabled: !formData.enabled })}
                   className={`relative w-12 h-6 rounded-full transition-colors ${
-                    formData.enabled ? 'bg-green-500' : 'bg-white/20'
+                    formData.enabled ? 'bg-green-500' : 'bg-overlay/20'
                   }`}
                 >
                   <span
@@ -398,14 +398,14 @@ Begin by analyzing the context and selecting your agents now.`,
                     }`}
                   />
                 </button>
-                <span className="text-white/60">Enabled</span>
+                <span className="text-overlay/60">Enabled</span>
               </div>
             </div>
 
             {/* Prompt */}
-            <div className="bg-white/5 rounded-xl p-6">
-              <h2 className="text-lg font-medium text-white mb-4">Swarm Prompt</h2>
-              <p className="text-sm text-white/40 mb-4">
+            <div className="bg-overlay/5 rounded-xl p-6">
+              <h2 className="text-lg font-medium text-ink-bright mb-4">Swarm Prompt</h2>
+              <p className="text-sm text-overlay/40 mb-4">
                 This is the prompt that will be sent to Claude when this hive is activated.
                 Include instructions for agent selection, tasks, and output format.
               </p>
@@ -414,7 +414,7 @@ Begin by analyzing the context and selecting your agents now.`,
                 onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
                 placeholder="Enter the swarm prompt..."
                 rows={20}
-                className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-blue-500 font-mono text-sm resize-none"
+                className="w-full bg-black/40 border border-overlay/10 rounded-lg px-4 py-3 text-ink-bright placeholder-overlay/30 focus:outline-none focus:border-blue-500 font-mono text-sm resize-none"
               />
             </div>
           </div>
@@ -425,23 +425,23 @@ Begin by analyzing the context and selecting your agents now.`,
 
   // List view
   return (
-    <div className="flex h-full flex-col bg-[#0d0d0d]">
+    <div className="flex h-full flex-col bg-surface-1">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+      <div className="flex items-center justify-between border-b border-overlay/10 px-6 py-4">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 text-white/60 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-overlay/60 hover:text-ink-bright transition-colors"
           >
             <ArrowLeft size={20} />
           </button>
-          <h1 className="text-xl font-semibold text-white">Hive Manager</h1>
-          <span className="text-white/40 text-sm">({hives.length} hives)</span>
+          <h1 className="text-xl font-semibold text-ink-bright">Hive Manager</h1>
+          <span className="text-overlay/40 text-sm">({hives.length} hives)</span>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={resetToDefaults}
-            className="flex items-center gap-2 px-3 py-2 text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-overlay/60 hover:text-ink-bright hover:bg-overlay/5 rounded-lg transition-colors"
             title="Reset to defaults"
           >
             <RotateCcw size={16} />
@@ -457,15 +457,15 @@ Begin by analyzing the context and selecting your agents now.`,
       </div>
 
       {/* Search */}
-      <div className="px-6 py-4 border-b border-white/5">
+      <div className="px-6 py-4 border-b border-overlay/5">
         <div className="relative max-w-md">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-overlay/40" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search hives..."
-            className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white placeholder-white/40 focus:outline-none focus:border-blue-500"
+            className="w-full bg-overlay/5 border border-overlay/10 rounded-lg pl-10 pr-4 py-2 text-ink-bright placeholder-overlay/40 focus:outline-none focus:border-blue-500"
           />
         </div>
       </div>
@@ -474,10 +474,10 @@ Begin by analyzing the context and selecting your agents now.`,
       <div className="flex-1 overflow-y-auto p-6">
         {loading ? (
           <div className="flex items-center justify-center h-32">
-            <div className="animate-spin w-8 h-8 border-2 border-white/20 border-t-blue-500 rounded-full" />
+            <div className="animate-spin w-8 h-8 border-2 border-overlay/20 border-t-blue-500 rounded-full" />
           </div>
         ) : filteredHives.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-32 text-white/40">
+          <div className="flex flex-col items-center justify-center h-32 text-overlay/40">
             <AlertCircle size={32} className="mb-2" />
             <p>No hives found</p>
           </div>
@@ -488,10 +488,10 @@ Begin by analyzing the context and selecting your agents now.`,
               return (
                 <div
                   key={hive.id}
-                  className={`bg-white/5 rounded-xl p-5 border transition-all ${
+                  className={`bg-overlay/5 rounded-xl p-5 border transition-all ${
                     hive.enabled
-                      ? 'border-white/10 hover:border-white/20'
-                      : 'border-white/5 opacity-50'
+                      ? 'border-overlay/10 hover:border-overlay/20'
+                      : 'border-overlay/5 opacity-50'
                   }`}
                 >
                   <div className="flex items-start justify-between mb-3">
@@ -505,7 +505,7 @@ Begin by analyzing the context and selecting your agents now.`,
                       <button
                         onClick={() => toggleEnabled(hive)}
                         className={`p-1.5 rounded transition-colors ${
-                          hive.enabled ? 'text-green-400' : 'text-white/30'
+                          hive.enabled ? 'text-green-400' : 'text-overlay/30'
                         }`}
                         title={hive.enabled ? 'Disable' : 'Enable'}
                       >
@@ -513,7 +513,7 @@ Begin by analyzing the context and selecting your agents now.`,
                       </button>
                       <button
                         onClick={() => startEdit(hive)}
-                        className="p-1.5 rounded text-white/40 hover:text-white hover:bg-white/10 transition-colors"
+                        className="p-1.5 rounded text-overlay/40 hover:text-ink-bright hover:bg-overlay/10 transition-colors"
                         title="Edit"
                       >
                         <Pencil size={16} />
@@ -529,7 +529,7 @@ Begin by analyzing the context and selecting your agents now.`,
                           </button>
                           <button
                             onClick={() => setDeleteConfirm(null)}
-                            className="p-1.5 rounded text-white/40 hover:text-white transition-colors"
+                            className="p-1.5 rounded text-overlay/40 hover:text-ink-bright transition-colors"
                             title="Cancel"
                           >
                             <X size={16} />
@@ -538,7 +538,7 @@ Begin by analyzing the context and selecting your agents now.`,
                       ) : (
                         <button
                           onClick={() => setDeleteConfirm(hive.id)}
-                          className="p-1.5 rounded text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                          className="p-1.5 rounded text-overlay/40 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                           title="Delete"
                         >
                           <Trash2 size={16} />
@@ -547,8 +547,8 @@ Begin by analyzing the context and selecting your agents now.`,
                     </div>
                   </div>
 
-                  <h3 className="text-white font-medium mb-1">{hive.name}</h3>
-                  <p className="text-white/40 text-sm line-clamp-2 mb-3">{hive.description}</p>
+                  <h3 className="text-ink-bright font-medium mb-1">{hive.name}</h3>
+                  <p className="text-overlay/40 text-sm line-clamp-2 mb-3">{hive.description}</p>
 
                   <div className="flex items-center gap-2">
                     <span
@@ -561,7 +561,7 @@ Begin by analyzing the context and selecting your agents now.`,
                       {hive.category}
                     </span>
                     {!hive.enabled && (
-                      <span className="px-2 py-0.5 rounded text-xs bg-white/10 text-white/40">
+                      <span className="px-2 py-0.5 rounded text-xs bg-overlay/10 text-overlay/40">
                         disabled
                       </span>
                     )}

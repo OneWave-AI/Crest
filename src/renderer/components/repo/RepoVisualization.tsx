@@ -85,7 +85,7 @@ function TreeNode({
   return (
     <div>
       <div
-        className={`flex items-center gap-1.5 px-2 py-1 rounded cursor-pointer hover:bg-white/[0.04] ${
+        className={`flex items-center gap-1.5 px-2 py-1 rounded cursor-pointer hover:bg-overlay/[0.04] ${
           depth === 0 ? 'font-medium' : ''
         }`}
         style={{ paddingLeft: `${depth * 16 + 8}px` }}
@@ -101,9 +101,9 @@ function TreeNode({
           <>
             {hasChildren && (
               expanded ? (
-                <ChevronDown size={12} className="text-gray-500 flex-shrink-0" />
+                <ChevronDown size={12} className="text-ink-subtle flex-shrink-0" />
               ) : (
-                <ChevronRight size={12} className="text-gray-500 flex-shrink-0" />
+                <ChevronRight size={12} className="text-ink-subtle flex-shrink-0" />
               )
             )}
             {!hasChildren && <div className="w-3" />}
@@ -119,11 +119,11 @@ function TreeNode({
             />
           </>
         )}
-        <span className={`text-sm truncate ${isDirectory ? 'text-white' : 'text-gray-300'}`}>
+        <span className={`text-sm truncate ${isDirectory ? 'text-ink-bright' : 'text-ink'}`}>
           {node.name}
         </span>
         {!isDirectory && (
-          <span className="text-[10px] text-gray-500 ml-auto flex-shrink-0">
+          <span className="text-[10px] text-ink-subtle ml-auto flex-shrink-0">
             {formatBytes(node.size)}
           </span>
         )}
@@ -153,8 +153,8 @@ function TypeBarChart({ stats }: { stats: RepoStats }) {
     <div className="space-y-2">
       {sortedTypes.map(([type, data]) => (
         <div key={type} className="flex items-center gap-2">
-          <span className="text-xs text-gray-400 w-32 truncate">{type}</span>
-          <div className="flex-1 h-5 bg-white/[0.03] rounded overflow-hidden">
+          <span className="text-xs text-ink-muted w-32 truncate">{type}</span>
+          <div className="flex-1 h-5 bg-overlay/[0.03] rounded overflow-hidden">
             <div
               className="h-full rounded transition-all"
               style={{
@@ -163,8 +163,8 @@ function TypeBarChart({ stats }: { stats: RepoStats }) {
               }}
             />
           </div>
-          <span className="text-xs text-gray-500 w-16 text-right">{data.count} files</span>
-          <span className="text-xs text-gray-500 w-16 text-right">{formatBytes(data.size)}</span>
+          <span className="text-xs text-ink-subtle w-16 text-right">{data.count} files</span>
+          <span className="text-xs text-ink-subtle w-16 text-right">{formatBytes(data.size)}</span>
         </div>
       ))}
     </div>
@@ -200,8 +200,8 @@ function TreeMap({ stats }: { stats: RepoStats }) {
             title={`${type}: ${formatBytes(data.size)} (${data.count} files)`}
           >
             <div className="text-center p-2">
-              <div className="text-xs font-medium text-white/90 truncate">{type}</div>
-              <div className="text-[10px] text-white/70">{formatBytes(data.size)}</div>
+              <div className="text-xs font-medium text-overlay/90 truncate">{type}</div>
+              <div className="text-[10px] text-overlay/70">{formatBytes(data.size)}</div>
             </div>
           </div>
         )
@@ -262,29 +262,29 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-[#1a1a1a] rounded-lg border border-white/[0.06] w-[1000px] max-h-[85vh] flex flex-col">
+      <div className="bg-surface-4 rounded-lg border border-overlay/[0.06] w-[1000px] max-h-[85vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between p-4 border-b border-overlay/[0.06]">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-emerald-500/20">
               <FolderTree className="w-5 h-5 text-emerald-400" />
             </div>
             <div>
-              <h2 className="text-lg font-medium text-white">Repository Visualization</h2>
-              <p className="text-sm text-gray-500">{projectPath.split('/').pop()}</p>
+              <h2 className="text-lg font-medium text-ink-bright">Repository Visualization</h2>
+              <p className="text-sm text-ink-subtle">{projectPath.split('/').pop()}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={analyze}
               disabled={loading}
-              className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+              className="p-2 rounded-lg hover:bg-overlay/[0.06] text-ink-muted hover:text-ink-bright transition-colors disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-400 hover:text-white transition-colors"
+              className="p-2 rounded-lg hover:bg-overlay/[0.06] text-ink-muted hover:text-ink-bright transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -292,7 +292,7 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-white/[0.06]">
+        <div className="flex border-b border-overlay/[0.06]">
           {[
             { id: 'stats', label: 'Overview', icon: BarChart3 },
             { id: 'tree', label: 'File Tree', icon: FolderTree },
@@ -304,7 +304,7 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
               className={`flex items-center gap-2 px-4 py-3 text-sm transition-colors border-b-2 ${
                 activeTab === tab.id
                   ? 'border-emerald-400 text-emerald-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-300'
+                  : 'border-transparent text-ink-subtle hover:text-ink'
               }`}
             >
               <tab.icon size={14} />
@@ -319,7 +319,7 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
                 <RefreshCw className="w-8 h-8 text-emerald-400 animate-spin mx-auto mb-3" />
-                <p className="text-gray-400">Analyzing repository...</p>
+                <p className="text-ink-muted">Analyzing repository...</p>
               </div>
             </div>
           ) : error ? (
@@ -336,27 +336,27 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
                 <div className="p-6 overflow-y-auto h-full space-y-6">
                   {/* Quick Stats */}
                   <div className="grid grid-cols-4 gap-4">
-                    <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                      <div className="text-2xl font-bold text-white">{formatNumber(analysis.stats.totalFiles)}</div>
-                      <div className="text-sm text-gray-500">Files</div>
+                    <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                      <div className="text-2xl font-bold text-ink-bright">{formatNumber(analysis.stats.totalFiles)}</div>
+                      <div className="text-sm text-ink-subtle">Files</div>
                     </div>
-                    <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                      <div className="text-2xl font-bold text-white">{formatNumber(analysis.stats.totalDirectories)}</div>
-                      <div className="text-sm text-gray-500">Directories</div>
+                    <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                      <div className="text-2xl font-bold text-ink-bright">{formatNumber(analysis.stats.totalDirectories)}</div>
+                      <div className="text-sm text-ink-subtle">Directories</div>
                     </div>
-                    <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                      <div className="text-2xl font-bold text-white">{formatBytes(analysis.stats.totalSize)}</div>
-                      <div className="text-sm text-gray-500">Total Size</div>
+                    <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                      <div className="text-2xl font-bold text-ink-bright">{formatBytes(analysis.stats.totalSize)}</div>
+                      <div className="text-sm text-ink-subtle">Total Size</div>
                     </div>
-                    <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                      <div className="text-2xl font-bold text-white">{formatNumber(analysis.stats.totalLines)}</div>
-                      <div className="text-sm text-gray-500">Lines of Code</div>
+                    <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                      <div className="text-2xl font-bold text-ink-bright">{formatNumber(analysis.stats.totalLines)}</div>
+                      <div className="text-sm text-ink-subtle">Lines of Code</div>
                     </div>
                   </div>
 
                   {/* Project Structure */}
-                  <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                    <h3 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                  <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                    <h3 className="text-sm font-medium text-ink-bright mb-3 flex items-center gap-2">
                       <Boxes size={14} className="text-emerald-400" />
                       Project Structure
                     </h3>
@@ -367,27 +367,27 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
                         </span>
                       )}
                       {analysis.structure.hasPackageJson && (
-                        <span className="px-3 py-1 rounded-full bg-white/[0.06] text-gray-400 text-sm flex items-center gap-1.5">
+                        <span className="px-3 py-1 rounded-full bg-overlay/[0.06] text-ink-muted text-sm flex items-center gap-1.5">
                           <Check size={12} className="text-green-400" /> package.json
                         </span>
                       )}
                       {analysis.structure.hasTsConfig && (
-                        <span className="px-3 py-1 rounded-full bg-white/[0.06] text-gray-400 text-sm flex items-center gap-1.5">
+                        <span className="px-3 py-1 rounded-full bg-overlay/[0.06] text-ink-muted text-sm flex items-center gap-1.5">
                           <Check size={12} className="text-green-400" /> TypeScript
                         </span>
                       )}
                       {analysis.structure.hasSrc && (
-                        <span className="px-3 py-1 rounded-full bg-white/[0.06] text-gray-400 text-sm flex items-center gap-1.5">
+                        <span className="px-3 py-1 rounded-full bg-overlay/[0.06] text-ink-muted text-sm flex items-center gap-1.5">
                           <Check size={12} className="text-green-400" /> src/
                         </span>
                       )}
                       {analysis.structure.hasTests && (
-                        <span className="px-3 py-1 rounded-full bg-white/[0.06] text-gray-400 text-sm flex items-center gap-1.5">
+                        <span className="px-3 py-1 rounded-full bg-overlay/[0.06] text-ink-muted text-sm flex items-center gap-1.5">
                           <Check size={12} className="text-green-400" /> Tests
                         </span>
                       )}
                       {analysis.structure.hasReadme && (
-                        <span className="px-3 py-1 rounded-full bg-white/[0.06] text-gray-400 text-sm flex items-center gap-1.5">
+                        <span className="px-3 py-1 rounded-full bg-overlay/[0.06] text-ink-muted text-sm flex items-center gap-1.5">
                           <Check size={12} className="text-green-400" /> README
                         </span>
                       )}
@@ -395,8 +395,8 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
                   </div>
 
                   {/* Treemap */}
-                  <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                    <h3 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                  <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                    <h3 className="text-sm font-medium text-ink-bright mb-3 flex items-center gap-2">
                       <Layers size={14} className="text-emerald-400" />
                       File Distribution
                     </h3>
@@ -404,8 +404,8 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
                   </div>
 
                   {/* Type Breakdown */}
-                  <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                    <h3 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                  <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                    <h3 className="text-sm font-medium text-ink-bright mb-3 flex items-center gap-2">
                       <FileCode size={14} className="text-emerald-400" />
                       File Types
                     </h3>
@@ -413,18 +413,18 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
                   </div>
 
                   {/* Largest Files */}
-                  <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                    <h3 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                  <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                    <h3 className="text-sm font-medium text-ink-bright mb-3 flex items-center gap-2">
                       <FileText size={14} className="text-emerald-400" />
                       Largest Files
                     </h3>
                     <div className="space-y-2">
                       {analysis.stats.largestFiles.slice(0, 8).map((file, i) => (
                         <div key={i} className="flex items-center gap-3 text-sm">
-                          <span className="text-gray-500 w-4">{i + 1}.</span>
-                          <span className="text-gray-300 flex-1 truncate font-mono text-xs">{file.path}</span>
-                          <span className="text-gray-500">{formatNumber(file.lines)} lines</span>
-                          <span className="text-gray-400 w-20 text-right">{formatBytes(file.size)}</span>
+                          <span className="text-ink-subtle w-4">{i + 1}.</span>
+                          <span className="text-ink flex-1 truncate font-mono text-xs">{file.path}</span>
+                          <span className="text-ink-subtle">{formatNumber(file.lines)} lines</span>
+                          <span className="text-ink-muted w-20 text-right">{formatBytes(file.size)}</span>
                         </div>
                       ))}
                     </div>
@@ -435,27 +435,27 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
               {/* Tree Tab */}
               {activeTab === 'tree' && (
                 <div className="flex h-full">
-                  <div className="w-1/2 border-r border-white/[0.06] overflow-y-auto p-2">
+                  <div className="w-1/2 border-r border-overlay/[0.06] overflow-y-auto p-2">
                     <TreeNode node={analysis.tree} onSelectFile={loadFileContent} />
                   </div>
                   <div className="w-1/2 p-4">
                     {selectedFile ? (
                       <div className="h-full flex flex-col">
                         <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm text-gray-400 font-mono truncate">{selectedFile.split('/').pop()}</span>
+                          <span className="text-sm text-ink-muted font-mono truncate">{selectedFile.split('/').pop()}</span>
                           <button
                             onClick={() => window.api.openFileExternal(selectedFile)}
-                            className="p-1 hover:bg-white/[0.06] rounded"
+                            className="p-1 hover:bg-overlay/[0.06] rounded"
                           >
-                            <ExternalLink size={14} className="text-gray-500" />
+                            <ExternalLink size={14} className="text-ink-subtle" />
                           </button>
                         </div>
-                        <div className="flex-1 overflow-auto bg-black/30 rounded-lg p-3 font-mono text-xs text-gray-300 whitespace-pre">
+                        <div className="flex-1 overflow-auto bg-black/30 rounded-lg p-3 font-mono text-xs text-ink whitespace-pre">
                           {fileContent || 'Loading...'}
                         </div>
                       </div>
                     ) : (
-                      <div className="h-full flex items-center justify-center text-gray-500 text-sm">
+                      <div className="h-full flex items-center justify-center text-ink-subtle text-sm">
                         Select a file to preview
                       </div>
                     )}
@@ -468,29 +468,29 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
                 <div className="p-6 overflow-y-auto h-full">
                   <div className="mb-4">
                     <div className="relative">
-                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-subtle" />
                       <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search dependencies..."
-                        className="w-full bg-white/[0.03] border border-white/[0.06] rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-gray-500"
+                        className="w-full bg-overlay/[0.03] border border-overlay/[0.06] rounded-lg pl-9 pr-4 py-2 text-sm text-ink-bright placeholder-ink-subtle"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                      <div className="text-2xl font-bold text-white">
+                    <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                      <div className="text-2xl font-bold text-ink-bright">
                         {analysis.dependencies.filter(d => d.type === 'dependency').length}
                       </div>
-                      <div className="text-sm text-gray-500">Dependencies</div>
+                      <div className="text-sm text-ink-subtle">Dependencies</div>
                     </div>
-                    <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.06]">
-                      <div className="text-2xl font-bold text-white">
+                    <div className="bg-overlay/[0.03] rounded-lg p-4 border border-overlay/[0.06]">
+                      <div className="text-2xl font-bold text-ink-bright">
                         {analysis.dependencies.filter(d => d.type === 'devDependency').length}
                       </div>
-                      <div className="text-sm text-gray-500">Dev Dependencies</div>
+                      <div className="text-sm text-ink-subtle">Dev Dependencies</div>
                     </div>
                   </div>
 
@@ -498,22 +498,22 @@ export default function RepoVisualization({ isOpen, onClose, projectPath }: Repo
                     {filteredDeps.map((dep, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/[0.03] transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-overlay/[0.03] transition-colors"
                       >
-                        <Package size={14} className={dep.type === 'dependency' ? 'text-emerald-400' : 'text-gray-500'} />
-                        <span className="text-sm text-white flex-1">{dep.name}</span>
-                        <span className="text-xs text-gray-500 font-mono">{dep.version}</span>
+                        <Package size={14} className={dep.type === 'dependency' ? 'text-emerald-400' : 'text-ink-subtle'} />
+                        <span className="text-sm text-ink-bright flex-1">{dep.name}</span>
+                        <span className="text-xs text-ink-subtle font-mono">{dep.version}</span>
                         <span className={`text-[10px] px-2 py-0.5 rounded-full ${
                           dep.type === 'dependency'
                             ? 'bg-emerald-500/20 text-emerald-400'
-                            : 'bg-gray-500/20 text-gray-400'
+                            : 'bg-ink-subtle/20 text-ink-muted'
                         }`}>
                           {dep.type === 'dependency' ? 'prod' : 'dev'}
                         </span>
                       </div>
                     ))}
                     {filteredDeps.length === 0 && (
-                      <div className="text-center text-gray-500 py-8">
+                      <div className="text-center text-ink-subtle py-8">
                         {analysis.dependencies.length === 0
                           ? 'No dependencies found (no package.json)'
                           : 'No matching dependencies'}

@@ -146,7 +146,7 @@ export function HybridChatView({ terminalId, onSendMessage, claudeStatus }: Hybr
   }, [])
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0a0b]">
+    <div className="flex flex-col h-full bg-surface-0">
       {/* Messages */}
       <div
         ref={scrollRef}
@@ -155,7 +155,7 @@ export function HybridChatView({ terminalId, onSendMessage, claudeStatus }: Hybr
         style={{ scrollbarWidth: 'thin', scrollbarColor: '#333 transparent' }}
       >
         {messages.length === 0 && (
-          <div className="flex items-center justify-center h-full text-gray-600 text-sm">
+          <div className="flex items-center justify-center h-full text-ink-faint text-sm">
             Chat view -- messages appear as Claude works in the terminal
           </div>
         )}
@@ -166,7 +166,7 @@ export function HybridChatView({ terminalId, onSendMessage, claudeStatus }: Hybr
 
         {/* Streaming indicator */}
         {isBusy && (
-          <div className="flex items-center gap-2 text-gray-500 text-xs py-1">
+          <div className="flex items-center gap-2 text-ink-subtle text-xs py-1">
             <SpinnerGap size={14} className="animate-spin" />
             <span>Claude is working...</span>
           </div>
@@ -177,15 +177,15 @@ export function HybridChatView({ terminalId, onSendMessage, claudeStatus }: Hybr
       {!isNearBottomRef.current && (
         <button
           onClick={scrollToBottom}
-          className="absolute bottom-20 right-6 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+          className="absolute bottom-20 right-6 w-8 h-8 rounded-full bg-overlay/10 flex items-center justify-center hover:bg-overlay/20 transition-colors"
         >
-          <ArrowDown size={14} className="text-gray-400" />
+          <ArrowDown size={14} className="text-ink-muted" />
         </button>
       )}
 
       {/* Input */}
-      <div className="px-4 pb-3 pt-2 border-t border-white/[0.06]">
-        <div className="flex items-end gap-2 bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2">
+      <div className="px-4 pb-3 pt-2 border-t border-overlay/[0.06]">
+        <div className="flex items-end gap-2 bg-overlay/[0.04] border border-overlay/[0.08] rounded-xl px-3 py-2">
           <textarea
             ref={textareaRef}
             value={input}
@@ -194,7 +194,7 @@ export function HybridChatView({ terminalId, onSendMessage, claudeStatus }: Hybr
             placeholder={isWaiting ? 'Type a message...' : 'Claude is working...'}
             disabled={isBusy}
             rows={1}
-            className="flex-1 bg-transparent text-white text-sm placeholder-gray-600 resize-none outline-none disabled:opacity-50"
+            className="flex-1 bg-transparent text-ink-bright text-sm placeholder-ink-faint resize-none outline-none disabled:opacity-50"
             style={{ minHeight: 20, maxHeight: 120 }}
           />
           <button
@@ -203,7 +203,7 @@ export function HybridChatView({ terminalId, onSendMessage, claudeStatus }: Hybr
             className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all disabled:opacity-30"
             style={{ background: input.trim() ? 'rgba(59,130,246,0.8)' : 'rgba(255,255,255,0.05)' }}
           >
-            <PaperPlaneTilt size={14} weight="fill" className="text-white" />
+            <PaperPlaneTilt size={14} weight="fill" className="text-ink-bright" />
           </button>
         </div>
       </div>
@@ -227,7 +227,7 @@ function MessageBubble({ message }: { message: ParsedMessage }) {
     return (
       <div className="flex justify-end">
         <div className="max-w-[85%] bg-blue-600/20 border border-blue-500/20 rounded-2xl rounded-br-md px-4 py-2.5">
-          <p className="text-sm text-white whitespace-pre-wrap">{message.content}</p>
+          <p className="text-sm text-ink-bright whitespace-pre-wrap">{message.content}</p>
         </div>
       </div>
     )
@@ -238,13 +238,13 @@ function MessageBubble({ message }: { message: ParsedMessage }) {
       <div className="mx-2">
         <button
           onClick={() => setToolExpanded(!toolExpanded)}
-          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-300 transition-colors"
+          className="flex items-center gap-1.5 text-xs text-ink-muted hover:text-ink transition-colors"
         >
           {toolExpanded ? <CaretDown size={12} /> : <CaretRight size={12} />}
           <Wrench size={12} className="text-amber-400/70" />
           <span className="font-mono">{message.toolName}</span>
           {message.toolInput && (
-            <span className="text-gray-600 truncate max-w-[200px]">({message.toolInput})</span>
+            <span className="text-ink-faint truncate max-w-[200px]">({message.toolInput})</span>
           )}
           {message.toolStatus === 'running' && (
             <SpinnerGap size={12} className="animate-spin text-amber-400/70" />
@@ -254,8 +254,8 @@ function MessageBubble({ message }: { message: ParsedMessage }) {
           )}
         </button>
         {toolExpanded && message.content && (
-          <div className="mt-1 ml-5 p-2 bg-white/[0.03] rounded-lg border border-white/[0.05] max-h-40 overflow-y-auto">
-            <pre className="text-[11px] text-gray-400 font-mono whitespace-pre-wrap">{message.content}</pre>
+          <div className="mt-1 ml-5 p-2 bg-overlay/[0.03] rounded-lg border border-overlay/[0.05] max-h-40 overflow-y-auto">
+            <pre className="text-[11px] text-ink-muted font-mono whitespace-pre-wrap">{message.content}</pre>
           </div>
         )}
       </div>
@@ -265,7 +265,7 @@ function MessageBubble({ message }: { message: ParsedMessage }) {
   if (message.role === 'system') {
     return (
       <div className="text-center py-1">
-        <span className="text-[11px] text-gray-600">{message.content}</span>
+        <span className="text-[11px] text-ink-faint">{message.content}</span>
       </div>
     )
   }
@@ -273,19 +273,19 @@ function MessageBubble({ message }: { message: ParsedMessage }) {
   // Assistant message
   return (
     <div className="group relative">
-      <div className="max-w-[95%] text-sm text-gray-200 prose prose-invert prose-sm max-w-none
-        prose-p:my-1 prose-pre:my-2 prose-pre:bg-white/[0.04] prose-pre:border prose-pre:border-white/[0.06]
-        prose-code:text-emerald-300 prose-code:bg-white/[0.06] prose-code:px-1 prose-code:rounded
-        prose-headings:text-white prose-a:text-blue-400"
+      <div className="max-w-[95%] text-sm text-ink-bright prose prose-invert prose-sm max-w-none
+        prose-p:my-1 prose-pre:my-2 prose-pre:bg-overlay/[0.04] prose-pre:border prose-pre:border-overlay/[0.06]
+        prose-code:text-emerald-300 prose-code:bg-overlay/[0.06] prose-code:px-1 prose-code:rounded
+        prose-headings:text-ink-bright prose-a:text-blue-400"
       >
         <Markdown remarkPlugins={[remarkGfm]}>{message.content}</Markdown>
       </div>
       {message.content.length > 20 && (
         <button
           onClick={handleCopy}
-          className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-white/10"
+          className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-overlay/10"
         >
-          {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} className="text-gray-500" />}
+          {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} className="text-ink-subtle" />}
         </button>
       )}
     </div>

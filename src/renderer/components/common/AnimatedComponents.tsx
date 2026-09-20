@@ -249,8 +249,8 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
       primary:
         'bg-accent text-white hover:bg-accent-400 border-transparent',
       secondary:
-        'bg-white/5 text-white border-white/[0.06] hover:bg-white/10 hover:border-white/[0.1]',
-      ghost: 'bg-transparent text-gray-400 border-transparent hover:bg-white/5 hover:text-white',
+        'bg-overlay/5 text-ink-bright border-overlay/[0.06] hover:bg-overlay/10 hover:border-overlay/[0.1]',
+      ghost: 'bg-transparent text-ink-muted border-transparent hover:bg-overlay/5 hover:text-ink-bright',
       danger: 'bg-red-500/10 text-red-400 border-red-500/20 hover:bg-red-500/20'
     }
 
@@ -294,7 +294,7 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
         {ripples.map((ripple) => (
           <span
             key={ripple.id}
-            className="absolute rounded-full bg-white/20 animate-ripple pointer-events-none"
+            className="absolute rounded-full bg-overlay/20 animate-ripple pointer-events-none"
             style={{
               left: ripple.x - 10,
               top: ripple.y - 10,
@@ -416,7 +416,7 @@ export function FeedbackIndicator({
       `}
     >
       <Icon size={16} className={iconColor} />
-      {message && <span className="text-sm text-white">{message}</span>}
+      {message && <span className="text-sm text-ink-bright">{message}</span>}
     </div>
   )
 }
@@ -441,14 +441,14 @@ export function AnimatedCard({
   const hoverClasses = {
     lift: 'card-hover hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]',
     glow: 'transition-all duration-200 hover:shadow-[0_0_30px_rgba(204,120,92,0.15)]',
-    border: 'transition-all duration-200 hover:border-white/[0.15]',
+    border: 'transition-all duration-200 hover:border-overlay/[0.15]',
     none: ''
   }
 
   return (
     <div
       className={`
-        p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]
+        p-4 rounded-xl border border-overlay/[0.06] bg-overlay/[0.02]
         ${hoverClasses[hoverEffect]}
         ${onClick ? 'cursor-pointer' : ''}
         ${className}
@@ -480,7 +480,7 @@ export function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerPr
     <div
       className={`
         ${sizeClasses[size]}
-        border-2 border-white/20 border-t-accent
+        border-2 border-overlay/20 border-t-accent
         rounded-full animate-spin
         ${className}
       `}

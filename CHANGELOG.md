@@ -8,6 +8,14 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
+- **Themes.** Four: Crest (the existing black), Slate (cool dark), Ember
+  (warm dark) and Paper (light). Pick one under Settings -> Appearance; it is
+  separate from the terminal theme, so the terminal can be Dracula while the
+  window around it is Paper. Switching is a single attribute write on the
+  document root -- no component knows a theme exists.
+- A token layer behind those themes: `--c-surface-*`, `--c-ink-*` and
+  `--c-overlay` channel variables in `globals.css`, surfaced as Tailwind
+  colours. A theme is a block of variable overrides and nothing else.
 - Self-update against GitHub Releases (`electron-updater`). Crest ships
   unsigned, and macOS refuses an in-place swap of an unsigned bundle, so the
   updater currently detects the release and opens the download page rather
@@ -18,6 +26,11 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 - `sand`, a full 100-900 accent ramp in `tailwind.config.js`.
 
 ### Fixed
+- **The app's most-used text colour failed WCAG AA.** `text-gray-500` carried
+  body text at 503 sites and measured 4.02:1 against the panel ground, under
+  the 4.5:1 floor; the next rung down was 2.57:1. The ink ladder now clears AA
+  for body text and AA-large for de-emphasised text, and the light theme
+  tracks the dark one within 0.01 at every rung.
 - **Opus sessions were costed at 3x.** The pricing resolver mapped any model
   containing "opus" to Opus 4 rates ($15/$75); Opus 5, 4.8, 4.7, 4.6 and 4.5
   all bill $5/$25. Anything that was neither Opus nor Haiku fell through to
@@ -26,6 +39,11 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   back to the *current* generation's tier instead of three-year-old rates.
 
 ### Changed
+- Every colour in the renderer now resolves through a token. What was 699
+  arbitrary hex classes, 743 `white/[0.0x]` tints, 331 `white/N` tints and
+  1,148 hardcoded Tailwind greys is zero of each. The 76 remaining
+  `text-white` all sit on filled saturated chips, where white is correct in
+  every theme.
 - Retired purple (`#a855f7`) as the second accent -- it was defined in
   `globals.css` and reached 20+ components as loose Tailwind classes.
   Replaced by `sand` (#c2a87e), declared once in the Tailwind config.

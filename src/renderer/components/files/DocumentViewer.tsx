@@ -431,8 +431,8 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
           <div className="p-4 rounded-2xl bg-red-500/10 mb-4">
             <FileText size={32} className="text-red-400" />
           </div>
-          <h3 className="text-lg font-medium text-white mb-2">Failed to load file</h3>
-          <p className="text-sm text-gray-500 max-w-md">{error}</p>
+          <h3 className="text-lg font-medium text-ink-bright mb-2">Failed to load file</h3>
+          <p className="text-sm text-ink-subtle max-w-md">{error}</p>
         </div>
       )
     }
@@ -476,7 +476,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
                     className="shadow-lg rounded-lg"
                     draggable={false}
                   />
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-black/60 text-xs text-white">
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-black/60 text-xs text-ink-bright">
                     Page {index + 1} of {pdfPages.length}
                   </div>
                 </div>
@@ -506,10 +506,10 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
             style={{ fontSize: `${zoom}%` }}
           >
             <div className="p-6">
-              <div className="flex items-center gap-2 mb-4 text-xs text-gray-500">
+              <div className="flex items-center gap-2 mb-4 text-xs text-ink-subtle">
                 <Code size={14} />
                 <span>{language.toUpperCase()}</span>
-                <span className="text-gray-600">|</span>
+                <span className="text-ink-faint">|</span>
                 <span>{content.split('\n').length} lines</span>
               </div>
               <pre className="font-mono text-sm leading-relaxed">
@@ -531,20 +531,20 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
             style={{ fontSize: `${zoom}%` }}
           >
             <div className="p-6">
-              <div className="flex items-center gap-2 mb-4 text-xs text-gray-500">
+              <div className="flex items-center gap-2 mb-4 text-xs text-ink-subtle">
                 <Table size={14} />
                 <span>{rows.length} rows</span>
-                <span className="text-gray-600">|</span>
+                <span className="text-ink-faint">|</span>
                 <span>{headers.length} columns</span>
               </div>
-              <div className="overflow-x-auto rounded-xl border border-white/[0.06]">
+              <div className="overflow-x-auto rounded-xl border border-overlay/[0.06]">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-white/[0.04]">
+                    <tr className="bg-overlay/[0.04]">
                       {headers.map((header, i) => (
                         <th
                           key={i}
-                          className="px-4 py-3 text-left font-medium text-white border-b border-white/[0.06]"
+                          className="px-4 py-3 text-left font-medium text-ink-bright border-b border-overlay/[0.06]"
                         >
                           {header}
                         </th>
@@ -555,12 +555,12 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
                     {rows.map((row, i) => (
                       <tr
                         key={i}
-                        className="hover:bg-white/[0.02] transition-colors"
+                        className="hover:bg-overlay/[0.02] transition-colors"
                       >
                         {row.map((cell, j) => (
                           <td
                             key={j}
-                            className="px-4 py-3 text-gray-300 border-b border-white/[0.04]"
+                            className="px-4 py-3 text-ink border-b border-overlay/[0.04]"
                           >
                             {cell}
                           </td>
@@ -581,7 +581,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
             className="h-full overflow-auto p-6"
             style={{ fontSize: `${zoom}%` }}
           >
-            <pre className="font-mono text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">
+            <pre className="font-mono text-sm text-ink whitespace-pre-wrap leading-relaxed">
               {content}
             </pre>
           </div>
@@ -605,7 +605,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
 
       {/* Viewer Panel */}
       <div
-        className={`fixed z-50 flex flex-col bg-[#0d0d0d] border border-white/[0.06] shadow-2xl transition-all duration-300 ${
+        className={`fixed z-50 flex flex-col bg-surface-1 border border-overlay/[0.06] shadow-2xl transition-all duration-300 ${
           isFullscreen
             ? 'inset-0 rounded-none'
             : 'inset-y-4 right-4 left-[320px] rounded-2xl'
@@ -613,32 +613,32 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
         ref={containerRef}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06] bg-[#0d0d0d]/95 backdrop-blur-sm">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-overlay/[0.06] bg-surface-1/95 backdrop-blur-sm">
           <div className="flex items-center gap-3 min-w-0">
             <div className="p-2 rounded-lg bg-accent/10">
               <FileIcon size={18} className="text-accent" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-sm font-medium text-white truncate">{fileName}</h2>
-              <p className="text-xs text-gray-500 truncate">{filePath}</p>
+              <h2 className="text-sm font-medium text-ink-bright truncate">{fileName}</h2>
+              <p className="text-xs text-ink-subtle truncate">{filePath}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-1">
             {/* Zoom controls */}
             {showZoomControls && (
-              <div className="flex items-center gap-1 mr-2 px-2 py-1 rounded-lg bg-white/[0.04]">
+              <div className="flex items-center gap-1 mr-2 px-2 py-1 rounded-lg bg-overlay/[0.04]">
                 <button
                   onClick={handleZoomOut}
                   disabled={zoom <= 25}
-                  className="p-1.5 rounded text-gray-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded text-ink-muted hover:text-ink-bright hover:bg-overlay/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   title="Zoom out"
                 >
                   <ZoomOut size={16} />
                 </button>
                 <button
                   onClick={handleZoomReset}
-                  className="px-2 py-1 text-xs font-medium text-gray-400 hover:text-white transition-colors min-w-[48px]"
+                  className="px-2 py-1 text-xs font-medium text-ink-muted hover:text-ink-bright transition-colors min-w-[48px]"
                   title="Reset zoom"
                 >
                   {zoom}%
@@ -646,7 +646,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
                 <button
                   onClick={handleZoomIn}
                   disabled={zoom >= 300}
-                  className="p-1.5 rounded text-gray-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded text-ink-muted hover:text-ink-bright hover:bg-overlay/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   title="Zoom in"
                 >
                   <ZoomIn size={16} />
@@ -658,7 +658,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
             {showRotateButton && (
               <button
                 onClick={handleRotate}
-                className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                className="p-2 rounded-lg text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors"
                 title="Rotate"
               >
                 <RotateCw size={18} />
@@ -669,7 +669,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
             {showCopyButton && (
               <button
                 onClick={handleCopy}
-                className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                className="p-2 rounded-lg text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors"
                 title="Copy content"
               >
                 {copied ? <Check size={18} className="text-green-400" /> : <Copy size={18} />}
@@ -679,7 +679,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
             {/* Download/reveal button */}
             <button
               onClick={handleDownload}
-              className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+              className="p-2 rounded-lg text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors"
               title="Show in Finder"
             >
               <Download size={18} />
@@ -688,7 +688,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
             {/* Fullscreen toggle */}
             <button
               onClick={handleFullscreen}
-              className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+              className="p-2 rounded-lg text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors"
               title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
             >
               {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
@@ -697,7 +697,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
             {/* Close button */}
             <button
               onClick={onClose}
-              className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors ml-1"
+              className="p-2 rounded-lg text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors ml-1"
               title="Close"
             >
               <X size={18} />
@@ -706,12 +706,12 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-hidden bg-[#0a0a0a]">
+        <div className="flex-1 overflow-hidden bg-surface-0">
           {renderContent()}
         </div>
 
         {/* Footer with file info */}
-        <div className="flex items-center justify-between px-5 py-2 border-t border-white/[0.06] bg-[#0d0d0d]/95 text-xs text-gray-500">
+        <div className="flex items-center justify-between px-5 py-2 border-t border-overlay/[0.06] bg-surface-1/95 text-xs text-ink-subtle">
           <div className="flex items-center gap-4">
             <span className="uppercase">{extension}</span>
             {fileType === 'pdf' && pdfPages.length > 0 && (
@@ -725,7 +725,7 @@ export default function DocumentViewer({ isOpen, onClose, filePath, fileName }: 
             )}
           </div>
           <div className="flex items-center gap-2">
-            <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-[10px]">Esc</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-overlay/10 text-[10px]">Esc</kbd>
             <span>to close</span>
           </div>
         </div>

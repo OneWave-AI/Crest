@@ -87,7 +87,7 @@ export default function DeployMenu() {
         className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all text-xs ${
           isOpen
             ? 'bg-accent/20 border-accent/40 text-accent'
-            : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white hover:border-white/20'
+            : 'bg-overlay/5 border-overlay/10 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright hover:border-overlay/20'
         }`}
         aria-label="Deploy actions (Cmd+Shift+D)"
         aria-haspopup="menu"
@@ -106,19 +106,19 @@ export default function DeployMenu() {
       {/* Dropdown Menu */}
       {isOpen && (
         <div
-          className="absolute top-full right-0 mt-2 w-64 bg-[#1e1e1e] border border-white/10 rounded-xl shadow-xl shadow-black/40 overflow-hidden z-50 animate-fade-in-down"
+          className="absolute top-full right-0 mt-2 w-64 bg-surface-5 border border-overlay/10 rounded-xl shadow-xl shadow-black/40 overflow-hidden z-50 animate-fade-in-down"
           role="menu"
           aria-label="Deploy options"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-3 py-2 border-b border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent">
+          <div className="flex items-center justify-between px-3 py-2 border-b border-overlay/10 bg-gradient-to-b from-overlay/[0.03] to-transparent">
             <div className="flex items-center gap-2">
               <div className="p-1 rounded bg-accent/20">
                 <Rocket size={12} className="text-accent" />
               </div>
-              <span className="text-xs font-medium text-gray-300">Deploy Options</span>
+              <span className="text-xs font-medium text-ink">Deploy Options</span>
             </div>
-            <kbd className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-white/[0.06] text-[9px] text-gray-500 font-medium">
+            <kbd className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-overlay/[0.06] text-[9px] text-ink-subtle font-medium">
               <span>Cmd</span>
               <span>Shift</span>
               <span>D</span>
@@ -132,7 +132,7 @@ export default function DeployMenu() {
                 key={option.id}
                 onClick={() => handleDeployAction(option)}
                 disabled={!activeTerminalId}
-                className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed group"
+                className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-overlay/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed group"
                 role="menuitem"
               >
                 <div className={`p-1.5 rounded-lg transition-colors ${
@@ -143,16 +143,16 @@ export default function DeployMenu() {
                   {option.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
+                  <div className="text-sm font-medium text-ink-bright group-hover:text-ink-bright transition-colors">
                     {option.label}
                   </div>
-                  <div className="text-[10px] text-gray-500 truncate">
+                  <div className="text-[10px] text-ink-subtle truncate">
                     {option.description}
                   </div>
                 </div>
                 <ExternalLink
                   size={10}
-                  className="text-gray-600 group-hover:text-gray-400 transition-colors flex-shrink-0"
+                  className="text-ink-faint group-hover:text-ink-muted transition-colors flex-shrink-0"
                   aria-hidden="true"
                 />
               </button>
@@ -161,7 +161,7 @@ export default function DeployMenu() {
 
           {/* Footer hint */}
           {!activeTerminalId && (
-            <div className="px-3 py-2 border-t border-white/10 bg-yellow-500/5">
+            <div className="px-3 py-2 border-t border-overlay/10 bg-yellow-500/5">
               <p className="text-[10px] text-yellow-500/80 text-center">
                 Open a terminal to use deploy commands
               </p>

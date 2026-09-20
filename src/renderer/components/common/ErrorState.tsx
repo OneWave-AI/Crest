@@ -73,10 +73,10 @@ export default function ErrorState({
               {icon || <IconComponent size={24} className={config.iconColor} />}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-base font-semibold text-white mb-1">
+              <h3 className="text-base font-semibold text-ink-bright mb-1">
                 {title}
               </h3>
-              <p className="text-sm text-gray-400 break-words">
+              <p className="text-sm text-ink-muted break-words">
                 {message}
               </p>
             </div>
@@ -85,8 +85,8 @@ export default function ErrorState({
           {/* Details (optional) */}
           {details && (
             <div className="px-6 pb-4">
-              <div className="p-3 rounded-xl bg-[#0d0d0d] border border-white/5">
-                <pre className="text-xs text-gray-500 font-mono whitespace-pre-wrap break-all">
+              <div className="p-3 rounded-xl bg-surface-1 border border-overlay/5">
+                <pre className="text-xs text-ink-subtle font-mono whitespace-pre-wrap break-all">
                   {details}
                 </pre>
               </div>
@@ -108,7 +108,7 @@ export default function ErrorState({
               {secondaryAction && (
                 <button
                   onClick={secondaryAction.onClick}
-                  className="flex items-center justify-center gap-2 flex-1 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all duration-200 border border-white/10"
+                  className="flex items-center justify-center gap-2 flex-1 px-4 py-2.5 rounded-xl bg-overlay/5 hover:bg-overlay/10 text-ink hover:text-ink-bright font-medium text-sm transition-all duration-200 border border-overlay/10"
                 >
                   {secondaryAction.label}
                 </button>

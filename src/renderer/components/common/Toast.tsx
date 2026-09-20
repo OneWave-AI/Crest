@@ -167,9 +167,9 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
     >
       <Icon size={20} className={`flex-shrink-0 ${color.icon} ${toast.type === 'success' && isVisible ? 'animate-success-pop' : ''}`} aria-hidden="true" />
       <div className="flex-1 min-w-0">
-        <div className="font-medium text-white text-sm">{toast.title}</div>
+        <div className="font-medium text-ink-bright text-sm">{toast.title}</div>
         {toast.message && (
-          <div className="text-xs text-gray-400 mt-0.5">{toast.message}</div>
+          <div className="text-xs text-ink-muted mt-0.5">{toast.message}</div>
         )}
       </div>
       <button
@@ -177,7 +177,7 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
           setIsLeaving(true)
           setTimeout(() => onRemove(toast.id), 300)
         }}
-        className="flex-shrink-0 p-1 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-colors focus-ring"
+        className="flex-shrink-0 p-1 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/10 transition-colors focus-ring"
         aria-label={`Dismiss ${toast.title} notification`}
       >
         <X size={14} aria-hidden="true" />

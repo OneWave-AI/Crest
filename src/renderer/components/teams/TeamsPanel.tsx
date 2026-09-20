@@ -202,14 +202,14 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
       className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
       onClick={handleBackdropClick}
     >
-      <div className="bg-[#1a1a1a] rounded-lg border border-white/[0.06] w-[900px] max-h-[80vh] flex flex-col">
+      <div className="bg-surface-4 rounded-lg border border-overlay/[0.06] w-[900px] max-h-[80vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between p-4 border-b border-overlay/[0.06]">
           <div className="flex items-center gap-3">
             {selectedTeam && (
               <button
                 onClick={() => { setSelectedTeam(null); setTeamConfig(null); setTeamTasks([]); setDetailError(null) }}
-                className="p-1.5 rounded-lg hover:bg-white/[0.06] text-gray-400 hover:text-white transition-colors"
+                className="p-1.5 rounded-lg hover:bg-overlay/[0.06] text-ink-muted hover:text-ink-bright transition-colors"
               >
                 <ArrowLeft size={16} />
               </button>
@@ -217,11 +217,11 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
             <div className="p-1.5 rounded-lg bg-teal-500/15">
               <Users size={16} className="text-teal-400" />
             </div>
-            <h2 className="text-lg font-medium text-white">
+            <h2 className="text-lg font-medium text-ink-bright">
               {selectedTeam ? selectedTeam : 'Teams'}
             </h2>
             {!selectedTeam && teams.length > 0 && (
-              <span className="text-sm text-gray-500">{teams.length} team{teams.length !== 1 ? 's' : ''}</span>
+              <span className="text-sm text-ink-subtle">{teams.length} team{teams.length !== 1 ? 's' : ''}</span>
             )}
           </div>
           <div className="flex items-center gap-2">
@@ -237,14 +237,14 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
             )}
             <button
               onClick={() => { selectedTeam ? loadTeamDetail(selectedTeam) : loadTeams() }}
-              className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-400 hover:text-white transition-colors"
+              className="p-2 rounded-lg hover:bg-overlay/[0.06] text-ink-muted hover:text-ink-bright transition-colors"
               title="Refresh"
             >
               <RefreshCw size={14} />
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-400 hover:text-white transition-colors"
+              className="p-2 rounded-lg hover:bg-overlay/[0.06] text-ink-muted hover:text-ink-bright transition-colors"
             >
               <X size={16} />
             </button>
@@ -269,11 +269,11 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
           ) : !selectedTeam ? (
             /* Teams List */
             teams.length === 0 ? (
-              <div className="text-center text-gray-500 py-12">
-                <Users size={40} className="mx-auto mb-3 text-gray-600" />
+              <div className="text-center text-ink-subtle py-12">
+                <Users size={40} className="mx-auto mb-3 text-ink-faint" />
                 <p className="text-lg mb-2">No teams found</p>
                 <p className="text-sm">Teams created via Claude Code CLI appear here.</p>
-                <p className="text-xs text-gray-600 mt-2">Use TeamCreate in Claude Code to get started.</p>
+                <p className="text-xs text-ink-faint mt-2">Use TeamCreate in Claude Code to get started.</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -285,7 +285,7 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
                   return (
                     <div
                       key={team.name}
-                      className="bg-white/[0.03] rounded-xl border border-white/[0.06] hover:border-teal-500/30 transition-all cursor-pointer group"
+                      className="bg-overlay/[0.03] rounded-xl border border-overlay/[0.06] hover:border-teal-500/30 transition-all cursor-pointer group"
                       onClick={() => loadTeamDetail(team.name)}
                     >
                       <div className="flex items-center gap-4 p-4">
@@ -295,25 +295,25 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className="text-sm font-medium text-white truncate">{team.name}</h3>
-                            <span className="text-[10px] text-gray-500 px-1.5 py-0.5 rounded-full bg-white/[0.04]">
+                            <h3 className="text-sm font-medium text-ink-bright truncate">{team.name}</h3>
+                            <span className="text-[10px] text-ink-subtle px-1.5 py-0.5 rounded-full bg-overlay/[0.04]">
                               {team.memberCount} member{team.memberCount !== 1 ? 's' : ''}
                             </span>
                           </div>
                           {team.description && (
-                            <p className="text-xs text-gray-500 truncate mb-2">{team.description}</p>
+                            <p className="text-xs text-ink-subtle truncate mb-2">{team.description}</p>
                           )}
 
                           {/* Task progress bar */}
                           {team.taskStats.total > 0 && (
                             <div className="flex items-center gap-2">
-                              <div className="flex-1 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                              <div className="flex-1 h-1.5 rounded-full bg-overlay/[0.06] overflow-hidden">
                                 <div
                                   className="h-full rounded-full bg-gradient-to-r from-teal-500 to-cyan-400 transition-all"
                                   style={{ width: `${progressPct}%` }}
                                 />
                               </div>
-                              <span className="text-[10px] text-gray-500 whitespace-nowrap">
+                              <span className="text-[10px] text-ink-subtle whitespace-nowrap">
                                 {team.taskStats.completed}/{team.taskStats.total} tasks
                               </span>
                             </div>
@@ -321,7 +321,7 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
                         </div>
 
                         <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
-                          <span className="text-[10px] text-gray-600">{formatDate(team.createdAt)}</span>
+                          <span className="text-[10px] text-ink-faint">{formatDate(team.createdAt)}</span>
                           {confirmDelete === team.name ? (
                             <div className="flex items-center gap-1">
                               <button
@@ -332,7 +332,7 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
                               </button>
                               <button
                                 onClick={() => setConfirmDelete(null)}
-                                className="px-2 py-1 rounded text-[10px] text-gray-400 hover:text-white transition-colors"
+                                className="px-2 py-1 rounded text-[10px] text-ink-muted hover:text-ink-bright transition-colors"
                               >
                                 Cancel
                               </button>
@@ -340,13 +340,13 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
                           ) : (
                             <button
                               onClick={() => setConfirmDelete(team.name)}
-                              className="p-1.5 rounded-lg hover:bg-red-500/10 text-gray-500 hover:text-red-400 transition-colors"
+                              className="p-1.5 rounded-lg hover:bg-red-500/10 text-ink-subtle hover:text-red-400 transition-colors"
                               title="Delete team"
                             >
                               <Trash2 size={14} />
                             </button>
                           )}
-                          <ChevronRight size={16} className="text-gray-600 group-hover:text-teal-400 transition-colors" />
+                          <ChevronRight size={16} className="text-ink-faint group-hover:text-teal-400 transition-colors" />
                         </div>
                       </div>
                     </div>
@@ -359,7 +359,7 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
               <Loader2 className="w-6 h-6 text-teal-400 animate-spin" />
             </div>
           ) : detailError ? (
-            <div className="text-center text-gray-500 py-12">
+            <div className="text-center text-ink-subtle py-12">
               <AlertCircle size={32} className="mx-auto mb-3 text-red-400/60" />
               <p className="text-sm text-red-400">{detailError}</p>
               <button onClick={() => loadTeamDetail(selectedTeam!)} className="mt-3 text-xs text-teal-400 hover:text-teal-300">Retry</button>
@@ -369,11 +369,11 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
             <div className="space-y-6">
               {/* Team Info */}
               {teamConfig && (
-                <div className="bg-white/[0.03] rounded-xl border border-white/[0.06] p-4">
+                <div className="bg-overlay/[0.03] rounded-xl border border-overlay/[0.06] p-4">
                   {teamConfig.description && (
-                    <p className="text-sm text-gray-400 mb-3">{teamConfig.description}</p>
+                    <p className="text-sm text-ink-muted mb-3">{teamConfig.description}</p>
                   )}
-                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                  <div className="flex items-center gap-4 text-xs text-ink-subtle">
                     <span>Created {formatDate(teamConfig.createdAt)}</span>
                     <span>{teamConfig.members?.length || 0} members</span>
                     <span>{teamTasks.length} tasks</span>
@@ -384,29 +384,29 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
               {/* Members */}
               {teamConfig && teamConfig.members && teamConfig.members.length > 0 && (
                 <div>
-                  <h3 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-3 flex items-center gap-2">
+                  <h3 className="text-xs uppercase tracking-wider text-ink-subtle font-medium mb-3 flex items-center gap-2">
                     <Users size={12} /> Members ({teamConfig.members.length})
                   </h3>
                   <div className="grid grid-cols-2 gap-2">
                     {teamConfig.members.map(member => (
                       <div
                         key={member.agentId}
-                        className="bg-white/[0.03] rounded-lg border border-white/[0.06] p-3 flex items-center gap-3"
+                        className="bg-overlay/[0.03] rounded-lg border border-overlay/[0.06] p-3 flex items-center gap-3"
                       >
                         <div className={`w-2.5 h-2.5 rounded-full ${getMemberColor(member.color)} flex-shrink-0`} />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm text-white font-medium truncate">{member.name}</span>
-                            <span className="text-[10px] text-gray-500 px-1.5 py-0.5 rounded bg-white/[0.04] flex-shrink-0">{member.agentType}</span>
+                            <span className="text-sm text-ink-bright font-medium truncate">{member.name}</span>
+                            <span className="text-[10px] text-ink-subtle px-1.5 py-0.5 rounded bg-overlay/[0.04] flex-shrink-0">{member.agentType}</span>
                           </div>
                           <div className="flex items-center gap-2 mt-1">
                             {member.model && (
-                              <span className="flex items-center gap-1 text-[10px] text-gray-600">
+                              <span className="flex items-center gap-1 text-[10px] text-ink-faint">
                                 <Cpu size={9} /> {member.model}
                               </span>
                             )}
                             {member.cwd && (
-                              <span className="flex items-center gap-1 text-[10px] text-gray-600 truncate">
+                              <span className="flex items-center gap-1 text-[10px] text-ink-faint truncate">
                                 <FolderOpen size={9} /> {member.cwd.split('/').pop()}
                               </span>
                             )}
@@ -420,11 +420,11 @@ Pick the right number of teammates (2-5) and the right agent types for the work.
 
               {/* Tasks */}
               <div>
-                <h3 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-3 flex items-center gap-2">
+                <h3 className="text-xs uppercase tracking-wider text-ink-subtle font-medium mb-3 flex items-center gap-2">
                   <ListChecks size={12} /> Tasks ({teamTasks.length})
                 </h3>
                 {teamTasks.length === 0 ? (
-                  <div className="text-center text-gray-600 py-6 text-sm">
+                  <div className="text-center text-ink-faint py-6 text-sm">
                     No tasks in this team
                   </div>
                 ) : (
@@ -453,40 +453,40 @@ function TaskRow({ task }: { task: TeamTask }) {
       case 'in_progress':
         return <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-400"><Loader2 size={10} className="animate-spin" /> Active</span>
       case 'pending':
-        return <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full bg-gray-500/15 text-gray-400"><Clock size={10} /> Pending</span>
+        return <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full bg-ink-subtle/15 text-ink-muted"><Clock size={10} /> Pending</span>
       default:
         return null
     }
   }
 
   return (
-    <div className="bg-white/[0.03] rounded-lg border border-white/[0.06] overflow-hidden">
+    <div className="bg-overlay/[0.03] rounded-lg border border-overlay/[0.06] overflow-hidden">
       <div
-        className="flex items-center gap-3 p-3 cursor-pointer hover:bg-white/[0.02] transition-colors"
+        className="flex items-center gap-3 p-3 cursor-pointer hover:bg-overlay/[0.02] transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
-        <button className="text-gray-500 flex-shrink-0">
+        <button className="text-ink-subtle flex-shrink-0">
           {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
         </button>
-        <span className="text-xs text-gray-600 font-mono w-8 flex-shrink-0">#{task.id}</span>
+        <span className="text-xs text-ink-faint font-mono w-8 flex-shrink-0">#{task.id}</span>
         <div className="flex-1 min-w-0">
-          <span className="text-sm text-white truncate block">{task.subject}</span>
+          <span className="text-sm text-ink-bright truncate block">{task.subject}</span>
         </div>
         {task.owner && (
-          <span className="text-[10px] text-gray-500 px-1.5 py-0.5 rounded bg-white/[0.04] flex-shrink-0">{task.owner}</span>
+          <span className="text-[10px] text-ink-subtle px-1.5 py-0.5 rounded bg-overlay/[0.04] flex-shrink-0">{task.owner}</span>
         )}
         {getStatusBadge(task.status)}
       </div>
 
       {expanded && (
-        <div className="border-t border-white/[0.04] p-3 bg-black/20">
+        <div className="border-t border-overlay/[0.04] p-3 bg-black/20">
           {task.description && (
-            <p className="text-xs text-gray-400 mb-2 whitespace-pre-wrap">{task.description}</p>
+            <p className="text-xs text-ink-muted mb-2 whitespace-pre-wrap">{task.description}</p>
           )}
           {task.activeForm && (
             <p className="text-[10px] text-cyan-400/70 mb-2">Status: {task.activeForm}</p>
           )}
-          <div className="flex items-center gap-3 text-[10px] text-gray-600">
+          <div className="flex items-center gap-3 text-[10px] text-ink-faint">
             {task.blocks && task.blocks.length > 0 && (
               <span>Blocks: {task.blocks.join(', ')}</span>
             )}

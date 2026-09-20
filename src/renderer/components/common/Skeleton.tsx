@@ -17,7 +17,7 @@ export default function Skeleton({
   animation = 'shimmer',
   style
 }: SkeletonProps) {
-  const baseClasses = 'bg-white/[0.05] relative overflow-hidden'
+  const baseClasses = 'bg-overlay/[0.05] relative overflow-hidden'
 
   const variantClasses = {
     text: 'rounded h-4',
@@ -44,7 +44,7 @@ export default function Skeleton({
       style={dimensionStyle}
     >
       {animation === 'shimmer' && (
-        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-overlay/[0.08] to-transparent" />
       )}
     </div>
   )
@@ -101,7 +101,7 @@ export function SkeletonCard({
 }: SkeletonCardProps) {
   return (
     <div
-      className={`p-4 rounded-xl border border-white/[0.06] bg-white/[0.02] ${className}`}
+      className={`p-4 rounded-xl border border-overlay/[0.06] bg-overlay/[0.02] ${className}`}
     >
       {showImage && (
         <Skeleton
@@ -140,7 +140,7 @@ export function SkeletonList({
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
-          className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.06] bg-white/[0.02]"
+          className="flex items-center gap-3 p-3 rounded-xl border border-overlay/[0.06] bg-overlay/[0.02]"
           style={{ animationDelay: `${index * 50}ms` }}
         >
           {showAvatar && <Skeleton variant="circular" width={36} height={36} />}
@@ -178,7 +178,7 @@ export function SkeletonGrid({
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
-          className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]"
+          className="p-4 rounded-xl border border-overlay/[0.06] bg-overlay/[0.02]"
           style={{ animationDelay: `${index * 50}ms` }}
         >
           <div className="flex items-start justify-between mb-3">
@@ -210,7 +210,7 @@ export function SkeletonTable({
   return (
     <div className={`space-y-2 ${className}`}>
       {showHeader && (
-        <div className="flex gap-4 p-3 border-b border-white/[0.06]">
+        <div className="flex gap-4 p-3 border-b border-overlay/[0.06]">
           {Array.from({ length: columns }).map((_, index) => (
             <Skeleton
               key={index}

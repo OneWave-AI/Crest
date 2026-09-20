@@ -204,18 +204,18 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
       onClick={onClose}
     >
       <div
-        className="bg-[#141416] rounded-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden border border-white/[0.08] shadow-2xl flex flex-col"
+        className="bg-surface-3 rounded-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden border border-overlay/[0.08] shadow-2xl flex flex-col"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-sand-500/20 rounded-lg">
               <Brain size={20} className="text-sand-400" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Project Memory</h2>
-              <p className="text-xs text-gray-500 flex items-center gap-1">
+              <h2 className="text-lg font-semibold text-ink-bright">Project Memory</h2>
+              <p className="text-xs text-ink-subtle flex items-center gap-1">
                 <Sparkles size={10} />
                 Uses CLAUDE.md files - native Claude Code format
               </p>
@@ -226,14 +226,14 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             <button
               onClick={loadData}
               disabled={loading}
-              className="p-2 hover:bg-white/[0.06] rounded-lg text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+              className="p-2 hover:bg-overlay/[0.06] rounded-lg text-ink-muted hover:text-ink-bright transition-colors disabled:opacity-50"
               title="Refresh"
             >
               <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
             </button>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-white/[0.06] rounded-lg text-gray-400 hover:text-white transition-colors"
+              className="p-2 hover:bg-overlay/[0.06] rounded-lg text-ink-muted hover:text-ink-bright transition-colors"
             >
               <X size={18} />
             </button>
@@ -241,13 +241,13 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-white/[0.06]">
+        <div className="flex border-b border-overlay/[0.06]">
           <button
             onClick={() => setActiveTab('project')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === 'project'
                 ? 'text-sand-400 border-sand-400'
-                : 'text-gray-400 border-transparent hover:text-white'
+                : 'text-ink-muted border-transparent hover:text-ink-bright'
             }`}
           >
             <FileText size={14} />
@@ -259,7 +259,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === 'local'
                 ? 'text-sand-400 border-sand-400'
-                : 'text-gray-400 border-transparent hover:text-white'
+                : 'text-ink-muted border-transparent hover:text-ink-bright'
             }`}
           >
             <Lock size={14} />
@@ -271,7 +271,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === 'user'
                 ? 'text-sand-400 border-sand-400'
-                : 'text-gray-400 border-transparent hover:text-white'
+                : 'text-ink-muted border-transparent hover:text-ink-bright'
             }`}
           >
             <User size={14} />
@@ -279,7 +279,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             {fileStatus?.hasUser && <CheckCircle size={12} className="text-green-400" />}
           </button>
           {fileStatus?.hasRules && (
-            <div className="flex items-center gap-1 px-4 py-3 text-xs text-gray-500">
+            <div className="flex items-center gap-1 px-4 py-3 text-xs text-ink-subtle">
               <FolderTree size={12} />
               {stats?.rulesCount || 0} rules
             </div>
@@ -287,7 +287,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
         </div>
 
         {/* Toolbar */}
-        <div className="flex items-center justify-between px-6 py-3 border-b border-white/[0.06] bg-white/[0.01]">
+        <div className="flex items-center justify-between px-6 py-3 border-b border-overlay/[0.06] bg-overlay/[0.01]">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowAddForm(!showAddForm)}
@@ -313,7 +313,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
                 </button>
                 <button
                   onClick={() => setEditMode(null)}
-                  className="px-3 py-1.5 text-gray-400 hover:text-white text-sm"
+                  className="px-3 py-1.5 text-ink-muted hover:text-ink-bright text-sm"
                 >
                   Cancel
                 </button>
@@ -322,7 +322,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
               <button
                 onClick={() => handleStartEdit(activeTab)}
                 disabled={!hasContent(activeTab)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.06] text-gray-400 hover:text-white hover:bg-white/[0.1] rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-overlay/[0.06] text-ink-muted hover:text-ink-bright hover:bg-overlay/[0.1] rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
               >
                 <Edit3 size={14} />
                 Edit Raw
@@ -333,7 +333,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
           <div className="flex items-center gap-2">
             <button
               onClick={() => handleOpenEditor(activeTab)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400 hover:text-white text-sm transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-ink-muted hover:text-ink-bright text-sm transition-colors"
               title="Open in default editor"
             >
               <ExternalLink size={14} />
@@ -342,7 +342,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             {hasContent(activeTab) && activeTab !== 'user' && (
               <button
                 onClick={() => handleDelete(activeTab === 'project' ? 'main' : 'local')}
-                className="p-1.5 text-gray-400 hover:text-red-400 transition-colors"
+                className="p-1.5 text-ink-muted hover:text-red-400 transition-colors"
                 title="Delete file"
               >
                 <Trash2 size={14} />
@@ -353,15 +353,15 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
 
         {/* Add Form */}
         {showAddForm && (
-          <div className="px-6 py-4 border-b border-white/[0.06] bg-sand-500/5">
+          <div className="px-6 py-4 border-b border-overlay/[0.06] bg-sand-500/5">
             <div className="space-y-3">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-500">Category:</span>
+                  <span className="text-xs text-ink-subtle">Category:</span>
                   <select
                     value={newCategory}
                     onChange={e => setNewCategory(e.target.value as MemoryCategory)}
-                    className="bg-black/30 border border-white/10 rounded px-2 py-1 text-sm text-white"
+                    className="bg-black/30 border border-overlay/10 rounded px-2 py-1 text-sm text-ink-bright"
                   >
                     {Object.entries(categoryInfo).map(([key, { label }]) => (
                       <option key={key} value={key}>{label}</option>
@@ -369,11 +369,11 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
                   </select>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-500">Save to:</span>
+                  <span className="text-xs text-ink-subtle">Save to:</span>
                   <select
                     value={newTarget}
                     onChange={e => setNewTarget(e.target.value as 'main' | 'local' | 'rules')}
-                    className="bg-black/30 border border-white/10 rounded px-2 py-1 text-sm text-white"
+                    className="bg-black/30 border border-overlay/10 rounded px-2 py-1 text-sm text-ink-bright"
                   >
                     <option value="main">Project (CLAUDE.md)</option>
                     <option value="local">Local (CLAUDE.local.md)</option>
@@ -385,13 +385,13 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
                 value={newContent}
                 onChange={e => setNewContent(e.target.value)}
                 placeholder="What should Claude remember?"
-                className="w-full h-20 bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 resize-none focus:outline-none focus:border-sand-500/50"
+                className="w-full h-20 bg-black/30 border border-overlay/10 rounded-lg px-3 py-2 text-sm text-ink-bright placeholder-ink-faint resize-none focus:outline-none focus:border-sand-500/50"
                 autoFocus
               />
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setShowAddForm(false)}
-                  className="px-3 py-1.5 text-sm text-gray-400 hover:text-white"
+                  className="px-3 py-1.5 text-sm text-ink-muted hover:text-ink-bright"
                 >
                   Cancel
                 </button>
@@ -418,12 +418,12 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             <textarea
               value={editContent}
               onChange={e => setEditContent(e.target.value)}
-              className="w-full h-full min-h-[300px] bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-sm text-gray-200 font-mono resize-none focus:outline-none focus:border-sand-500/50"
+              className="w-full h-full min-h-[300px] bg-black/30 border border-overlay/10 rounded-lg px-4 py-3 text-sm text-ink-bright font-mono resize-none focus:outline-none focus:border-sand-500/50"
               placeholder="# Project Memory\n\n## Context\n\n- Your project context here..."
             />
           ) : !hasContent(activeTab) ? (
             // No content - show create prompt
-            <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+            <div className="flex flex-col items-center justify-center h-64 text-ink-subtle">
               <AlertCircle size={40} className="mb-3 opacity-50" />
               <p className="text-sm font-medium mb-1">
                 {activeTab === 'project' && 'No CLAUDE.md file found'}
@@ -446,7 +446,7 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
             // Show parsed sections
             <div className="space-y-3">
               {getCurrentSections().length === 0 ? (
-                <div className="text-center text-gray-500 py-8">
+                <div className="text-center text-ink-subtle py-8">
                   <Eye size={24} className="mx-auto mb-2 opacity-50" />
                   <p className="text-sm">File exists but has no parsed sections</p>
                   <button
@@ -464,33 +464,33 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
                   return (
                     <div
                       key={`${section.category}-${idx}`}
-                      className="bg-white/[0.02] rounded-xl border border-white/[0.06] overflow-hidden"
+                      className="bg-overlay/[0.02] rounded-xl border border-overlay/[0.06] overflow-hidden"
                     >
                       <button
                         onClick={() => toggleCategory(section.category)}
-                        className="w-full flex items-center justify-between px-4 py-3 hover:bg-white/[0.02] transition-colors"
+                        className="w-full flex items-center justify-between px-4 py-3 hover:bg-overlay/[0.02] transition-colors"
                       >
                         <div className="flex items-center gap-2">
                           <span className={`text-sm font-medium ${info.color}`}>
                             {section.title || info.label}
                           </span>
-                          <span className="text-xs text-gray-500">({section.items.length})</span>
+                          <span className="text-xs text-ink-subtle">({section.items.length})</span>
                         </div>
                         {isExpanded ? (
-                          <ChevronDown size={16} className="text-gray-500" />
+                          <ChevronDown size={16} className="text-ink-subtle" />
                         ) : (
-                          <ChevronRight size={16} className="text-gray-500" />
+                          <ChevronRight size={16} className="text-ink-subtle" />
                         )}
                       </button>
 
                       {isExpanded && (
-                        <div className="border-t border-white/[0.04] px-4 py-3 space-y-2">
+                        <div className="border-t border-overlay/[0.04] px-4 py-3 space-y-2">
                           {section.items.map((item, i) => (
                             <div
                               key={i}
-                              className="flex items-start gap-2 text-sm text-gray-300"
+                              className="flex items-start gap-2 text-sm text-ink"
                             >
-                              <span className="text-gray-600 mt-0.5">•</span>
+                              <span className="text-ink-faint mt-0.5">•</span>
                               <span className="whitespace-pre-wrap">{item}</span>
                             </div>
                           ))}
@@ -505,8 +505,8 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
               {activeTab === 'project' && memoryData && Object.values(memoryData.rules).some(r => r.length > 0) && (
                 <div className="mt-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <FolderTree size={14} className="text-gray-400" />
-                    <span className="text-sm font-medium text-gray-400">Rules (.claude/rules/)</span>
+                    <FolderTree size={14} className="text-ink-muted" />
+                    <span className="text-sm font-medium text-ink-muted">Rules (.claude/rules/)</span>
                   </div>
                   <div className="space-y-3">
                     {Object.entries(memoryData.rules)
@@ -518,33 +518,33 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
                         return (
                           <div
                             key={category}
-                            className="bg-white/[0.02] rounded-xl border border-white/[0.06] overflow-hidden"
+                            className="bg-overlay/[0.02] rounded-xl border border-overlay/[0.06] overflow-hidden"
                           >
                             <button
                               onClick={() => toggleCategory(category as MemoryCategory)}
-                              className="w-full flex items-center justify-between px-4 py-3 hover:bg-white/[0.02] transition-colors"
+                              className="w-full flex items-center justify-between px-4 py-3 hover:bg-overlay/[0.02] transition-colors"
                             >
                               <div className="flex items-center gap-2">
                                 <span className={`text-sm font-medium ${info.color}`}>
                                   {info.label}
                                 </span>
-                                <span className="text-xs text-gray-500">({items.length})</span>
+                                <span className="text-xs text-ink-subtle">({items.length})</span>
                               </div>
                               {isExpanded ? (
-                                <ChevronDown size={16} className="text-gray-500" />
+                                <ChevronDown size={16} className="text-ink-subtle" />
                               ) : (
-                                <ChevronRight size={16} className="text-gray-500" />
+                                <ChevronRight size={16} className="text-ink-subtle" />
                               )}
                             </button>
 
                             {isExpanded && (
-                              <div className="border-t border-white/[0.04] px-4 py-3 space-y-2">
+                              <div className="border-t border-overlay/[0.04] px-4 py-3 space-y-2">
                                 {items.map((item, i) => (
                                   <div
                                     key={i}
-                                    className="flex items-start gap-2 text-sm text-gray-300"
+                                    className="flex items-start gap-2 text-sm text-ink"
                                   >
-                                    <span className="text-gray-600 mt-0.5">•</span>
+                                    <span className="text-ink-faint mt-0.5">•</span>
                                     <span>{item}</span>
                                   </div>
                                 ))}
@@ -561,8 +561,8 @@ export default function MemoryPanel({ projectPath, isOpen, onClose }: MemoryPane
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-white/[0.06] bg-white/[0.02]">
-          <div className="flex items-center justify-between text-xs text-gray-500">
+        <div className="px-6 py-3 border-t border-overlay/[0.06] bg-overlay/[0.02]">
+          <div className="flex items-center justify-between text-xs text-ink-subtle">
             <div className="flex items-center gap-4">
               {stats && (
                 <>

@@ -107,7 +107,7 @@ function MemoryCard({
 
   return (
     <div
-      className={`group relative p-4 rounded-xl ${style.bg} border border-white/[0.04] transition-all duration-200 hover:border-white/[0.08] hover:scale-[1.01]`}
+      className={`group relative p-4 rounded-xl ${style.bg} border border-overlay/[0.04] transition-all duration-200 hover:border-overlay/[0.08] hover:scale-[1.01]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -115,21 +115,21 @@ function MemoryCard({
         <div className={`p-2 rounded-lg bg-black/20 ${style.color}`}>
           <Icon size={16} />
         </div>
-        <p className="flex-1 text-sm text-gray-200 leading-relaxed">{content}</p>
+        <p className="flex-1 text-sm text-ink-bright leading-relaxed">{content}</p>
       </div>
 
       {/* Hover actions */}
       <div className={`absolute top-2 right-2 flex items-center gap-1 transition-opacity ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
         <button
           onClick={onEdit}
-          className="p-1.5 rounded-lg bg-black/40 text-gray-400 hover:text-white hover:bg-black/60 transition-colors"
+          className="p-1.5 rounded-lg bg-black/40 text-ink-muted hover:text-ink-bright hover:bg-black/60 transition-colors"
           title="Edit"
         >
           <Edit3 size={12} />
         </button>
         <button
           onClick={onDelete}
-          className="p-1.5 rounded-lg bg-black/40 text-gray-400 hover:text-red-400 hover:bg-black/60 transition-colors"
+          className="p-1.5 rounded-lg bg-black/40 text-ink-muted hover:text-red-400 hover:bg-black/60 transition-colors"
           title="Delete"
         >
           <Trash2 size={12} />
@@ -313,19 +313,19 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
       onClick={onClose}
     >
       <div
-        className="bg-gradient-to-b from-[#1a1a1d] to-[#141416] rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-hidden border border-white/[0.08] shadow-2xl flex flex-col"
+        className="bg-gradient-to-b from-surface-4 to-surface-3 rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-hidden border border-overlay/[0.08] shadow-2xl flex flex-col"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-5 border-b border-white/[0.06]">
+        <div className="px-6 py-5 border-b border-overlay/[0.06]">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-gradient-to-br from-sand-500/30 to-pink-500/30 rounded-xl">
                 <Brain size={22} className="text-sand-300" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-white">Claude's Memory</h2>
-                <p className="text-sm text-gray-500 flex items-center gap-1.5">
+                <h2 className="text-xl font-semibold text-ink-bright">Claude's Memory</h2>
+                <p className="text-sm text-ink-subtle flex items-center gap-1.5">
                   <Sparkles size={12} className="text-sand-400" />
                   Teach Claude about your preferences
                 </p>
@@ -333,7 +333,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-white/[0.06] rounded-xl text-gray-400 hover:text-white transition-colors"
+              className="p-2 hover:bg-overlay/[0.06] rounded-xl text-ink-muted hover:text-ink-bright transition-colors"
             >
               <X size={20} />
             </button>
@@ -351,8 +351,8 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                   onClick={() => setScope(s)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
                     isActive
-                      ? `${info.bg} ${info.color} ring-1 ring-white/10`
-                      : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+                      ? `${info.bg} ${info.color} ring-1 ring-overlay/10`
+                      : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/[0.04]'
                   }`}
                 >
                   <Icon size={14} />
@@ -361,13 +361,13 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
               )
             })}
           </div>
-          <p className="text-xs text-gray-600 mt-2 ml-1">{scopeInfo[scope].desc}</p>
+          <p className="text-xs text-ink-faint mt-2 ml-1">{scopeInfo[scope].desc}</p>
         </div>
 
         {/* Main content area */}
         <div className="flex-1 overflow-y-auto">
           {/* Input area */}
-          <div className="p-6 border-b border-white/[0.04]">
+          <div className="p-6 border-b border-overlay/[0.04]">
             <div className="relative">
               <textarea
                 ref={inputRef}
@@ -375,7 +375,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={editingItem ? "Update this memory..." : "Tell Claude something to remember..."}
-                className="w-full h-24 bg-black/30 border border-white/[0.08] rounded-2xl px-4 py-3 pr-12 text-sm text-white placeholder-gray-500 resize-none focus:outline-none focus:border-sand-500/50 focus:ring-2 focus:ring-sand-500/20 transition-all"
+                className="w-full h-24 bg-black/30 border border-overlay/[0.08] rounded-2xl px-4 py-3 pr-12 text-sm text-ink-bright placeholder-ink-subtle resize-none focus:outline-none focus:border-sand-500/50 focus:ring-2 focus:ring-sand-500/20 transition-all"
               />
               <button
                 onClick={handleAdd}
@@ -383,7 +383,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                 className={`absolute bottom-3 right-3 p-2.5 rounded-xl transition-all ${
                   input.trim()
                     ? 'bg-sand-500 text-white hover:bg-sand-600 shadow-lg shadow-sand-500/25'
-                    : 'bg-white/[0.06] text-gray-500'
+                    : 'bg-overlay/[0.06] text-ink-subtle'
                 }`}
               >
                 {saving ? <RefreshCw size={16} className="animate-spin" /> : <Send size={16} />}
@@ -398,7 +398,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                   <button
                     key={i}
                     onClick={() => handleSuggestion(suggestion.prompt)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.04] hover:bg-white/[0.08] text-gray-400 hover:text-white rounded-full text-xs transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-overlay/[0.04] hover:bg-overlay/[0.08] text-ink-muted hover:text-ink-bright rounded-full text-xs transition-colors"
                   >
                     <Icon size={12} />
                     {suggestion.label}
@@ -410,7 +410,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs transition-colors ${
                   showExamples
                     ? 'bg-sand-500/20 text-sand-400'
-                    : 'bg-white/[0.04] hover:bg-white/[0.08] text-gray-400 hover:text-white'
+                    : 'bg-overlay/[0.04] hover:bg-overlay/[0.08] text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 <MessageSquare size={12} />
@@ -427,7 +427,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                     <button
                       key={i}
                       onClick={() => handleExample(example)}
-                      className="px-2.5 py-1 bg-black/30 hover:bg-black/50 text-gray-300 hover:text-white rounded-lg text-xs transition-colors text-left"
+                      className="px-2.5 py-1 bg-black/30 hover:bg-black/50 text-ink hover:text-ink-bright rounded-lg text-xs transition-colors text-left"
                     >
                       "{example}"
                     </button>
@@ -442,7 +442,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                 <span>Editing memory - press ⌘+Enter to update</span>
                 <button
                   onClick={() => { setEditingItem(null); setInput('') }}
-                  className="ml-auto text-gray-500 hover:text-white"
+                  className="ml-auto text-ink-subtle hover:text-ink-bright"
                 >
                   Cancel
                 </button>
@@ -453,7 +453,7 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
           {/* Memory list */}
           <div className="p-6">
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+              <div className="flex flex-col items-center justify-center py-12 text-ink-subtle">
                 <RefreshCw size={24} className="animate-spin mb-3 text-sand-400" />
                 <p className="text-sm">Loading memories...</p>
               </div>
@@ -462,8 +462,8 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
                 <div className="p-4 bg-sand-500/10 rounded-2xl mb-4">
                   <Coffee size={32} className="text-sand-400" />
                 </div>
-                <h3 className="text-lg font-medium text-white mb-2">No memories yet</h3>
-                <p className="text-sm text-gray-500 max-w-sm mb-4">
+                <h3 className="text-lg font-medium text-ink-bright mb-2">No memories yet</h3>
+                <p className="text-sm text-ink-subtle max-w-sm mb-4">
                   {scope === 'project' && "Tell Claude about this project - your tech stack, coding style, or anything it should know."}
                   {scope === 'private' && "Add personal notes that stay on your machine - shortcuts, local setup, or things just for you."}
                   {scope === 'global' && "Set preferences that apply everywhere - your favorite frameworks, coding philosophies, or pet peeves."}
@@ -483,12 +483,12 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
             ) : (
               <div className="space-y-3">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium text-gray-400">
+                  <h3 className="text-sm font-medium text-ink-muted">
                     {memories.length} {memories.length === 1 ? 'memory' : 'memories'}
                   </h3>
                   <button
                     onClick={loadData}
-                    className="text-xs text-gray-500 hover:text-white flex items-center gap-1"
+                    className="text-xs text-ink-subtle hover:text-ink-bright flex items-center gap-1"
                   >
                     <RefreshCw size={10} />
                     Refresh
@@ -509,9 +509,9 @@ export default function MemoryPanelNatural({ projectPath, isOpen, onClose }: Mem
         </div>
 
         {/* Footer hint */}
-        <div className="px-6 py-3 border-t border-white/[0.04] bg-black/20">
-          <p className="text-xs text-gray-600 text-center">
-            <span className="text-gray-500">⌘+Enter</span> to save • Claude reads these at the start of each session
+        <div className="px-6 py-3 border-t border-overlay/[0.04] bg-black/20">
+          <p className="text-xs text-ink-faint text-center">
+            <span className="text-ink-subtle">⌘+Enter</span> to save • Claude reads these at the start of each session
           </p>
         </div>
       </div>

@@ -342,16 +342,16 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-4">
                 <div
-                  className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-[#a85f48] flex items-center justify-center shadow-xl shadow-accent/25 transition-transform duration-300 hover:scale-105"
+                  className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-accent-700 flex items-center justify-center shadow-xl shadow-accent/25 transition-transform duration-300 hover:scale-105"
                   aria-hidden="true"
                 >
-                  <Icon size={26} className="text-white" />
+                  <Icon size={26} className="text-ink-bright" />
                 </div>
                 <div>
                   <span className="text-[10px] uppercase tracking-wider text-accent font-semibold" aria-label={`Step ${currentStep + 1} of ${TOUR_STEPS.length}`}>
                     Step {currentStep + 1} of {TOUR_STEPS.length}
                   </span>
-                  <h3 id="tour-step-title" className="text-lg font-semibold text-white mt-1">
+                  <h3 id="tour-step-title" className="text-lg font-semibold text-ink-bright mt-1">
                     {step.title}
                   </h3>
                 </div>
@@ -360,7 +360,7 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
               {/* Close button with rotation animation */}
               <button
                 onClick={handleSkip}
-                className="group p-2 rounded-xl text-gray-500 hover:text-white hover:bg-white/[0.06] transition-all duration-200 focus-ring"
+                className="group p-2 rounded-xl text-ink-subtle hover:text-ink-bright hover:bg-overlay/[0.06] transition-all duration-200 focus-ring"
                 aria-label="Skip tour"
               >
                 <X size={18} aria-hidden="true" className="transition-transform duration-300 group-hover:rotate-90" />
@@ -370,7 +370,7 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
             {/* Description with smooth transition */}
             <p
               id="tour-step-description"
-              className={`text-gray-400 text-sm leading-relaxed mb-6 transition-all duration-300 ${
+              className={`text-ink-muted text-sm leading-relaxed mb-6 transition-all duration-300 ${
                 isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
               }`}
             >
@@ -384,10 +384,10 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
               aria-valuemin={1}
               aria-valuemax={TOUR_STEPS.length}
               aria-label={`Tour progress: step ${currentStep + 1} of ${TOUR_STEPS.length}`}
-              className="h-1 bg-white/[0.06] rounded-full overflow-hidden mb-5"
+              className="h-1 bg-overlay/[0.06] rounded-full overflow-hidden mb-5"
             >
               <div
-                className="h-full bg-gradient-to-r from-accent to-[#e8a088] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
+                className="h-full bg-gradient-to-r from-accent to-accent-300 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -407,10 +407,10 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
                   onClick={() => goToStep(index)}
                   className={`transition-all duration-300 ease-out rounded-full focus-ring ${
                     index === currentStep
-                      ? 'w-7 h-2 bg-gradient-to-r from-accent to-[#e8a088]'
+                      ? 'w-7 h-2 bg-gradient-to-r from-accent to-accent-300'
                       : index < currentStep
                       ? 'w-2 h-2 bg-accent/50 hover:bg-accent/70 hover:scale-125'
-                      : 'w-2 h-2 bg-white/20 hover:bg-white/35 hover:scale-125'
+                      : 'w-2 h-2 bg-overlay/20 hover:bg-overlay/35 hover:scale-125'
                   }`}
                 />
               ))}
@@ -420,7 +420,7 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
             <nav className="flex items-center justify-between" aria-label="Tour navigation">
               <button
                 onClick={handleSkip}
-                className="px-4 py-2.5 text-sm text-gray-500 hover:text-gray-300 transition-all duration-200 focus-ring rounded-xl hover:bg-white/[0.03]"
+                className="px-4 py-2.5 text-sm text-ink-subtle hover:text-ink transition-all duration-200 focus-ring rounded-xl hover:bg-overlay/[0.03]"
                 aria-label="Skip welcome tour"
               >
                 Skip tour
@@ -430,7 +430,7 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
                 {!isFirstStep && (
                   <button
                     onClick={handlePrevious}
-                    className="flex items-center gap-1.5 px-4 py-2.5 text-sm text-gray-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/[0.1] rounded-xl transition-all duration-200 focus-ring active:scale-[0.98]"
+                    className="flex items-center gap-1.5 px-4 py-2.5 text-sm text-ink hover:text-ink-bright bg-overlay/[0.04] hover:bg-overlay/[0.08] border border-overlay/[0.06] hover:border-overlay/[0.1] rounded-xl transition-all duration-200 focus-ring active:scale-[0.98]"
                     aria-label={`Go to previous step: ${TOUR_STEPS[currentStep - 1]?.title}`}
                   >
                     <ChevronLeft size={16} aria-hidden="true" />
@@ -440,7 +440,7 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
 
                 <button
                   onClick={handleNext}
-                  className="flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-accent to-accent-600 hover:from-[#d8866a] hover:to-accent rounded-xl shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all duration-200 focus-ring active:scale-[0.98] hover:scale-[1.02]"
+                  className="flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-accent to-accent-600 hover:from-accent-500 hover:to-accent rounded-xl shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all duration-200 focus-ring active:scale-[0.98] hover:scale-[1.02]"
                   aria-label={isLastStep ? 'Complete tour and get started' : `Go to next step: ${TOUR_STEPS[currentStep + 1]?.title}`}
                 >
                   {isLastStep ? (
@@ -461,22 +461,22 @@ export default function WelcomeTour({ onComplete }: WelcomeTourProps) {
         </div>
 
         {/* Keyboard hints */}
-        <div className="flex items-center justify-center gap-4 mt-4 text-[11px] text-gray-600" aria-hidden="true">
+        <div className="flex items-center justify-center gap-4 mt-4 text-[11px] text-ink-faint" aria-hidden="true">
           <span className="flex items-center gap-1.5">
-            <kbd className="px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] font-mono text-gray-500">Esc</kbd>
+            <kbd className="px-1.5 py-0.5 rounded-md bg-overlay/[0.04] border border-overlay/[0.08] font-mono text-ink-subtle">Esc</kbd>
             <span>to skip</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <kbd className="px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] font-mono text-gray-500">
+            <kbd className="px-1.5 py-0.5 rounded-md bg-overlay/[0.04] border border-overlay/[0.08] font-mono text-ink-subtle">
               <ChevronLeft size={10} className="inline" />
             </kbd>
-            <kbd className="px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] font-mono text-gray-500">
+            <kbd className="px-1.5 py-0.5 rounded-md bg-overlay/[0.04] border border-overlay/[0.08] font-mono text-ink-subtle">
               <ChevronRight size={10} className="inline" />
             </kbd>
             <span>to navigate</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <kbd className="px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] font-mono text-gray-500">{'\u21B5'}</kbd>
+            <kbd className="px-1.5 py-0.5 rounded-md bg-overlay/[0.04] border border-overlay/[0.08] font-mono text-ink-subtle">{'\u21B5'}</kbd>
             <span>to continue</span>
           </span>
         </div>

@@ -178,7 +178,7 @@ export function ContextMenu({ items, position, onClose }: ContextMenuProps) {
       ref={menuRef}
       role="menu"
       aria-orientation="vertical"
-      className={`fixed z-[200] min-w-[200px] py-1.5 rounded-xl border border-white/[0.08] bg-[#1a1a1a]/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)_inset] transition-all duration-150 origin-top-left ${
+      className={`fixed z-[200] min-w-[200px] py-1.5 rounded-xl border border-overlay/[0.08] bg-surface-4/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)_inset] transition-all duration-150 origin-top-left ${
         isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
       }`}
       style={{
@@ -191,7 +191,7 @@ export function ContextMenu({ items, position, onClose }: ContextMenuProps) {
           return (
             <div
               key={item.id}
-              className="my-1.5 mx-3 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              className="my-1.5 mx-3 h-px bg-gradient-to-r from-transparent via-overlay/10 to-transparent"
             />
           )
         }
@@ -294,7 +294,7 @@ function ContextMenuItemComponent({
               : 'bg-accent/15 text-white'
             : item.danger
               ? 'text-red-400 hover:bg-red-500/20'
-              : 'text-gray-300 hover:bg-white/[0.06] hover:text-white'
+              : 'text-ink hover:bg-overlay/[0.06] hover:text-ink-bright'
       }`}
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
@@ -310,7 +310,7 @@ function ContextMenuItemComponent({
               ? 'text-red-400'
               : isFocused || isSubmenuOpen
                 ? 'text-accent'
-                : 'text-gray-500 group-hover:text-gray-400'
+                : 'text-ink-subtle group-hover:text-ink-muted'
           }`}
         />
       )}
@@ -320,7 +320,7 @@ function ContextMenuItemComponent({
 
       {/* Shortcut */}
       {item.shortcut && (
-        <span className="text-[11px] text-gray-500 font-mono tracking-wide">
+        <span className="text-[11px] text-ink-subtle font-mono tracking-wide">
           {item.shortcut}
         </span>
       )}
@@ -330,7 +330,7 @@ function ContextMenuItemComponent({
         <ChevronRight
           size={14}
           className={`flex-shrink-0 transition-colors duration-100 ${
-            isFocused || isSubmenuOpen ? 'text-accent' : 'text-gray-500'
+            isFocused || isSubmenuOpen ? 'text-accent' : 'text-ink-subtle'
           }`}
         />
       )}
@@ -399,7 +399,7 @@ function ContextMenuSubmenu({ items, position, onClose, onBack }: ContextMenuSub
       ref={submenuRef}
       role="menu"
       aria-orientation="vertical"
-      className={`fixed z-[201] min-w-[180px] py-1.5 rounded-xl border border-white/[0.08] bg-[#1a1a1a]/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)_inset] transition-all duration-150 origin-top-left ${
+      className={`fixed z-[201] min-w-[180px] py-1.5 rounded-xl border border-overlay/[0.08] bg-surface-4/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)_inset] transition-all duration-150 origin-top-left ${
         isVisible ? 'opacity-100 scale-100 translate-x-0' : 'opacity-0 scale-95 -translate-x-1'
       }`}
       style={{
@@ -412,7 +412,7 @@ function ContextMenuSubmenu({ items, position, onClose, onBack }: ContextMenuSub
           return (
             <div
               key={item.id}
-              className="my-1.5 mx-3 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              className="my-1.5 mx-3 h-px bg-gradient-to-r from-transparent via-overlay/10 to-transparent"
             />
           )
         }
@@ -429,7 +429,7 @@ function ContextMenuSubmenu({ items, position, onClose, onBack }: ContextMenuSub
                 ? 'opacity-40 cursor-not-allowed'
                 : item.danger
                   ? 'text-red-400 hover:bg-red-500/20'
-                  : 'text-gray-300 hover:bg-white/[0.06] hover:text-white'
+                  : 'text-ink hover:bg-overlay/[0.06] hover:text-ink-bright'
             }`}
             onClick={() => handleItemClick(item)}
           >
@@ -440,13 +440,13 @@ function ContextMenuSubmenu({ items, position, onClose, onBack }: ContextMenuSub
                 className={`flex-shrink-0 transition-colors duration-100 ${
                   item.danger
                     ? 'text-red-400'
-                    : 'text-gray-500 group-hover:text-gray-400'
+                    : 'text-ink-subtle group-hover:text-ink-muted'
                 }`}
               />
             )}
             <span className="flex-1 text-[13px] font-medium">{item.label}</span>
             {item.shortcut && (
-              <span className="text-[11px] text-gray-500 font-mono tracking-wide">
+              <span className="text-[11px] text-ink-subtle font-mono tracking-wide">
                 {item.shortcut}
               </span>
             )}

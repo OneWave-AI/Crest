@@ -153,7 +153,7 @@ function App() {
 
   return (
     <ToastProvider>
-      <div className="flex h-full flex-col bg-[#0d0d0d]">
+      <div className="flex h-full flex-col bg-surface-1">
         <Header
           cwd={cwd}
           onSelectFolder={handleSelectFolder}
@@ -194,7 +194,7 @@ function App() {
               {/* Toggle handle */}
               <button
                 onClick={() => setSidebarOpen(prev => !prev)}
-                className={`absolute top-1/2 -translate-y-1/2 z-10 w-4 h-10 flex items-center justify-center rounded-r bg-[#1a1a1c] border border-l-0 border-white/[0.06] text-gray-500 hover:text-white hover:bg-[#252528] transition-colors ${sidebarOpen ? '-right-4' : 'right-[-16px]'}`}
+                className={`absolute top-1/2 -translate-y-1/2 z-10 w-4 h-10 flex items-center justify-center rounded-r bg-surface-4 border border-l-0 border-overlay/[0.06] text-ink-subtle hover:text-ink-bright hover:bg-surface-6 transition-colors ${sidebarOpen ? '-right-4' : 'right-[-16px]'}`}
                 title={sidebarOpen ? 'Hide Sidebar (Cmd+B)' : 'Show Sidebar (Cmd+B)'}
               >
                 <ChevronRight size={12} className={`transition-transform ${sidebarOpen ? 'rotate-180' : ''}`} />

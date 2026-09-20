@@ -57,12 +57,12 @@ function renderMessageContent(content: string): React.ReactNode {
     parts.push(
       <div key={`code-${match.index}`} className="my-2 rounded-lg overflow-hidden">
         {language && (
-          <div className="px-3 py-1.5 text-xs text-gray-400 bg-black/40 border-b border-white/5">
+          <div className="px-3 py-1.5 text-xs text-ink-muted bg-black/40 border-b border-overlay/5">
             {language}
           </div>
         )}
         <pre className="p-3 bg-black/30 text-sm overflow-x-auto">
-          <code className="text-gray-300">{code}</code>
+          <code className="text-ink">{code}</code>
         </pre>
       </div>
     )
@@ -560,29 +560,29 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
   }, [])
 
   return (
-    <div className={`h-full flex flex-col bg-[#0d0d0d] transition-all duration-500 ease-out ${
+    <div className={`h-full flex flex-col bg-surface-1 transition-all duration-500 ease-out ${
       pageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
     }`}>
       {/* Header */}
-      <div className="border-b border-white/[0.06]">
+      <div className="border-b border-overlay/[0.06]">
         {/* Top row - Title and Search */}
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
             <button
               onClick={onBack}
-              className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+              className="p-1.5 rounded-lg text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors"
             >
               <ArrowLeft size={18} />
             </button>
-            <h1 className="text-lg font-semibold text-white">History</h1>
+            <h1 className="text-lg font-semibold text-ink-bright">History</h1>
             {/* Tabs */}
-            <div className="flex rounded-lg bg-white/[0.04] p-0.5">
+            <div className="flex rounded-lg bg-overlay/[0.04] p-0.5">
               <button
                 onClick={() => setActiveTab('conversations')}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs transition-all ${
                   activeTab === 'conversations'
                     ? 'bg-accent text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 <MessageSquare size={12} />
@@ -593,7 +593,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs transition-all ${
                   activeTab === 'superagent'
                     ? 'bg-sand-600 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 <Zap size={12} />
@@ -613,14 +613,14 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
             <div className="relative">
               <Search
                 size={14}
-                className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500"
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-subtle"
               />
               <input
                 type="text"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-48 pl-8 pr-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50"
+                className="w-48 pl-8 pr-3 py-1.5 rounded-lg bg-overlay/5 border border-overlay/10 text-sm text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-accent/50"
               />
               {searching && (
                 <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
@@ -635,7 +635,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
               className={`p-1.5 rounded-lg transition-colors ${
                 showPreviewPanel
                   ? 'bg-accent/20 text-accent'
-                  : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                  : 'bg-overlay/5 text-ink-muted hover:text-ink-bright hover:bg-overlay/10'
               }`}
               title={showPreviewPanel ? 'Hide preview' : 'Show preview'}
             >
@@ -646,17 +646,17 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
 
         {/* Sort & Filter Bar - Only for conversations tab */}
         {activeTab === 'conversations' && (
-        <div className="flex items-center gap-4 px-4 py-2 bg-white/[0.02]">
+        <div className="flex items-center gap-4 px-4 py-2 bg-overlay/[0.02]">
           {/* Sort Options */}
           <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase tracking-wider text-gray-600">Sort</span>
-            <div className="flex rounded-lg bg-white/[0.04] p-0.5">
+            <span className="text-[10px] uppercase tracking-wider text-ink-faint">Sort</span>
+            <div className="flex rounded-lg bg-overlay/[0.04] p-0.5">
               <button
                 onClick={() => setSortBy('newest')}
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   sortBy === 'newest'
                     ? 'bg-accent text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 Newest
@@ -666,7 +666,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   sortBy === 'oldest'
                     ? 'bg-accent text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 Oldest
@@ -676,7 +676,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   sortBy === 'project-asc'
                     ? 'bg-accent text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 Project A-Z
@@ -686,7 +686,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   sortBy === 'project-desc'
                     ? 'bg-accent text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 Project Z-A
@@ -694,18 +694,18 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
             </div>
           </div>
 
-          <div className="w-px h-5 bg-white/10" />
+          <div className="w-px h-5 bg-overlay/10" />
 
           {/* Group By */}
           <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase tracking-wider text-gray-600">Group</span>
-            <div className="flex rounded-lg bg-white/[0.04] p-0.5">
+            <span className="text-[10px] uppercase tracking-wider text-ink-faint">Group</span>
+            <div className="flex rounded-lg bg-overlay/[0.04] p-0.5">
               <button
                 onClick={() => setGroupBy('none')}
                 className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                   groupBy === 'none'
                     ? 'bg-sand-500 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 None
@@ -715,7 +715,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs transition-all ${
                   groupBy === 'project'
                     ? 'bg-sand-500 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 <Folder size={10} />
@@ -726,7 +726,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs transition-all ${
                   groupBy === 'date'
                     ? 'bg-sand-500 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 <Calendar size={10} />
@@ -735,12 +735,12 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
             </div>
           </div>
 
-          <div className="w-px h-5 bg-white/10" />
+          <div className="w-px h-5 bg-overlay/10" />
 
           {/* Date Filter */}
           <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase tracking-wider text-gray-600">Time</span>
-            <div className="flex rounded-lg bg-white/[0.04] p-0.5">
+            <span className="text-[10px] uppercase tracking-wider text-ink-faint">Time</span>
+            <div className="flex rounded-lg bg-overlay/[0.04] p-0.5">
               {(['all', 'today', 'week', 'month'] as DateFilter[]).map((filter) => (
                 <button
                   key={filter}
@@ -748,7 +748,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                   className={`px-2.5 py-1 rounded-md text-xs transition-all ${
                     dateFilter === filter
                       ? 'bg-blue-500 text-white shadow-sm'
-                      : 'text-gray-400 hover:text-white'
+                      : 'text-ink-muted hover:text-ink-bright'
                   }`}
                 >
                   {filter === 'all' ? 'All Time' : filter === 'week' ? '7 Days' : filter === 'month' ? '30 Days' : 'Today'}
@@ -765,14 +765,14 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
         {/* Left Panel - List */}
         <div
           ref={scrollContainerRef}
-          className={`overflow-y-auto p-4 border-r border-white/[0.06] transition-all duration-300 ${
+          className={`overflow-y-auto p-4 border-r border-overlay/[0.06] transition-all duration-300 ${
             showPreviewPanel ? 'w-[380px] min-w-[380px]' : 'flex-1'
           }`}
         >
           {/* Super Agent Sessions Tab */}
           {activeTab === 'superagent' ? (
             loadingSuperAgent ? (
-              <div className="flex items-center justify-center h-full text-gray-500">
+              <div className="flex items-center justify-center h-full text-ink-subtle">
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-8 h-8 border-2 border-sand-600/30 border-t-sand-600 rounded-full animate-spin" />
                   <span className="text-sm">Loading Super Agent sessions...</span>
@@ -783,8 +783,8 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 <div className="p-4 rounded-2xl bg-gradient-to-br from-sand-600/20 to-sand-600/10 mb-4">
                   <Zap size={32} className="text-sand-400" />
                 </div>
-                <h3 className="text-base font-medium text-white mb-1">No Super Agent sessions yet</h3>
-                <p className="text-xs text-gray-500 max-w-xs">
+                <h3 className="text-base font-medium text-ink-bright mb-1">No Super Agent sessions yet</h3>
+                <p className="text-xs text-ink-subtle max-w-xs">
                   Run Super Agent to let Claude work autonomously on tasks. Sessions will appear here.
                 </p>
               </div>
@@ -794,10 +794,10 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                   <div
                     key={session.id}
                     onClick={() => setSelectedSession(session)}
-                    className={`p-3 rounded-lg border cursor-pointer transition-all hover:bg-white/[0.02] ${
+                    className={`p-3 rounded-lg border cursor-pointer transition-all hover:bg-overlay/[0.02] ${
                       selectedSession?.id === session.id
                         ? 'bg-sand-600/10 border-sand-600/30'
-                        : 'bg-white/[0.02] border-white/[0.06]'
+                        : 'bg-overlay/[0.02] border-overlay/[0.06]'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
@@ -823,13 +823,13 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                           e.stopPropagation()
                           setDeleteSuperAgentTarget(session)
                         }}
-                        className="p-1 rounded hover:bg-red-500/20 text-gray-500 hover:text-red-400 transition-colors"
+                        className="p-1 rounded hover:bg-red-500/20 text-ink-subtle hover:text-red-400 transition-colors"
                       >
                         <Trash2 size={12} />
                       </button>
                     </div>
-                    <p className="text-sm text-white mb-2 line-clamp-2">{session.task}</p>
-                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                    <p className="text-sm text-ink-bright mb-2 line-clamp-2">{session.task}</p>
+                    <div className="flex items-center gap-3 text-xs text-ink-subtle">
                       <span className="flex items-center gap-1">
                         <Clock size={10} />
                         {formatDate(session.startTime)}
@@ -844,7 +844,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                       </span>
                     </div>
                     {session.projectFolder && (
-                      <div className="flex items-center gap-1 mt-2 text-xs text-gray-600">
+                      <div className="flex items-center gap-1 mt-2 text-xs text-ink-faint">
                         <Folder size={10} />
                         <span className="truncate">{session.projectFolder.split('/').pop()}</span>
                       </div>
@@ -859,7 +859,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
               onRetry={loadConversations}
             />
           ) : loading ? (
-            <div className="flex items-center justify-center h-full text-gray-500">
+            <div className="flex items-center justify-center h-full text-ink-subtle">
               <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                 <span className="text-sm">Loading conversations...</span>
@@ -869,11 +869,11 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
             <NoConversationsEmptyState onStartNew={onBack} />
           ) : filteredAndSortedConversations.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="p-3 rounded-xl bg-white/5 mb-3">
-                <Search size={24} className="text-gray-500" />
+              <div className="p-3 rounded-xl bg-overlay/5 mb-3">
+                <Search size={24} className="text-ink-subtle" />
               </div>
-              <h3 className="text-base font-medium text-white mb-1">No matches</h3>
-              <p className="text-xs text-gray-500 max-w-xs">
+              <h3 className="text-base font-medium text-ink-bright mb-1">No matches</h3>
+              <p className="text-xs text-ink-subtle max-w-xs">
                 Try adjusting your search or filters.
               </p>
             </div>
@@ -888,10 +888,10 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                       ) : (
                         <Calendar size={12} className="text-accent" />
                       )}
-                      <span className="text-xs font-medium text-gray-400">
+                      <span className="text-xs font-medium text-ink-muted">
                         {groupBy === 'project' ? group.split('/').pop() || group : group}
                       </span>
-                      <span className="text-xs text-gray-600">{convos.length}</span>
+                      <span className="text-xs text-ink-faint">{convos.length}</span>
                     </div>
                   )}
                   <div className="space-y-1.5">
@@ -919,8 +919,8 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
               {/* Load More / Infinite Scroll Indicator */}
               {hasMore && (
                 <div className="flex justify-center py-3">
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <div className="w-3 h-3 border-2 border-gray-600 border-t-gray-400 rounded-full animate-spin" />
+                  <div className="flex items-center gap-2 text-xs text-ink-subtle">
+                    <div className="w-3 h-3 border-2 border-ink-faint border-t-ink-muted rounded-full animate-spin" />
                     Scroll for more...
                   </div>
                 </div>
@@ -931,12 +931,12 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
 
         {/* Right Panel - Preview */}
         {showPreviewPanel && (
-          <div className="flex-1 flex flex-col bg-[#0a0a0a] overflow-hidden">
+          <div className="flex-1 flex flex-col bg-surface-0 overflow-hidden">
             {/* Super Agent Session Preview - Side by Side */}
             {activeTab === 'superagent' && selectedSession ? (
               <>
                 {/* Session Header */}
-                <div className="px-4 py-3 border-b border-white/[0.06]">
+                <div className="px-4 py-3 border-b border-overlay/[0.06]">
                   <div className="flex items-center gap-2 mb-2">
                     <div className={`p-1.5 rounded-lg ${
                       selectedSession.status === 'completed' ? 'bg-green-500/20' :
@@ -954,8 +954,8 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                       {selectedSession.status}
                     </span>
                   </div>
-                  <p className="text-sm text-white mb-2">{selectedSession.task}</p>
-                  <div className="flex items-center gap-3 text-xs text-gray-500">
+                  <p className="text-sm text-ink-bright mb-2">{selectedSession.task}</p>
+                  <div className="flex items-center gap-3 text-xs text-ink-subtle">
                     <span className="flex items-center gap-1">
                       <Clock size={10} />
                       {formatDate(selectedSession.startTime)}
@@ -976,7 +976,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 {/* Side by Side: Activity Log + Claude Conversation */}
                 <div className="flex-1 flex overflow-hidden">
                   {/* Left: Activity Log */}
-                  <div className="w-1/2 border-r border-white/[0.06] overflow-y-auto p-4">
+                  <div className="w-1/2 border-r border-overlay/[0.06] overflow-y-auto p-4">
                     <h4 className="text-xs font-medium text-sand-400 uppercase tracking-wider mb-3 flex items-center gap-2">
                       <Zap size={12} />
                       Super Agent Log ({selectedSession.activityLog.length})
@@ -994,7 +994,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                             entry.type === 'working' ? 'bg-orange-500/10 border-orange-500/20 text-orange-300' :
                             entry.type === 'waiting' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-300' :
                             entry.type === 'decision' ? 'bg-cyan-500/10 border-cyan-500/20 text-cyan-300' :
-                            'bg-white/5 border-white/10 text-gray-400'
+                            'bg-overlay/5 border-overlay/10 text-ink-muted'
                           }`}
                         >
                           <div className="flex items-center gap-2 mb-1">
@@ -1017,16 +1017,16 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                     </h4>
                     {loadingLinkedMessages ? (
                       <div className="flex items-center justify-center py-8">
-                        <div className="flex flex-col items-center gap-3 text-gray-500">
+                        <div className="flex flex-col items-center gap-3 text-ink-subtle">
                           <div className="w-6 h-6 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                           <span className="text-xs">Loading conversation...</span>
                         </div>
                       </div>
                     ) : linkedMessages.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center py-8 text-gray-500">
+                      <div className="flex flex-col items-center justify-center py-8 text-ink-subtle">
                         <MessageSquare size={24} className="mb-2 opacity-50" />
                         <span className="text-xs">No linked conversation found</span>
-                        <span className="text-[10px] text-gray-600 mt-1">Conversations are matched by project folder and time</span>
+                        <span className="text-[10px] text-ink-faint mt-1">Conversations are matched by project folder and time</span>
                       </div>
                     ) : (
                       <div className="space-y-3">
@@ -1036,7 +1036,7 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                             className={`p-3 rounded-lg text-xs ${
                               message.type === 'human'
                                 ? 'bg-blue-500/10 border border-blue-500/20 text-blue-200'
-                                : 'bg-[#1a1a1a] border border-white/[0.06] text-gray-300'
+                                : 'bg-surface-4 border border-overlay/[0.06] text-ink'
                             }`}
                           >
                             <div className="flex items-center gap-2 mb-1.5">
@@ -1067,28 +1067,28 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 </div>
               </>
             ) : activeTab === 'superagent' ? (
-              <div className="flex-1 flex flex-col items-center justify-center text-gray-500">
+              <div className="flex-1 flex flex-col items-center justify-center text-ink-subtle">
                 <div className="p-4 rounded-2xl bg-sand-500/10 mb-4">
                   <Zap size={40} strokeWidth={1.5} className="text-sand-400" />
                 </div>
-                <h3 className="text-base font-medium text-gray-400 mb-1">Select a session</h3>
-                <p className="text-sm text-gray-600">Click on a session to view its activity log</p>
+                <h3 className="text-base font-medium text-ink-muted mb-1">Select a session</h3>
+                <p className="text-sm text-ink-faint">Click on a session to view its activity log</p>
               </div>
             ) : selectedConversation ? (
               <>
                 {/* Preview Header */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-overlay/[0.06]">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <Folder size={12} className="text-gray-500 flex-shrink-0" />
-                      <span className="text-xs text-gray-500 truncate">
+                      <Folder size={12} className="text-ink-subtle flex-shrink-0" />
+                      <span className="text-xs text-ink-subtle truncate">
                         {selectedConversation.projectFolder.split('/').pop() || selectedConversation.projectFolder}
                       </span>
                       {selectedConversation.pinned && (
                         <Pin size={10} className="text-accent flex-shrink-0" />
                       )}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-gray-400">
+                    <div className="flex items-center gap-3 text-xs text-ink-muted">
                       <span className="flex items-center gap-1">
                         <Clock size={10} />
                         {formatDate(selectedConversation.timestamp)}
@@ -1125,13 +1125,13 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 >
                   {loadingPreview ? (
                     <div className="flex items-center justify-center h-full">
-                      <div className="flex flex-col items-center gap-3 text-gray-500">
+                      <div className="flex flex-col items-center gap-3 text-ink-subtle">
                         <div className="w-6 h-6 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                         <span className="text-sm">Loading messages...</span>
                       </div>
                     </div>
                   ) : previewMessages.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                    <div className="flex flex-col items-center justify-center h-full text-ink-subtle">
                       <MessageSquare size={32} className="mb-2 opacity-50" />
                       <span className="text-sm">No messages found</span>
                     </div>
@@ -1153,12 +1153,12 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                 </div>
               </>
             ) : (
-              <div className="flex-1 flex flex-col items-center justify-center text-gray-500">
-                <div className="p-4 rounded-2xl bg-white/[0.02] mb-4">
+              <div className="flex-1 flex flex-col items-center justify-center text-ink-subtle">
+                <div className="p-4 rounded-2xl bg-overlay/[0.02] mb-4">
                   <MessageSquare size={40} strokeWidth={1.5} />
                 </div>
-                <h3 className="text-base font-medium text-gray-400 mb-1">Select a conversation</h3>
-                <p className="text-sm text-gray-600">Click on a conversation to preview its messages</p>
+                <h3 className="text-base font-medium text-ink-muted mb-1">Select a conversation</h3>
+                <p className="text-sm text-ink-faint">Click on a conversation to preview its messages</p>
               </div>
             )}
           </div>
@@ -1168,35 +1168,35 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
       {/* Delete Confirmation Modal */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md mx-4 rounded-xl border border-white/10 bg-[#1a1a1a] shadow-2xl overflow-hidden">
+          <div className="w-full max-w-md mx-4 rounded-xl border border-overlay/10 bg-surface-4 shadow-2xl overflow-hidden">
             <div className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 rounded-lg bg-red-500/10">
                   <AlertTriangle size={20} className="text-red-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-white">Delete Conversation</h3>
+                <h3 className="text-lg font-semibold text-ink-bright">Delete Conversation</h3>
               </div>
 
-              <p className="text-sm text-gray-400 mb-2">
+              <p className="text-sm text-ink-muted mb-2">
                 Are you sure you want to delete this conversation? This action cannot be undone.
               </p>
 
-              <div className="p-3 rounded-lg bg-white/5 mb-4">
-                <div className="flex items-center gap-2 text-xs text-gray-500 mb-1">
+              <div className="p-3 rounded-lg bg-overlay/5 mb-4">
+                <div className="flex items-center gap-2 text-xs text-ink-subtle mb-1">
                   <Folder size={12} />
                   {deleteTarget.projectFolder}
                 </div>
-                <p className="text-sm text-white truncate">
+                <p className="text-sm text-ink-bright truncate">
                   {deleteTarget.preview || 'No preview available'}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/[0.06] bg-white/[0.02]">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-overlay/[0.06] bg-overlay/[0.02]">
               <button
                 onClick={() => setDeleteTarget(null)}
                 disabled={deleting}
-                className="px-4 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors disabled:opacity-50"
+                className="px-4 py-2 rounded-lg text-sm text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -1225,21 +1225,21 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
       {/* Super Agent Delete Confirmation Modal */}
       {deleteSuperAgentTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md mx-4 rounded-xl border border-white/10 bg-[#1a1a1a] shadow-2xl overflow-hidden">
+          <div className="w-full max-w-md mx-4 rounded-xl border border-overlay/10 bg-surface-4 shadow-2xl overflow-hidden">
             <div className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 rounded-lg bg-red-500/10">
                   <AlertTriangle size={20} className="text-red-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-white">Delete Super Agent Session</h3>
+                <h3 className="text-lg font-semibold text-ink-bright">Delete Super Agent Session</h3>
               </div>
 
-              <p className="text-sm text-gray-400 mb-2">
+              <p className="text-sm text-ink-muted mb-2">
                 Are you sure you want to delete this Super Agent session? This action cannot be undone.
               </p>
 
-              <div className="p-3 rounded-lg bg-white/5 mb-4">
-                <div className="flex items-center gap-2 text-xs text-gray-500 mb-1">
+              <div className="p-3 rounded-lg bg-overlay/5 mb-4">
+                <div className="flex items-center gap-2 text-xs text-ink-subtle mb-1">
                   <Zap size={12} />
                   <span className={
                     deleteSuperAgentTarget.status === 'completed' ? 'text-green-400' :
@@ -1250,17 +1250,17 @@ export default function HistoryBrowser({ onBack, onResumeSession }: HistoryBrows
                   <span>•</span>
                   <span>{Math.floor(deleteSuperAgentTarget.duration / 60)}m {deleteSuperAgentTarget.duration % 60}s</span>
                 </div>
-                <p className="text-sm text-white line-clamp-2">
+                <p className="text-sm text-ink-bright line-clamp-2">
                   {deleteSuperAgentTarget.task}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/[0.06] bg-white/[0.02]">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-overlay/[0.06] bg-overlay/[0.02]">
               <button
                 onClick={() => setDeleteSuperAgentTarget(null)}
                 disabled={deleting}
-                className="px-4 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors disabled:opacity-50"
+                className="px-4 py-2 rounded-lg text-sm text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -1327,24 +1327,24 @@ const ConversationListItem = memo(function ConversationListItem({
           ? 'border-accent/50 bg-accent/10'
           : conversation.pinned
             ? 'border-accent/20 bg-accent/5 hover:border-accent/40'
-            : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1] hover:bg-white/[0.04]'
+            : 'border-overlay/[0.06] bg-overlay/[0.02] hover:border-overlay/[0.1] hover:bg-overlay/[0.04]'
       }`}
       onClick={onSelect}
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 mb-0.5">
           {conversation.pinned && <Pin size={10} className="text-accent" />}
-          <Clock size={10} className="text-gray-500" />
-          <span className="text-xs text-gray-500">{formatDate(conversation.timestamp)}</span>
+          <Clock size={10} className="text-ink-subtle" />
+          <span className="text-xs text-ink-subtle">{formatDate(conversation.timestamp)}</span>
           {conversation.stats && (
-            <span className="flex items-center gap-1 text-xs text-gray-600">
+            <span className="flex items-center gap-1 text-xs text-ink-faint">
               <MessageSquare size={9} />
               {conversation.stats.messageCount}
             </span>
           )}
         </div>
         {conversation.preview && (
-          <p className="text-xs text-gray-400 truncate">{conversation.preview}</p>
+          <p className="text-xs text-ink-muted truncate">{conversation.preview}</p>
         )}
       </div>
 
@@ -1355,7 +1355,7 @@ const ConversationListItem = memo(function ConversationListItem({
           className={`p-1.5 rounded transition-colors ${
             conversation.pinned
               ? 'text-accent hover:bg-accent/20'
-              : 'text-gray-400 hover:text-white hover:bg-white/10'
+              : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/10'
           }`}
           title={conversation.pinned ? 'Unpin' : 'Pin'}
         >
@@ -1363,14 +1363,14 @@ const ConversationListItem = memo(function ConversationListItem({
         </button>
         <button
           onClick={onExport}
-          className="p-1.5 rounded text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+          className="p-1.5 rounded text-ink-muted hover:text-ink-bright hover:bg-overlay/10 transition-colors"
           title="Export"
         >
           <Download size={12} />
         </button>
         <button
           onClick={onDelete}
-          className="p-1.5 rounded text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+          className="p-1.5 rounded text-ink-muted hover:text-red-400 hover:bg-red-500/10 transition-colors"
           title="Delete"
         >
           <Trash2 size={12} />
@@ -1408,14 +1408,14 @@ function MessageBubble({
     <>
       {showDate && message.timestamp && (
         <div className="flex items-center justify-center my-4">
-          <div className="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-500">
+          <div className="px-3 py-1 rounded-full bg-overlay/5 text-xs text-ink-subtle">
             {formatDate(message.timestamp)}
           </div>
         </div>
       )}
       <div className={`flex gap-3 ${isHuman ? 'flex-row-reverse' : ''}`}>
         <div className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center ${
-          isHuman ? 'bg-[#2a4a6a]' : 'bg-[#2a2a2a]'
+          isHuman ? 'bg-human' : 'bg-surface-7'
         }`}>
           {isHuman ? (
             <User size={14} className="text-blue-300" />
@@ -1426,15 +1426,15 @@ function MessageBubble({
         <div className={`flex-1 max-w-[85%] ${isHuman ? 'items-end' : 'items-start'}`}>
           <div className={`rounded-xl px-4 py-3 ${
             isHuman
-              ? 'bg-[#1e3a5f] text-gray-200 rounded-tr-sm'
-              : 'bg-[#1a1a1a] text-gray-300 border border-white/[0.06] rounded-tl-sm'
+              ? 'bg-human-bubble text-ink-bright rounded-tr-sm'
+              : 'bg-surface-4 text-ink border border-overlay/[0.06] rounded-tl-sm'
           }`}>
             <div className="text-sm leading-relaxed break-words">
               {renderMessageContent(message.content)}
             </div>
           </div>
           {message.timestamp && (
-            <div className={`mt-1 text-xs text-gray-600 ${isHuman ? 'text-right' : 'text-left'}`}>
+            <div className={`mt-1 text-xs text-ink-faint ${isHuman ? 'text-right' : 'text-left'}`}>
               {formatTime(message.timestamp)}
             </div>
           )}

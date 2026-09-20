@@ -67,7 +67,7 @@ export function StatusBar({ cwd }: StatusBarProps) {
           <button
             ref={triggerRef}
             onClick={() => !isRunning && setModelPickerOpen((o) => !o)}
-            className="flex items-center gap-1 rounded-full px-1.5 py-0.5 transition-colors hover:bg-white/5"
+            className="flex items-center gap-1 rounded-full px-1.5 py-0.5 transition-colors hover:bg-overlay/5"
             style={{
               color: modelPickerOpen ? colors.accent : colors.textTertiary,
               cursor: isRunning ? 'not-allowed' : 'pointer',

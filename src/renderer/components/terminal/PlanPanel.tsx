@@ -45,20 +45,20 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
   })
 
   return (
-    <div className="absolute top-0 right-0 bottom-0 w-80 flex flex-col bg-[#0d0d0d]/95 backdrop-blur-sm border-l border-white/[0.08] z-30 shadow-2xl shadow-black/50 animate-in slide-in-from-right-4 duration-200">
+    <div className="absolute top-0 right-0 bottom-0 w-80 flex flex-col bg-surface-1/95 backdrop-blur-sm border-l border-overlay/[0.08] z-30 shadow-2xl shadow-black/50 animate-in slide-in-from-right-4 duration-200">
       {/* Subtle gradient accent */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-radial from-accent/5 to-transparent pointer-events-none" />
 
       {/* Header */}
-      <div className="relative flex items-center justify-between px-3 py-2.5 border-b border-white/[0.06]">
+      <div className="relative flex items-center justify-between px-3 py-2.5 border-b border-overlay/[0.06]">
         <div className="flex items-center gap-2">
           <div className="p-1.5 rounded-md bg-accent/10">
             <ClipboardList size={12} className="text-accent" />
           </div>
           <div>
-            <span className="text-xs font-medium text-white">Current Plan</span>
+            <span className="text-xs font-medium text-ink-bright">Current Plan</span>
             {items.length > 0 && (
-              <span className="ml-1.5 text-[10px] text-gray-500">{items.length}</span>
+              <span className="ml-1.5 text-[10px] text-ink-subtle">{items.length}</span>
             )}
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
           {items.length > 0 && onClear && (
             <button
               onClick={onClear}
-              className="p-1.5 rounded-md text-gray-600 hover:text-gray-400 hover:bg-white/[0.04] transition-colors"
+              className="p-1.5 rounded-md text-ink-faint hover:text-ink-muted hover:bg-overlay/[0.04] transition-colors"
               title="Clear plan"
             >
               <Trash2 size={12} />
@@ -74,7 +74,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
           )}
           <button
             onClick={onClose}
-            className="p-1.5 rounded-md text-gray-600 hover:text-gray-400 hover:bg-white/[0.04] transition-colors"
+            className="p-1.5 rounded-md text-ink-faint hover:text-ink-muted hover:bg-overlay/[0.04] transition-colors"
             title="Close"
           >
             <X size={12} />
@@ -84,7 +84,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
 
       {/* Stats & Progress */}
       {items.length > 0 && (
-        <div className="px-3 py-2.5 border-b border-white/[0.06] bg-white/[0.01]">
+        <div className="px-3 py-2.5 border-b border-overlay/[0.06] bg-overlay/[0.01]">
           {/* Stats row */}
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
@@ -96,8 +96,8 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
               )}
               {pending > 0 && (
                 <div className="flex items-center gap-1">
-                  <Circle size={10} className="text-gray-500" />
-                  <span className="text-[10px] text-gray-500">{pending}</span>
+                  <Circle size={10} className="text-ink-subtle" />
+                  <span className="text-[10px] text-ink-subtle">{pending}</span>
                 </div>
               )}
               {completed > 0 && (
@@ -114,7 +114,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
                 onClick={() => setShowCompleted(!showCompleted)}
                 className={`flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] transition-colors ${
                   showCompleted
-                    ? 'text-gray-500 hover:text-gray-400'
+                    ? 'text-ink-subtle hover:text-ink-muted'
                     : 'bg-accent/20 text-accent'
                 }`}
               >
@@ -126,11 +126,11 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
 
           {/* Progress bar */}
           <div className="space-y-1">
-            <div className="flex items-center justify-between text-[9px] text-gray-600">
+            <div className="flex items-center justify-between text-[9px] text-ink-faint">
               <span>{completed}/{items.length} complete</span>
               <span>{Math.round(progress)}%</span>
             </div>
-            <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+            <div className="h-1.5 rounded-full bg-overlay/[0.06] overflow-hidden">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-accent to-green-500 transition-all duration-500"
                 style={{ width: `${progress}%` }}
@@ -160,7 +160,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
                   ) : item.status === 'in_progress' ? (
                     <Loader2 size={14} className="text-amber-400 animate-spin" />
                   ) : (
-                    <Circle size={14} className="text-gray-600" />
+                    <Circle size={14} className="text-ink-faint" />
                   )}
                 </div>
 
@@ -168,10 +168,10 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
                 <div className="flex-1 min-w-0">
                   <span className={`text-[11px] leading-relaxed block ${
                     item.status === 'completed'
-                      ? 'text-gray-500 line-through'
+                      ? 'text-ink-subtle line-through'
                       : item.status === 'in_progress'
-                      ? 'text-white font-medium'
-                      : 'text-gray-400'
+                      ? 'text-ink-bright font-medium'
+                      : 'text-ink-muted'
                   }`}>
                     {item.content}
                   </span>
@@ -185,7 +185,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
                 </div>
 
                 {/* Task number */}
-                <span className="text-[9px] text-gray-700 flex-shrink-0">
+                <span className="text-[9px] text-ink-ghost flex-shrink-0">
                   #{index + 1}
                 </span>
               </div>
@@ -193,18 +193,18 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
           </div>
         ) : items.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
-            <div className="p-3 rounded-xl bg-white/[0.02] mb-3">
-              <Target size={24} className="text-gray-700" />
+            <div className="p-3 rounded-xl bg-overlay/[0.02] mb-3">
+              <Target size={24} className="text-ink-ghost" />
             </div>
-            <p className="text-xs text-gray-500 mb-1">No active plan</p>
-            <p className="text-[10px] text-gray-600 max-w-[180px]">
+            <p className="text-xs text-ink-subtle mb-1">No active plan</p>
+            <p className="text-[10px] text-ink-faint max-w-[180px]">
               Claude's task list will appear here when working on multi-step tasks
             </p>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
             <CheckCircle2 size={24} className="text-green-400/50 mb-3" />
-            <p className="text-xs text-gray-500 mb-1">All tasks completed</p>
+            <p className="text-xs text-ink-subtle mb-1">All tasks completed</p>
             <button
               onClick={() => setShowCompleted(true)}
               className="text-[10px] text-accent hover:underline"
@@ -217,7 +217,7 @@ export default function PlanPanel({ items, onClose, onClear }: PlanPanelProps) {
 
       {/* Footer hint */}
       {items.length > 0 && (
-        <div className="px-3 py-2 border-t border-white/[0.06] text-[9px] text-gray-600 text-center">
+        <div className="px-3 py-2 border-t border-overlay/[0.06] text-[9px] text-ink-faint text-center">
           Claude is tracking {items.length} task{items.length !== 1 ? 's' : ''}
         </div>
       )}

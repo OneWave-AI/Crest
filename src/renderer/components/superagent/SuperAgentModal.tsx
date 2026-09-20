@@ -135,22 +135,22 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
-        className="bg-[#141416] rounded-2xl w-full max-w-md overflow-hidden border border-white/[0.08] shadow-2xl animate-in zoom-in-95 duration-200"
+        className="bg-surface-3 rounded-2xl w-full max-w-md overflow-hidden border border-overlay/[0.08] shadow-2xl animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-overlay/[0.06]">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-gradient-to-br from-accent to-accent-700 rounded-xl">
-              <Bot className="w-5 h-5 text-white" />
+              <Bot className="w-5 h-5 text-ink-bright" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Super Agent</h2>
-              <p className="text-xs text-gray-500">Autonomous execution</p>
+              <h2 className="text-lg font-semibold text-ink-bright">Super Agent</h2>
+              <p className="text-xs text-ink-subtle">Autonomous execution</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/[0.06] rounded-lg transition-colors">
-            <X className="w-5 h-5 text-gray-500" />
+          <button onClick={onClose} className="p-2 hover:bg-overlay/[0.06] rounded-lg transition-colors">
+            <X className="w-5 h-5 text-ink-subtle" />
           </button>
         </div>
 
@@ -165,15 +165,15 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
 
           {/* The two axes stay independent, so all local/API combinations work. */}
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="rounded-lg border border-white/[0.06] bg-black/20 px-3 py-2">
-              <div className="text-gray-600 uppercase tracking-wider text-[9px]">Supervisor</div>
-              <div className="text-gray-300 mt-1">
+            <div className="rounded-lg border border-overlay/[0.06] bg-black/20 px-3 py-2">
+              <div className="text-ink-faint uppercase tracking-wider text-[9px]">Supervisor</div>
+              <div className="text-ink mt-1">
                 {provider === 'ollama' ? `Local · ${config.ollamaModel}` : `API · ${supervisorProviderLabel(provider)}`}
               </div>
             </div>
-            <div className="rounded-lg border border-white/[0.06] bg-black/20 px-3 py-2">
-              <div className="text-gray-600 uppercase tracking-wider text-[9px]">Terminal agent</div>
-              <div className="text-gray-300 mt-1">
+            <div className="rounded-lg border border-overlay/[0.06] bg-black/20 px-3 py-2">
+              <div className="text-ink-faint uppercase tracking-wider text-[9px]">Terminal agent</div>
+              <div className="text-ink mt-1">
                 {modelRuntime === 'local'
                   ? `Local · ${CLI_PROVIDERS[cliProvider].name} · ${localModel}`
                   : `API · ${CLI_PROVIDERS[cliProvider].name}`}
@@ -182,13 +182,13 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
           </div>
 
           {/* Mode Toggle */}
-          <div className="flex gap-2 p-1 bg-[#0a0a0b] rounded-lg">
+          <div className="flex gap-2 p-1 bg-surface-0 rounded-lg">
             <button
               onClick={() => setLaunchMode('new')}
               className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                 launchMode === 'new'
                   ? 'bg-accent text-white'
-                  : 'text-gray-500 hover:text-gray-300'
+                  : 'text-ink-subtle hover:text-ink'
               }`}
             >
               <Rocket className="w-4 h-4" />
@@ -199,7 +199,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
               className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                 launchMode === 'takeover'
                   ? 'bg-sand-500 text-white'
-                  : 'text-gray-500 hover:text-gray-300'
+                  : 'text-ink-subtle hover:text-ink'
               }`}
             >
               <RefreshCw className="w-4 h-4" />
@@ -215,7 +215,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
               placeholder={launchMode === 'takeover'
                 ? "Optional: Provide guidance..."
                 : "What should the terminal agent build?"}
-              className="w-full h-24 bg-[#0a0a0b] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent/50 resize-none text-sm"
+              className="w-full h-24 bg-surface-0 border border-overlay/[0.08] rounded-xl px-4 py-3 text-ink-bright placeholder-ink-faint focus:outline-none focus:border-accent/50 resize-none text-sm"
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && e.metaKey) handleStart()
@@ -226,7 +226,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
           {/* Settings Toggle */}
           <button
             onClick={() => setShowSettings(!showSettings)}
-            className="w-full flex items-center justify-between px-3 py-2 bg-white/[0.02] hover:bg-white/[0.04] rounded-lg text-xs text-gray-500 transition-colors"
+            className="w-full flex items-center justify-between px-3 py-2 bg-overlay/[0.02] hover:bg-overlay/[0.04] rounded-lg text-xs text-ink-subtle transition-colors"
           >
             <span>Settings</span>
             <ChevronDown className={`w-4 h-4 transition-transform ${showSettings ? 'rotate-180' : ''}`} />
@@ -234,10 +234,10 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
 
           {/* Settings Panel */}
           {showSettings && (
-            <div className="space-y-4 p-3 bg-white/[0.02] rounded-lg animate-in slide-in-from-top-1 duration-150">
+            <div className="space-y-4 p-3 bg-overlay/[0.02] rounded-lg animate-in slide-in-from-top-1 duration-150">
               {/* Provider */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-16">Provider</span>
+                <span className="text-xs text-ink-subtle w-16">Provider</span>
                 <div className="flex-1 flex gap-2">
                   {SUPERVISOR_PROVIDERS.map((p: LLMProvider) => (
                     <button
@@ -245,8 +245,8 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
                       onClick={() => setProvider(p)}
                       className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
                         provider === p
-                          ? 'bg-white/[0.1] text-white'
-                          : 'text-gray-500 hover:text-gray-300'
+                          ? 'bg-overlay/[0.1] text-ink-bright'
+                          : 'text-ink-subtle hover:text-ink'
                       }`}
                     >
                       {p === 'ollama' ? 'Local' : supervisorProviderLabel(p)}
@@ -257,7 +257,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
 
               {/* Time Limit */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-16 flex items-center gap-1">
+                <span className="text-xs text-ink-subtle w-16 flex items-center gap-1">
                   <Clock className="w-3 h-3" /> Time
                 </span>
                 <div className="flex-1 flex gap-1">
@@ -268,7 +268,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
                       className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
                         timeLimit === mins
                           ? 'bg-accent/20 text-accent'
-                          : 'text-gray-500 hover:text-gray-300'
+                          : 'text-ink-subtle hover:text-ink'
                       }`}
                     >
                       {mins === 0 ? '∞' : `${mins}m`}
@@ -279,7 +279,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
 
               {/* Safety */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-16 flex items-center gap-1">
+                <span className="text-xs text-ink-subtle w-16 flex items-center gap-1">
                   <Shield className="w-3 h-3" /> Safety
                 </span>
                 <div className="flex-1 flex gap-1">
@@ -292,7 +292,7 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
                           ? color === 'emerald' ? 'bg-emerald-500/20 text-emerald-400'
                           : color === 'amber' ? 'bg-amber-500/20 text-amber-400'
                           : 'bg-red-500/20 text-red-400'
-                          : 'text-gray-500 hover:text-gray-300'
+                          : 'text-ink-subtle hover:text-ink'
                       }`}
                     >
                       <Icon className="w-3 h-3" />
@@ -317,10 +317,10 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
             disabled={isStarting || isLoadingConfig || orchestratorRunning || (launchMode === 'new' && !task.trim())}
             className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
               isStarting || isLoadingConfig || orchestratorRunning || (launchMode === 'new' && !task.trim())
-                ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                ? 'bg-ink-trace text-ink-subtle cursor-not-allowed'
                 : launchMode === 'takeover'
                   ? 'bg-sand-500 hover:bg-sand-400 text-white'
-                  : 'bg-accent hover:bg-[#d88a6a] text-white'
+                  : 'bg-accent hover:bg-accent-400 text-white'
             }`}
           >
             {isLoadingConfig ? (
@@ -337,8 +337,8 @@ export function SuperAgentModal({ isOpen, onClose, terminalId, onStart }: SuperA
           </button>
 
           {/* Hint */}
-          <p className="text-center text-[10px] text-gray-600">
-            <kbd className="px-1 py-0.5 bg-white/[0.04] rounded">⌘</kbd> + <kbd className="px-1 py-0.5 bg-white/[0.04] rounded">Enter</kbd> to launch
+          <p className="text-center text-[10px] text-ink-faint">
+            <kbd className="px-1 py-0.5 bg-overlay/[0.04] rounded">⌘</kbd> + <kbd className="px-1 py-0.5 bg-overlay/[0.04] rounded">Enter</kbd> to launch
           </p>
         </div>
       </div>

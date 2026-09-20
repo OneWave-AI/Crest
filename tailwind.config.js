@@ -9,13 +9,45 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Dark theme colors matching V1
+        // Every value below that a theme needs to change resolves through a
+        // CSS channel variable declared in globals.css, so a theme is a block
+        // of variable overrides rather than a second set of class names.
+        overlay: 'rgb(var(--c-overlay) / <alpha-value>)',
+        ink: {
+          bright: 'rgb(var(--c-ink-bright) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--c-ink) / <alpha-value>)',
+          muted: 'rgb(var(--c-ink-muted) / <alpha-value>)',
+          subtle: 'rgb(var(--c-ink-subtle) / <alpha-value>)',
+          faint: 'rgb(var(--c-ink-faint) / <alpha-value>)',
+          ghost: 'rgb(var(--c-ink-ghost) / <alpha-value>)',
+          trace: 'rgb(var(--c-ink-trace) / <alpha-value>)',
+          void: 'rgb(var(--c-ink-void) / <alpha-value>)'
+        },
         surface: {
+          void: 'rgb(var(--c-surface-void) / <alpha-value>)',
+          0: 'rgb(var(--c-surface-0) / <alpha-value>)',
+          1: 'rgb(var(--c-surface-1) / <alpha-value>)',
+          2: 'rgb(var(--c-surface-2) / <alpha-value>)',
+          3: 'rgb(var(--c-surface-3) / <alpha-value>)',
+          4: 'rgb(var(--c-surface-4) / <alpha-value>)',
+          5: 'rgb(var(--c-surface-5) / <alpha-value>)',
+          6: 'rgb(var(--c-surface-6) / <alpha-value>)',
+          7: 'rgb(var(--c-surface-7) / <alpha-value>)',
+          // Legacy names, still referenced by older components.
           DEFAULT: '#1a1a1a',
           elevated: '#242424',
           hover: '#2a2a2a',
           border: '#333333'
         },
+        // Status. Small set on purpose -- a colour that means something
+        // should mean it everywhere.
+        danger: '#E5484D',
+        // The human's own turn in a transcript -- the one place a cool tone
+        // earns its place, because it has to read as "not the agent".
+        human: { DEFAULT: '#2a4a6a', bubble: '#1e3a5f' },
+        // macOS window-control colours. Fixed by the platform, not ours to
+        // theme, which is why they are named rather than tokenised.
+        mac: { close: '#ff5f56', minimize: '#ffbd2e', zoom: '#27ca40' },
         // Primary accent. Four different terracottas were in circulation as
         // inline hex before this ramp existed -- #e8956e, #d68a6e, #cc785c,
         // #b86a50 and #a55d45 all shipped as "the accent" in different files.

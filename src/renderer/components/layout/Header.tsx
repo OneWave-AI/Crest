@@ -657,7 +657,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
   }, [activeTerminalId, showToast])
 
   return (
-    <header className="titlebar-drag h-12 flex items-center justify-between px-3 bg-[#1a1a1c] border-b border-white/[0.06] relative z-40">
+    <header className="titlebar-drag h-12 flex items-center justify-between px-3 bg-surface-4 border-b border-overlay/[0.06] relative z-40">
       {/* Left: Traffic light space + Logo + Folder + Plan/Hive/SuperAgent */}
       <div className="flex items-center gap-2">
         {/* Spacer for macOS native traffic lights */}
@@ -666,28 +666,28 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
         {/* Logo/Home */}
         <button
           onClick={onHome}
-          className="titlebar-no-drag p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors"
+          className="titlebar-no-drag p-1.5 rounded-lg hover:bg-overlay/[0.06] transition-colors"
           title="Home"
         >
           <div className="w-6 h-6 rounded-md bg-gradient-to-br from-accent to-accent-700 flex items-center justify-center">
-            <Home size={12} className="text-white" />
+            <Home size={12} className="text-ink-bright" />
           </div>
         </button>
 
         {/* Folder */}
         <button
           onClick={onSelectFolder}
-          className="titlebar-no-drag flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-white/[0.06] transition-colors"
+          className="titlebar-no-drag flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-overlay/[0.06] transition-colors"
           title={cwd || 'Select folder'}
         >
-          <Folder size={14} className="text-gray-500" />
-          <span className="text-sm text-gray-300 max-w-[140px] truncate">{folderName}</span>
-          <ChevronDown size={12} className="text-gray-500" />
+          <Folder size={14} className="text-ink-subtle" />
+          <span className="text-sm text-ink max-w-[140px] truncate">{folderName}</span>
+          <ChevronDown size={12} className="text-ink-subtle" />
         </button>
 
         {/* Divider */}
         {screen === 'terminal' && (
-          <div className="w-px h-5 bg-white/[0.08] mx-1" />
+          <div className="w-px h-5 bg-overlay/[0.08] mx-1" />
         )}
 
         {/* Swarm/Hive Button - Only on terminal - NOW ON LEFT */}
@@ -718,7 +718,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
 
             {/* Swarm Dropdown Menu */}
             {showSwarmMenu && (
-              <div className="absolute top-full right-0 mt-1 w-72 bg-[#161616] border border-amber-500/20 rounded-xl shadow-2xl shadow-amber-500/10 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute top-full right-0 mt-1 w-72 bg-surface-3 border border-amber-500/20 rounded-xl shadow-2xl shadow-amber-500/10 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                 {/* Header */}
                 <div className="px-4 py-3 bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border-b border-amber-500/10">
                   <div className="flex items-center justify-between">
@@ -727,7 +727,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                         <BeeIcon size={16} className="text-black" />
                       </div>
                       <div>
-                        <span className="text-sm font-bold text-white">Agent Swarm</span>
+                        <span className="text-sm font-bold text-ink-bright">Agent Swarm</span>
                         <p className="text-[10px] text-amber-400/60">AI-powered multi-agent system</p>
                       </div>
                     </div>
@@ -754,8 +754,8 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                         <Search size={14} />
                       </div>
                       <div className="flex-1">
-                        <span className="text-sm font-medium text-white group-hover:text-blue-300">Audit & Review</span>
-                        <p className="text-[10px] text-gray-500">Security, performance, quality</p>
+                        <span className="text-sm font-medium text-ink-bright group-hover:text-blue-300">Audit & Review</span>
+                        <p className="text-[10px] text-ink-subtle">Security, performance, quality</p>
                       </div>
                       <span className="px-2 py-0.5 rounded-full text-[9px] bg-blue-500/15 text-blue-400">3+</span>
                     </button>
@@ -769,14 +769,14 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                         <Play size={14} />
                       </div>
                       <div className="flex-1">
-                        <span className="text-sm font-medium text-white group-hover:text-green-300">Fix & Improve</span>
-                        <p className="text-[10px] text-gray-500">Bug fixes, refactoring, tests</p>
+                        <span className="text-sm font-medium text-ink-bright group-hover:text-green-300">Fix & Improve</span>
+                        <p className="text-[10px] text-ink-subtle">Bug fixes, refactoring, tests</p>
                       </div>
                       <span className="px-2 py-0.5 rounded-full text-[9px] bg-green-500/15 text-green-400">3+</span>
                     </button>
 
                     {/* Divider */}
-                    <div className="border-t border-white/[0.06] my-2" />
+                    <div className="border-t border-overlay/[0.06] my-2" />
 
                     {/* New Specialized Swarms */}
                     <button
@@ -788,8 +788,8 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                         <Paintbrush size={12} />
                       </div>
                       <div className="flex-1">
-                        <span className="text-xs font-medium text-white group-hover:text-pink-300">Design Polish</span>
-                        <p className="text-[9px] text-gray-500">Colors, spacing, visual polish</p>
+                        <span className="text-xs font-medium text-ink-bright group-hover:text-pink-300">Design Polish</span>
+                        <p className="text-[9px] text-ink-subtle">Colors, spacing, visual polish</p>
                       </div>
                     </button>
 
@@ -802,8 +802,8 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                         <Layers size={12} />
                       </div>
                       <div className="flex-1">
-                        <span className="text-xs font-medium text-white group-hover:text-orange-300">UI Fix</span>
-                        <p className="text-[9px] text-gray-500">Layout bugs, overflow, z-index</p>
+                        <span className="text-xs font-medium text-ink-bright group-hover:text-orange-300">UI Fix</span>
+                        <p className="text-[9px] text-ink-subtle">Layout bugs, overflow, z-index</p>
                       </div>
                     </button>
 
@@ -816,8 +816,8 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                         <Route size={12} />
                       </div>
                       <div className="flex-1">
-                        <span className="text-xs font-medium text-white group-hover:text-cyan-300">Route</span>
-                        <p className="text-[9px] text-gray-500">Navigation, routing, flow</p>
+                        <span className="text-xs font-medium text-ink-bright group-hover:text-cyan-300">Route</span>
+                        <p className="text-[9px] text-ink-subtle">Navigation, routing, flow</p>
                       </div>
                     </button>
 
@@ -830,8 +830,8 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                         <Server size={12} />
                       </div>
                       <div className="flex-1">
-                        <span className="text-xs font-medium text-white group-hover:text-sand-300">API</span>
-                        <p className="text-[9px] text-gray-500">Data fetching, IPC, handlers</p>
+                        <span className="text-xs font-medium text-ink-bright group-hover:text-sand-300">API</span>
+                        <p className="text-[9px] text-ink-subtle">Data fetching, IPC, handlers</p>
                       </div>
                     </button>
 
@@ -844,8 +844,8 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                         <Link2 size={12} />
                       </div>
                       <div className="flex-1">
-                        <span className="text-xs font-medium text-white group-hover:text-teal-300">Connector</span>
-                        <p className="text-[9px] text-gray-500">MCP, Git, integrations</p>
+                        <span className="text-xs font-medium text-ink-bright group-hover:text-teal-300">Connector</span>
+                        <p className="text-[9px] text-ink-subtle">MCP, Git, integrations</p>
                       </div>
                     </button>
 
@@ -858,8 +858,8 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                         <Search size={12} />
                       </div>
                       <div className="flex-1">
-                        <span className="text-xs font-medium text-white group-hover:text-indigo-300">Research</span>
-                        <p className="text-[9px] text-gray-500">Web, GitHub, Reddit, docs</p>
+                        <span className="text-xs font-medium text-ink-bright group-hover:text-indigo-300">Research</span>
+                        <p className="text-[9px] text-ink-subtle">Web, GitHub, Reddit, docs</p>
                       </div>
                     </button>
                   </div>
@@ -867,14 +867,14 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
 
                 {/* Agent Status */}
                 {swarmAgents.length > 0 && (
-                  <div className="px-3 py-2 bg-black/40 border-t border-white/[0.04]">
+                  <div className="px-3 py-2 bg-black/40 border-t border-overlay/[0.04]">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[9px] text-gray-500 uppercase tracking-wider">Agents</span>
+                      <span className="text-[9px] text-ink-subtle uppercase tracking-wider">Agents</span>
                       <span className="text-[9px] text-amber-400 font-mono">
                         {swarmAgents.filter(a => a.status === 'complete').length}/{swarmAgents.length}
                       </span>
                     </div>
-                    <div className="h-1 rounded-full bg-white/5 mb-2 overflow-hidden">
+                    <div className="h-1 rounded-full bg-overlay/5 mb-2 overflow-hidden">
                       <div
                         className="h-full rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 transition-all duration-500"
                         style={{ width: `${(swarmAgents.filter(a => a.status === 'complete').length / swarmAgents.length) * 100}%` }}
@@ -888,19 +888,19 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                           ) : agent.status === 'complete' ? (
                             <CheckCircle size={10} className="text-green-400" />
                           ) : (
-                            <div className="w-2.5 h-2.5 rounded-full bg-gray-700" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-ink-ghost" />
                           )}
-                          <span className={agent.status === 'running' ? 'text-amber-400' : agent.status === 'complete' ? 'text-green-400' : 'text-gray-600'}>
+                          <span className={agent.status === 'running' ? 'text-amber-400' : agent.status === 'complete' ? 'text-green-400' : 'text-ink-faint'}>
                             {agent.name}
                           </span>
                         </div>
                       ))}
                       {swarmAgents.length > 3 && (
-                        <span className="text-[9px] text-gray-600">+{swarmAgents.length - 3} more</span>
+                        <span className="text-[9px] text-ink-faint">+{swarmAgents.length - 3} more</span>
                       )}
                     </div>
                     {!swarmRunning && (
-                      <button onClick={() => setSwarmAgents([])} className="w-full mt-2 py-1 text-[9px] text-gray-600 hover:text-gray-400 transition-colors">
+                      <button onClick={() => setSwarmAgents([])} className="w-full mt-2 py-1 text-[9px] text-ink-faint hover:text-ink-muted transition-colors">
                         Clear
                       </button>
                     )}
@@ -940,7 +940,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
 
       {/* Center: Screen indicator */}
       <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
-        <span className="text-xs text-gray-500 capitalize">{screen}</span>
+        <span className="text-xs text-ink-subtle capitalize">{screen}</span>
       </div>
 
       {/* Right: Actions */}
@@ -951,7 +951,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
             <button
               onClick={() => setShowGitMenu(!showGitMenu)}
               className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs transition-colors ${
-                showGitMenu ? 'bg-green-500/20 text-green-400' : 'hover:bg-white/[0.06] text-gray-400'
+                showGitMenu ? 'bg-green-500/20 text-green-400' : 'hover:bg-overlay/[0.06] text-ink-muted'
               }`}
               title="Git actions"
             >
@@ -960,31 +960,31 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
             </button>
 
             {showGitMenu && (
-              <div className="absolute top-full right-0 mt-1 w-52 bg-[#1e1e1e] border border-white/[0.08] rounded-xl shadow-xl z-50 overflow-hidden">
-                <div className="px-3 py-2 border-b border-white/[0.06] text-[10px] uppercase tracking-wider text-gray-500">
+              <div className="absolute top-full right-0 mt-1 w-52 bg-surface-5 border border-overlay/[0.08] rounded-xl shadow-xl z-50 overflow-hidden">
+                <div className="px-3 py-2 border-b border-overlay/[0.06] text-[10px] uppercase tracking-wider text-ink-subtle">
                   Git Actions {gitBranch && <span className="text-green-400 ml-1">({gitBranch})</span>}
                 </div>
                 {/* Review Changes is a real diff surface, not a prompt — keep it first */}
                 <button
                   onClick={() => { onOpenDiff?.(); setShowGitMenu(false) }}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.06] transition-colors border-b border-white/[0.06]"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-overlay/[0.06] transition-colors border-b border-overlay/[0.06]"
                 >
                   <FileDiff size={14} className="text-accent" />
-                  <span className="text-sm text-gray-200">Review Changes</span>
+                  <span className="text-sm text-ink-bright">Review Changes</span>
                 </button>
                 {gitActions.map(action => (
                   <button
                     key={action.id}
                     onClick={() => { sendPrompt(action.prompt); setShowGitMenu(false) }}
                     disabled={!activeTerminalId}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.06] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-overlay/[0.06] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
-                    <action.icon size={14} className="text-gray-400" />
-                    <span className="text-sm text-gray-300">{action.label}</span>
+                    <action.icon size={14} className="text-ink-muted" />
+                    <span className="text-sm text-ink">{action.label}</span>
                   </button>
                 ))}
                 {!activeTerminalId && (
-                  <div className="px-3 py-2 text-[10px] text-amber-500/80 border-t border-white/[0.06]">
+                  <div className="px-3 py-2 text-[10px] text-amber-500/80 border-t border-overlay/[0.06]">
                     Start a session first
                   </div>
                 )}
@@ -1002,7 +1002,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
             <button
               onClick={() => setShowDeployMenu(!showDeployMenu)}
               className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs transition-colors ${
-                showDeployMenu ? 'bg-blue-500/20 text-blue-400' : 'hover:bg-white/[0.06] text-gray-400'
+                showDeployMenu ? 'bg-blue-500/20 text-blue-400' : 'hover:bg-overlay/[0.06] text-ink-muted'
               }`}
               title="Deploy"
             >
@@ -1012,8 +1012,8 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
             </button>
 
             {showDeployMenu && (
-              <div className="absolute top-full right-0 mt-1 w-48 bg-[#1e1e1e] border border-white/[0.08] rounded-xl shadow-xl z-50 overflow-hidden">
-                <div className="px-3 py-2 border-b border-white/[0.06] text-[10px] uppercase tracking-wider text-gray-500">
+              <div className="absolute top-full right-0 mt-1 w-48 bg-surface-5 border border-overlay/[0.08] rounded-xl shadow-xl z-50 overflow-hidden">
+                <div className="px-3 py-2 border-b border-overlay/[0.06] text-[10px] uppercase tracking-wider text-ink-subtle">
                   Deploy To
                 </div>
                 {deployActions.map(action => (
@@ -1021,10 +1021,10 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                     key={action.id}
                     onClick={() => { sendPrompt(action.prompt); setShowDeployMenu(false) }}
                     disabled={!activeTerminalId}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.06] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-overlay/[0.06] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
-                    <action.icon size={14} className="text-gray-400" />
-                    <span className="text-sm text-gray-300">{action.label}</span>
+                    <action.icon size={14} className="text-ink-muted" />
+                    <span className="text-sm text-ink">{action.label}</span>
                   </button>
                 ))}
               </div>
@@ -1038,7 +1038,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
             <button
               onClick={() => setShowPreviewPopover(!showPreviewPopover)}
               className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs transition-colors ${
-                showPreviewPopover ? 'bg-accent/20 text-accent' : 'hover:bg-white/[0.06] text-gray-400'
+                showPreviewPopover ? 'bg-accent/20 text-accent' : 'hover:bg-overlay/[0.06] text-ink-muted'
               }`}
               title="Preview file"
             >
@@ -1047,11 +1047,11 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
             </button>
 
             {showPreviewPopover && (
-              <div className="absolute top-full right-0 mt-1 w-72 bg-[#1e1e1e] border border-white/[0.08] rounded-xl shadow-xl z-50 overflow-hidden">
-                <div className="px-3 py-2 border-b border-white/[0.06] flex items-center justify-between">
-                  <span className="text-[10px] uppercase tracking-wider text-gray-500">Preview File</span>
-                  <button onClick={() => setShowPreviewPopover(false)} className="p-0.5 hover:bg-white/[0.06] rounded">
-                    <X size={12} className="text-gray-500" />
+              <div className="absolute top-full right-0 mt-1 w-72 bg-surface-5 border border-overlay/[0.08] rounded-xl shadow-xl z-50 overflow-hidden">
+                <div className="px-3 py-2 border-b border-overlay/[0.06] flex items-center justify-between">
+                  <span className="text-[10px] uppercase tracking-wider text-ink-subtle">Preview File</span>
+                  <button onClick={() => setShowPreviewPopover(false)} className="p-0.5 hover:bg-overlay/[0.06] rounded">
+                    <X size={12} className="text-ink-subtle" />
                   </button>
                 </div>
                 <div className="p-3 space-y-3">
@@ -1061,21 +1061,21 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
                       value={previewPath}
                       onChange={(e) => setPreviewPath(e.target.value)}
                       placeholder="/path/to/file.html"
-                      className="flex-1 px-3 py-2 bg-[#141414] border border-white/[0.08] rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50"
+                      className="flex-1 px-3 py-2 bg-surface-3 border border-overlay/[0.08] rounded-lg text-sm text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-accent/50"
                       onKeyDown={(e) => e.key === 'Enter' && openPreviewFile()}
                     />
-                    <button onClick={copyPath} className="p-2 bg-[#141414] border border-white/[0.08] rounded-lg hover:bg-white/[0.04] transition-colors" title="Copy path">
-                      {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} className="text-gray-400" />}
+                    <button onClick={copyPath} className="p-2 bg-surface-3 border border-overlay/[0.08] rounded-lg hover:bg-overlay/[0.04] transition-colors" title="Copy path">
+                      {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} className="text-ink-muted" />}
                     </button>
                   </div>
                   <div className="flex gap-2">
                     <button onClick={openPreviewFile} disabled={!previewPath.trim()} className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-accent hover:bg-accent/80 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm text-white transition-colors">
                       <Eye size={14} /> Preview
                     </button>
-                    <button onClick={openInExternalBrowser} disabled={!previewPath.trim()} className="flex items-center justify-center px-3 py-2 bg-[#141414] border border-white/[0.08] hover:bg-white/[0.04] disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm text-gray-300 transition-colors" title="Open in browser">
+                    <button onClick={openInExternalBrowser} disabled={!previewPath.trim()} className="flex items-center justify-center px-3 py-2 bg-surface-3 border border-overlay/[0.08] hover:bg-overlay/[0.04] disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm text-ink transition-colors" title="Open in browser">
                       <ExternalLink size={14} />
                     </button>
-                    <button onClick={showInFinder} disabled={!previewPath.trim()} className="flex items-center justify-center px-3 py-2 bg-[#141414] border border-white/[0.08] hover:bg-white/[0.04] disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm text-gray-300 transition-colors" title="Show in Finder">
+                    <button onClick={showInFinder} disabled={!previewPath.trim()} className="flex items-center justify-center px-3 py-2 bg-surface-3 border border-overlay/[0.08] hover:bg-overlay/[0.04] disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm text-ink transition-colors" title="Show in Finder">
                       <FolderOpen size={14} />
                     </button>
                   </div>
@@ -1085,13 +1085,13 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
           </div>
         )}
 
-        <div className="w-px h-4 bg-white/[0.08] mx-0.5" />
+        <div className="w-px h-4 bg-overlay/[0.08] mx-0.5" />
 
         {/* Memory - Only on terminal */}
         {screen === 'terminal' && (
           <button
             onClick={onOpenMemory}
-            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-sand-500/10 text-gray-400 hover:text-sand-400 transition-colors"
+            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-sand-500/10 text-ink-muted hover:text-sand-400 transition-colors"
             title="Project Memory"
           >
             <Brain size={14} />
@@ -1103,7 +1103,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
         {screen === 'terminal' && (
           <button
             onClick={onOpenBackgroundAgents}
-            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-orange-500/10 text-gray-400 hover:text-orange-400 transition-colors"
+            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-orange-500/10 text-ink-muted hover:text-orange-400 transition-colors"
             title="Background Agent Queue"
           >
             <ListTodo size={14} />
@@ -1115,7 +1115,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
         {screen === 'terminal' && (
           <button
             onClick={onOpenTeams}
-            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-teal-500/10 text-gray-400 hover:text-teal-400 transition-colors"
+            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-teal-500/10 text-ink-muted hover:text-teal-400 transition-colors"
             title="Claude Code Teams"
           >
             <Users size={14} />
@@ -1127,7 +1127,7 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
         {screen === 'terminal' && (
           <button
             onClick={onOpenRepoVisualization}
-            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-emerald-500/10 text-gray-400 hover:text-emerald-400 transition-colors"
+            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-emerald-500/10 text-ink-muted hover:text-emerald-400 transition-colors"
             title="Repository Visualization"
           >
             <FolderTree size={14} />
@@ -1138,48 +1138,48 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
         {/* MCP Status */}
         <button
           onClick={() => onNavigate?.('skills')}
-          className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-white/[0.06] transition-colors"
+          className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-overlay/[0.06] transition-colors"
           title={`${mcpCount} MCP servers`}
         >
-          <Plug size={12} className={mcpCount > 0 ? 'text-green-400' : 'text-gray-500'} />
-          <span className={`text-xs ${mcpCount > 0 ? 'text-green-400' : 'text-gray-500'}`}>{mcpCount}</span>
+          <Plug size={12} className={mcpCount > 0 ? 'text-green-400' : 'text-ink-subtle'} />
+          <span className={`text-xs ${mcpCount > 0 ? 'text-green-400' : 'text-ink-subtle'}`}>{mcpCount}</span>
         </button>
 
         {/* View Mode Toggle - only on terminal screen */}
         {screen === 'terminal' && onViewModeChange && (
-          <div className="flex items-center rounded-lg border border-white/[0.06] overflow-hidden">
+          <div className="flex items-center rounded-lg border border-overlay/[0.06] overflow-hidden">
             <button
               onClick={() => onViewModeChange('terminal')}
               className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${
                 viewMode === 'terminal'
                   ? 'bg-accent/20 text-accent'
-                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                  : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.04]'
               }`}
               title="Terminal view"
             >
               <TerminalIcon size={12} />
               <span>Terminal</span>
             </button>
-            <div className="w-px h-4 bg-white/[0.06]" />
+            <div className="w-px h-4 bg-overlay/[0.06]" />
             <button
               onClick={() => onViewModeChange('chat')}
               className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${
                 viewMode === 'chat'
                   ? 'bg-accent/20 text-accent'
-                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                  : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.04]'
               }`}
               title="Chat view"
             >
               <MessageSquare size={12} />
               <span>Chat</span>
             </button>
-            <div className="w-px h-4 bg-white/[0.06]" />
+            <div className="w-px h-4 bg-overlay/[0.06]" />
             <button
               onClick={() => onViewModeChange('acp')}
               className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${
                 viewMode === 'acp'
                   ? 'bg-accent/20 text-accent'
-                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                  : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.04]'
               }`}
               title="ACP view — structured agent session"
             >
@@ -1192,17 +1192,17 @@ Begin researching now. Start with a WebSearch for the most relevant query based 
         {/* Search */}
         <button
           onClick={onOpenCommandPalette}
-          className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-white/[0.06] text-gray-400 transition-colors"
+          className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-overlay/[0.06] text-ink-muted transition-colors"
           title="Search (Cmd+K)"
         >
           <Search size={14} />
-          <kbd className="text-[10px] text-gray-600 px-1 py-0.5 rounded bg-white/[0.04]">Cmd K</kbd>
+          <kbd className="text-[10px] text-ink-faint px-1 py-0.5 rounded bg-overlay/[0.04]">Cmd K</kbd>
         </button>
 
         {/* Settings */}
         <button
           onClick={onOpenSettings}
-          className="p-1.5 rounded-lg hover:bg-white/[0.06] text-gray-400 hover:text-white transition-colors"
+          className="p-1.5 rounded-lg hover:bg-overlay/[0.06] text-ink-muted hover:text-ink-bright transition-colors"
           title="Settings"
         >
           <Settings size={16} />

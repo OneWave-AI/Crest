@@ -179,11 +179,11 @@ export default function Modal({
 
         {/* Header */}
         {(title || showClose) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
             {title && (
               <h2
                 id={titleId}
-                className="text-lg font-semibold text-white"
+                className="text-lg font-semibold text-ink-bright"
               >
                 {title}
               </h2>
@@ -192,17 +192,17 @@ export default function Modal({
               {/* Keyboard hint badge */}
               {showKeyboardHint && (
                 <kbd
-                  className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] text-[10px] text-gray-500 font-medium transition-colors"
+                  className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-md bg-overlay/[0.04] border border-overlay/[0.06] text-[10px] text-ink-subtle font-medium transition-colors"
                   aria-label="Press Escape to close"
                 >
                   <span className="text-[9px]">ESC</span>
-                  <span className="text-gray-600">to close</span>
+                  <span className="text-ink-faint">to close</span>
                 </kbd>
               )}
               {showClose && (
                 <button
                   onClick={onClose}
-                  className="group p-2 -mr-2 rounded-xl text-gray-500 hover:text-white hover:bg-white/[0.06] transition-all duration-200 btn-scale-hover focus-ring"
+                  className="group p-2 -mr-2 rounded-xl text-ink-subtle hover:text-ink-bright hover:bg-overlay/[0.06] transition-all duration-200 btn-scale-hover focus-ring"
                   aria-label="Close modal"
                 >
                   <X
@@ -256,28 +256,28 @@ export function ModalButton({
 
   const variantStyles = {
     primary: `
-      text-white
+      text-ink-bright
       bg-gradient-to-r from-accent to-accent-600
-      hover:from-[#d8866a] hover:to-accent
+      hover:from-accent-500 hover:to-accent
       shadow-lg shadow-accent/20
       hover:shadow-xl hover:shadow-accent/30
       active:scale-[0.98]
       hover:scale-[1.02]
     `,
     secondary: `
-      text-gray-300
-      bg-white/[0.05]
-      border border-white/[0.08]
-      hover:bg-white/[0.08]
-      hover:border-white/[0.12]
-      hover:text-white
+      text-ink
+      bg-overlay/[0.05]
+      border border-overlay/[0.08]
+      hover:bg-overlay/[0.08]
+      hover:border-overlay/[0.12]
+      hover:text-ink-bright
       active:scale-[0.98]
       hover:scale-[1.01]
     `,
     ghost: `
-      text-gray-400
-      hover:text-white
-      hover:bg-white/[0.05]
+      text-ink-muted
+      hover:text-ink-bright
+      hover:bg-overlay/[0.05]
       active:scale-[0.98]
     `
   }
@@ -303,7 +303,7 @@ interface ModalFooterProps {
 export function ModalFooter({ children, className = '' }: ModalFooterProps) {
   return (
     <div
-      className={`flex items-center justify-end gap-3 pt-4 border-t border-white/[0.06] mt-4 -mx-6 -mb-6 px-6 py-4 bg-black/20 rounded-b-2xl ${className}`}
+      className={`flex items-center justify-end gap-3 pt-4 border-t border-overlay/[0.06] mt-4 -mx-6 -mb-6 px-6 py-4 bg-black/20 rounded-b-2xl ${className}`}
     >
       {children}
     </div>
@@ -347,7 +347,7 @@ export function ModalScrollContent({
     <div className={`relative ${className}`}>
       {/* Top fade */}
       <div
-        className={`absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[#0d0d0d] to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
+        className={`absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-surface-1 to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
           showTopFade ? 'opacity-100' : 'opacity-0'
         }`}
         aria-hidden="true"
@@ -364,7 +364,7 @@ export function ModalScrollContent({
 
       {/* Bottom fade */}
       <div
-        className={`absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#0d0d0d] to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
+        className={`absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-surface-1 to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
           showBottomFade ? 'opacity-100' : 'opacity-0'
         }`}
         aria-hidden="true"

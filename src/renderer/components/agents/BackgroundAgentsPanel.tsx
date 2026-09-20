@@ -171,7 +171,7 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
       case 'failed':
         return <XCircle className="w-4 h-4 text-red-400" />
       case 'cancelled':
-        return <XCircle className="w-4 h-4 text-gray-400" />
+        return <XCircle className="w-4 h-4 text-ink-muted" />
       default:
         return null
     }
@@ -184,7 +184,7 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
       case 'normal':
         return 'text-blue-400'
       case 'low':
-        return 'text-gray-400'
+        return 'text-ink-muted'
     }
   }
 
@@ -201,13 +201,13 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-[#1a1a1a] rounded-lg border border-white/[0.06] w-[900px] max-h-[80vh] flex flex-col">
+      <div className="bg-surface-4 rounded-lg border border-overlay/[0.06] w-[900px] max-h-[80vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between p-4 border-b border-overlay/[0.06]">
           <div className="flex items-center gap-3">
-            <h2 className="text-lg font-medium text-white">Background Agents</h2>
+            <h2 className="text-lg font-medium text-ink-bright">Background Agents</h2>
             {queueStatus && (
-              <div className="flex items-center gap-2 text-sm text-gray-400">
+              <div className="flex items-center gap-2 text-sm text-ink-muted">
                 <span>{queueStatus.runningTasks} running</span>
                 <span>/</span>
                 <span>{queueStatus.queuedTasks} queued</span>
@@ -217,13 +217,13 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowSettings(!showSettings)}
-              className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-400 hover:text-white transition-colors"
+              className="p-2 rounded-lg hover:bg-overlay/[0.06] text-ink-muted hover:text-ink-bright transition-colors"
             >
               <Settings className="w-4 h-4" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-400 hover:text-white transition-colors"
+              className="p-2 rounded-lg hover:bg-overlay/[0.06] text-ink-muted hover:text-ink-bright transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -232,13 +232,13 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
 
         {/* Settings Panel */}
         {showSettings && (
-          <div className="p-4 border-b border-white/[0.06] bg-white/[0.02]">
+          <div className="p-4 border-b border-overlay/[0.06] bg-overlay/[0.02]">
             <div className="flex items-center gap-4">
-              <label className="text-sm text-gray-400">Max Concurrent Tasks:</label>
+              <label className="text-sm text-ink-muted">Max Concurrent Tasks:</label>
               <select
                 value={queueStatus?.maxConcurrent || 2}
                 onChange={(e) => handleSetMaxConcurrent(parseInt(e.target.value))}
-                className="bg-black/30 border border-white/[0.1] rounded px-3 py-1 text-sm text-white"
+                className="bg-black/30 border border-overlay/[0.1] rounded px-3 py-1 text-sm text-ink-bright"
               >
                 {[1, 2, 3, 4, 5].map(n => (
                   <option key={n} value={n}>{n}</option>
@@ -246,7 +246,7 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
               </select>
               <button
                 onClick={handleClearCompleted}
-                className="ml-auto text-sm text-gray-400 hover:text-white transition-colors"
+                className="ml-auto text-sm text-ink-muted hover:text-ink-bright transition-colors"
               >
                 Clear Completed
               </button>
@@ -255,7 +255,7 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
         )}
 
         {/* Queue Controls */}
-        <div className="flex items-center gap-2 p-4 border-b border-white/[0.06]">
+        <div className="flex items-center gap-2 p-4 border-b border-overlay/[0.06]">
           {queueStatus?.isRunning ? (
             <button
               onClick={handlePauseQueue}
@@ -275,7 +275,7 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
           )}
           <button
             onClick={() => setShowAddForm(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-white/[0.06] hover:bg-white/[0.1] text-white rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-overlay/[0.06] hover:bg-overlay/[0.1] text-ink-bright rounded-lg transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add Task
@@ -284,28 +284,28 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
 
         {/* Add Task Form */}
         {showAddForm && (
-          <div className="p-4 border-b border-white/[0.06] bg-white/[0.02]">
+          <div className="p-4 border-b border-overlay/[0.06] bg-overlay/[0.02]">
             <div className="space-y-3">
               <input
                 type="text"
                 value={newTaskName}
                 onChange={(e) => setNewTaskName(e.target.value)}
                 placeholder="Task name..."
-                className="w-full bg-black/30 border border-white/[0.1] rounded-lg px-4 py-2 text-white placeholder-gray-500"
+                className="w-full bg-black/30 border border-overlay/[0.1] rounded-lg px-4 py-2 text-ink-bright placeholder-ink-subtle"
               />
               <textarea
                 value={newTaskPrompt}
                 onChange={(e) => setNewTaskPrompt(e.target.value)}
                 placeholder="What should Claude do?"
                 rows={3}
-                className="w-full bg-black/30 border border-white/[0.1] rounded-lg px-4 py-2 text-white placeholder-gray-500 resize-none"
+                className="w-full bg-black/30 border border-overlay/[0.1] rounded-lg px-4 py-2 text-ink-bright placeholder-ink-subtle resize-none"
               />
               <div className="flex items-center gap-4">
-                <label className="text-sm text-gray-400">Priority:</label>
+                <label className="text-sm text-ink-muted">Priority:</label>
                 <select
                   value={newTaskPriority}
                   onChange={(e) => setNewTaskPriority(e.target.value as 'low' | 'normal' | 'high')}
-                  className="bg-black/30 border border-white/[0.1] rounded px-3 py-1 text-sm text-white"
+                  className="bg-black/30 border border-overlay/[0.1] rounded px-3 py-1 text-sm text-ink-bright"
                 >
                   <option value="low">Low</option>
                   <option value="normal">Normal</option>
@@ -314,14 +314,14 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
                 <div className="flex-1" />
                 <button
                   onClick={() => setShowAddForm(false)}
-                  className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+                  className="px-4 py-2 text-ink-muted hover:text-ink-bright transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleAddTask}
                   disabled={!newTaskName.trim() || !newTaskPrompt.trim()}
-                  className="px-4 py-2 bg-[#E5484D] hover:bg-[#E5484D]/80 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-danger hover:bg-danger/80 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
                 >
                   Add Task
                 </button>
@@ -337,7 +337,7 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
               <Loader2 className="w-6 h-6 text-orange-400 animate-spin" />
             </div>
           ) : tasks.length === 0 ? (
-            <div className="text-center text-gray-500 py-12">
+            <div className="text-center text-ink-subtle py-12">
               <p className="text-lg mb-2">No background tasks</p>
               <p className="text-sm">Add a task to have Claude work on it in the background</p>
             </div>
@@ -345,14 +345,14 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
             tasks.map(task => (
               <div
                 key={task.id}
-                className="bg-white/[0.03] rounded-lg border border-white/[0.06] overflow-hidden"
+                className="bg-overlay/[0.03] rounded-lg border border-overlay/[0.06] overflow-hidden"
               >
                 {/* Task Header */}
                 <div
-                  className="flex items-center gap-3 p-3 cursor-pointer hover:bg-white/[0.02] transition-colors"
+                  className="flex items-center gap-3 p-3 cursor-pointer hover:bg-overlay/[0.02] transition-colors"
                   onClick={() => toggleExpanded(task.id)}
                 >
-                  <button className="text-gray-400">
+                  <button className="text-ink-muted">
                     {expandedTasks.has(task.id) ? (
                       <ChevronDown className="w-4 h-4" />
                     ) : (
@@ -362,14 +362,14 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
                   {getStatusIcon(task.status)}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-white truncate">{task.name}</span>
+                      <span className="font-medium text-ink-bright truncate">{task.name}</span>
                       <span className={`text-xs ${getPriorityColor(task.priority)}`}>
                         {task.priority.toUpperCase()}
                       </span>
                     </div>
-                    <div className="text-xs text-gray-500 truncate">{task.prompt}</div>
+                    <div className="text-xs text-ink-subtle truncate">{task.prompt}</div>
                   </div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-ink-subtle">
                     {formatDuration(task.startedAt, task.completedAt)}
                   </div>
                   <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
@@ -377,14 +377,14 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
                       <>
                         <button
                           onClick={() => handleSetPriority(task.id, 'high')}
-                          className="p-1 rounded hover:bg-white/[0.1] text-gray-400 hover:text-white"
+                          className="p-1 rounded hover:bg-overlay/[0.1] text-ink-muted hover:text-ink-bright"
                           title="Increase Priority"
                         >
                           <ArrowUp className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleSetPriority(task.id, 'low')}
-                          className="p-1 rounded hover:bg-white/[0.1] text-gray-400 hover:text-white"
+                          className="p-1 rounded hover:bg-overlay/[0.1] text-ink-muted hover:text-ink-bright"
                           title="Decrease Priority"
                         >
                           <ArrowDown className="w-4 h-4" />
@@ -394,7 +394,7 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
                     {task.status === 'running' && (
                       <button
                         onClick={() => handleCancelTask(task.id)}
-                        className="p-1 rounded hover:bg-white/[0.1] text-red-400"
+                        className="p-1 rounded hover:bg-overlay/[0.1] text-red-400"
                         title="Cancel"
                       >
                         <XCircle className="w-4 h-4" />
@@ -403,7 +403,7 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
                     {(task.status === 'failed' || task.status === 'cancelled') && (
                       <button
                         onClick={() => handleRetryTask(task.id)}
-                        className="p-1 rounded hover:bg-white/[0.1] text-yellow-400"
+                        className="p-1 rounded hover:bg-overlay/[0.1] text-yellow-400"
                         title="Retry"
                       >
                         <RotateCcw className="w-4 h-4" />
@@ -412,7 +412,7 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
                     {(task.status === 'completed' || task.status === 'failed' || task.status === 'cancelled') && (
                       <button
                         onClick={() => handleRemoveTask(task.id)}
-                        className="p-1 rounded hover:bg-white/[0.1] text-gray-400 hover:text-red-400"
+                        className="p-1 rounded hover:bg-overlay/[0.1] text-ink-muted hover:text-red-400"
                         title="Remove"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -423,13 +423,13 @@ export default function BackgroundAgentsPanel({ isOpen, onClose }: BackgroundAge
 
                 {/* Task Output */}
                 {expandedTasks.has(task.id) && (
-                  <div className="border-t border-white/[0.06]">
+                  <div className="border-t border-overlay/[0.06]">
                     <div
                       ref={(el) => { outputRefs.current[task.id] = el }}
-                      className="bg-black/30 p-3 max-h-[200px] overflow-y-auto font-mono text-xs text-gray-300"
+                      className="bg-black/30 p-3 max-h-[200px] overflow-y-auto font-mono text-xs text-ink"
                     >
                       {(taskOutputs[task.id] || task.output).length === 0 ? (
-                        <span className="text-gray-500">No output yet...</span>
+                        <span className="text-ink-subtle">No output yet...</span>
                       ) : (
                         (taskOutputs[task.id] || task.output).map((line, i) => (
                           <span key={i} dangerouslySetInnerHTML={{ __html: line }} />

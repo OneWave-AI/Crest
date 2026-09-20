@@ -164,20 +164,20 @@ export default function TaskTimeline({
   const actionTypes = [...new Set(actions.map(a => a.type))]
 
   return (
-    <div className="w-72 h-full min-h-0 flex flex-col bg-[#0d0d0d] border-l border-white/[0.06] relative">
+    <div className="w-72 h-full min-h-0 flex flex-col bg-surface-1 border-l border-overlay/[0.06] relative">
       {/* Subtle gradient accent */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-radial from-accent/5 to-transparent pointer-events-none" />
 
       {/* Header */}
-      <div className="relative flex items-center justify-between px-3 py-2.5 border-b border-white/[0.06]">
+      <div className="relative flex items-center justify-between px-3 py-2.5 border-b border-overlay/[0.06]">
         <div className="flex items-center gap-2">
           <div className="p-1.5 rounded-md bg-accent/10">
             <Activity size={12} className="text-accent" />
           </div>
           <div>
-            <span className="text-xs font-medium text-white">Activity</span>
+            <span className="text-xs font-medium text-ink-bright">Activity</span>
             {actions.length > 0 && (
-              <span className="ml-1.5 text-[10px] text-gray-500">{actions.length}</span>
+              <span className="ml-1.5 text-[10px] text-ink-subtle">{actions.length}</span>
             )}
           </div>
         </div>
@@ -185,7 +185,7 @@ export default function TaskTimeline({
           {actions.length > 0 && (
             <button
               onClick={onClear}
-              className="p-1.5 rounded-md text-gray-600 hover:text-gray-400 hover:bg-white/[0.04] transition-colors"
+              className="p-1.5 rounded-md text-ink-faint hover:text-ink-muted hover:bg-overlay/[0.04] transition-colors"
               title="Clear"
             >
               <Trash2 size={12} />
@@ -193,7 +193,7 @@ export default function TaskTimeline({
           )}
           <button
             onClick={onToggleCollapse}
-            className="p-1.5 rounded-md text-gray-600 hover:text-gray-400 hover:bg-white/[0.04] transition-colors"
+            className="p-1.5 rounded-md text-ink-faint hover:text-ink-muted hover:bg-overlay/[0.04] transition-colors"
             title="Close"
           >
             <X size={12} />
@@ -203,7 +203,7 @@ export default function TaskTimeline({
 
       {/* Stats summary */}
       {actions.length > 0 && (
-        <div className="flex items-center justify-between px-3 py-2 border-b border-white/[0.06] bg-white/[0.01]">
+        <div className="flex items-center justify-between px-3 py-2 border-b border-overlay/[0.06] bg-overlay/[0.01]">
           <div className="flex items-center gap-3">
             {runningCount > 0 && (
               <div className="flex items-center gap-1">
@@ -225,8 +225,8 @@ export default function TaskTimeline({
             )}
             {totalDuration > 0 && (
               <div className="flex items-center gap-1">
-                <Clock size={10} className="text-gray-500" />
-                <span className="text-[10px] text-gray-500">{formatDuration(totalDuration)}</span>
+                <Clock size={10} className="text-ink-subtle" />
+                <span className="text-[10px] text-ink-subtle">{formatDuration(totalDuration)}</span>
               </div>
             )}
           </div>
@@ -238,7 +238,7 @@ export default function TaskTimeline({
               className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] transition-colors ${
                 showFilters || filter !== 'all'
                   ? 'bg-accent/20 text-accent'
-                  : 'text-gray-500 hover:text-gray-400'
+                  : 'text-ink-subtle hover:text-ink-muted'
               }`}
             >
               <span>Filter</span>
@@ -250,13 +250,13 @@ export default function TaskTimeline({
 
       {/* Filter chips - collapsible */}
       {showFilters && actionTypes.length > 1 && (
-        <div className="flex flex-wrap gap-1 px-3 py-2 border-b border-white/[0.06] animate-in slide-in-from-top-2 duration-200">
+        <div className="flex flex-wrap gap-1 px-3 py-2 border-b border-overlay/[0.06] animate-in slide-in-from-top-2 duration-200">
           <button
             onClick={() => setFilter('all')}
             className={`px-2 py-0.5 rounded text-[10px] transition-colors ${
               filter === 'all'
                 ? 'bg-accent/20 text-accent'
-                : 'bg-white/[0.03] text-gray-500 hover:text-gray-300'
+                : 'bg-overlay/[0.03] text-ink-subtle hover:text-ink'
             }`}
           >
             All
@@ -271,13 +271,13 @@ export default function TaskTimeline({
                 onClick={() => setFilter(type)}
                 className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] transition-colors ${
                   filter === type
-                    ? 'bg-white/10 text-white'
-                    : 'bg-white/[0.03] text-gray-500 hover:text-gray-300'
+                    ? 'bg-overlay/10 text-ink-bright'
+                    : 'bg-overlay/[0.03] text-ink-subtle hover:text-ink'
                 }`}
               >
                 <Icon size={9} style={{ color }} />
                 <span>{ACTION_LABELS[type]}</span>
-                <span className="text-gray-600">{count}</span>
+                <span className="text-ink-faint">{count}</span>
               </button>
             )
           })}
@@ -288,11 +288,11 @@ export default function TaskTimeline({
       <div ref={timelineRef} className="flex-1 overflow-y-auto">
         {actions.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
-            <div className="p-3 rounded-xl bg-white/[0.02] mb-3">
-              <Clock size={24} className="text-gray-700" />
+            <div className="p-3 rounded-xl bg-overlay/[0.02] mb-3">
+              <Clock size={24} className="text-ink-ghost" />
             </div>
-            <p className="text-xs text-gray-500 mb-1">No activity yet</p>
-            <p className="text-[10px] text-gray-600">Claude's actions will appear here as it works</p>
+            <p className="text-xs text-ink-subtle mb-1">No activity yet</p>
+            <p className="text-[10px] text-ink-faint">Claude's actions will appear here as it works</p>
           </div>
         ) : (
           <div className="py-2">
@@ -318,8 +318,8 @@ export default function TaskTimeline({
                   <div
                     className={`relative flex gap-2.5 py-2 px-1 rounded-lg transition-colors ${
                       hasDetails ? 'cursor-pointer' : ''
-                    } ${isExpanded ? 'bg-white/[0.03]' : hasDetails ? 'hover:bg-white/[0.02]' : ''} ${
-                      isRunning ? 'bg-white/[0.01]' : ''
+                    } ${isExpanded ? 'bg-overlay/[0.03]' : hasDetails ? 'hover:bg-overlay/[0.02]' : ''} ${
+                      isRunning ? 'bg-overlay/[0.01]' : ''
                     }`}
                     onClick={() => hasDetails && setExpandedId(isExpanded ? null : action.id)}
                   >
@@ -337,10 +337,10 @@ export default function TaskTimeline({
                       </div>
                       {/* Status indicator dot */}
                       {!isRunning && (
-                        <div className={`absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full border border-[#0d0d0d] ${
+                        <div className={`absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full border border-surface-1 ${
                           action.status === 'success' ? 'bg-green-400' :
                           action.status === 'error' ? 'bg-red-400' :
-                          'bg-gray-500'
+                          'bg-ink-subtle'
                         }`} />
                       )}
                     </div>
@@ -349,12 +349,12 @@ export default function TaskTimeline({
                     <div className="flex-1 min-w-0 pt-0.5">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <span className="text-[11px] text-gray-200 leading-tight block">
+                          <span className="text-[11px] text-ink-bright leading-tight block">
                             {action.title}
                           </span>
                           {/* Show file path inline when present */}
                           {action.file && !isExpanded && (
-                            <span className="text-[9px] text-gray-600 font-mono truncate block mt-0.5">
+                            <span className="text-[9px] text-ink-faint font-mono truncate block mt-0.5">
                               {action.file.length > 40 ? '...' + action.file.slice(-37) : action.file}
                             </span>
                           )}
@@ -362,7 +362,7 @@ export default function TaskTimeline({
                         {hasDetails && (
                           <ChevronRight
                             size={10}
-                            className={`flex-shrink-0 text-gray-600 mt-0.5 transition-transform ${
+                            className={`flex-shrink-0 text-ink-faint mt-0.5 transition-transform ${
                               isExpanded ? 'rotate-90' : ''
                             }`}
                           />
@@ -370,18 +370,18 @@ export default function TaskTimeline({
                       </div>
 
                       {action.description && (
-                        <p className="text-[10px] text-gray-500 truncate mt-0.5">
+                        <p className="text-[10px] text-ink-subtle truncate mt-0.5">
                           {action.description}
                         </p>
                       )}
 
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[9px] text-gray-600">
+                        <span className="text-[9px] text-ink-faint">
                           {getRelativeTime(action.timestamp)}
                         </span>
                         {isRunning && (
                           <>
-                            <span className="text-gray-700">-</span>
+                            <span className="text-ink-ghost">-</span>
                             <span className="text-[9px] text-amber-400/70">
                               {getElapsed(action.timestamp)} elapsed
                             </span>
@@ -389,8 +389,8 @@ export default function TaskTimeline({
                         )}
                         {!isRunning && action.duration !== undefined && action.duration > 0 && (
                           <>
-                            <span className="text-gray-700">-</span>
-                            <span className={`text-[9px] ${action.status === 'error' ? 'text-red-400/70' : 'text-gray-600'}`}>
+                            <span className="text-ink-ghost">-</span>
+                            <span className={`text-[9px] ${action.status === 'error' ? 'text-red-400/70' : 'text-ink-faint'}`}>
                               {formatDuration(action.duration)}
                             </span>
                           </>
@@ -404,13 +404,13 @@ export default function TaskTimeline({
                       {isExpanded && (
                         <div className="mt-2 space-y-2 animate-in slide-in-from-top-1 duration-150">
                           {action.file && (
-                            <div className="flex items-center gap-1.5 text-[10px] text-gray-500">
+                            <div className="flex items-center gap-1.5 text-[10px] text-ink-subtle">
                               <FolderOpen size={10} className="flex-shrink-0" />
                               <span className="truncate font-mono">{action.file}</span>
                             </div>
                           )}
                           {action.details && (
-                            <div className="p-2 bg-black/40 rounded-md text-[10px] text-gray-400 font-mono leading-relaxed whitespace-pre-wrap break-all max-h-32 overflow-y-auto">
+                            <div className="p-2 bg-black/40 rounded-md text-[10px] text-ink-muted font-mono leading-relaxed whitespace-pre-wrap break-all max-h-32 overflow-y-auto">
                               {action.details}
                             </div>
                           )}
@@ -427,7 +427,7 @@ export default function TaskTimeline({
 
       {/* Footer */}
       {actions.length > 0 && (
-        <div className="px-3 py-2 border-t border-white/[0.06] text-[9px] text-gray-600 text-center">
+        <div className="px-3 py-2 border-t border-overlay/[0.06] text-[9px] text-ink-faint text-center">
           {filteredActions.length !== actions.length
             ? `Showing ${filteredActions.length} of ${actions.length} actions`
             : 'Click actions to expand details'

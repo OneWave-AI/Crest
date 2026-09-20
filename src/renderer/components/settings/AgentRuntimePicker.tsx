@@ -73,7 +73,7 @@ export function AgentRuntimePicker({
     <div className={compact ? 'space-y-2' : 'space-y-3'}>
       {/* Axis 1 -- agent */}
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-gray-500 mb-1.5">Agent</div>
+        <div className="text-[10px] uppercase tracking-wider text-ink-subtle mb-1.5">Agent</div>
         <div className="flex gap-1.5">
           {providers.map((p) => {
             const isActive = p.id === provider
@@ -100,7 +100,7 @@ export function AgentRuntimePicker({
 
       {/* Axis 2 -- runtime */}
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-gray-500 mb-1.5">Runtime</div>
+        <div className="text-[10px] uppercase tracking-wider text-ink-subtle mb-1.5">Runtime</div>
         <div
           className="grid grid-cols-2 gap-1 rounded-lg p-1"
           style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.06)' }}
@@ -123,7 +123,7 @@ export function AgentRuntimePicker({
           />
         </div>
         {!canGoLocal && (
-          <div className="mt-1 text-[10px] text-gray-600 leading-snug">
+          <div className="mt-1 text-[10px] text-ink-faint leading-snug">
             {activeConfig.localUnavailableReason}
           </div>
         )}
@@ -143,7 +143,7 @@ export function AgentRuntimePicker({
                 boxShadow: status?.running ? '0 0 6px rgba(52,211,153,0.6)' : 'none'
               }}
             />
-            <span className="text-[11px] text-gray-400 flex-1 truncate">
+            <span className="text-[11px] text-ink-muted flex-1 truncate">
               {status === null
                 ? 'Checking ollama...'
                 : status.running
@@ -154,14 +154,14 @@ export function AgentRuntimePicker({
               onClick={() => void probe()}
               disabled={probing}
               title="Re-check ollama"
-              className="text-gray-500 hover:text-gray-300 transition-colors disabled:opacity-40"
+              className="text-ink-subtle hover:text-ink transition-colors disabled:opacity-40"
             >
               <RefreshCw className={`w-3 h-3 ${probing ? 'animate-spin' : ''}`} />
             </button>
           </div>
 
           {status?.running === false && (
-            <div className="text-[10px] text-gray-500 leading-snug">
+            <div className="text-[10px] text-ink-subtle leading-snug">
               Start it with <code className="text-accent">brew services start ollama</code>
             </div>
           )}
@@ -171,7 +171,7 @@ export function AgentRuntimePicker({
               <select
                 value={localModel}
                 onChange={(e) => onLocalModelChange(e.target.value)}
-                className="w-full rounded-md px-2 py-1.5 text-[11px] text-gray-200 outline-none"
+                className="w-full rounded-md px-2 py-1.5 text-[11px] text-ink-bright outline-none"
                 style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}
               >
                 {modelMissing && <option value={localModel}>{localModel} (not pulled)</option>}

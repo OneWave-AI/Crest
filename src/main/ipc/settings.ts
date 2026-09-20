@@ -15,6 +15,7 @@ function getSettingsPath(): string {
 function getDefaultSettings(): AppSettings {
   return {
     // Appearance
+    appTheme: 'default',
     theme: 'default',
     customThemes: [],
     windowOpacity: 1.0,

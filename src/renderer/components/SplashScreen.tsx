@@ -290,7 +290,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const screenHeight = typeof window !== 'undefined' ? window.innerHeight : 1080
 
   return (
-    <div className={`fixed inset-0 z-50 bg-[#020204] transition-opacity duration-600 ${phase === 'fadeout' ? 'opacity-0' : 'opacity-100'}`}>
+    <div className={`fixed inset-0 z-50 bg-surface-void transition-opacity duration-600 ${phase === 'fadeout' ? 'opacity-0' : 'opacity-100'}`}>
       {/* Canvas-based infinite pixel matrix */}
       <canvas
         ref={canvasRef}
@@ -372,34 +372,34 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       />
 
       {/* Corner hex codes - digital detail */}
-      <div className="absolute top-4 left-4 font-mono text-[8px] text-white/10 leading-relaxed">
+      <div className="absolute top-4 left-4 font-mono text-[8px] text-overlay/10 leading-relaxed">
         <div>0x{Math.floor(progress * 255).toString(16).padStart(2, '0').toUpperCase()}FF</div>
         <div>MEM: {(progress * 4096).toFixed(0)}K</div>
         <div>CLK: {(Date.now() % 1000000).toString(16).toUpperCase()}</div>
       </div>
-      <div className="absolute top-4 right-4 font-mono text-[8px] text-white/10 text-right leading-relaxed">
+      <div className="absolute top-4 right-4 font-mono text-[8px] text-overlay/10 text-right leading-relaxed">
         <div>SYS.INIT</div>
         <div>v2.2.0</div>
         <div>ARM64</div>
       </div>
-      <div className="absolute bottom-4 left-4 font-mono text-[8px] text-white/10 leading-relaxed">
+      <div className="absolute bottom-4 left-4 font-mono text-[8px] text-overlay/10 leading-relaxed">
         <div>&gt;&gt; BOOT SEQUENCE</div>
         <div>&gt;&gt; LOADING KERNEL</div>
         <div>&gt;&gt; {phase === 'complete' ? 'READY' : 'PLEASE WAIT'}</div>
       </div>
-      <div className="absolute bottom-4 right-4 font-mono text-[8px] text-white/10 text-right leading-relaxed">
+      <div className="absolute bottom-4 right-4 font-mono text-[8px] text-overlay/10 text-right leading-relaxed">
         <div>SECTOR: {Math.floor(progress * 128)}/128</div>
         <div>CRC: {progress >= 1 ? 'OK' : 'CALC'}</div>
         <div>PTY: /dev/tty0</div>
       </div>
 
       {/* Binary rain on edges */}
-      <div className="absolute top-20 left-2 font-mono text-[6px] text-white/5 leading-none">
+      <div className="absolute top-20 left-2 font-mono text-[6px] text-overlay/5 leading-none">
         {Array.from({ length: 40 }, (_, i) => (
           <div key={i}>{Math.random() > 0.5 ? '1' : '0'}</div>
         ))}
       </div>
-      <div className="absolute top-20 right-2 font-mono text-[6px] text-white/5 leading-none text-right">
+      <div className="absolute top-20 right-2 font-mono text-[6px] text-overlay/5 leading-none text-right">
         {Array.from({ length: 40 }, (_, i) => (
           <div key={i}>{Math.random() > 0.5 ? '1' : '0'}</div>
         ))}
@@ -476,7 +476,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         </div>
 
         {/* Progress bar */}
-        <div className="mt-8 w-80 h-1.5 bg-white/[0.03] rounded-full overflow-hidden relative">
+        <div className="mt-8 w-80 h-1.5 bg-overlay/[0.03] rounded-full overflow-hidden relative">
           {/* Pixel segments in progress bar */}
           <div className="absolute inset-0 flex">
             {Array.from({ length: 40 }, (_, i) => (
@@ -501,7 +501,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         </div>
 
         {/* Subsystem status */}
-        <div className="mt-6 flex gap-6 font-mono text-[9px] text-white/20">
+        <div className="mt-6 flex gap-6 font-mono text-[9px] text-overlay/20">
           <span className={progress > 0.2 ? 'text-green-500/40' : ''}>CPU {progress > 0.2 ? 'OK' : '--'}</span>
           <span className={progress > 0.4 ? 'text-green-500/40' : ''}>MEM {progress > 0.4 ? 'OK' : '--'}</span>
           <span className={progress > 0.6 ? 'text-green-500/40' : ''}>GPU {progress > 0.6 ? 'OK' : '--'}</span>

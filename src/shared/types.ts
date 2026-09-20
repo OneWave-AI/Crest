@@ -276,8 +276,22 @@ export interface CLIProviderConfig {
   accentTint: string
 }
 
+/**
+ * Chrome theme. Distinct from `AppSettings.theme`, which is the xterm colour
+ * scheme -- a terminal can be Dracula while the app around it is Paper.
+ */
+export type AppTheme = 'default' | 'slate' | 'ember' | 'paper'
+
+export const APP_THEMES: Array<{ id: AppTheme; name: string; note: string }> = [
+  { id: 'default', name: 'Crest', note: 'Neutral black' },
+  { id: 'slate', name: 'Slate', note: 'Cool, flatter dark' },
+  { id: 'ember', name: 'Ember', note: 'Warm, brown-black' },
+  { id: 'paper', name: 'Paper', note: 'Light' }
+]
+
 export interface AppSettings {
   // Appearance
+  appTheme: AppTheme
   theme: string
   customThemes: CustomTheme[]
   windowOpacity: number

@@ -84,13 +84,13 @@ const getExtColor = (fileName: string): string => {
     jsx: 'text-yellow-400',
     py: 'text-green-400',
     json: 'text-yellow-500',
-    md: 'text-gray-400',
+    md: 'text-ink-muted',
     css: 'text-sand-400',
     scss: 'text-pink-400',
     html: 'text-orange-400',
   }
 
-  return colorMap[ext] || 'text-gray-500'
+  return colorMap[ext] || 'text-ink-subtle'
 }
 
 export default function FileTabBar({
@@ -175,7 +175,7 @@ export default function FileTabBar({
       {/* Tab Bar */}
       <div
         ref={containerRef}
-        className="flex items-center gap-0.5 px-2 py-1 bg-[#141414] border-b border-white/[0.06] overflow-x-auto scrollbar-hide"
+        className="flex items-center gap-0.5 px-2 py-1 bg-surface-3 border-b border-overlay/[0.06] overflow-x-auto scrollbar-hide"
       >
         {openFiles.map((file, index) => {
           const isActive = file.path === activeFilePath
@@ -198,7 +198,7 @@ export default function FileTabBar({
                 transition-all duration-150 cursor-pointer select-none flex-shrink-0 max-w-[180px]
                 ${isActive
                   ? 'bg-accent/15 text-accent'
-                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                  : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.04]'
                 }
                 ${isDragging ? 'opacity-50 scale-95' : ''}
                 ${isDropTarget ? 'ring-2 ring-accent/50 ring-inset' : ''}
@@ -232,7 +232,7 @@ export default function FileTabBar({
                   p-0.5 rounded transition-all flex-shrink-0
                   ${isActive
                     ? 'opacity-60 hover:opacity-100 hover:bg-accent/20'
-                    : 'opacity-0 group-hover:opacity-60 hover:opacity-100 hover:bg-white/10'
+                    : 'opacity-0 group-hover:opacity-60 hover:opacity-100 hover:bg-overlay/10'
                   }
                 `}
               >
@@ -254,7 +254,7 @@ export default function FileTabBar({
               const rect = e.currentTarget.getBoundingClientRect()
               setContextMenu({ x: rect.left, y: rect.bottom + 4, path: '__more__' })
             }}
-            className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/[0.06] transition-colors flex-shrink-0"
+            className="p-1.5 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/[0.06] transition-colors flex-shrink-0"
           >
             <MoreHorizontal size={14} />
           </button>
@@ -265,7 +265,7 @@ export default function FileTabBar({
       {contextMenu && contextMenu.path !== '__more__' && (
         <div
           ref={contextMenuRef}
-          className="fixed z-50 w-48 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150"
+          className="fixed z-50 w-48 bg-surface-4 border border-overlay/10 rounded-xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150"
           style={{ left: contextMenu.x, top: contextMenu.y }}
         >
           <div className="p-1">
@@ -274,7 +274,7 @@ export default function FileTabBar({
                 onCloseFile(contextMenu.path)
                 setContextMenu(null)
               }}
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-ink hover:bg-overlay/[0.06] hover:text-ink-bright transition-colors"
             >
               <X size={14} />
               Close
@@ -285,7 +285,7 @@ export default function FileTabBar({
                   onCloseOthers(contextMenu.path)
                   setContextMenu(null)
                 }}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-ink hover:bg-overlay/[0.06] hover:text-ink-bright transition-colors"
               >
                 Close Others
               </button>
@@ -296,7 +296,7 @@ export default function FileTabBar({
                   onCloseAll()
                   setContextMenu(null)
                 }}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-ink hover:bg-overlay/[0.06] hover:text-ink-bright transition-colors"
               >
                 Close All
               </button>
@@ -309,11 +309,11 @@ export default function FileTabBar({
       {contextMenu && contextMenu.path === '__more__' && (
         <div
           ref={contextMenuRef}
-          className="fixed z-50 w-64 max-h-80 overflow-y-auto bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150"
+          className="fixed z-50 w-64 max-h-80 overflow-y-auto bg-surface-4 border border-overlay/10 rounded-xl shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150"
           style={{ left: contextMenu.x, top: contextMenu.y }}
         >
           <div className="p-1">
-            <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-gray-500 font-medium">
+            <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-ink-subtle font-medium">
               Open Files ({openFiles.length})
             </div>
             {openFiles.map((file) => {
@@ -330,7 +330,7 @@ export default function FileTabBar({
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                     isActive
                       ? 'bg-accent/15 text-accent'
-                      : 'text-gray-300 hover:bg-white/[0.06] hover:text-white'
+                      : 'text-ink hover:bg-overlay/[0.06] hover:text-ink-bright'
                   }`}
                 >
                   <FileIcon size={14} />

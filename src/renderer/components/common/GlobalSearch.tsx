@@ -459,7 +459,7 @@ export default function GlobalSearch({
             title: setting.label,
             subtitle: `Go to ${setting.section} settings`,
             icon: Settings,
-            iconColor: 'text-gray-400',
+            iconColor: 'text-ink-muted',
             data: { setting, score },
             action: () => {
               onOpenSettings?.()
@@ -616,16 +616,16 @@ export default function GlobalSearch({
         }`}
       >
         <div
-          className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0a0a]/95 backdrop-blur-xl shadow-2xl"
+          className="overflow-hidden rounded-2xl border border-overlay/[0.08] bg-surface-0/95 backdrop-blur-xl shadow-2xl"
           style={{
             boxShadow: '0 0 0 1px rgba(204, 120, 92, 0.1), 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 100px rgba(204, 120, 92, 0.1)'
           }}
         >
           {/* Search Header */}
-          <div className="relative border-b border-white/[0.06]">
+          <div className="relative border-b border-overlay/[0.06]">
             <Search
               size={20}
-              className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500"
+              className="absolute left-5 top-1/2 -translate-y-1/2 text-ink-subtle"
               aria-hidden="true"
             />
             <input
@@ -635,7 +635,7 @@ export default function GlobalSearch({
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search files, conversations, skills, commands..."
-              className="w-full pl-14 pr-32 py-5 bg-transparent text-white text-base placeholder-gray-500 focus:outline-none"
+              className="w-full pl-14 pr-32 py-5 bg-transparent text-ink-bright text-base placeholder-ink-subtle focus:outline-none"
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
@@ -649,13 +649,13 @@ export default function GlobalSearch({
               {query && (
                 <button
                   onClick={() => setQuery('')}
-                  className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-colors"
+                  className="p-1.5 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/10 transition-colors"
                   aria-label="Clear search"
                 >
                   <X size={16} />
                 </button>
               )}
-              <kbd className="hidden sm:flex items-center px-2 py-1 rounded-md bg-white/[0.05] text-[10px] text-gray-500 font-medium">
+              <kbd className="hidden sm:flex items-center px-2 py-1 rounded-md bg-overlay/[0.05] text-[10px] text-ink-subtle font-medium">
                 ESC
               </kbd>
             </div>
@@ -668,7 +668,7 @@ export default function GlobalSearch({
           </div>
 
           {/* Category Tabs */}
-          <div className="flex items-center gap-1 px-4 py-2 border-b border-white/[0.04] bg-white/[0.02]">
+          <div className="flex items-center gap-1 px-4 py-2 border-b border-overlay/[0.04] bg-overlay/[0.02]">
             {(['all', 'files', 'conversations', 'skills', 'commands', 'settings'] as const).map((cat) => {
               const config = cat === 'all' ? { label: 'All', icon: Search } : CATEGORY_CONFIG[cat]
               const Icon = config.icon
@@ -681,14 +681,14 @@ export default function GlobalSearch({
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     selectedCategory === cat
                       ? 'bg-accent/15 text-accent'
-                      : 'text-gray-500 hover:text-white hover:bg-white/5'
+                      : 'text-ink-subtle hover:text-ink-bright hover:bg-overlay/5'
                   }`}
                 >
                   <Icon size={14} />
                   <span>{config.label}</span>
                   {count > 0 && (
                     <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
-                      selectedCategory === cat ? 'bg-accent/20' : 'bg-white/5'
+                      selectedCategory === cat ? 'bg-accent/20' : 'bg-overlay/5'
                     }`}>
                       {count}
                     </span>
@@ -705,10 +705,10 @@ export default function GlobalSearch({
               ref={listRef}
               id="search-results"
               role="listbox"
-              className={`overflow-y-auto py-2 ${showPreview ? 'w-1/2 border-r border-white/[0.04]' : 'w-full'}`}
+              className={`overflow-y-auto py-2 ${showPreview ? 'w-1/2 border-r border-overlay/[0.04]' : 'w-full'}`}
             >
               {loading ? (
-                <div className="flex items-center justify-center py-12 text-gray-500">
+                <div className="flex items-center justify-center py-12 text-ink-subtle">
                   <div className="flex items-center gap-3">
                     <div className="w-5 h-5 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                     <span className="text-sm">Searching...</span>
@@ -718,15 +718,15 @@ export default function GlobalSearch({
                 <div className="px-4 py-12 text-center">
                   {query ? (
                     <>
-                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/[0.03] mb-3">
-                        <Search size={20} className="text-gray-600" />
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-overlay/[0.03] mb-3">
+                        <Search size={20} className="text-ink-faint" />
                       </div>
-                      <div className="text-gray-500 text-sm">No results found</div>
-                      <div className="text-gray-600 text-xs mt-1">Try a different search term</div>
+                      <div className="text-ink-subtle text-sm">No results found</div>
+                      <div className="text-ink-faint text-xs mt-1">Try a different search term</div>
                     </>
                   ) : recentSearches.length > 0 ? (
                     <>
-                      <div className="flex items-center gap-2 px-4 py-2 text-gray-500 text-xs">
+                      <div className="flex items-center gap-2 px-4 py-2 text-ink-subtle text-xs">
                         <Clock size={12} />
                         <span>Recent Searches</span>
                       </div>
@@ -735,9 +735,9 @@ export default function GlobalSearch({
                           <button
                             key={i}
                             onClick={() => setQuery(term)}
-                            className="w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-gray-400 hover:text-white hover:bg-white/[0.03] transition-colors"
+                            className="w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-ink-muted hover:text-ink-bright hover:bg-overlay/[0.03] transition-colors"
                           >
-                            <Clock size={14} className="text-gray-600" />
+                            <Clock size={14} className="text-ink-faint" />
                             <span>{term}</span>
                           </button>
                         ))}
@@ -748,8 +748,8 @@ export default function GlobalSearch({
                       <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 mb-3">
                         <Search size={20} className="text-accent/60" />
                       </div>
-                      <div className="text-gray-500 text-sm">Start typing to search</div>
-                      <div className="text-gray-600 text-xs mt-1">Search across files, conversations, skills, and more</div>
+                      <div className="text-ink-subtle text-sm">Start typing to search</div>
+                      <div className="text-ink-faint text-xs mt-1">Search across files, conversations, skills, and more</div>
                     </>
                   )}
                 </div>
@@ -760,12 +760,12 @@ export default function GlobalSearch({
                     <div className="px-4 py-2 flex items-center gap-2">
                       {(() => {
                         const Icon = CATEGORY_CONFIG[group.category].icon
-                        return <Icon size={12} className="text-gray-600" />
+                        return <Icon size={12} className="text-ink-faint" />
                       })()}
-                      <span className="text-[10px] uppercase tracking-wider text-gray-600 font-medium">
+                      <span className="text-[10px] uppercase tracking-wider text-ink-faint font-medium">
                         {CATEGORY_CONFIG[group.category].label}
                       </span>
-                      <span className="text-[10px] text-gray-700">
+                      <span className="text-[10px] text-ink-ghost">
                         ({group.items.length})
                       </span>
                     </div>
@@ -787,30 +787,30 @@ export default function GlobalSearch({
                           onClick={() => result.action()}
                           onMouseEnter={() => setSelectedIndex(currentIndex)}
                           className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all ${
-                            isSelected ? 'bg-accent/10' : 'hover:bg-white/[0.02]'
+                            isSelected ? 'bg-accent/10' : 'hover:bg-overlay/[0.02]'
                           }`}
                         >
                           {/* Icon */}
                           <div
                             className={`flex items-center justify-center w-9 h-9 rounded-xl transition-colors ${
-                              isSelected ? 'bg-accent/20' : 'bg-white/[0.03]'
+                              isSelected ? 'bg-accent/20' : 'bg-overlay/[0.03]'
                             }`}
                           >
                             <Icon
                               size={18}
-                              className={isSelected ? 'text-accent' : result.iconColor || 'text-gray-400'}
+                              className={isSelected ? 'text-accent' : result.iconColor || 'text-ink-muted'}
                             />
                           </div>
 
                           {/* Content */}
                           <div className="flex-1 min-w-0">
                             <div className={`text-sm font-medium truncate ${
-                              isSelected ? 'text-white' : 'text-gray-300'
+                              isSelected ? 'text-ink-bright' : 'text-ink'
                             }`}>
                               {result.title}
                             </div>
                             {result.subtitle && (
-                              <div className="text-xs text-gray-600 truncate mt-0.5">
+                              <div className="text-xs text-ink-faint truncate mt-0.5">
                                 {result.subtitle}
                               </div>
                             )}
@@ -828,7 +828,7 @@ export default function GlobalSearch({
                                       e.stopPropagation()
                                       action.action()
                                     }}
-                                    className="p-1.5 rounded-lg text-gray-500 hover:text-accent hover:bg-accent/10 transition-colors"
+                                    className="p-1.5 rounded-lg text-ink-subtle hover:text-accent hover:bg-accent/10 transition-colors"
                                     title={action.label}
                                   >
                                     <ActionIcon size={14} />
@@ -852,35 +852,35 @@ export default function GlobalSearch({
 
             {/* Preview Panel */}
             {showPreview && previewItem && (
-              <div className="w-1/2 p-4 overflow-y-auto bg-white/[0.01]">
+              <div className="w-1/2 p-4 overflow-y-auto bg-overlay/[0.01]">
                 <PreviewPanel item={previewItem} />
               </div>
             )}
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between px-4 py-2.5 border-t border-white/[0.06] bg-white/[0.02]">
-            <div className="flex items-center gap-4 text-[10px] text-gray-600">
+          <div className="flex items-center justify-between px-4 py-2.5 border-t border-overlay/[0.06] bg-overlay/[0.02]">
+            <div className="flex items-center gap-4 text-[10px] text-ink-faint">
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] font-medium">Tab</kbd>
+                <kbd className="px-1.5 py-0.5 rounded bg-overlay/[0.06] font-medium">Tab</kbd>
                 <span>categories</span>
               </span>
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] font-medium">\u2191\u2193</kbd>
+                <kbd className="px-1.5 py-0.5 rounded bg-overlay/[0.06] font-medium">\u2191\u2193</kbd>
                 <span>navigate</span>
               </span>
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] font-medium">\u21B5</kbd>
+                <kbd className="px-1.5 py-0.5 rounded bg-overlay/[0.06] font-medium">\u21B5</kbd>
                 <span>select</span>
               </span>
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] font-medium">\u2318\u2192</kbd>
+                <kbd className="px-1.5 py-0.5 rounded bg-overlay/[0.06] font-medium">\u2318\u2192</kbd>
                 <span>preview</span>
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <Command size={12} className="text-accent" />
-              <span className="text-[10px] text-gray-600">Global Search</span>
+              <span className="text-[10px] text-ink-faint">Global Search</span>
             </div>
           </div>
         </div>
@@ -938,14 +938,14 @@ function PreviewPanel({ item }: { item: SearchResult }) {
   return (
     <div className="h-full flex flex-col">
       {/* Preview Header */}
-      <div className="flex items-center gap-3 pb-4 border-b border-white/[0.04] mb-4">
+      <div className="flex items-center gap-3 pb-4 border-b border-overlay/[0.04] mb-4">
         <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent/10">
           <Icon size={20} className="text-accent" />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-medium text-white truncate">{item.title}</div>
+          <div className="text-sm font-medium text-ink-bright truncate">{item.title}</div>
           {item.subtitle && (
-            <div className="text-xs text-gray-500 truncate">{item.subtitle}</div>
+            <div className="text-xs text-ink-subtle truncate">{item.subtitle}</div>
           )}
         </div>
       </div>
@@ -957,20 +957,20 @@ function PreviewPanel({ item }: { item: SearchResult }) {
             <div className="w-5 h-5 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
           </div>
         ) : content ? (
-          <pre className="text-xs text-gray-400 font-mono whitespace-pre-wrap break-words">
+          <pre className="text-xs text-ink-muted font-mono whitespace-pre-wrap break-words">
             {content}
           </pre>
         ) : (
           <div className="text-center py-8">
-            <div className="text-sm text-gray-500">No preview available</div>
+            <div className="text-sm text-ink-subtle">No preview available</div>
           </div>
         )}
       </div>
 
       {/* Quick Actions */}
       {item.quickActions && item.quickActions.length > 0 && (
-        <div className="pt-4 border-t border-white/[0.04] mt-4">
-          <div className="text-[10px] uppercase tracking-wider text-gray-600 mb-2">Actions</div>
+        <div className="pt-4 border-t border-overlay/[0.04] mt-4">
+          <div className="text-[10px] uppercase tracking-wider text-ink-faint mb-2">Actions</div>
           <div className="flex flex-wrap gap-2">
             {item.quickActions.map((action) => {
               const ActionIcon = action.icon
@@ -978,7 +978,7 @@ function PreviewPanel({ item }: { item: SearchResult }) {
                 <button
                   key={action.id}
                   onClick={action.action}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] text-xs text-gray-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-overlay/[0.03] text-xs text-ink-muted hover:text-ink-bright hover:bg-overlay/[0.06] transition-colors"
                 >
                   <ActionIcon size={12} />
                   <span>{action.label}</span>

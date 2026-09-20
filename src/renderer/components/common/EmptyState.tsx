@@ -46,18 +46,18 @@ export default function EmptyState({
         <div className="absolute inset-0 rounded-full bg-accent/20 blur-xl scale-150" />
 
         {/* Icon circle */}
-        <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-b from-[#1a1a1a] to-[#141414] border border-white/10 shadow-lg">
-          {icon || <IconComponent size={32} className="text-gray-500" />}
+        <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-b from-surface-4 to-surface-3 border border-overlay/10 shadow-lg">
+          {icon || <IconComponent size={32} className="text-ink-subtle" />}
         </div>
       </div>
 
       {/* Text */}
-      <h3 className="text-lg font-semibold text-white mb-2 text-center">
+      <h3 className="text-lg font-semibold text-ink-bright mb-2 text-center">
         {title}
       </h3>
 
       {description && (
-        <p className="text-sm text-gray-400 text-center max-w-sm mb-6">
+        <p className="text-sm text-ink-muted text-center max-w-sm mb-6">
           {description}
         </p>
       )}
@@ -77,7 +77,7 @@ export default function EmptyState({
           {secondaryAction && (
             <button
               onClick={secondaryAction.onClick}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white font-medium transition-all duration-200 border border-white/10"
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-overlay/5 hover:bg-overlay/10 text-ink hover:text-ink-bright font-medium transition-all duration-200 border border-overlay/10"
             >
               {secondaryAction.label}
             </button>

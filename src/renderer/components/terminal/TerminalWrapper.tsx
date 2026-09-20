@@ -1446,7 +1446,7 @@ export default function TerminalWrapper({
     return (
       <div
         key={panel.id}
-        className={`h-full flex flex-col bg-[#0d0d0d] ${isGrid ? '' : isOnly ? 'flex-1' : 'w-1/2'} ${isDropping ? 'ring-2 ring-accent/50 ring-inset' : ''}`}
+        className={`h-full flex flex-col bg-surface-1 ${isGrid ? '' : isOnly ? 'flex-1' : 'w-1/2'} ${isDropping ? 'ring-2 ring-accent/50 ring-inset' : ''}`}
         onDragOver={(e) => handleTabDragOver(e, panel.id, 'tab')}
         onDragLeave={handleTabDragLeave}
         onDrop={(e) => handleTabDrop(e, panel.id)}
@@ -1454,15 +1454,15 @@ export default function TerminalWrapper({
         {/* Panel Tab Bar */}
         {isGrid ? (
           /* Compact grid mode header */
-          <div className="flex items-center justify-between px-2 py-0.5 bg-[#111111] border-b border-white/[0.06]">
+          <div className="flex items-center justify-between px-2 py-0.5 bg-surface-2 border-b border-overlay/[0.06]">
             <div className="flex items-center gap-1.5">
               <TerminalIcon size={9} className={CLI_PROVIDERS[panel.tabs[0]?.cliProvider ?? 'claude'].accentText} />
-              <span className="text-[10px] font-medium text-gray-500">{panel.tabs[0]?.name || 'Terminal'}</span>
+              <span className="text-[10px] font-medium text-ink-subtle">{panel.tabs[0]?.name || 'Terminal'}</span>
             </div>
             <div className="flex items-center gap-0.5">
               <button
                 onClick={exitGridLayout}
-                className="px-1.5 py-0.5 rounded text-[9px] font-medium text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] transition-colors"
+                className="px-1.5 py-0.5 rounded text-[9px] font-medium text-ink-subtle hover:text-ink hover:bg-overlay/[0.06] transition-colors"
                 title="Exit grid layout"
               >
                 Exit
@@ -1481,7 +1481,7 @@ export default function TerminalWrapper({
                     })
                     if (shouldExit) setLayoutMode('default')
                   }}
-                  className="p-0.5 rounded text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="p-0.5 rounded text-ink-faint hover:text-red-400 hover:bg-red-500/10 transition-colors"
                   title="Close Panel"
                 >
                   <X size={11} />
@@ -1491,7 +1491,7 @@ export default function TerminalWrapper({
           </div>
         ) : (
           /* Default mode header */
-          <div className="flex items-center justify-between px-2 py-1.5 bg-[#111111] border-b border-white/[0.06]">
+          <div className="flex items-center justify-between px-2 py-1.5 bg-surface-2 border-b border-overlay/[0.06]">
           {/* Tabs container - scrollable */}
           <div className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide flex-1 min-w-0">
             {panel.tabs.map((tab) => {
@@ -1506,7 +1506,7 @@ export default function TerminalWrapper({
                 className={`group relative flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-150 flex-shrink-0 ${
                   isActive
                     ? `${CLI_PROVIDERS[tab.cliProvider ?? 'claude'].accentTint} ${CLI_PROVIDERS[tab.cliProvider ?? 'claude'].accentText}`
-                    : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                    : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.04]'
                 } ${draggedTab?.tabId === tab.id ? 'opacity-50 scale-95' : ''}`}
               >
                 {/* Active tab accent */}
@@ -1531,7 +1531,7 @@ export default function TerminalWrapper({
                       e.stopPropagation()
                       closeTab(panel.id, tab.id)
                     }}
-                    className="p-0.5 rounded-sm opacity-0 group-hover:opacity-100 hover:bg-white/10 text-gray-500 hover:text-white transition-all"
+                    className="p-0.5 rounded-sm opacity-0 group-hover:opacity-100 hover:bg-overlay/10 text-ink-subtle hover:text-ink-bright transition-all"
                   >
                     <X size={10} />
                   </button>
@@ -1551,7 +1551,7 @@ export default function TerminalWrapper({
                 className={`flex items-center px-2 py-1 rounded-md transition-all duration-150 ${
                   chatViewPanels.has(panel.id)
                     ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                    : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.06]'
+                    : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.06]'
                 }`}
                 title={chatViewPanels.has(panel.id) ? 'Switch to Terminal' : 'Switch to Chat View'}
               >
@@ -1560,8 +1560,8 @@ export default function TerminalWrapper({
 
               <button
                 onClick={() => setShowPlusMenu(showPlusMenu === panel.id ? null : panel.id)}
-                className={`flex items-center gap-1 px-2 py-1 rounded-md text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] transition-all duration-150 ${
-                  showPlusMenu === panel.id ? 'bg-white/[0.06] text-gray-300' : ''
+                className={`flex items-center gap-1 px-2 py-1 rounded-md text-ink-subtle hover:text-ink hover:bg-overlay/[0.06] transition-all duration-150 ${
+                  showPlusMenu === panel.id ? 'bg-overlay/[0.06] text-ink' : ''
                 }`}
                 title="Add Tab"
               >
@@ -1570,7 +1570,7 @@ export default function TerminalWrapper({
               </button>
 
               {showPlusMenu === panel.id && (
-                <div className="absolute top-full right-0 mt-1.5 w-60 bg-[#1a1a1a] border border-white/[0.08] rounded-lg shadow-2xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute top-full right-0 mt-1.5 w-60 bg-surface-4 border border-overlay/[0.08] rounded-lg shadow-2xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="p-1">
                     {/* Every registered agent, so a panel can mix them. Each row
                         opens on the cloud runtime; the Local chip opens the same
@@ -1581,7 +1581,7 @@ export default function TerminalWrapper({
                       <div key={p.id} className="flex items-center gap-1">
                         <button
                           onClick={() => addTab(panel.id, 'terminal', p.id, 'api')}
-                          className="flex-1 min-w-0 flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
+                          className="flex-1 min-w-0 flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-ink hover:bg-overlay/[0.06] hover:text-ink-bright transition-colors"
                         >
                           <TerminalIcon size={14} className={p.accentText} />
                           <span className="truncate">{p.name}</span>
@@ -1590,7 +1590,7 @@ export default function TerminalWrapper({
                           <button
                             onClick={() => addTab(panel.id, 'terminal', p.id, 'local')}
                             title={`${p.name} against local ollama (${localModel || 'default model'})`}
-                            className="shrink-0 flex items-center gap-1 px-1.5 py-1 mr-1 rounded-md text-[10px] font-medium text-gray-500 hover:text-gray-200 hover:bg-white/[0.06] border border-white/[0.06] transition-colors"
+                            className="shrink-0 flex items-center gap-1 px-1.5 py-1 mr-1 rounded-md text-[10px] font-medium text-ink-subtle hover:text-ink-bright hover:bg-overlay/[0.06] border border-overlay/[0.06] transition-colors"
                           >
                             <HardDrive size={10} />
                             <span>Local</span>
@@ -1600,7 +1600,7 @@ export default function TerminalWrapper({
                     ))}
                     <button
                       onClick={() => addTab(panel.id, 'browser')}
-                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
+                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-ink hover:bg-overlay/[0.06] hover:text-ink-bright transition-colors"
                     >
                       <Globe size={14} className="text-blue-400" />
                       <span>Browser</span>
@@ -1608,20 +1608,20 @@ export default function TerminalWrapper({
                   </div>
                   {panels.length < 2 && (
                     <>
-                      <div className="h-px bg-white/[0.06] mx-2" />
+                      <div className="h-px bg-overlay/[0.06] mx-2" />
                       <div className="p-1">
                         <button
                           onClick={() => addPanel('terminal')}
-                          className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
+                          className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-ink hover:bg-overlay/[0.06] hover:text-ink-bright transition-colors"
                         >
-                          <SplitSquareVertical size={14} className="text-gray-400" />
+                          <SplitSquareVertical size={14} className="text-ink-muted" />
                           <span>Split Panel</span>
                         </button>
                         <button
                           onClick={createGridLayout}
-                          className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-colors"
+                          className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-ink hover:bg-overlay/[0.06] hover:text-ink-bright transition-colors"
                         >
-                          <LayoutGrid size={14} className="text-gray-400" />
+                          <LayoutGrid size={14} className="text-ink-muted" />
                           <span>Grid (3x2)</span>
                         </button>
                       </div>
@@ -1634,17 +1634,17 @@ export default function TerminalWrapper({
             {/* Split/Grid buttons - compact icon-only */}
             {panels.length < 2 && (
               <>
-                <div className="w-px h-3.5 bg-white/[0.06] mx-0.5" />
+                <div className="w-px h-3.5 bg-overlay/[0.06] mx-0.5" />
                 <button
                   onClick={() => addPanel('terminal')}
-                  className="p-1.5 rounded-md text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] transition-all duration-150"
+                  className="p-1.5 rounded-md text-ink-subtle hover:text-ink hover:bg-overlay/[0.06] transition-all duration-150"
                   title="Split into two panels"
                 >
                   <SplitSquareVertical size={13} />
                 </button>
                 <button
                   onClick={createGridLayout}
-                  className="p-1.5 rounded-md text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] transition-all duration-150"
+                  className="p-1.5 rounded-md text-ink-subtle hover:text-ink hover:bg-overlay/[0.06] transition-all duration-150"
                   title="Grid layout (3x2)"
                 >
                   <LayoutGrid size={13} />
@@ -1655,10 +1655,10 @@ export default function TerminalWrapper({
             {/* Panel close */}
             {panels.length > 1 && (
               <>
-                <div className="w-px h-3.5 bg-white/[0.06] mx-0.5" />
+                <div className="w-px h-3.5 bg-overlay/[0.06] mx-0.5" />
                 <button
                   onClick={() => setPanels(prev => prev.filter(p => p.id !== panel.id))}
-                  className="p-1.5 rounded-md text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="p-1.5 rounded-md text-ink-faint hover:text-red-400 hover:bg-red-500/10 transition-colors"
                   title="Close Panel"
                 >
                   <X size={13} />
@@ -1750,13 +1750,13 @@ export default function TerminalWrapper({
           {currentTab?.type === 'browser' ? (
             <div className="h-full flex flex-col">
               {/* URL Bar */}
-              <div className="flex items-center gap-2 px-3 py-2 bg-[#141414] border-b border-white/[0.06]">
+              <div className="flex items-center gap-2 px-3 py-2 bg-surface-3 border-b border-overlay/[0.06]">
                 <button
                   onClick={() => {
                     const webview = document.getElementById(`browser-${currentTab.id}`) as Electron.WebviewTag | null
                     if (webview && 'goBack' in webview) webview.goBack()
                   }}
-                  className="p-1 rounded hover:bg-white/5 text-gray-500 hover:text-white transition-colors"
+                  className="p-1 rounded hover:bg-overlay/5 text-ink-subtle hover:text-ink-bright transition-colors"
                 >
                   <PanelLeft size={14} />
                 </button>
@@ -1765,7 +1765,7 @@ export default function TerminalWrapper({
                     const webview = document.getElementById(`browser-${currentTab.id}`) as Electron.WebviewTag | null
                     if (webview && 'goForward' in webview) webview.goForward()
                   }}
-                  className="p-1 rounded hover:bg-white/5 text-gray-500 hover:text-white transition-colors"
+                  className="p-1 rounded hover:bg-overlay/5 text-ink-subtle hover:text-ink-bright transition-colors"
                 >
                   <PanelRight size={14} />
                 </button>
@@ -1774,12 +1774,12 @@ export default function TerminalWrapper({
                     const webview = document.getElementById(`browser-${currentTab.id}`) as Electron.WebviewTag | null
                     if (webview && 'reload' in webview) webview.reload()
                   }}
-                  className="p-1 rounded hover:bg-white/5 text-gray-500 hover:text-white transition-colors"
+                  className="p-1 rounded hover:bg-overlay/5 text-ink-subtle hover:text-ink-bright transition-colors"
                 >
                   <RotateCcw size={14} />
                 </button>
-                <div className="flex-1 flex items-center gap-2 px-3 py-1.5 bg-[#0d0d0d] rounded-lg border border-white/[0.06]">
-                  <Globe size={12} className="text-gray-500" />
+                <div className="flex-1 flex items-center gap-2 px-3 py-1.5 bg-surface-1 rounded-lg border border-overlay/[0.06]">
+                  <Globe size={12} className="text-ink-subtle" />
                   <input
                     type="text"
                     value={currentTab.url || ''}
@@ -1788,17 +1788,17 @@ export default function TerminalWrapper({
                       if (e.key === 'Enter') navigateBrowser(panel.id, currentTab.id)
                     }}
                     placeholder="Enter URL..."
-                    className="flex-1 bg-transparent text-sm text-white placeholder-gray-600 outline-none"
+                    className="flex-1 bg-transparent text-sm text-ink-bright placeholder-ink-faint outline-none"
                   />
                 </div>
                 {/* Viewport Toggle */}
-                <div className="flex items-center gap-0.5 px-1 border-l border-white/10 ml-1">
+                <div className="flex items-center gap-0.5 px-1 border-l border-overlay/10 ml-1">
                   <button
                     onClick={() => setViewportMode('mobile')}
                     className={`p-1 rounded transition-colors ${
                       viewportMode === 'mobile'
                         ? 'bg-accent/20 text-accent'
-                        : 'hover:bg-white/5 text-gray-500 hover:text-white'
+                        : 'hover:bg-overlay/5 text-ink-subtle hover:text-ink-bright'
                     }`}
                     title="Mobile View (375px)"
                   >
@@ -1809,7 +1809,7 @@ export default function TerminalWrapper({
                     className={`p-1 rounded transition-colors ${
                       viewportMode === 'desktop'
                         ? 'bg-accent/20 text-accent'
-                        : 'hover:bg-white/5 text-gray-500 hover:text-white'
+                        : 'hover:bg-overlay/5 text-ink-subtle hover:text-ink-bright'
                     }`}
                     title="Desktop View (Full Width)"
                   >
@@ -1820,17 +1820,17 @@ export default function TerminalWrapper({
                   onClick={() => {
                     if (currentTab.url) window.api.openUrlExternal(currentTab.url)
                   }}
-                  className="p-1 rounded hover:bg-white/5 text-gray-500 hover:text-white transition-colors"
+                  className="p-1 rounded hover:bg-overlay/5 text-ink-subtle hover:text-ink-bright transition-colors"
                   title="Open in Browser"
                 >
                   <ExternalLink size={14} />
                 </button>
               </div>
               {/* Browser Content */}
-              <div className={`flex-1 flex items-start justify-center overflow-auto ${viewportMode === 'mobile' ? 'bg-[#1a1a1a] p-4' : ''}`}>
+              <div className={`flex-1 flex items-start justify-center overflow-auto ${viewportMode === 'mobile' ? 'bg-surface-4 p-4' : ''}`}>
                 {currentTab.url ? (
                   <div className={viewportMode === 'mobile'
-                    ? 'w-[375px] h-[667px] rounded-2xl overflow-hidden shadow-2xl border-4 border-[#2a2a2a] bg-white'
+                    ? 'w-[375px] h-[667px] rounded-2xl overflow-hidden shadow-2xl border-4 border-surface-7 bg-white'
                     : 'w-full h-full bg-white'
                   }>
                     <webview
@@ -1840,10 +1840,10 @@ export default function TerminalWrapper({
                     />
                   </div>
                 ) : (
-                  <div className={`flex items-center justify-center bg-[#0d0d0d] ${viewportMode === 'mobile' ? 'w-[375px] h-[667px] rounded-2xl border-4 border-[#2a2a2a]' : 'w-full h-full'}`}>
+                  <div className={`flex items-center justify-center bg-surface-1 ${viewportMode === 'mobile' ? 'w-[375px] h-[667px] rounded-2xl border-4 border-surface-7' : 'w-full h-full'}`}>
                     <div className="text-center">
-                      <Globe size={48} className="mx-auto mb-4 text-gray-600" />
-                      <p className="text-gray-500 text-sm">Enter a URL to get started</p>
+                      <Globe size={48} className="mx-auto mb-4 text-ink-faint" />
+                      <p className="text-ink-subtle text-sm">Enter a URL to get started</p>
                     </div>
                   </div>
                 )}
@@ -1857,7 +1857,7 @@ export default function TerminalWrapper({
 
   return (
     <div
-      className="h-full flex-1 flex flex-col bg-[#0a0a0a] relative overflow-hidden"
+      className="h-full flex-1 flex flex-col bg-surface-0 relative overflow-hidden"
       onDragOver={handleFileDragOver}
       onDragLeave={handleFileDragLeave}
       onDrop={handleFileDrop}
@@ -1867,8 +1867,8 @@ export default function TerminalWrapper({
         <div className="absolute inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center">
           <div className="text-center p-8 rounded-xl border-2 border-dashed border-accent/60 bg-accent/5">
             <FileUp size={40} className="mx-auto mb-3 text-accent/80" />
-            <p className="text-sm font-medium text-white mb-0.5">Drop files here</p>
-            <p className="text-xs text-gray-500">Files will be sent to the active session</p>
+            <p className="text-sm font-medium text-ink-bright mb-0.5">Drop files here</p>
+            <p className="text-xs text-ink-subtle">Files will be sent to the active session</p>
           </div>
         </div>
       )}
@@ -1891,7 +1891,7 @@ export default function TerminalWrapper({
       />
 
       {/* Panels Container */}
-      <div className={`flex-1 min-h-0 relative ${layoutMode === 'grid' ? 'grid grid-cols-3 grid-rows-2 gap-px bg-[#1a1a1a]' : 'flex'}`}>
+      <div className={`flex-1 min-h-0 relative ${layoutMode === 'grid' ? 'grid grid-cols-3 grid-rows-2 gap-px bg-surface-4' : 'flex'}`}>
         {/* Drop zone indicators when dragging */}
         {draggedTab && panels.length < 2 && layoutMode === 'default' && (
           <>
@@ -1926,7 +1926,7 @@ export default function TerminalWrapper({
             <div key={panel.id} className="contents">
               {renderPanel(panel, panels.length === 1)}
               {index < panels.length - 1 && (
-                <div className="w-px bg-white/[0.06] hover:bg-accent/40 hover:w-1 cursor-col-resize transition-all" />
+                <div className="w-px bg-overlay/[0.06] hover:bg-accent/40 hover:w-1 cursor-col-resize transition-all" />
               )}
             </div>
           ))
@@ -1935,7 +1935,7 @@ export default function TerminalWrapper({
         {/* Preview pane (for file/localhost previews) */}
         {previewUrl && (
           <>
-            <div className="w-px bg-white/[0.06] hover:bg-accent/40 hover:w-1 cursor-col-resize transition-all" />
+            <div className="w-px bg-overlay/[0.06] hover:bg-accent/40 hover:w-1 cursor-col-resize transition-all" />
             <PreviewPane
               url={previewUrl}
               onClose={onClosePreview}
@@ -1949,15 +1949,15 @@ export default function TerminalWrapper({
 
         {/* HTML file detection bar */}
         {detectedHtmlFile && (
-          <div className="absolute bottom-16 left-4 right-4 bg-[#1a1a1c] border border-accent/30 rounded-xl shadow-xl z-40 overflow-hidden animate-slide-up">
+          <div className="absolute bottom-16 left-4 right-4 bg-surface-4 border border-accent/30 rounded-xl shadow-xl z-40 overflow-hidden animate-slide-up">
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-accent/20 rounded-lg">
                   <Monitor size={16} className="text-accent" />
                 </div>
                 <div>
-                  <p className="text-sm text-white font-medium">HTML file created</p>
-                  <p className="text-xs text-gray-500 font-mono truncate max-w-[300px]">{detectedHtmlFile}</p>
+                  <p className="text-sm text-ink-bright font-medium">HTML file created</p>
+                  <p className="text-xs text-ink-subtle font-mono truncate max-w-[300px]">{detectedHtmlFile}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -1968,7 +1968,7 @@ export default function TerminalWrapper({
                   <ExternalLink size={12} />
                   Preview
                 </button>
-                <button onClick={handleDismissHtmlFile} className="p-1.5 hover:bg-white/[0.06] rounded-lg text-gray-500 hover:text-white transition-colors">
+                <button onClick={handleDismissHtmlFile} className="p-1.5 hover:bg-overlay/[0.06] rounded-lg text-ink-subtle hover:text-ink-bright transition-colors">
                   <X size={14} />
                 </button>
               </div>
@@ -2003,7 +2003,7 @@ export default function TerminalWrapper({
       </div>
 
       {/* Status Bar */}
-      <footer className="relative flex items-center justify-between px-3 py-1.5 bg-[#0e0e0e] border-t border-white/[0.06]">
+      <footer className="relative flex items-center justify-between px-3 py-1.5 bg-surface-1 border-t border-overlay/[0.06]">
         {/* Left: Sidebar Toggle + Status + Model + Mode */}
         <div className="flex items-center gap-2">
           {/* Sidebar Toggle */}
@@ -2013,14 +2013,14 @@ export default function TerminalWrapper({
                 onClick={onToggleSidebar}
                 className={`p-1.5 rounded-md transition-all ${
                   sidebarOpen
-                    ? 'bg-white/[0.08] text-gray-200'
-                    : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.06]'
+                    ? 'bg-overlay/[0.08] text-ink-bright'
+                    : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.06]'
                 }`}
                 title={sidebarOpen ? 'Hide Sidebar (Cmd+B)' : 'Show Sidebar (Cmd+B)'}
               >
                 <PanelLeft size={13} />
               </button>
-              <div className="w-px h-3.5 bg-white/[0.06]" />
+              <div className="w-px h-3.5 bg-overlay/[0.06]" />
             </>
           )}
 
@@ -2028,18 +2028,18 @@ export default function TerminalWrapper({
           <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-colors ${
             claudeStatus === 'working' ? 'bg-green-500/10 text-green-400' :
             claudeStatus === 'waiting' ? 'bg-amber-500/10 text-amber-400' :
-            'bg-white/[0.03] text-gray-500'
+            'bg-overlay/[0.03] text-ink-subtle'
           }`}>
             <div className={`w-1.5 h-1.5 rounded-full ${
               claudeStatus === 'working' ? 'bg-green-400 animate-pulse' :
-              claudeStatus === 'waiting' ? 'bg-amber-400' : 'bg-gray-600'
+              claudeStatus === 'waiting' ? 'bg-amber-400' : 'bg-ink-faint'
             }`} />
             <span className="text-[11px] font-medium">
               {claudeStatus === 'working' ? 'Working' : claudeStatus === 'waiting' ? 'Ready' : 'Idle'}
             </span>
           </div>
 
-          <div className="w-px h-3.5 bg-white/[0.06]" />
+          <div className="w-px h-3.5 bg-overlay/[0.06]" />
 
           {/* Model Selector */}
           <div className="relative" ref={modelMenuRef}>
@@ -2047,8 +2047,8 @@ export default function TerminalWrapper({
               onClick={() => setShowModelMenu(!showModelMenu)}
               className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${
                 showModelMenu
-                  ? 'bg-white/[0.08] text-white'
-                  : 'text-gray-400 hover:text-gray-200 hover:bg-white/[0.04]'
+                  ? 'bg-overlay/[0.08] text-ink-bright'
+                  : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/[0.04]'
               }`}
               title="Switch model"
             >
@@ -2059,9 +2059,9 @@ export default function TerminalWrapper({
 
             {/* Model Dropdown */}
             {showModelMenu && (
-              <div className="absolute bottom-full left-0 mb-2 w-52 bg-[#1a1a1a] border border-white/[0.08] rounded-lg shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-150">
-                <div className="px-3 py-1.5 border-b border-white/[0.06]">
-                  <span className="text-[10px] uppercase tracking-wider text-gray-500 font-medium">{providerConfig.name} Models</span>
+              <div className="absolute bottom-full left-0 mb-2 w-52 bg-surface-4 border border-overlay/[0.08] rounded-lg shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-150">
+                <div className="px-3 py-1.5 border-b border-overlay/[0.06]">
+                  <span className="text-[10px] uppercase tracking-wider text-ink-subtle font-medium">{providerConfig.name} Models</span>
                 </div>
                 <div className="p-1">
                   {providerConfig.models.map((model) => (
@@ -2072,18 +2072,18 @@ export default function TerminalWrapper({
                       className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-left transition-colors ${
                         currentModel === model.id
                           ? `${model.bg} ${model.color}`
-                          : 'text-gray-400 hover:text-gray-200 hover:bg-white/[0.06]'
+                          : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/[0.06]'
                       } ${!providerConfig.modelCommand ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                      <div className={`w-1.5 h-1.5 rounded-full ${currentModel === model.id ? model.color.replace('text-', 'bg-') : 'bg-gray-600'}`} />
+                      <div className={`w-1.5 h-1.5 rounded-full ${currentModel === model.id ? model.color.replace('text-', 'bg-') : 'bg-ink-faint'}`} />
                       <div className="flex-1 min-w-0">
                         <span className="text-[13px] font-medium">{model.name}</span>
-                        <span className="text-[10px] text-gray-500 ml-1.5">{model.desc}</span>
+                        <span className="text-[10px] text-ink-subtle ml-1.5">{model.desc}</span>
                       </div>
                     </button>
                   ))}
                   {!providerConfig.modelCommand && (
-                    <div className="px-2.5 py-1.5 text-[10px] text-gray-600">
+                    <div className="px-2.5 py-1.5 text-[10px] text-ink-faint">
                       Set via --model flag at launch
                     </div>
                   )}
@@ -2109,16 +2109,16 @@ export default function TerminalWrapper({
             </button>
           )}
 
-          <div className="w-px h-3.5 bg-white/[0.06]" />
+          <div className="w-px h-3.5 bg-overlay/[0.06]" />
 
           {/* Session Stats */}
-          <div className="flex items-center gap-1.5 text-gray-500">
+          <div className="flex items-center gap-1.5 text-ink-subtle">
             <Clock size={10} />
-            <span className="text-[10px] font-medium text-gray-400">{formatDuration(sessionDuration)}</span>
+            <span className="text-[10px] font-medium text-ink-muted">{formatDuration(sessionDuration)}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-gray-500">
+          <div className="flex items-center gap-1.5 text-ink-subtle">
             <Hash size={10} />
-            <span className="text-[10px] font-medium text-gray-400">{tokenCount > 1000 ? `${(tokenCount / 1000).toFixed(1)}K` : tokenCount} tok</span>
+            <span className="text-[10px] font-medium text-ink-muted">{tokenCount > 1000 ? `${(tokenCount / 1000).toFixed(1)}K` : tokenCount} tok</span>
           </div>
 
           {/* Context Usage */}
@@ -2129,16 +2129,16 @@ export default function TerminalWrapper({
                   ? 'bg-red-500/10 text-red-400'
                   : contextUsage.percent >= 70
                   ? 'bg-amber-500/10 text-amber-400'
-                  : 'text-gray-500'
+                  : 'text-ink-subtle'
               }`}
               title={`Context: ${Math.round(contextUsage.current / 1000)}K / ${Math.round(contextUsage.max / 1000)}K tokens`}
             >
               <Database size={10} />
-              <div className="w-16 h-1 rounded-full bg-white/[0.08] overflow-hidden">
+              <div className="w-16 h-1 rounded-full bg-overlay/[0.08] overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${
                     contextUsage.percent >= 90 ? 'bg-red-400' :
-                    contextUsage.percent >= 70 ? 'bg-amber-400' : 'bg-gray-500'
+                    contextUsage.percent >= 70 ? 'bg-amber-400' : 'bg-ink-subtle'
                   }`}
                   style={{ width: `${Math.min(100, contextUsage.percent)}%` }}
                 />
@@ -2162,7 +2162,7 @@ export default function TerminalWrapper({
             className={`p-1.5 rounded-md transition-all relative ${
               showTimeline
                 ? 'bg-accent/15 text-accent'
-                : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.06]'
+                : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.06]'
             }`}
             title="Activity Timeline"
           >
@@ -2187,7 +2187,7 @@ export default function TerminalWrapper({
               className={`p-1.5 rounded-md transition-all ${
                 showUploadMenu
                   ? 'bg-accent/15 text-accent'
-                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] disabled:opacity-30 disabled:cursor-not-allowed'
+                  : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.06] disabled:opacity-30 disabled:cursor-not-allowed'
               }`}
               title="Upload files"
             >
@@ -2195,43 +2195,43 @@ export default function TerminalWrapper({
             </button>
 
             {showUploadMenu && (
-              <div className="absolute bottom-full right-0 mb-2 w-44 bg-[#1a1a1a] border border-white/[0.08] rounded-lg shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-150">
+              <div className="absolute bottom-full right-0 mb-2 w-44 bg-surface-4 border border-overlay/[0.08] rounded-lg shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-150">
                 <div className="p-1">
                   <button
                     onClick={() => handleFileSelect('file')}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] transition-colors"
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-ink hover:bg-overlay/[0.06] transition-colors"
                   >
-                    <FileText size={13} className="text-gray-500" />
+                    <FileText size={13} className="text-ink-subtle" />
                     <span>File</span>
                   </button>
                   <button
                     onClick={() => handleFileSelect('image')}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] transition-colors"
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-ink hover:bg-overlay/[0.06] transition-colors"
                   >
-                    <Image size={13} className="text-gray-500" />
+                    <Image size={13} className="text-ink-subtle" />
                     <span>Image</span>
                   </button>
                   <button
                     onClick={() => handleFileSelect('folder')}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-gray-300 hover:bg-white/[0.06] transition-colors"
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-ink hover:bg-overlay/[0.06] transition-colors"
                   >
-                    <Folder size={13} className="text-gray-500" />
+                    <Folder size={13} className="text-ink-subtle" />
                     <span>Folder</span>
                   </button>
                 </div>
-                <div className="px-2.5 py-1.5 border-t border-white/[0.06] text-[9px] text-gray-600">
+                <div className="px-2.5 py-1.5 border-t border-overlay/[0.06] text-[9px] text-ink-faint">
                   Or drag & drop anywhere
                 </div>
               </div>
             )}
           </div>
 
-          <div className="w-px h-3.5 bg-white/[0.06] mx-0.5" />
+          <div className="w-px h-3.5 bg-overlay/[0.06] mx-0.5" />
 
           <button
             onClick={handleKill}
             disabled={!activeTerminalId || claudeStatus === 'idle'}
-            className="p-1.5 rounded-md text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-20 disabled:cursor-not-allowed"
+            className="p-1.5 rounded-md text-ink-subtle hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-20 disabled:cursor-not-allowed"
             title="Stop (Ctrl+C)"
           >
             <Square size={12} className="fill-current" />
@@ -2239,7 +2239,7 @@ export default function TerminalWrapper({
 
           <button
             onClick={handleClear}
-            className="p-1.5 rounded-md text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] transition-all"
+            className="p-1.5 rounded-md text-ink-subtle hover:text-ink hover:bg-overlay/[0.06] transition-all"
             title="Clear (Cmd+K)"
           >
             <Trash2 size={13} />
@@ -2247,7 +2247,7 @@ export default function TerminalWrapper({
 
           <button
             onClick={handleCopyAll}
-            className="p-1.5 rounded-md text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] transition-all"
+            className="p-1.5 rounded-md text-ink-subtle hover:text-ink hover:bg-overlay/[0.06] transition-all"
             title="Copy All"
           >
             <Copy size={13} />
@@ -2255,7 +2255,7 @@ export default function TerminalWrapper({
 
           <button
             onClick={handleScrollToBottom}
-            className="p-1.5 rounded-md text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] transition-all"
+            className="p-1.5 rounded-md text-ink-subtle hover:text-ink hover:bg-overlay/[0.06] transition-all"
             title="Scroll to Bottom"
           >
             <ArrowDownToLine size={13} />
@@ -2264,8 +2264,8 @@ export default function TerminalWrapper({
 
         {/* Right: Terminal Size */}
         <div className="flex items-center gap-1.5">
-          <span className="text-[10px] text-gray-600 font-mono">{terminalSize.cols}x{terminalSize.rows}</span>
-          <kbd className="px-1.5 py-0.5 rounded bg-white/[0.04] text-gray-500 text-[10px] font-mono border border-white/[0.06]">Cmd+K</kbd>
+          <span className="text-[10px] text-ink-faint font-mono">{terminalSize.cols}x{terminalSize.rows}</span>
+          <kbd className="px-1.5 py-0.5 rounded bg-overlay/[0.04] text-ink-subtle text-[10px] font-mono border border-overlay/[0.06]">Cmd+K</kbd>
         </div>
       </footer>
 

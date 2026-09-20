@@ -314,8 +314,8 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
       return (
         <div key={node.path}>
           <div
-            className={`group flex items-center gap-1.5 py-1 px-2 rounded-md cursor-pointer transition-colors hover:bg-white/[0.04] ${
-              isRenaming ? 'bg-white/[0.06]' : ''
+            className={`group flex items-center gap-1.5 py-1 px-2 rounded-md cursor-pointer transition-colors hover:bg-overlay/[0.04] ${
+              isRenaming ? 'bg-overlay/[0.06]' : ''
             }`}
             style={{ paddingLeft: `${8 + depth * 16}px` }}
             onClick={() => {
@@ -343,7 +343,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
             {node.isDirectory ? (
               <ChevronRight
                 size={14}
-                className={`flex-shrink-0 text-gray-500 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                className={`flex-shrink-0 text-ink-subtle transition-transform ${isExpanded ? 'rotate-90' : ''}`}
               />
             ) : (
               <span className="w-3.5" />
@@ -364,10 +364,10 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                   if (e.key === 'Escape') setRenaming(null)
                 }}
                 onClick={e => e.stopPropagation()}
-                className="flex-1 min-w-0 px-1.5 py-0.5 text-xs bg-black/40 border border-accent/50 rounded text-white focus:outline-none"
+                className="flex-1 min-w-0 px-1.5 py-0.5 text-xs bg-black/40 border border-accent/50 rounded text-ink-bright focus:outline-none"
               />
             ) : (
-              <span className={`flex-1 truncate text-xs ${node.name.startsWith('.') ? 'text-gray-500' : 'text-gray-300'}`}>
+              <span className={`flex-1 truncate text-xs ${node.name.startsWith('.') ? 'text-ink-subtle' : 'text-ink'}`}>
                 {node.name}
               </span>
             )}
@@ -391,7 +391,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                     e.stopPropagation()
                     onSendToChat(node.path)
                   }}
-                  className="p-0.5 rounded hover:bg-blue-500/20 text-gray-500 hover:text-blue-400 transition-all"
+                  className="p-0.5 rounded hover:bg-blue-500/20 text-ink-subtle hover:text-blue-400 transition-all"
                   title="Send to Claude"
                 >
                   <MessageSquarePlus size={12} />
@@ -404,7 +404,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                     e.stopPropagation()
                     handleFileClick(node.path)
                   }}
-                  className="p-0.5 rounded hover:bg-accent/20 text-gray-500 hover:text-accent transition-all"
+                  className="p-0.5 rounded hover:bg-accent/20 text-ink-subtle hover:text-accent transition-all"
                   title="Preview in App"
                 >
                   <Monitor size={12} />
@@ -424,7 +424,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                       console.error('Failed to cd:', err)
                     }
                   }}
-                  className="p-0.5 rounded hover:bg-green-500/20 text-gray-500 hover:text-green-400 transition-all"
+                  className="p-0.5 rounded hover:bg-green-500/20 text-ink-subtle hover:text-green-400 transition-all"
                   title="cd in Terminal"
                 >
                   <Terminal size={12} />
@@ -436,7 +436,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                   e.stopPropagation()
                   window.api.openFileExternal(node.path)
                 }}
-                className="p-0.5 rounded hover:bg-white/10 text-gray-500 hover:text-gray-300 transition-all"
+                className="p-0.5 rounded hover:bg-overlay/10 text-ink-subtle hover:text-ink transition-all"
                 title="Open in Default App"
               >
                 <ExternalLink size={12} />
@@ -447,7 +447,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                   e.stopPropagation()
                   navigator.clipboard.writeText(node.path)
                 }}
-                className="p-0.5 rounded hover:bg-white/10 text-gray-500 hover:text-gray-300 transition-all"
+                className="p-0.5 rounded hover:bg-overlay/10 text-ink-subtle hover:text-ink transition-all"
                 title="Copy Path"
               >
                 <Copy size={12} />
@@ -494,7 +494,7 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
   }, [reorderOpenFiles])
 
   return (
-    <aside className="w-60 h-full flex flex-col bg-[#0f0f11] border-r border-white/[0.06]">
+    <aside className="w-60 h-full flex flex-col bg-surface-2 border-r border-overlay/[0.06]">
       {/* Open Files Tabs */}
       {openFilesData.length > 0 && (
         <FileTabBar
@@ -509,19 +509,19 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
       )}
 
       {/* Header */}
-      <div className="p-3 border-b border-white/[0.06]">
+      <div className="p-3 border-b border-overlay/[0.06]">
         {cwd ? (
           <div className="flex items-center gap-2 mb-3">
             <div className="w-7 h-7 rounded-lg bg-accent/15 flex items-center justify-center">
               <Folder size={14} className="text-accent" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{projectName}</p>
-              <p className="text-[10px] text-gray-500 truncate">{cwd}</p>
+              <p className="text-sm font-medium text-ink-bright truncate">{projectName}</p>
+              <p className="text-[10px] text-ink-subtle truncate">{cwd}</p>
             </div>
             <button
               onClick={() => loadDir(cwd)}
-              className="p-1 rounded hover:bg-white/[0.06] text-gray-500 hover:text-gray-300 transition-colors"
+              className="p-1 rounded hover:bg-overlay/[0.06] text-ink-subtle hover:text-ink transition-colors"
               title="Refresh"
             >
               <RefreshCw size={12} className={isLoading ? 'animate-spin' : ''} />
@@ -530,27 +530,27 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
         ) : (
           <button
             onClick={onSelectFolder}
-            className="w-full flex items-center gap-2 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-white/[0.1] transition-all"
+            className="w-full flex items-center gap-2 p-2 rounded-lg bg-overlay/[0.03] hover:bg-overlay/[0.06] border border-overlay/[0.06] hover:border-overlay/[0.1] transition-all"
           >
             <FolderOpen size={16} className="text-accent" />
-            <span className="text-xs text-gray-400">Open Folder</span>
+            <span className="text-xs text-ink-muted">Open Folder</span>
           </button>
         )}
 
         {/* Search */}
         {cwd && (
           <div className="relative">
-            <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
+            <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-subtle" />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search files..."
-              className="w-full pl-8 pr-8 py-1.5 text-xs bg-white/[0.03] border border-white/[0.06] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-accent/30"
+              className="w-full pl-8 pr-8 py-1.5 text-xs bg-overlay/[0.03] border border-overlay/[0.06] rounded-lg text-ink-bright placeholder-ink-faint focus:outline-none focus:border-accent/30"
             />
             {search && (
               <button
                 onClick={() => setSearch('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-subtle hover:text-ink-bright"
               >
                 <X size={12} />
               </button>
@@ -561,17 +561,17 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
 
       {/* Toolbar */}
       {cwd && (
-        <div className="flex items-center gap-1 px-3 py-1.5 border-b border-white/[0.06]">
+        <div className="flex items-center gap-1 px-3 py-1.5 border-b border-overlay/[0.06]">
           <button
             onClick={() => setCreateModal({ type: 'file', path: cwd })}
-            className="p-1.5 rounded hover:bg-white/[0.06] text-gray-500 hover:text-gray-300 transition-colors"
+            className="p-1.5 rounded hover:bg-overlay/[0.06] text-ink-subtle hover:text-ink transition-colors"
             title="New File"
           >
             <FilePlus size={14} />
           </button>
           <button
             onClick={() => setCreateModal({ type: 'folder', path: cwd })}
-            className="p-1.5 rounded hover:bg-white/[0.06] text-gray-500 hover:text-gray-300 transition-colors"
+            className="p-1.5 rounded hover:bg-overlay/[0.06] text-ink-subtle hover:text-ink transition-colors"
             title="New Folder"
           >
             <FolderPlus size={14} />
@@ -579,14 +579,14 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
           <div className="flex-1" />
           <button
             onClick={() => setShowHidden(!showHidden)}
-            className={`p-1.5 rounded hover:bg-white/[0.06] transition-colors ${showHidden ? 'text-accent' : 'text-gray-500 hover:text-gray-300'}`}
+            className={`p-1.5 rounded hover:bg-overlay/[0.06] transition-colors ${showHidden ? 'text-accent' : 'text-ink-subtle hover:text-ink'}`}
             title={showHidden ? 'Hide Hidden' : 'Show Hidden'}
           >
             {showHidden ? <Eye size={14} /> : <EyeOff size={14} />}
           </button>
           <button
             onClick={onSelectFolder}
-            className="p-1.5 rounded hover:bg-white/[0.06] text-gray-500 hover:text-gray-300 transition-colors"
+            className="p-1.5 rounded hover:bg-overlay/[0.06] text-ink-subtle hover:text-ink transition-colors"
             title="Change Folder"
           >
             <FolderOpen size={14} />
@@ -601,25 +601,25 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
             renderTree(filtered)
           ) : (
             <div className="p-4 text-center">
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-ink-subtle">
                 {search ? 'No matching files' : 'Empty folder'}
               </p>
             </div>
           )
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-            <div className="w-12 h-12 rounded-xl bg-white/[0.03] flex items-center justify-center mb-3">
-              <Home size={20} className="text-gray-600" />
+            <div className="w-12 h-12 rounded-xl bg-overlay/[0.03] flex items-center justify-center mb-3">
+              <Home size={20} className="text-ink-faint" />
             </div>
-            <p className="text-sm text-gray-400 mb-1">No folder open</p>
-            <p className="text-xs text-gray-600">Select a folder to explore files</p>
+            <p className="text-sm text-ink-muted mb-1">No folder open</p>
+            <p className="text-xs text-ink-faint">Select a folder to explore files</p>
           </div>
         )}
       </div>
 
       {/* Keyboard hint */}
       {cwd && (
-        <div className="px-3 py-2 border-t border-white/[0.06] text-[10px] text-gray-600">
+        <div className="px-3 py-2 border-t border-overlay/[0.06] text-[10px] text-ink-faint">
           Click to preview • Double-click to open • Right-click for more
         </div>
       )}
@@ -630,11 +630,11 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
       {/* Create Modal */}
       {createModal && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-96 rounded-xl border border-white/[0.08] bg-[#1a1a1a] p-5 shadow-2xl">
-            <h3 className="text-base font-semibold text-white mb-1">
+          <div className="w-96 rounded-xl border border-overlay/[0.08] bg-surface-4 p-5 shadow-2xl">
+            <h3 className="text-base font-semibold text-ink-bright mb-1">
               New {createModal.type === 'file' ? 'File' : 'Folder'}
             </h3>
-            <p className="text-[11px] text-gray-500 mb-4 truncate">
+            <p className="text-[11px] text-ink-subtle mb-4 truncate">
               in {createModal.path.split('/').pop()}
             </p>
             <input
@@ -646,13 +646,13 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
                 if (e.key === 'Escape') { setCreateModal(null); setCreateName('') }
               }}
               placeholder={createModal.type === 'file' ? 'filename.txt' : 'folder-name'}
-              className="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/[0.08] text-white text-sm placeholder-gray-500 focus:outline-none focus:border-accent/50 mb-4"
+              className="w-full px-3 py-2 rounded-lg bg-black/30 border border-overlay/[0.08] text-ink-bright text-sm placeholder-ink-subtle focus:outline-none focus:border-accent/50 mb-4"
               autoFocus
             />
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => { setCreateModal(null); setCreateName('') }}
-                className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
+                className="px-4 py-2 text-sm text-ink-muted hover:text-ink-bright transition-colors"
               >
                 Cancel
               </button>
@@ -671,18 +671,18 @@ export default function Sidebar({ cwd, onSelectFolder, onPreviewFile, onSendToCh
       {/* Delete Modal */}
       {deleteTarget && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-96 rounded-xl border border-white/[0.08] bg-[#1a1a1a] p-5 shadow-2xl">
-            <h3 className="text-base font-semibold text-white mb-2">
+          <div className="w-96 rounded-xl border border-overlay/[0.08] bg-surface-4 p-5 shadow-2xl">
+            <h3 className="text-base font-semibold text-ink-bright mb-2">
               Delete {deleteTarget.isDirectory ? 'Folder' : 'File'}
             </h3>
-            <p className="text-sm text-gray-400 mb-4">
-              Are you sure you want to delete <span className="text-white font-medium">"{deleteTarget.name}"</span>?
-              {deleteTarget.isDirectory && <span className="block text-xs text-gray-500 mt-1">This will delete all contents inside.</span>}
+            <p className="text-sm text-ink-muted mb-4">
+              Are you sure you want to delete <span className="text-ink-bright font-medium">"{deleteTarget.name}"</span>?
+              {deleteTarget.isDirectory && <span className="block text-xs text-ink-subtle mt-1">This will delete all contents inside.</span>}
             </p>
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setDeleteTarget(null)}
-                className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
+                className="px-4 py-2 text-sm text-ink-muted hover:text-ink-bright transition-colors"
               >
                 Cancel
               </button>

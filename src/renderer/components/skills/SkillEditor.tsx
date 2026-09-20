@@ -28,10 +28,10 @@ function highlightMarkdown(content: string): string {
   html = html.replace(/^(#{1,6})\s(.+)$/gm, '<span class="text-accent font-bold">$1 $2</span>')
 
   // Bold
-  html = html.replace(/\*\*(.+?)\*\*/g, '<span class="text-white font-bold">**$1**</span>')
+  html = html.replace(/\*\*(.+?)\*\*/g, '<span class="text-ink-bright font-bold">**$1**</span>')
 
   // Italic
-  html = html.replace(/\*(.+?)\*/g, '<span class="text-gray-300 italic">*$1*</span>')
+  html = html.replace(/\*(.+?)\*/g, '<span class="text-ink italic">*$1*</span>')
 
   // Code blocks (triple backticks)
   html = html.replace(
@@ -53,7 +53,7 @@ function highlightMarkdown(content: string): string {
   )
 
   // Blockquotes
-  html = html.replace(/^(&gt;)\s(.+)$/gm, '<span class="text-gray-500 italic border-l-2 border-gray-600 pl-2">$1 $2</span>')
+  html = html.replace(/^(&gt;)\s(.+)$/gm, '<span class="text-ink-subtle italic border-l-2 border-ink-faint pl-2">$1 $2</span>')
 
   return html
 }
@@ -70,43 +70,43 @@ function markdownToHtml(content: string): string {
   html = html.replace(/^---\n[\s\S]*?\n---\n?/, '')
 
   // Headers
-  html = html.replace(/^######\s(.+)$/gm, '<h6 class="text-sm font-semibold text-white mt-4 mb-2">$1</h6>')
-  html = html.replace(/^#####\s(.+)$/gm, '<h5 class="text-sm font-semibold text-white mt-4 mb-2">$1</h5>')
-  html = html.replace(/^####\s(.+)$/gm, '<h4 class="text-base font-semibold text-white mt-4 mb-2">$1</h4>')
-  html = html.replace(/^###\s(.+)$/gm, '<h3 class="text-lg font-semibold text-white mt-4 mb-2">$1</h3>')
-  html = html.replace(/^##\s(.+)$/gm, '<h2 class="text-xl font-semibold text-white mt-5 mb-3">$1</h2>')
-  html = html.replace(/^#\s(.+)$/gm, '<h1 class="text-2xl font-bold text-white mt-6 mb-4">$1</h1>')
+  html = html.replace(/^######\s(.+)$/gm, '<h6 class="text-sm font-semibold text-ink-bright mt-4 mb-2">$1</h6>')
+  html = html.replace(/^#####\s(.+)$/gm, '<h5 class="text-sm font-semibold text-ink-bright mt-4 mb-2">$1</h5>')
+  html = html.replace(/^####\s(.+)$/gm, '<h4 class="text-base font-semibold text-ink-bright mt-4 mb-2">$1</h4>')
+  html = html.replace(/^###\s(.+)$/gm, '<h3 class="text-lg font-semibold text-ink-bright mt-4 mb-2">$1</h3>')
+  html = html.replace(/^##\s(.+)$/gm, '<h2 class="text-xl font-semibold text-ink-bright mt-5 mb-3">$1</h2>')
+  html = html.replace(/^#\s(.+)$/gm, '<h1 class="text-2xl font-bold text-ink-bright mt-6 mb-4">$1</h1>')
 
   // Bold and italic
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-white">$1</strong>')
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-ink-bright">$1</strong>')
   html = html.replace(/\*(.+?)\*/g, '<em class="italic">$1</em>')
 
   // Code blocks
   html = html.replace(
     /```(\w*)\n([\s\S]*?)```/g,
-    '<pre class="bg-black/40 border border-white/10 rounded-lg p-4 my-3 overflow-x-auto"><code class="text-emerald-400 text-sm font-mono">$2</code></pre>'
+    '<pre class="bg-black/40 border border-overlay/10 rounded-lg p-4 my-3 overflow-x-auto"><code class="text-emerald-400 text-sm font-mono">$2</code></pre>'
   )
 
   // Inline code
-  html = html.replace(/`([^`]+)`/g, '<code class="bg-white/10 text-emerald-400 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>')
+  html = html.replace(/`([^`]+)`/g, '<code class="bg-overlay/10 text-emerald-400 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>')
 
   // Links
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-accent hover:underline">$1</a>')
 
   // Lists (unordered)
-  html = html.replace(/^\s*[-*+]\s(.+)$/gm, '<li class="text-gray-300 ml-4">$1</li>')
+  html = html.replace(/^\s*[-*+]\s(.+)$/gm, '<li class="text-ink ml-4">$1</li>')
 
   // Lists (ordered)
-  html = html.replace(/^\s*\d+\.\s(.+)$/gm, '<li class="text-gray-300 ml-4 list-decimal">$1</li>')
+  html = html.replace(/^\s*\d+\.\s(.+)$/gm, '<li class="text-ink ml-4 list-decimal">$1</li>')
 
   // Blockquotes
-  html = html.replace(/^&gt;\s(.+)$/gm, '<blockquote class="border-l-2 border-accent pl-4 text-gray-400 italic my-2">$1</blockquote>')
+  html = html.replace(/^&gt;\s(.+)$/gm, '<blockquote class="border-l-2 border-accent pl-4 text-ink-muted italic my-2">$1</blockquote>')
 
   // Paragraphs (simple approach)
   html = html.split('\n\n').map(p => {
     if (p.startsWith('<')) return p
     if (p.trim() === '') return ''
-    return `<p class="text-gray-300 mb-3">${p}</p>`
+    return `<p class="text-ink mb-3">${p}</p>`
   }).join('\n')
 
   // Line breaks within paragraphs
@@ -217,30 +217,30 @@ export default function SkillEditor({
       />
 
       {/* Modal */}
-      <div className="relative w-[95vw] max-w-6xl h-[90vh] bg-[#0d0d0d] border border-white/[0.08] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      <div className="relative w-[95vw] max-w-6xl h-[90vh] bg-surface-1 border border-overlay/[0.08] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-white/[0.02]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06] bg-overlay/[0.02]">
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-lg ${itemType === 'skill' ? 'bg-accent/10' : 'bg-sand-500/10'}`}>
               <FileText size={18} className={itemType === 'skill' ? 'text-accent' : 'text-sand-400'} />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="text-lg font-semibold text-ink-bright">
                 Edit {itemType === 'skill' ? 'Skill' : 'Agent'}: {itemName}
               </h2>
-              <p className="text-xs text-gray-500 font-mono">{itemPath}</p>
+              <p className="text-xs text-ink-subtle font-mono">{itemPath}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             {/* View mode toggle */}
-            <div className="flex items-center bg-white/[0.04] rounded-lg p-1">
+            <div className="flex items-center bg-overlay/[0.04] rounded-lg p-1">
               <button
                 onClick={() => setViewMode('edit')}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   viewMode === 'edit'
                     ? 'bg-accent/20 text-accent'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 <Code size={14} className="inline mr-1.5" />
@@ -251,7 +251,7 @@ export default function SkillEditor({
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   viewMode === 'split'
                     ? 'bg-accent/20 text-accent'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 Split
@@ -261,7 +261,7 @@ export default function SkillEditor({
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   viewMode === 'preview'
                     ? 'bg-accent/20 text-accent'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-ink-muted hover:text-ink-bright'
                 }`}
               >
                 <Eye size={14} className="inline mr-1.5" />
@@ -276,7 +276,7 @@ export default function SkillEditor({
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
                 hasChanges
                   ? 'bg-accent text-white hover:bg-accent-400'
-                  : 'bg-white/[0.04] text-gray-500 cursor-not-allowed'
+                  : 'bg-overlay/[0.04] text-ink-subtle cursor-not-allowed'
               }`}
             >
               {saving ? (
@@ -290,7 +290,7 @@ export default function SkillEditor({
             {/* Close button */}
             <button
               onClick={handleClose}
-              className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-white/[0.06] transition-colors"
+              className="p-2 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/[0.06] transition-colors"
             >
               <X size={20} />
             </button>
@@ -307,7 +307,7 @@ export default function SkillEditor({
             <>
               {/* Editor */}
               {(viewMode === 'edit' || viewMode === 'split') && (
-                <div className={`relative ${viewMode === 'split' ? 'w-1/2 border-r border-white/[0.06]' : 'w-full'}`}>
+                <div className={`relative ${viewMode === 'split' ? 'w-1/2 border-r border-overlay/[0.06]' : 'w-full'}`}>
                   {/* Syntax highlight layer */}
                   <div
                     ref={highlightRef}
@@ -343,7 +343,7 @@ export default function SkillEditor({
         </div>
 
         {/* Status bar */}
-        <div className="px-6 py-2 border-t border-white/[0.06] bg-white/[0.02] flex items-center justify-between text-xs text-gray-500">
+        <div className="px-6 py-2 border-t border-overlay/[0.06] bg-overlay/[0.02] flex items-center justify-between text-xs text-ink-subtle">
           <div className="flex items-center gap-4">
             <span>Lines: {content.split('\n').length}</span>
             <span>Characters: {content.length}</span>
@@ -352,7 +352,7 @@ export default function SkillEditor({
             {hasChanges && (
               <span className="text-accent">Unsaved changes</span>
             )}
-            <span className="text-gray-600">Cmd+S to save</span>
+            <span className="text-ink-faint">Cmd+S to save</span>
           </div>
         </div>
       </div>

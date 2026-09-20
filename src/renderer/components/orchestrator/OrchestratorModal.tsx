@@ -238,22 +238,22 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
-        className="bg-[#141416] rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden border border-white/[0.08] shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col"
+        className="bg-surface-3 rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden border border-overlay/[0.08] shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06] shrink-0">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-overlay/[0.06] shrink-0">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl">
-              <LayoutGrid className="w-5 h-5 text-white" />
+              <LayoutGrid className="w-5 h-5 text-ink-bright" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Orchestrator</h2>
-              <p className="text-xs text-gray-500">Multi-terminal coordination</p>
+              <h2 className="text-lg font-semibold text-ink-bright">Orchestrator</h2>
+              <p className="text-xs text-ink-subtle">Multi-terminal coordination</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/[0.06] rounded-lg transition-colors">
-            <X className="w-5 h-5 text-gray-500" />
+          <button onClick={onClose} className="p-2 hover:bg-overlay/[0.06] rounded-lg transition-colors">
+            <X className="w-5 h-5 text-ink-subtle" />
           </button>
         </div>
 
@@ -267,13 +267,13 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
           )}
 
           {/* Mode Toggle */}
-          <div className="flex gap-2 p-1 bg-[#0a0a0b] rounded-lg">
+          <div className="flex gap-2 p-1 bg-surface-0 rounded-lg">
             <button
               onClick={() => { setMode('split'); setDecomposedPreview(null) }}
               className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                 mode === 'split'
                   ? 'bg-cyan-500 text-white'
-                  : 'text-gray-500 hover:text-gray-300'
+                  : 'text-ink-subtle hover:text-ink'
               }`}
             >
               <SplitSquareVertical className="w-4 h-4" />
@@ -284,7 +284,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
               className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                 mode === 'parallel'
                   ? 'bg-blue-500 text-white'
-                  : 'text-gray-500 hover:text-gray-300'
+                  : 'text-ink-subtle hover:text-ink'
               }`}
             >
               <LayoutGrid className="w-4 h-4" />
@@ -293,7 +293,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
           </div>
 
           {/* Mode description */}
-          <p className="text-[11px] text-gray-600">
+          <p className="text-[11px] text-ink-faint">
             {mode === 'split'
               ? 'One task decomposed across multiple terminals working together.'
               : 'Each terminal gets a separate, independent task.'}
@@ -306,29 +306,29 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
                 value={masterTask}
                 onChange={(e) => setMasterTask(e.target.value.slice(0, 1000))}
                 placeholder="Describe the full task to decompose..."
-                className="w-full h-24 bg-[#0a0a0b] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-cyan-500/50 resize-none text-sm"
+                className="w-full h-24 bg-surface-0 border border-overlay/[0.08] rounded-xl px-4 py-3 text-ink-bright placeholder-ink-faint focus:outline-none focus:border-cyan-500/50 resize-none text-sm"
                 autoFocus
               />
 
               {/* Terminal count */}
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500">Terminals:</span>
+                <span className="text-xs text-ink-subtle">Terminals:</span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setSplitTerminalCount(Math.max(2, splitTerminalCount - 1))}
-                    className="p-1 rounded bg-white/[0.06] hover:bg-white/[0.1] text-gray-400 transition-colors"
+                    className="p-1 rounded bg-overlay/[0.06] hover:bg-overlay/[0.1] text-ink-muted transition-colors"
                   >
                     <Minus className="w-3 h-3" />
                   </button>
-                  <span className="text-sm text-white font-mono w-6 text-center">{splitTerminalCount}</span>
+                  <span className="text-sm text-ink-bright font-mono w-6 text-center">{splitTerminalCount}</span>
                   <button
                     onClick={() => setSplitTerminalCount(Math.min(terminalIds.length || 6, splitTerminalCount + 1))}
-                    className="p-1 rounded bg-white/[0.06] hover:bg-white/[0.1] text-gray-400 transition-colors"
+                    className="p-1 rounded bg-overlay/[0.06] hover:bg-overlay/[0.1] text-ink-muted transition-colors"
                   >
                     <Plus className="w-3 h-3" />
                   </button>
                 </div>
-                <span className="text-[10px] text-gray-600">({terminalIds.length} available)</span>
+                <span className="text-[10px] text-ink-faint">({terminalIds.length} available)</span>
               </div>
 
               {/* Decompose button */}
@@ -349,16 +349,16 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
               {/* Decomposed preview */}
               {decomposedPreview && (
                 <div className="space-y-2">
-                  <div className="text-xs text-gray-500 font-medium">Sub-tasks Preview:</div>
+                  <div className="text-xs text-ink-subtle font-medium">Sub-tasks Preview:</div>
                   {decomposedPreview.map((task, i) => (
-                    <div key={i} className="flex gap-2 items-start px-3 py-2 bg-white/[0.02] rounded-lg border border-white/[0.06]">
+                    <div key={i} className="flex gap-2 items-start px-3 py-2 bg-overlay/[0.02] rounded-lg border border-overlay/[0.06]">
                       <span className="text-xs text-cyan-400 font-mono shrink-0 mt-0.5">T{i + 1}</span>
-                      <p className="text-xs text-gray-300">{task}</p>
+                      <p className="text-xs text-ink">{task}</p>
                     </div>
                   ))}
                   <button
                     onClick={() => setDecomposedPreview(null)}
-                    className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors"
+                    className="text-[10px] text-ink-faint hover:text-ink-muted transition-colors"
                   >
                     Re-decompose
                   </button>
@@ -372,12 +372,12 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
             <>
               {/* Shared task (optional) */}
               <div>
-                <label className="text-[11px] text-gray-500 mb-1 block">Default task (for terminals without a specific task):</label>
+                <label className="text-[11px] text-ink-subtle mb-1 block">Default task (for terminals without a specific task):</label>
                 <textarea
                   value={masterTask}
                   onChange={(e) => setMasterTask(e.target.value.slice(0, 500))}
                   placeholder="Optional: default task for all terminals..."
-                  className="w-full h-16 bg-[#0a0a0b] border border-white/[0.08] rounded-xl px-4 py-2 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 resize-none text-sm"
+                  className="w-full h-16 bg-surface-0 border border-overlay/[0.08] rounded-xl px-4 py-2 text-ink-bright placeholder-ink-faint focus:outline-none focus:border-blue-500/50 resize-none text-sm"
                   autoFocus
                 />
               </div>
@@ -385,13 +385,13 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
               {/* Per-terminal tasks */}
               {terminalIds.length > 0 && (
                 <div className="space-y-2">
-                  <div className="text-xs text-gray-500 font-medium">Per-terminal tasks:</div>
+                  <div className="text-xs text-ink-subtle font-medium">Per-terminal tasks:</div>
                   {terminalIds.map((id, i) => (
                     <div key={id} className="flex gap-2 items-start">
                       <span className="text-xs text-blue-400 font-mono shrink-0 mt-2.5">T{i + 1}</span>
                       {/* Which agent is live in this PTY -- a swarm can mix them,
                           and the task you write should suit the agent. */}
-                      <span className="text-[10px] text-gray-500 shrink-0 mt-3 w-[68px] truncate" title={CLI_PROVIDERS[terminalMapping[id].cliProvider].name}>
+                      <span className="text-[10px] text-ink-subtle shrink-0 mt-3 w-[68px] truncate" title={CLI_PROVIDERS[terminalMapping[id].cliProvider].name}>
                         {CLI_PROVIDERS[terminalMapping[id].cliProvider].name}
                       </span>
                       <input
@@ -399,7 +399,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
                         value={parallelTasks[id] || ''}
                         onChange={(e) => setParallelTasks(prev => ({ ...prev, [id]: e.target.value }))}
                         placeholder={masterTask.trim() || `Task for terminal ${i + 1}...`}
-                        className="flex-1 px-3 py-2 bg-[#0a0a0b] border border-white/[0.08] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50"
+                        className="flex-1 px-3 py-2 bg-surface-0 border border-overlay/[0.08] rounded-lg text-sm text-ink-bright placeholder-ink-faint focus:outline-none focus:border-blue-500/50"
                       />
                     </div>
                   ))}
@@ -423,11 +423,11 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
                       // The user will need to reopen the modal after grid is created
                     }, 500)
                   }}
-                  className="w-full py-2.5 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 bg-white/[0.04] hover:bg-white/[0.08] text-gray-300 border border-white/[0.08] border-dashed"
+                  className="w-full py-2.5 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 bg-overlay/[0.04] hover:bg-overlay/[0.08] text-ink border border-overlay/[0.08] border-dashed"
                 >
                   <LayoutGrid className="w-4 h-4 text-cyan-400" />
                   Create 6-Terminal Grid
-                  <span className="text-[10px] text-gray-500 ml-1">then reopen Orchestrator</span>
+                  <span className="text-[10px] text-ink-subtle ml-1">then reopen Orchestrator</span>
                 </button>
               )}
             </>
@@ -436,24 +436,24 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
           {/* Settings Toggle */}
           <button
             onClick={() => setShowSettings(!showSettings)}
-            className="w-full flex items-center justify-between px-3 py-2 bg-white/[0.02] hover:bg-white/[0.04] rounded-lg text-xs text-gray-500 transition-colors"
+            className="w-full flex items-center justify-between px-3 py-2 bg-overlay/[0.02] hover:bg-overlay/[0.04] rounded-lg text-xs text-ink-subtle transition-colors"
           >
             <span>Settings</span>
             <ChevronDown className={`w-4 h-4 transition-transform ${showSettings ? 'rotate-180' : ''}`} />
           </button>
 
           {showSettings && (
-            <div className="space-y-4 p-3 bg-white/[0.02] rounded-lg animate-in slide-in-from-top-1 duration-150">
+            <div className="space-y-4 p-3 bg-overlay/[0.02] rounded-lg animate-in slide-in-from-top-1 duration-150">
               {/* Provider */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-16">Provider</span>
+                <span className="text-xs text-ink-subtle w-16">Provider</span>
                 <div className="flex-1 flex gap-2">
                   {SUPERVISOR_PROVIDERS.map((p: LLMProvider) => (
                     <button
                       key={p}
                       onClick={() => setProvider(p)}
                       className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
-                        provider === p ? 'bg-white/[0.1] text-white' : 'text-gray-500 hover:text-gray-300'
+                        provider === p ? 'bg-overlay/[0.1] text-ink-bright' : 'text-ink-subtle hover:text-ink'
                       }`}
                     >
                       {p === 'ollama' ? 'Local' : supervisorProviderLabel(p)}
@@ -464,7 +464,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
 
               {/* Time Limit */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-16 flex items-center gap-1">
+                <span className="text-xs text-ink-subtle w-16 flex items-center gap-1">
                   <Clock className="w-3 h-3" /> Time
                 </span>
                 <div className="flex-1 flex gap-1">
@@ -473,7 +473,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
                       key={mins}
                       onClick={() => setTimeLimit(mins)}
                       className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
-                        timeLimit === mins ? 'bg-cyan-500/20 text-cyan-400' : 'text-gray-500 hover:text-gray-300'
+                        timeLimit === mins ? 'bg-cyan-500/20 text-cyan-400' : 'text-ink-subtle hover:text-ink'
                       }`}
                     >
                       {mins === 0 ? '\u221E' : `${mins}m`}
@@ -484,7 +484,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
 
               {/* Safety */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-16 flex items-center gap-1">
+                <span className="text-xs text-ink-subtle w-16 flex items-center gap-1">
                   <Shield className="w-3 h-3" /> Safety
                 </span>
                 <div className="flex-1 flex gap-1">
@@ -497,7 +497,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
                           ? color === 'emerald' ? 'bg-emerald-500/20 text-emerald-400'
                           : color === 'amber' ? 'bg-amber-500/20 text-amber-400'
                           : 'bg-red-500/20 text-red-400'
-                          : 'text-gray-500 hover:text-gray-300'
+                          : 'text-ink-subtle hover:text-ink'
                       }`}
                     >
                       <Icon className="w-3 h-3" />
@@ -522,7 +522,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
             disabled={isStarting || superAgentRunning}
             className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
               isStarting || superAgentRunning
-                ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                ? 'bg-ink-trace text-ink-subtle cursor-not-allowed'
                 : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white'
             }`}
           >
@@ -540,7 +540,7 @@ export function OrchestratorModal({ isOpen, onClose, terminalMapping, onStart, o
             )}
           </button>
 
-          <p className="text-center text-[10px] text-gray-600">
+          <p className="text-center text-[10px] text-ink-faint">
             {terminalIds.length > 0
               ? `${terminalIds.length} terminal${terminalIds.length !== 1 ? 's' : ''} will be managed`
               : 'Terminals will be auto-created on launch'}

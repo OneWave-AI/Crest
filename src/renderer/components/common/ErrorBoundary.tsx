@@ -106,15 +106,15 @@ ${errorInfo?.componentStack}
         <div className="flex items-center justify-center min-h-[400px] p-8">
           <div className="w-full max-w-lg">
             {/* Error Card */}
-            <div className="bg-gradient-to-b from-[#1a1a1a] to-[#141414] rounded-2xl border border-red-500/20 shadow-[0_0_40px_rgba(239,68,68,0.1)] overflow-hidden">
+            <div className="bg-gradient-to-b from-surface-4 to-surface-3 rounded-2xl border border-red-500/20 shadow-[0_0_40px_rgba(239,68,68,0.1)] overflow-hidden">
               {/* Header */}
-              <div className="flex items-center gap-3 p-6 border-b border-white/5">
+              <div className="flex items-center gap-3 p-6 border-b border-overlay/5">
                 <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20">
                   <AlertTriangle size={24} className="text-red-400" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-white">Something went wrong</h2>
-                  <p className="text-sm text-gray-400">An unexpected error occurred</p>
+                  <h2 className="text-lg font-semibold text-ink-bright">Something went wrong</h2>
+                  <p className="text-sm text-ink-muted">An unexpected error occurred</p>
                 </div>
               </div>
 
@@ -131,15 +131,15 @@ ${errorInfo?.componentStack}
                   <div>
                     <button
                       onClick={this.toggleStackTrace}
-                      className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
+                      className="flex items-center gap-2 text-sm text-ink-muted hover:text-ink-bright transition-colors"
                     >
                       {showStackTrace ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                       {showStackTrace ? 'Hide' : 'Show'} stack trace
                     </button>
 
                     {showStackTrace && (
-                      <div className="mt-3 p-4 rounded-xl bg-[#0d0d0d] border border-white/5 overflow-auto max-h-[300px]">
-                        <pre className="text-xs text-gray-500 font-mono whitespace-pre-wrap break-all">
+                      <div className="mt-3 p-4 rounded-xl bg-surface-1 border border-overlay/5 overflow-auto max-h-[300px]">
+                        <pre className="text-xs text-ink-subtle font-mono whitespace-pre-wrap break-all">
                           {error?.stack}
                           {'\n\nComponent Stack:'}
                           {errorInfo.componentStack}
@@ -163,7 +163,7 @@ ${errorInfo?.componentStack}
                     {this.props.showHomeButton && this.props.onNavigateHome && (
                       <button
                         onClick={this.props.onNavigateHome}
-                        className="flex items-center justify-center gap-2 flex-1 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white font-medium transition-all duration-200 border border-white/10"
+                        className="flex items-center justify-center gap-2 flex-1 px-4 py-3 rounded-xl bg-overlay/5 hover:bg-overlay/10 text-ink hover:text-ink-bright font-medium transition-all duration-200 border border-overlay/10"
                       >
                         <Home size={18} />
                         Go Home
@@ -172,7 +172,7 @@ ${errorInfo?.componentStack}
 
                     <button
                       onClick={this.handleReportIssue}
-                      className="flex items-center justify-center gap-2 flex-1 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white font-medium transition-all duration-200 border border-white/10"
+                      className="flex items-center justify-center gap-2 flex-1 px-4 py-3 rounded-xl bg-overlay/5 hover:bg-overlay/10 text-ink hover:text-ink-bright font-medium transition-all duration-200 border border-overlay/10"
                     >
                       <Bug size={18} />
                       Report Issue
@@ -183,11 +183,11 @@ ${errorInfo?.componentStack}
             </div>
 
             {/* Help text */}
-            <p className="text-center text-sm text-gray-500 mt-4">
+            <p className="text-center text-sm text-ink-subtle mt-4">
               If this keeps happening, try refreshing the app or{' '}
               <button
                 onClick={this.handleReportIssue}
-                className="text-accent hover:text-[#e08a6c] underline underline-offset-2"
+                className="text-accent hover:text-accent-400 underline underline-offset-2"
               >
                 report the issue
               </button>

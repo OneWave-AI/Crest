@@ -134,8 +134,8 @@ function NotificationItem({ notification, onMarkRead, onRemove, onNavigate }: No
     <div
       className={`group relative flex items-start gap-3 p-3 rounded-xl transition-all duration-200 ${
         notification.read
-          ? 'bg-white/[0.02] hover:bg-white/[0.04]'
-          : 'bg-white/[0.04] hover:bg-white/[0.06]'
+          ? 'bg-overlay/[0.02] hover:bg-overlay/[0.04]'
+          : 'bg-overlay/[0.04] hover:bg-overlay/[0.06]'
       } ${notification.navigateTo ? 'cursor-pointer' : ''}`}
       onClick={handleClick}
       role="article"
@@ -157,15 +157,15 @@ function NotificationItem({ notification, onMarkRead, onRemove, onNavigate }: No
       {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
-          <h4 className={`text-sm font-medium ${notification.read ? 'text-gray-400' : 'text-white'}`}>
+          <h4 className={`text-sm font-medium ${notification.read ? 'text-ink-muted' : 'text-ink-bright'}`}>
             {notification.title}
           </h4>
-          <span className="flex-shrink-0 text-[10px] text-gray-500">
+          <span className="flex-shrink-0 text-[10px] text-ink-subtle">
             {formatRelativeTime(notification.timestamp)}
           </span>
         </div>
         {notification.message && (
-          <p className={`text-xs mt-0.5 ${notification.read ? 'text-gray-500' : 'text-gray-400'}`}>
+          <p className={`text-xs mt-0.5 ${notification.read ? 'text-ink-subtle' : 'text-ink-muted'}`}>
             {notification.message}
           </p>
         )}
@@ -185,7 +185,7 @@ function NotificationItem({ notification, onMarkRead, onRemove, onNavigate }: No
               e.stopPropagation()
               onMarkRead(notification.id)
             }}
-            className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/10 transition-colors"
             aria-label="Mark as read"
             title="Mark as read"
           >
@@ -197,7 +197,7 @@ function NotificationItem({ notification, onMarkRead, onRemove, onNavigate }: No
             e.stopPropagation()
             onRemove(notification.id)
           }}
-          className="p-1.5 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+          className="p-1.5 rounded-lg text-ink-subtle hover:text-red-400 hover:bg-red-500/10 transition-colors"
           aria-label="Remove notification"
           title="Remove"
         >
@@ -291,7 +291,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
         className={`relative p-2 rounded-lg transition-all duration-150 focus-ring ${
           isOpen
             ? 'bg-accent/20 text-accent'
-            : 'text-gray-400 hover:bg-white/5 hover:text-white'
+            : 'text-ink-muted hover:bg-overlay/5 hover:text-ink-bright'
         }`}
         aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
         aria-expanded={isOpen}
@@ -315,15 +315,15 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute right-0 top-full mt-2 w-[400px] max-h-[600px] bg-[#1a1a1a] border border-white/[0.08] rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-50 animate-fade-in-up"
+          className="absolute right-0 top-full mt-2 w-[400px] max-h-[600px] bg-surface-4 border border-overlay/[0.08] rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-50 animate-fade-in-up"
           role="dialog"
           aria-label="Notification center"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-overlay/[0.06]">
             <div className="flex items-center gap-2">
               <Bell size={16} className="text-accent" aria-hidden="true" />
-              <h3 className="font-medium text-white">Notifications</h3>
+              <h3 className="font-medium text-ink-bright">Notifications</h3>
               {unreadCount > 0 && (
                 <span className="px-1.5 py-0.5 text-[10px] font-medium text-accent bg-accent/10 rounded-full">
                   {unreadCount} new
@@ -338,7 +338,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
                 className={`p-1.5 rounded-lg transition-colors ${
                   soundEnabled
                     ? 'text-accent hover:bg-accent/10'
-                    : 'text-gray-500 hover:bg-white/5 hover:text-white'
+                    : 'text-ink-subtle hover:bg-overlay/5 hover:text-ink-bright'
                 }`}
                 aria-label={soundEnabled ? 'Mute notifications' : 'Unmute notifications'}
                 title={soundEnabled ? 'Sound on' : 'Sound off'}
@@ -350,7 +350,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/5 transition-colors"
+                  className="p-1.5 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/5 transition-colors"
                   aria-label="Mark all as read"
                   title="Mark all as read"
                 >
@@ -362,7 +362,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
               {notifications.length > 0 && (
                 <button
                   onClick={clearAll}
-                  className="p-1.5 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="p-1.5 rounded-lg text-ink-subtle hover:text-red-400 hover:bg-red-500/10 transition-colors"
                   aria-label="Clear all notifications"
                   title="Clear all"
                 >
@@ -373,7 +373,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-1 px-3 py-2 border-b border-white/[0.06] overflow-x-auto scrollbar-hide">
+          <div className="flex gap-1 px-3 py-2 border-b border-overlay/[0.06] overflow-x-auto scrollbar-hide">
             {tabs.map((tab) => {
               const count = tab.id === 'all'
                 ? notifications.length
@@ -388,7 +388,7 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
                   className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     activeTab === tab.id
                       ? 'bg-accent/20 text-accent'
-                      : 'text-gray-500 hover:text-white hover:bg-white/5'
+                      : 'text-ink-subtle hover:text-ink-bright hover:bg-overlay/5'
                   }`}
                 >
                   {tab.label}
@@ -404,11 +404,11 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
           <div className="max-h-[440px] overflow-y-auto">
             {filteredNotifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="p-4 rounded-2xl bg-white/[0.02] mb-3">
-                  <Bell size={24} className="text-gray-600" />
+                <div className="p-4 rounded-2xl bg-overlay/[0.02] mb-3">
+                  <Bell size={24} className="text-ink-faint" />
                 </div>
-                <p className="text-sm text-gray-500">No notifications</p>
-                <p className="text-xs text-gray-600 mt-1">
+                <p className="text-sm text-ink-subtle">No notifications</p>
+                <p className="text-xs text-ink-faint mt-1">
                   {activeTab === 'all'
                     ? "You're all caught up!"
                     : `No ${activeTab} notifications`}
@@ -420,11 +420,11 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
                   <div key={group}>
                     {/* Group Header */}
                     <div className="flex items-center gap-2 px-3 py-1.5">
-                      <Clock size={10} className="text-gray-600" />
-                      <span className="text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+                      <Clock size={10} className="text-ink-faint" />
+                      <span className="text-[10px] font-medium text-ink-subtle uppercase tracking-wider">
                         {group}
                       </span>
-                      <div className="flex-1 h-px bg-white/[0.04]" />
+                      <div className="flex-1 h-px bg-overlay/[0.04]" />
                     </div>
 
                     {/* Items */}
@@ -447,8 +447,8 @@ export default function NotificationCenter({ onNavigate }: NotificationCenterPro
 
           {/* Footer */}
           {notifications.length > 0 && (
-            <div className="px-4 py-2 border-t border-white/[0.06] bg-white/[0.01]">
-              <p className="text-[10px] text-gray-600 text-center">
+            <div className="px-4 py-2 border-t border-overlay/[0.06] bg-overlay/[0.01]">
+              <p className="text-[10px] text-ink-faint text-center">
                 Showing {filteredNotifications.length} of {notifications.length} notifications
               </p>
             </div>

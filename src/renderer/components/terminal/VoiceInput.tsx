@@ -196,7 +196,7 @@ export default function VoiceInput({ onTranscript, disabled = false }: VoiceInpu
     return (
       <button
         disabled
-        className="p-2 rounded-lg text-gray-600 cursor-not-allowed opacity-50"
+        className="p-2 rounded-lg text-ink-faint cursor-not-allowed opacity-50"
         title="Voice input not supported in this browser"
       >
         <MicOff size={14} />
@@ -213,7 +213,7 @@ export default function VoiceInput({ onTranscript, disabled = false }: VoiceInpu
         className={`relative p-2 rounded-lg transition-all ${
           isListening
             ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
-            : 'text-gray-400 hover:text-white hover:bg-white/[0.08]'
+            : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/[0.08]'
         } disabled:opacity-40 disabled:cursor-not-allowed`}
         title={isListening ? 'Stop voice input' : 'Start voice input'}
       >
@@ -242,12 +242,12 @@ export default function VoiceInput({ onTranscript, disabled = false }: VoiceInpu
 
       {/* Interim transcript tooltip */}
       {interimTranscript && (
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#1a1a1a] border border-white/10 rounded-lg shadow-xl z-50 max-w-xs animate-in fade-in slide-in-from-bottom-2 duration-200">
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-surface-4 border border-overlay/10 rounded-lg shadow-xl z-50 max-w-xs animate-in fade-in slide-in-from-bottom-2 duration-200">
           <div className="flex items-center gap-2">
             <Volume2 size={12} className="text-red-400 animate-pulse flex-shrink-0" />
-            <p className="text-sm text-gray-300 italic truncate">{interimTranscript}</p>
+            <p className="text-sm text-ink italic truncate">{interimTranscript}</p>
           </div>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-[#1a1a1a] border-r border-b border-white/10" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-surface-4 border-r border-b border-overlay/10" />
         </div>
       )}
     </div>

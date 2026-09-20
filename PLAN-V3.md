@@ -42,11 +42,14 @@ Crest has no `electron-updater`. Every release is a cold DMG download. Add `elec
 
 ---
 
-## Phase 1 — Fresh paint (3–4 days)
+## Phase 1 — Fresh paint — 1.1/1.2 DONE (2026-09-20)
 
 Crest looks like V1 with Tailwind on top. `tailwind.config.js` has exactly two color scales and one font. Everything else is inline hex scattered through components.
 
-### 1.1 Real design system
+### 1.1 Real design system — done
+Shipped as channel variables in `globals.css` + Tailwind colours, not a separate
+`tokens.css`. Second accent went to sand `#c2a87e`. ~2,900 hardcoded colour
+literals removed; the ink ladder was re-solved to pass WCAG AA on the way.
 Build `src/renderer/styles/tokens.css` as the single source of truth:
 
 - **Ground:** near-black surfaces already work (`#1a1a1a` / `#242424` / `#2a2a2a`). Keep the ladder, name it properly (`surface-0` … `surface-3`).
@@ -57,7 +60,9 @@ Build `src/renderer/styles/tokens.css` as the single source of truth:
 
 Push all of it into `tailwind.config.js` so components stop carrying inline hex.
 
-### 1.2 Themes
+### 1.2 Themes — done
+Four shipped (Crest / Slate / Ember / Paper) with a picker in Settings →
+Appearance. Each is a block of channel overrides; adding a fifth is ~20 lines.
 Hive ships 10 themes (6 dark, 4 light) and follows system. Crest is dark-only, one theme.
 Steal the shape from `hive-src/src/renderer/src/lib/themes/`. Ship 3 dark + 1 light at minimum. Tokens from 1.1 make this nearly free.
 
@@ -175,7 +180,7 @@ Don't start this until Phases 0–4 ship.
 | Phase | Effort | Ship |
 |---|---|---|
 | 0 — Clean decks | 1 day | **DONE 2026-09-20** |
-| 1 — Fresh paint | 3–4 days | v2.6 |
+| 1 — Fresh paint | 3–4 days | 1.1 + 1.2 done; 1.3 + 1.4 open |
 | 2 — Foundation | 1.5 weeks | v2.7 |
 | 3 — Remote control | 1 week | **v3.0** |
 | 4 — Workflow | 1 week | v3.1 |

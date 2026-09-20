@@ -424,13 +424,13 @@ export default function AnalyticsScreen({ onBack }: AnalyticsScreenProps) {
   }
 
   return (
-    <div className="h-full flex flex-col bg-[#0d0d0d]">
+    <div className="h-full flex flex-col bg-surface-1">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="p-2 hover:bg-white/[0.06] rounded-lg text-gray-400 hover:text-white transition-colors"
+            className="p-2 hover:bg-overlay/[0.06] rounded-lg text-ink-muted hover:text-ink-bright transition-colors"
           >
             <ArrowLeft size={16} />
           </button>
@@ -438,12 +438,12 @@ export default function AnalyticsScreen({ onBack }: AnalyticsScreenProps) {
             <div className="p-1.5 rounded-lg bg-accent/10">
               <BarChart3 size={16} className="text-accent" />
             </div>
-            <h1 className="text-lg font-semibold text-white">Analytics</h1>
+            <h1 className="text-lg font-semibold text-ink-bright">Analytics</h1>
           </div>
         </div>
 
         {/* Period selector */}
-        <div className="flex gap-1 p-1 bg-white/[0.04] rounded-lg">
+        <div className="flex gap-1 p-1 bg-overlay/[0.04] rounded-lg">
           {(['7days', '30days', 'all'] as Period[]).map((p) => (
             <button
               key={p}
@@ -451,7 +451,7 @@ export default function AnalyticsScreen({ onBack }: AnalyticsScreenProps) {
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
                 period === p
                   ? 'bg-accent text-white'
-                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                  : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.04]'
               }`}
             >
               {p === '7days' ? '7 Days' : p === '30days' ? '30 Days' : 'All Time'}
@@ -461,15 +461,15 @@ export default function AnalyticsScreen({ onBack }: AnalyticsScreenProps) {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 px-6 py-2 border-b border-white/[0.06]">
+      <div className="flex gap-1 px-6 py-2 border-b border-overlay/[0.06]">
         {(['overview', 'usage', 'projects', 'activity'] as Tab[]).map((tab) => (
           <button
             key={tab}
             onClick={() => { setActiveTab(tab); setSelectedProject(null) }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab
-                ? 'bg-white/[0.08] text-white'
-                : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                ? 'bg-overlay/[0.08] text-ink-bright'
+                : 'text-ink-subtle hover:text-ink hover:bg-overlay/[0.04]'
             }`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -519,7 +519,7 @@ export default function AnalyticsScreen({ onBack }: AnalyticsScreenProps) {
             )}
           </>
         ) : (
-          <div className="text-center text-gray-500 py-12">No analytics data available</div>
+          <div className="text-center text-ink-subtle py-12">No analytics data available</div>
         )}
       </div>
     </div>
@@ -531,21 +531,21 @@ function ProjectDetailModal({ project, onClose }: { project: ProjectDetail; onCl
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div
-        className="bg-[#141416] rounded-2xl w-full max-w-3xl max-h-[80vh] overflow-hidden border border-white/[0.08]"
+        className="bg-surface-3 rounded-2xl w-full max-w-3xl max-h-[80vh] overflow-hidden border border-overlay/[0.08]"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
               <Code2 size={20} className="text-accent" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">{project.name}</h2>
-              <p className="text-xs text-gray-500 truncate max-w-md">{project.folder}</p>
+              <h2 className="text-lg font-semibold text-ink-bright">{project.name}</h2>
+              <p className="text-xs text-ink-subtle truncate max-w-md">{project.folder}</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/[0.06] rounded-lg text-gray-400">
+          <button onClick={onClose} className="p-2 hover:bg-overlay/[0.06] rounded-lg text-ink-muted">
             <X size={18} />
           </button>
         </div>
@@ -562,23 +562,23 @@ function ProjectDetailModal({ project, onClose }: { project: ProjectDetail; onCl
 
           {/* Insights */}
           <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
-              <span className="text-xs text-gray-500">Avg Session</span>
-              <p className="text-xl font-bold text-white mt-1">{project.avgSessionLength}m</p>
+            <div className="bg-overlay/[0.03] rounded-xl p-4 border border-overlay/[0.06]">
+              <span className="text-xs text-ink-subtle">Avg Session</span>
+              <p className="text-xl font-bold text-ink-bright mt-1">{project.avgSessionLength}m</p>
             </div>
-            <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
-              <span className="text-xs text-gray-500">Longest Session</span>
-              <p className="text-xl font-bold text-white mt-1">{formatMinutes(project.longestSession)}</p>
+            <div className="bg-overlay/[0.03] rounded-xl p-4 border border-overlay/[0.06]">
+              <span className="text-xs text-ink-subtle">Longest Session</span>
+              <p className="text-xl font-bold text-ink-bright mt-1">{formatMinutes(project.longestSession)}</p>
             </div>
-            <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
-              <span className="text-xs text-gray-500">Sessions/Day</span>
-              <p className="text-xl font-bold text-white mt-1">{project.sessionsPerDay}</p>
+            <div className="bg-overlay/[0.03] rounded-xl p-4 border border-overlay/[0.06]">
+              <span className="text-xs text-ink-subtle">Sessions/Day</span>
+              <p className="text-xl font-bold text-ink-bright mt-1">{project.sessionsPerDay}</p>
             </div>
           </div>
 
           {/* Activity Chart */}
-          <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06] mb-6">
-            <h4 className="text-sm font-medium text-white mb-4">30-Day Activity</h4>
+          <div className="bg-overlay/[0.03] rounded-xl p-4 border border-overlay/[0.06] mb-6">
+            <h4 className="text-sm font-medium text-ink-bright mb-4">30-Day Activity</h4>
             <div className="flex items-end gap-1 h-20">
               {project.dailyActivity.map((day, i) => {
                 const maxMins = Math.max(...project.dailyActivity.map(d => d.minutes), 1)
@@ -594,7 +594,7 @@ function ProjectDetailModal({ project, onClose }: { project: ProjectDetail; onCl
                     <div
                       className={`w-full rounded-sm transition-all ${
                         isToday ? 'bg-accent' :
-                        day.minutes > 0 ? 'bg-accent/40' : 'bg-white/[0.06]'
+                        day.minutes > 0 ? 'bg-accent/40' : 'bg-overlay/[0.06]'
                       }`}
                       style={{ height: `${(height / 100) * 80}px` }}
                     />
@@ -606,22 +606,22 @@ function ProjectDetailModal({ project, onClose }: { project: ProjectDetail; onCl
 
           {/* Recent Sessions */}
           <div>
-            <h4 className="text-sm font-medium text-white mb-3">Recent Sessions</h4>
+            <h4 className="text-sm font-medium text-ink-bright mb-3">Recent Sessions</h4>
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {project.sessions.slice(0, 10).map((session) => (
                 <div
                   key={session.id}
-                  className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg border border-white/[0.04]"
+                  className="flex items-center justify-between p-3 bg-overlay/[0.02] rounded-lg border border-overlay/[0.04]"
                 >
                   <div className="flex items-center gap-3">
-                    <Calendar size={14} className="text-gray-500" />
-                    <span className="text-sm text-gray-300">
+                    <Calendar size={14} className="text-ink-subtle" />
+                    <span className="text-sm text-ink">
                       {new Date(session.timestamp).toLocaleDateString('en-US', {
                         month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
                       })}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                  <div className="flex items-center gap-4 text-xs text-ink-subtle">
                     <span className="flex items-center gap-1">
                       <Timer size={12} /> {session.duration}m
                     </span>
@@ -692,10 +692,10 @@ function OverviewTab({ analytics, filteredStats, period, onProjectClick, onViewA
       {/* Two columns */}
       <div className="grid grid-cols-2 gap-6">
         {/* Activity Chart */}
-        <div className="bg-white/[0.03] rounded-xl p-5 border border-white/[0.06]">
+        <div className="bg-overlay/[0.03] rounded-xl p-5 border border-overlay/[0.06]">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-white">Daily Activity</h3>
-            <span className="text-xs text-gray-500">Last 30 days</span>
+            <h3 className="text-sm font-semibold text-ink-bright">Daily Activity</h3>
+            <span className="text-xs text-ink-subtle">Last 30 days</span>
           </div>
           <div className="flex items-end gap-1 h-32">
             {(analytics.dailyActivity.length > 0 ? analytics.dailyActivity :
@@ -722,7 +722,7 @@ function OverviewTab({ analytics, filteredStats, period, onProjectClick, onViewA
                   <div
                     className={`w-full rounded-sm transition-all group-hover:opacity-80 ${
                       isToday ? 'bg-gradient-to-t from-accent to-accent-300' :
-                      day.sessions > 0 ? 'bg-accent/40' : 'bg-white/[0.06]'
+                      day.sessions > 0 ? 'bg-accent/40' : 'bg-overlay/[0.06]'
                     }`}
                     style={{ height: `${(height / 100) * 128}px` }}
                   />
@@ -730,16 +730,16 @@ function OverviewTab({ analytics, filteredStats, period, onProjectClick, onViewA
               )
             })}
           </div>
-          <div className="flex justify-between mt-2 text-[10px] text-gray-600">
+          <div className="flex justify-between mt-2 text-[10px] text-ink-faint">
             <span>30 days ago</span>
             <span>Today</span>
           </div>
         </div>
 
         {/* Top Projects */}
-        <div className="bg-white/[0.03] rounded-xl p-5 border border-white/[0.06]">
+        <div className="bg-overlay/[0.03] rounded-xl p-5 border border-overlay/[0.06]">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-white">Top Projects by Time</h3>
+            <h3 className="text-sm font-semibold text-ink-bright">Top Projects by Time</h3>
             <button
               onClick={onViewAllProjects}
               className="text-xs text-accent hover:underline"
@@ -756,16 +756,16 @@ function OverviewTab({ analytics, filteredStats, period, onProjectClick, onViewA
                 <button
                   key={project.folder}
                   onClick={() => onProjectClick(project)}
-                  className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white/[0.04] transition-colors text-left"
+                  className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-overlay/[0.04] transition-colors text-left"
                 >
-                  <span className="text-xs text-gray-600 w-4">{i + 1}</span>
+                  <span className="text-xs text-ink-faint w-4">{i + 1}</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm text-white truncate">{project.name}</span>
+                      <span className="text-sm text-ink-bright truncate">{project.name}</span>
                       {project.recentTrend === 'up' && <ArrowUpRight size={12} className="text-green-400" />}
                       {project.recentTrend === 'down' && <ArrowDownRight size={12} className="text-red-400" />}
                     </div>
-                    <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-overlay/[0.06] rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-accent to-accent-300 rounded-full"
                         style={{ width: `${percent}%` }}
@@ -774,9 +774,9 @@ function OverviewTab({ analytics, filteredStats, period, onProjectClick, onViewA
                   </div>
                   <div className="text-right">
                     <span className="text-sm font-medium text-accent">{formatMinutes(project.totalTimeMinutes)}</span>
-                    <p className="text-[10px] text-gray-600">{project.totalSessions} sessions</p>
+                    <p className="text-[10px] text-ink-faint">{project.totalSessions} sessions</p>
                   </div>
-                  <ChevronRight size={14} className="text-gray-600" />
+                  <ChevronRight size={14} className="text-ink-faint" />
                 </button>
               )
             })}
@@ -828,8 +828,8 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
 
       {/* Sort controls */}
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-white">{sortedProjects.length} Projects</h3>
-        <div className="flex gap-1 p-1 bg-white/[0.04] rounded-lg">
+        <h3 className="text-sm font-semibold text-ink-bright">{sortedProjects.length} Projects</h3>
+        <div className="flex gap-1 p-1 bg-overlay/[0.04] rounded-lg">
           {([
             { key: 'time', label: 'Time' },
             { key: 'sessions', label: 'Sessions' },
@@ -841,8 +841,8 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
               onClick={() => setSortBy(s.key)}
               className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
                 sortBy === s.key
-                  ? 'bg-white/[0.1] text-white'
-                  : 'text-gray-500 hover:text-gray-300'
+                  ? 'bg-overlay/[0.1] text-ink-bright'
+                  : 'text-ink-subtle hover:text-ink'
               }`}
             >
               {s.label}
@@ -857,75 +857,75 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
           const isExpanded = expandedProjects.has(project.folder)
 
           return (
-            <div key={project.folder} className="bg-white/[0.03] rounded-xl border border-white/[0.06] overflow-hidden">
+            <div key={project.folder} className="bg-overlay/[0.03] rounded-xl border border-overlay/[0.06] overflow-hidden">
               {/* Main row */}
               <div
-                className="flex items-center p-4 cursor-pointer hover:bg-white/[0.02] transition-colors"
+                className="flex items-center p-4 cursor-pointer hover:bg-overlay/[0.02] transition-colors"
                 onClick={() => onToggleExpand(project.folder)}
               >
                 <ChevronDown
                   size={16}
-                  className={`text-gray-500 mr-3 transition-transform ${isExpanded ? '' : '-rotate-90'}`}
+                  className={`text-ink-subtle mr-3 transition-transform ${isExpanded ? '' : '-rotate-90'}`}
                 />
                 <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mr-3">
                   <Code2 size={18} className="text-accent" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-medium text-white">{project.name}</h4>
+                    <h4 className="text-sm font-medium text-ink-bright">{project.name}</h4>
                     {project.recentTrend === 'up' && (
                       <span className="flex items-center gap-0.5 text-[10px] text-green-400">
                         <TrendingUp size={10} /> Active
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-600 truncate">{project.folder}</p>
+                  <p className="text-xs text-ink-faint truncate">{project.folder}</p>
                 </div>
                 <div className="grid grid-cols-4 gap-6 text-right">
                   <div>
                     <p className="text-sm font-medium text-accent">{formatMinutes(project.totalTimeMinutes)}</p>
-                    <p className="text-[10px] text-gray-600">time</p>
+                    <p className="text-[10px] text-ink-faint">time</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">{project.totalSessions}</p>
-                    <p className="text-[10px] text-gray-600">sessions</p>
+                    <p className="text-sm font-medium text-ink-bright">{project.totalSessions}</p>
+                    <p className="text-[10px] text-ink-faint">sessions</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">{project.totalMessages}</p>
-                    <p className="text-[10px] text-gray-600">messages</p>
+                    <p className="text-sm font-medium text-ink-bright">{project.totalMessages}</p>
+                    <p className="text-[10px] text-ink-faint">messages</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">{formatRelativeTime(project.lastActive)}</p>
-                    <p className="text-[10px] text-gray-600">last active</p>
+                    <p className="text-sm font-medium text-ink-bright">{formatRelativeTime(project.lastActive)}</p>
+                    <p className="text-[10px] text-ink-faint">last active</p>
                   </div>
                 </div>
               </div>
 
               {/* Expanded details */}
               {isExpanded && (
-                <div className="px-4 pb-4 pt-2 border-t border-white/[0.04]">
+                <div className="px-4 pb-4 pt-2 border-t border-overlay/[0.04]">
                   <div className="grid grid-cols-4 gap-4 mb-4">
                     <div className="text-center">
-                      <p className="text-lg font-bold text-white">{project.avgSessionLength}m</p>
-                      <p className="text-xs text-gray-500">avg session</p>
+                      <p className="text-lg font-bold text-ink-bright">{project.avgSessionLength}m</p>
+                      <p className="text-xs text-ink-subtle">avg session</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-lg font-bold text-white">{formatMinutes(project.longestSession)}</p>
-                      <p className="text-xs text-gray-500">longest</p>
+                      <p className="text-lg font-bold text-ink-bright">{formatMinutes(project.longestSession)}</p>
+                      <p className="text-xs text-ink-subtle">longest</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-lg font-bold text-white">{project.sessionsPerDay}</p>
-                      <p className="text-xs text-gray-500">sessions/day</p>
+                      <p className="text-lg font-bold text-ink-bright">{project.sessionsPerDay}</p>
+                      <p className="text-xs text-ink-subtle">sessions/day</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-lg font-bold text-white">{formatNumber(project.totalTokens)}</p>
-                      <p className="text-xs text-gray-500">tokens</p>
+                      <p className="text-lg font-bold text-ink-bright">{formatNumber(project.totalTokens)}</p>
+                      <p className="text-xs text-ink-subtle">tokens</p>
                     </div>
                   </div>
 
                   {/* Mini activity chart */}
                   <div className="mb-4">
-                    <p className="text-xs text-gray-500 mb-2">30-day activity</p>
+                    <p className="text-xs text-ink-subtle mb-2">30-day activity</p>
                     <div className="flex items-end gap-px h-12">
                       {project.dailyActivity.map((day, i) => {
                         const maxMins = Math.max(...project.dailyActivity.map(d => d.minutes), 1)
@@ -934,7 +934,7 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
                           <div
                             key={day.date}
                             className={`flex-1 rounded-sm ${
-                              day.minutes > 0 ? 'bg-accent/50' : 'bg-white/[0.06]'
+                              day.minutes > 0 ? 'bg-accent/50' : 'bg-overlay/[0.06]'
                             }`}
                             style={{ height: `${(height / 100) * 48}px` }}
                             title={`${day.date}: ${day.minutes}m`}
@@ -957,7 +957,7 @@ function ProjectsTab({ projects, period, expandedProjects, onToggleExpand, onPro
         })}
 
         {sortedProjects.length === 0 && (
-          <div className="text-center text-gray-500 py-12">No projects in this time period</div>
+          <div className="text-center text-ink-subtle py-12">No projects in this time period</div>
         )}
       </div>
     </div>
@@ -969,8 +969,8 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
   return (
     <div className="space-y-6">
       {/* 30-day activity chart */}
-      <div className="bg-white/[0.03] rounded-xl p-5 border border-white/[0.06]">
-        <h3 className="text-sm font-semibold text-white mb-4">30-Day Activity</h3>
+      <div className="bg-overlay/[0.03] rounded-xl p-5 border border-overlay/[0.06]">
+        <h3 className="text-sm font-semibold text-ink-bright mb-4">30-Day Activity</h3>
         <div className="flex items-end gap-1 h-40">
           {analytics.dailyActivity.map((day, i) => {
             const maxSessions = Math.max(...analytics.dailyActivity.map(d => d.sessions), 1)
@@ -984,22 +984,22 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
                   <div
                     className={`w-full rounded-sm transition-all group-hover:opacity-80 ${
                       isToday ? 'bg-gradient-to-t from-accent to-accent-300' :
-                      day.sessions > 0 ? 'bg-accent/40' : 'bg-white/[0.06]'
+                      day.sessions > 0 ? 'bg-accent/40' : 'bg-overlay/[0.06]'
                     }`}
                     style={{ height: `${(height / 100) * 140}px` }}
                   />
                   {/* Tooltip */}
                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                    <div className="bg-[#1a1a1a] border border-white/[0.1] rounded-lg p-2 text-xs whitespace-nowrap">
-                      <p className="text-white font-medium">{date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
-                      <p className="text-gray-400">{day.sessions} sessions</p>
-                      <p className="text-gray-400">{day.minutes}m coded</p>
-                      <p className="text-gray-400">{formatNumber(day.tokens)} tokens</p>
+                    <div className="bg-surface-4 border border-overlay/[0.1] rounded-lg p-2 text-xs whitespace-nowrap">
+                      <p className="text-ink-bright font-medium">{date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                      <p className="text-ink-muted">{day.sessions} sessions</p>
+                      <p className="text-ink-muted">{day.minutes}m coded</p>
+                      <p className="text-ink-muted">{formatNumber(day.tokens)} tokens</p>
                     </div>
                   </div>
                 </div>
                 {(date.getDate() === 1 || i === 0 || isToday) && (
-                  <span className="text-[8px] text-gray-600 mt-1">
+                  <span className="text-[8px] text-ink-faint mt-1">
                     {isToday ? 'Today' : `${date.getMonth() + 1}/${date.getDate()}`}
                   </span>
                 )}
@@ -1011,8 +1011,8 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
 
       <div className="grid grid-cols-2 gap-6">
         {/* Hourly distribution */}
-        <div className="bg-white/[0.03] rounded-xl p-5 border border-white/[0.06]">
-          <h3 className="text-sm font-semibold text-white mb-4">Activity by Hour</h3>
+        <div className="bg-overlay/[0.03] rounded-xl p-5 border border-overlay/[0.06]">
+          <h3 className="text-sm font-semibold text-ink-bright mb-4">Activity by Hour</h3>
           <div className="flex items-end gap-1 h-24">
             {analytics.hourlyActivity.map((count, hour) => {
               const maxCount = Math.max(...analytics.hourlyActivity, 1)
@@ -1024,25 +1024,25 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
                   <div
                     className={`w-full rounded-sm transition-all ${
                       isPeak ? 'bg-sand-500' :
-                      count > 0 ? 'bg-sand-500/40' : 'bg-white/[0.06]'
+                      count > 0 ? 'bg-sand-500/40' : 'bg-overlay/[0.06]'
                     }`}
                     style={{ height: `${(height / 100) * 96}px` }}
                   />
                   {hour % 6 === 0 && (
-                    <span className="text-[8px] text-gray-600 mt-1">{hour}</span>
+                    <span className="text-[8px] text-ink-faint mt-1">{hour}</span>
                   )}
                 </div>
               )
             })}
           </div>
-          <p className="text-xs text-gray-500 mt-3">
-            Peak hour: <span className="text-white">{formatHour(analytics.mostActiveHour)}</span>
+          <p className="text-xs text-ink-subtle mt-3">
+            Peak hour: <span className="text-ink-bright">{formatHour(analytics.mostActiveHour)}</span>
           </p>
         </div>
 
         {/* Weekday distribution */}
-        <div className="bg-white/[0.03] rounded-xl p-5 border border-white/[0.06]">
-          <h3 className="text-sm font-semibold text-white mb-4">Activity by Day</h3>
+        <div className="bg-overlay/[0.03] rounded-xl p-5 border border-overlay/[0.06]">
+          <h3 className="text-sm font-semibold text-ink-bright mb-4">Activity by Day</h3>
           <div className="space-y-2">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => {
               const count = analytics.weekdayActivity[i]
@@ -1052,8 +1052,8 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
 
               return (
                 <div key={day} className="flex items-center gap-3">
-                  <span className="text-xs text-gray-500 w-8">{day}</span>
-                  <div className="flex-1 h-4 bg-white/[0.06] rounded-full overflow-hidden">
+                  <span className="text-xs text-ink-subtle w-8">{day}</span>
+                  <div className="flex-1 h-4 bg-overlay/[0.06] rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all ${
                         isMax ? 'bg-emerald-500' : 'bg-emerald-500/50'
@@ -1061,7 +1061,7 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
                       style={{ width: `${percent}%` }}
                     />
                   </div>
-                  <span className="text-xs text-gray-400 w-8 text-right">{count}</span>
+                  <span className="text-xs text-ink-muted w-8 text-right">{count}</span>
                 </div>
               )
             })}
@@ -1070,23 +1070,23 @@ function ActivityTab({ analytics }: { analytics: AnalyticsData }) {
       </div>
 
       {/* Time breakdown */}
-      <div className="bg-white/[0.03] rounded-xl p-5 border border-white/[0.06]">
-        <h3 className="text-sm font-semibold text-white mb-4">Time Breakdown</h3>
+      <div className="bg-overlay/[0.03] rounded-xl p-5 border border-overlay/[0.06]">
+        <h3 className="text-sm font-semibold text-ink-bright mb-4">Time Breakdown</h3>
         <div className="grid grid-cols-3 gap-8">
           <div>
-            <p className="text-xs text-gray-500 mb-1">Last 7 Days</p>
+            <p className="text-xs text-ink-subtle mb-1">Last 7 Days</p>
             <p className="text-2xl font-bold text-accent">{formatMinutes(analytics.time7Days)}</p>
-            <p className="text-xs text-gray-500 mt-1">{analytics.sessions7Days} sessions</p>
+            <p className="text-xs text-ink-subtle mt-1">{analytics.sessions7Days} sessions</p>
           </div>
           <div>
-            <p className="text-xs text-gray-500 mb-1">Last 30 Days</p>
+            <p className="text-xs text-ink-subtle mb-1">Last 30 Days</p>
             <p className="text-2xl font-bold text-accent">{formatMinutes(analytics.time30Days)}</p>
-            <p className="text-xs text-gray-500 mt-1">{analytics.sessions30Days} sessions</p>
+            <p className="text-xs text-ink-subtle mt-1">{analytics.sessions30Days} sessions</p>
           </div>
           <div>
-            <p className="text-xs text-gray-500 mb-1">All Time</p>
+            <p className="text-xs text-ink-subtle mb-1">All Time</p>
             <p className="text-2xl font-bold text-accent">{formatMinutes(analytics.totalTimeMinutes)}</p>
-            <p className="text-xs text-gray-500 mt-1">{analytics.totalSessions} sessions</p>
+            <p className="text-xs text-ink-subtle mt-1">{analytics.totalSessions} sessions</p>
           </div>
         </div>
       </div>
@@ -1110,13 +1110,13 @@ function LargeStatCard({ icon: Icon, label, value, trend, color }: {
   }
 
   return (
-    <div className="bg-white/[0.03] rounded-xl p-5 border border-white/[0.06]">
+    <div className="bg-overlay/[0.03] rounded-xl p-5 border border-overlay/[0.06]">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className={`p-2 rounded-lg ${colors[color].bg}`}>
             <Icon size={16} className={colors[color].icon} />
           </div>
-          <span className="text-xs text-gray-500 uppercase tracking-wider font-medium">{label}</span>
+          <span className="text-xs text-ink-subtle uppercase tracking-wider font-medium">{label}</span>
         </div>
         {trend !== undefined && trend !== 0 && (
           <span className={`flex items-center gap-0.5 text-xs ${trend > 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -1125,7 +1125,7 @@ function LargeStatCard({ icon: Icon, label, value, trend, color }: {
           </span>
         )}
       </div>
-      <p className="text-3xl font-bold text-white">{value}</p>
+      <p className="text-3xl font-bold text-ink-bright">{value}</p>
     </div>
   )
 }
@@ -1140,8 +1140,8 @@ function StatBox({ label, value, color }: { label: string; value: string | numbe
 
   return (
     <div className={`${colors[color]} border rounded-xl p-4`}>
-      <p className="text-xs text-gray-500 mb-1">{label}</p>
-      <p className="text-xl font-bold text-white">{value}</p>
+      <p className="text-xs text-ink-subtle mb-1">{label}</p>
+      <p className="text-xl font-bold text-ink-bright">{value}</p>
     </div>
   )
 }
@@ -1152,12 +1152,12 @@ function InsightCard({ icon: Icon, label, value }: {
   value: string
 }) {
   return (
-    <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+    <div className="bg-overlay/[0.03] rounded-xl p-4 border border-overlay/[0.06]">
       <div className="flex items-center gap-2 mb-2">
-        <Icon size={14} className="text-gray-500" />
-        <span className="text-xs text-gray-500">{label}</span>
+        <Icon size={14} className="text-ink-subtle" />
+        <span className="text-xs text-ink-subtle">{label}</span>
       </div>
-      <p className="text-lg font-bold text-white">{value}</p>
+      <p className="text-lg font-bold text-ink-bright">{value}</p>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { useAppStore } from '../../store'
 import type { CustomTheme, UpdateInfo, SuperAgentConfig, LLMProvider, SafetyLevel, CLIProvider, OllamaRuntimeStatus } from '../../../shared/types'
+import { APP_THEMES } from '../../../shared/types'
 import { CLI_PROVIDERS } from '../../../shared/providers'
 import { SUPERVISOR_PROVIDERS, supervisorProviderLabel } from '../../../shared/llmProviders'
 
@@ -122,7 +123,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     sessionContextEnabled, setSessionContextEnabled,
     sessionContextDays, setSessionContextDays,
     customThemes, addCustomTheme, removeCustomTheme,
-    initializeSettings, settings
+    initializeSettings, settings, updateSetting
   } = useAppStore()
 
   const [activeSection, setActiveSection] = useState<SectionType>('appearance')
@@ -363,15 +364,15 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     label: string,
     description?: string
   ) => (
-    <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+    <div className="flex items-center justify-between p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
       <div>
-        <div className="text-sm text-white">{label}</div>
-        {description && <div className="text-xs text-gray-500 mt-1">{description}</div>}
+        <div className="text-sm text-ink-bright">{label}</div>
+        {description && <div className="text-xs text-ink-subtle mt-1">{description}</div>}
       </div>
       <button
         onClick={() => onChange(!enabled)}
         className={`relative w-11 h-6 rounded-full transition-colors ${
-          enabled ? 'bg-accent' : 'bg-white/10'
+          enabled ? 'bg-accent' : 'bg-overlay/10'
         }`}
       >
         <div
@@ -392,9 +393,9 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     label: string,
     formatValue?: (value: number) => string
   ) => (
-    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+    <div className="p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
       <div className="flex items-center justify-between mb-3">
-        <div className="text-sm text-white">{label}</div>
+        <div className="text-sm text-ink-bright">{label}</div>
         <div className="text-sm text-accent font-medium">
           {formatValue ? formatValue(value) : value}
         </div>
@@ -406,7 +407,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
         step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer
+        className="w-full h-1.5 bg-overlay/10 rounded-full appearance-none cursor-pointer
           [&::-webkit-slider-thumb]:appearance-none
           [&::-webkit-slider-thumb]:w-4
           [&::-webkit-slider-thumb]:h-4
@@ -433,16 +434,16 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="settings-title"
-        className={`fixed inset-y-0 right-0 w-[540px] bg-[#0d0d0d] border-l border-white/[0.06] z-50 flex flex-col shadow-2xl transition-transform duration-200 ${
+        className={`fixed inset-y-0 right-0 w-[540px] bg-surface-1 border-l border-overlay/[0.06] z-50 flex flex-col shadow-2xl transition-transform duration-200 ${
           isVisible ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
-          <h2 id="settings-title" className="text-lg font-semibold text-white">Settings</h2>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06]">
+          <h2 id="settings-title" className="text-lg font-semibold text-ink-bright">Settings</h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors focus-ring"
+            className="p-2 rounded-lg text-ink-muted hover:text-ink-bright hover:bg-overlay/5 transition-colors focus-ring"
             aria-label="Close settings"
           >
             <X size={20} aria-hidden="true" />
@@ -463,7 +464,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
         {/* Content */}
         <div className="flex-1 flex overflow-hidden">
           {/* Sidebar */}
-          <nav className="w-44 border-r border-white/[0.06] py-4" aria-label="Settings sections">
+          <nav className="w-44 border-r border-overlay/[0.06] py-4" aria-label="Settings sections">
             <div className="space-y-1 px-3" role="tablist" aria-orientation="vertical">
               {[
                 { id: 'appearance', icon: Palette, label: 'Appearance' },
@@ -485,7 +486,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium ${
                     activeSection === item.id
                       ? 'bg-accent/15 text-accent'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      : 'text-ink-muted hover:text-ink-bright hover:bg-overlay/5'
                   }`}
                 >
                   <item.icon size={16} aria-hidden="true" />
@@ -500,10 +501,47 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             {/* Appearance Section */}
             {activeSection === 'appearance' && (
               <div className="space-y-8">
+                {/* App theme -- the chrome. Separate from the terminal theme
+                    below, which only colours xterm's own output. */}
+                <div>
+                  <h3 className="text-sm font-medium text-ink-bright mb-1">App Theme</h3>
+                  <p className="text-xs text-ink-subtle mb-4">
+                    Colours the window around the terminal. The terminal keeps its own theme.
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {APP_THEMES.map((t) => {
+                      const active = (settings.appTheme ?? 'default') === t.id
+                      return (
+                        <button
+                          key={t.id}
+                          onClick={() => updateSetting('appTheme', t.id)}
+                          className={`relative flex items-center gap-3 p-3 rounded-xl border transition-colors ${
+                            active
+                              ? 'border-accent bg-accent/10'
+                              : 'border-overlay/[0.06] bg-overlay/[0.02] hover:border-overlay/[0.1]'
+                          }`}
+                        >
+                          <span
+                            data-theme={t.id === 'default' ? undefined : t.id}
+                            className="w-10 h-10 rounded-lg border border-overlay/10 bg-surface-1 flex items-center justify-center shrink-0"
+                          >
+                            <span className="w-3 h-3 rounded-full bg-accent" />
+                          </span>
+                          <span className="text-left">
+                            <span className="block text-sm text-ink-bright">{t.name}</span>
+                            <span className="block text-xs text-ink-subtle">{t.note}</span>
+                          </span>
+                          {active && <Check size={16} className="absolute right-3 text-accent" />}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
                 {/* Theme Selection */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-medium text-white">Terminal Theme</h3>
+                    <h3 className="text-sm font-medium text-ink-bright">Terminal Theme</h3>
                     <button
                       onClick={() => setShowThemeCreator(true)}
                       className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/10 text-accent text-xs font-medium hover:bg-accent/20 transition-colors"
@@ -522,11 +560,11 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                             className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-colors ${
                               theme === t.id
                                 ? 'border-accent bg-accent/10'
-                                : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]'
+                                : 'border-overlay/[0.06] bg-overlay/[0.02] hover:border-overlay/[0.1]'
                             }`}
                           >
                             <div
-                              className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center"
+                              className="w-10 h-10 rounded-lg border border-overlay/10 flex items-center justify-center"
                               style={{ backgroundColor: t.bg }}
                             >
                               <div
@@ -534,7 +572,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 style={{ backgroundColor: t.accent }}
                               />
                             </div>
-                            <span className="text-sm text-white">{t.name}</span>
+                            <span className="text-sm text-ink-bright">{t.name}</span>
                             {theme === t.id && (
                               <Check size={16} className="absolute right-3 text-accent" />
                             )}
@@ -567,16 +605,16 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 {/* Custom Theme Creator Modal - Redesigned */}
                 {showThemeCreator && (
                   <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-[#141416] rounded-2xl border border-white/[0.08] w-[680px] max-h-[90vh] overflow-hidden shadow-2xl">
+                    <div className="bg-surface-3 rounded-2xl border border-overlay/[0.08] w-[680px] max-h-[90vh] overflow-hidden shadow-2xl">
                       {/* Header */}
-                      <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-gradient-to-r from-[#1a1a1c] to-[#141416]">
-                        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                      <div className="flex items-center justify-between px-6 py-4 border-b border-overlay/[0.06] bg-gradient-to-r from-surface-4 to-surface-3">
+                        <h3 className="text-lg font-semibold text-ink-bright flex items-center gap-2">
                           <Sparkles size={18} className="text-accent" />
                           Create Custom Theme
                         </h3>
                         <button
                           onClick={() => setShowThemeCreator(false)}
-                          className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+                          className="p-2 rounded-lg text-ink-muted hover:text-ink-bright hover:bg-overlay/[0.06] transition-colors"
                         >
                           <X size={18} />
                         </button>
@@ -585,19 +623,19 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                       <div className="p-6 space-y-6 overflow-y-auto max-h-[70vh]">
                         {/* Theme Name */}
                         <div>
-                          <label className="block text-xs font-medium text-gray-400 mb-2">Theme Name</label>
+                          <label className="block text-xs font-medium text-ink-muted mb-2">Theme Name</label>
                           <input
                             type="text"
                             value={newTheme.name}
                             onChange={(e) => setNewTheme({ ...newTheme, name: e.target.value })}
                             placeholder="My Custom Theme"
-                            className="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20"
+                            className="w-full px-4 py-3 rounded-xl bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm placeholder-ink-faint focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20"
                           />
                         </div>
 
                         {/* Start From Preset */}
                         <div>
-                          <label className="block text-xs font-medium text-gray-400 mb-3">Start From</label>
+                          <label className="block text-xs font-medium text-ink-muted mb-3">Start From</label>
                           <div className="flex flex-wrap gap-2">
                             {Object.entries(THEME_PRESETS).map(([presetId, preset]) => (
                               <button
@@ -609,10 +647,10 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 className={`px-3 py-2 rounded-lg text-xs font-medium transition-all flex items-center gap-2 ${
                                   selectedPreset === presetId
                                     ? 'bg-accent text-white ring-2 ring-accent/50'
-                                    : 'bg-black/30 text-gray-400 hover:bg-white/[0.06] hover:text-white border border-white/[0.06]'
+                                    : 'bg-black/30 text-ink-muted hover:bg-overlay/[0.06] hover:text-ink-bright border border-overlay/[0.06]'
                                 }`}
                               >
-                                <div className="w-4 h-4 rounded-full border border-white/20" style={{ backgroundColor: preset.background }} />
+                                <div className="w-4 h-4 rounded-full border border-overlay/20" style={{ backgroundColor: preset.background }} />
                                 {presetId.charAt(0).toUpperCase() + presetId.slice(1)}
                               </button>
                             ))}
@@ -623,8 +661,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         <div className="grid grid-cols-2 gap-6">
                           {/* UI Colors */}
                           <div className="space-y-3">
-                            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider">UI Colors</div>
-                            <div className="space-y-2 p-4 rounded-xl bg-black/20 border border-white/[0.04]">
+                            <div className="text-xs font-medium text-ink-subtle uppercase tracking-wider">UI Colors</div>
+                            <div className="space-y-2 p-4 rounded-xl bg-black/20 border border-overlay/[0.04]">
                               {[
                                 { key: 'background', label: 'Background' },
                                 { key: 'foreground', label: 'Text' },
@@ -638,17 +676,17 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                       type="color"
                                       value={newTheme[key as keyof CustomTheme] as string}
                                       onChange={(e) => setNewTheme({ ...newTheme, [key]: e.target.value })}
-                                      className="w-10 h-10 rounded-lg cursor-pointer border-2 border-white/10 hover:border-white/20 transition-colors"
+                                      className="w-10 h-10 rounded-lg cursor-pointer border-2 border-overlay/10 hover:border-overlay/20 transition-colors"
                                       style={{ backgroundColor: newTheme[key as keyof CustomTheme] as string }}
                                     />
                                   </div>
                                   <div className="flex-1">
-                                    <div className="text-xs text-gray-300">{label}</div>
+                                    <div className="text-xs text-ink">{label}</div>
                                     <input
                                       type="text"
                                       value={newTheme[key as keyof CustomTheme] as string}
                                       onChange={(e) => setNewTheme({ ...newTheme, [key]: e.target.value })}
-                                      className="w-full text-[10px] text-gray-500 font-mono bg-transparent border-none focus:outline-none focus:text-gray-400"
+                                      className="w-full text-[10px] text-ink-subtle font-mono bg-transparent border-none focus:outline-none focus:text-ink-muted"
                                     />
                                   </div>
                                 </div>
@@ -658,8 +696,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                           {/* Terminal Colors */}
                           <div className="space-y-3">
-                            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider">Terminal Colors</div>
-                            <div className="p-4 rounded-xl bg-black/20 border border-white/[0.04]">
+                            <div className="text-xs font-medium text-ink-subtle uppercase tracking-wider">Terminal Colors</div>
+                            <div className="p-4 rounded-xl bg-black/20 border border-overlay/[0.04]">
                               <div className="grid grid-cols-4 gap-2">
                                 {[
                                   { key: 'black', label: 'Blk' },
@@ -676,10 +714,10 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                       type="color"
                                       value={newTheme[key as keyof CustomTheme] as string}
                                       onChange={(e) => setNewTheme({ ...newTheme, [key]: e.target.value })}
-                                      className="w-10 h-10 rounded-lg cursor-pointer border-2 border-white/10 hover:border-white/20 transition-colors"
+                                      className="w-10 h-10 rounded-lg cursor-pointer border-2 border-overlay/10 hover:border-overlay/20 transition-colors"
                                       style={{ backgroundColor: newTheme[key as keyof CustomTheme] as string }}
                                     />
-                                    <span className="text-[9px] text-gray-500">{label}</span>
+                                    <span className="text-[9px] text-ink-subtle">{label}</span>
                                   </div>
                                 ))}
                               </div>
@@ -689,19 +727,19 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                         {/* Live Preview */}
                         <div>
-                          <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Preview</div>
+                          <div className="text-xs font-medium text-ink-subtle uppercase tracking-wider mb-3">Preview</div>
                           <div
-                            className="rounded-xl border border-white/[0.08] overflow-hidden font-mono text-sm"
+                            className="rounded-xl border border-overlay/[0.08] overflow-hidden font-mono text-sm"
                             style={{ backgroundColor: newTheme.background }}
                           >
                             {/* Terminal header bar */}
-                            <div className="flex items-center gap-2 px-4 py-2 bg-black/30 border-b border-white/[0.06]">
+                            <div className="flex items-center gap-2 px-4 py-2 bg-black/30 border-b border-overlay/[0.06]">
                               <div className="flex gap-1.5">
-                                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                                <div className="w-3 h-3 rounded-full bg-[#27ca40]" />
+                                <div className="w-3 h-3 rounded-full bg-mac-close" />
+                                <div className="w-3 h-3 rounded-full bg-mac-minimize" />
+                                <div className="w-3 h-3 rounded-full bg-mac-zoom" />
                               </div>
-                              <span className="text-xs text-gray-500 ml-2">Terminal Preview</span>
+                              <span className="text-xs text-ink-subtle ml-2">Terminal Preview</span>
                             </div>
                             {/* Terminal content */}
                             <div className="p-4 space-y-1.5 text-[13px] leading-relaxed">
@@ -731,10 +769,10 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                       </div>
 
                       {/* Footer */}
-                      <div className="flex justify-end gap-3 px-6 py-4 border-t border-white/[0.06] bg-black/20">
+                      <div className="flex justify-end gap-3 px-6 py-4 border-t border-overlay/[0.06] bg-black/20">
                         <button
                           onClick={() => setShowThemeCreator(false)}
-                          className="px-5 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+                          className="px-5 py-2.5 rounded-xl text-sm text-ink-muted hover:text-ink-bright hover:bg-overlay/[0.06] transition-colors"
                         >
                           Cancel
                         </button>
@@ -757,7 +795,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <div className="space-y-6">
                 {/* Font Family */}
                 <div>
-                  <h3 className="text-sm font-medium text-white mb-4">Font Family</h3>
+                  <h3 className="text-sm font-medium text-ink-bright mb-4">Font Family</h3>
                   <div className="grid grid-cols-2 gap-2">
                     {FONT_FAMILIES.map((family) => (
                       <button
@@ -766,7 +804,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                           fontFamily === family
                             ? 'bg-accent text-white'
-                            : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                            : 'bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright'
                         }`}
                         style={{ fontFamily: family }}
                       >
@@ -778,7 +816,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                 {/* Font Size */}
                 <div>
-                  <h3 className="text-sm font-medium text-white mb-4">Font Size</h3>
+                  <h3 className="text-sm font-medium text-ink-bright mb-4">Font Size</h3>
                   <div className="flex flex-wrap gap-2">
                     {FONT_SIZES.map((size) => (
                       <button
@@ -787,7 +825,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           fontSize === size
                             ? 'bg-accent text-white'
-                            : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                            : 'bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright'
                         }`}
                       >
                         {size}px
@@ -798,7 +836,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                 {/* Line Height */}
                 <div>
-                  <h3 className="text-sm font-medium text-white mb-4">Line Height</h3>
+                  <h3 className="text-sm font-medium text-ink-bright mb-4">Line Height</h3>
                   <div className="flex flex-wrap gap-2">
                     {LINE_HEIGHTS.map((height) => (
                       <button
@@ -807,7 +845,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           lineHeight === height
                             ? 'bg-accent text-white'
-                            : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                            : 'bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright'
                         }`}
                       >
                         {height}
@@ -818,7 +856,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                 {/* Cursor Style */}
                 <div>
-                  <h3 className="text-sm font-medium text-white mb-4">Cursor Style</h3>
+                  <h3 className="text-sm font-medium text-ink-bright mb-4">Cursor Style</h3>
                   <div className="flex gap-2">
                     {(['block', 'underline', 'bar'] as const).map((style) => (
                       <button
@@ -827,7 +865,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors capitalize ${
                           cursorStyle === style
                             ? 'bg-accent text-white'
-                            : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                            : 'bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright'
                         }`}
                       >
                         {style}
@@ -844,7 +882,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                 {/* Scrollback Buffer */}
                 <div>
-                  <h3 className="text-sm font-medium text-white mb-4">Scrollback Buffer</h3>
+                  <h3 className="text-sm font-medium text-ink-bright mb-4">Scrollback Buffer</h3>
                   <div className="flex flex-wrap gap-2">
                     {SCROLLBACK_SIZES.map((size) => (
                       <button
@@ -853,26 +891,26 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           scrollbackBuffer === size
                             ? 'bg-accent text-white'
-                            : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                            : 'bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright'
                         }`}
                       >
                         {size >= 1000 ? `${size / 1000}k` : size}
                       </button>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">Number of lines to keep in terminal history</p>
+                  <p className="text-xs text-ink-subtle mt-2">Number of lines to keep in terminal history</p>
                 </div>
 
                 {/* Font Preview */}
                 <div>
-                  <h3 className="text-sm font-medium text-white mb-4">Preview</h3>
+                  <h3 className="text-sm font-medium text-ink-bright mb-4">Preview</h3>
                   <div
-                    className="p-4 rounded-xl bg-[#1a1a1a] border border-white/[0.06]"
+                    className="p-4 rounded-xl bg-surface-4 border border-overlay/[0.06]"
                     style={{ fontFamily, fontSize: `${fontSize}px`, lineHeight }}
                   >
-                    <div className="text-gray-400">$ claude</div>
+                    <div className="text-ink-muted">$ claude</div>
                     <div className="text-green-400">Welcome to Claude Code!</div>
-                    <div className="text-gray-500">Type your message...</div>
+                    <div className="text-ink-subtle">Type your message...</div>
                   </div>
                 </div>
               </div>
@@ -881,9 +919,9 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             {/* Behavior Section */}
             {activeSection === 'behavior' && (
               <div className="space-y-6">
-                <h3 className="text-sm font-medium text-white mb-4">Default CLI Provider</h3>
+                <h3 className="text-sm font-medium text-ink-bright mb-4">Default CLI Provider</h3>
                 <div className="space-y-3">
-                  <p className="text-xs text-gray-500">Choose the default CLI for new terminal tabs. You can override per-tab from the + menu.</p>
+                  <p className="text-xs text-ink-subtle">Choose the default CLI for new terminal tabs. You can override per-tab from the + menu.</p>
                   <div className="grid grid-cols-2 gap-3">
                     {(Object.values(CLI_PROVIDERS) as import('../../../shared/types').CLIProviderConfig[]).map((provider) => (
                       <button
@@ -892,19 +930,19 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         className={`flex flex-col items-start gap-1.5 p-4 rounded-xl border-2 transition-all ${
                           cliProvider === provider.id
                             ? 'border-accent bg-accent/10'
-                            : 'border-white/10 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/20'
+                            : 'border-overlay/10 bg-overlay/[0.02] hover:bg-overlay/[0.05] hover:border-overlay/20'
                         }`}
                       >
                         <div className="flex items-center gap-2 w-full">
-                          <span className="text-sm font-semibold text-white">{provider.name}</span>
+                          <span className="text-sm font-semibold text-ink-bright">{provider.name}</span>
                           {cliProvider === provider.id && (
                             <CheckCircle size={14} className="text-accent ml-auto" />
                           )}
                         </div>
-                        <span className="text-[11px] text-gray-500">{provider.binaryName} CLI</span>
+                        <span className="text-[11px] text-ink-subtle">{provider.binaryName} CLI</span>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {provider.models.map((m) => (
-                            <span key={m.id} className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.06] text-gray-400">{m.name}</span>
+                            <span key={m.id} className="text-[10px] px-1.5 py-0.5 rounded bg-overlay/[0.06] text-ink-muted">{m.name}</span>
                           ))}
                         </div>
                       </button>
@@ -912,8 +950,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   </div>
                 </div>
 
-                <div className="border-t border-white/[0.06] pt-6" />
-                <h3 className="text-sm font-medium text-white mb-4">Tab Behavior</h3>
+                <div className="border-t border-overlay/[0.06] pt-6" />
+                <h3 className="text-sm font-medium text-ink-bright mb-4">Tab Behavior</h3>
                 {renderToggle(
                   confirmBeforeClose,
                   setConfirmBeforeClose,
@@ -921,7 +959,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   'Ask for confirmation before closing tabs with active sessions'
                 )}
 
-                <h3 className="text-sm font-medium text-white mb-4 mt-8">Updates</h3>
+                <h3 className="text-sm font-medium text-ink-bright mb-4 mt-8">Updates</h3>
                 {renderToggle(
                   autoUpdate,
                   setAutoUpdate,
@@ -932,7 +970,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 <button
                   onClick={handleCheckForUpdates}
                   disabled={isCheckingUpdate}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright transition-colors disabled:opacity-50"
                 >
                   {isCheckingUpdate ? (
                     <Loader2 size={16} className="animate-spin" />
@@ -948,7 +986,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                       <Sparkles size={16} />
                       <span className="font-medium">Update Available!</span>
                     </div>
-                    <p className="text-sm text-gray-400 mb-3">
+                    <p className="text-sm text-ink-muted mb-3">
                       Version {updateInfo.latestVersion} is available (you have {updateInfo.currentVersion})
                     </p>
                     {updateInfo.releaseUrl && (
@@ -963,8 +1001,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   </div>
                 )}
 
-                <div className="border-t border-white/[0.06] pt-6" />
-                <h3 className="text-sm font-medium text-white mb-4">Session Context</h3>
+                <div className="border-t border-overlay/[0.06] pt-6" />
+                <h3 className="text-sm font-medium text-ink-bright mb-4">Session Context</h3>
                 {renderToggle(
                   sessionContextEnabled,
                   setSessionContextEnabled,
@@ -974,7 +1012,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                 {sessionContextEnabled && (
                   <div className="mt-4">
-                    <label className="block text-sm text-gray-400 mb-2">History Window</label>
+                    <label className="block text-sm text-ink-muted mb-2">History Window</label>
                     <div className="flex gap-2">
                       {[7, 14, 30].map((d) => (
                         <button
@@ -983,7 +1021,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                           className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                             sessionContextDays === d
                               ? 'bg-accent text-white'
-                              : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                              : 'bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright'
                           }`}
                         >
                           {d} days
@@ -1006,7 +1044,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white mb-2">Claude API Key</label>
+                  <label className="block text-sm font-medium text-ink-bright mb-2">Claude API Key</label>
                   <div className="relative">
                     <input
                       type={showApiKey ? 'text' : 'password'}
@@ -1018,17 +1056,17 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         }
                       }}
                       placeholder="sk-ant-..."
-                      className="w-full px-4 py-3 pr-12 rounded-lg bg-white/5 border border-white/[0.06] text-white text-sm placeholder-gray-500 focus:outline-none focus:border-accent/50 font-mono"
+                      className="w-full px-4 py-3 pr-12 rounded-lg bg-overlay/5 border border-overlay/[0.06] text-ink-bright text-sm placeholder-ink-subtle focus:outline-none focus:border-accent/50 font-mono"
                     />
                     <button
                       type="button"
                       onClick={() => setShowApiKey(!showApiKey)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded text-gray-400 hover:text-white"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded text-ink-muted hover:text-ink-bright"
                     >
                       {showApiKey ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-ink-subtle mt-2">
                     Your API key is stored locally and never sent anywhere except to Anthropic servers.
                   </p>
                 </div>
@@ -1049,10 +1087,10 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 {/* Header */}
                 <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-sand-900/30 to-pink-900/30 border border-sand-500/30">
                   <div className="p-2 bg-gradient-to-br from-sand-500 to-pink-500 rounded-lg">
-                    <Zap className="w-5 h-5 text-white" />
+                    <Zap className="w-5 h-5 text-ink-bright" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-white">Super Agent Mode</h3>
+                    <h3 className="text-sm font-semibold text-ink-bright">Super Agent Mode</h3>
                     <p className="text-xs text-sand-300/70">Configure LLM providers for autonomous operation</p>
                   </div>
                 </div>
@@ -1060,9 +1098,9 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 {superAgentConfig && (
                   <>
                     {/* Local supervisor -- independent from the terminal agent runtime */}
-                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                    <div className="p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                        <h4 className="text-sm font-medium text-ink-bright flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full ${supervisorOllamaStatus?.running ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
                           Ollama Local (No API Cost)
                         </h4>
@@ -1076,16 +1114,16 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                       </div>
 
                       <div className="space-y-3">
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-ink-subtle">
                           This model watches and talks to the terminal agent. It is independent from whether that terminal agent uses a local model or an API.
                         </p>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-ink-subtle">
                           {supervisorOllamaStatus?.running
                             ? `Connected to ${supervisorOllamaStatus.host}`
                             : `Not running at ${supervisorOllamaStatus?.host ?? 'http://127.0.0.1:11434'}`}
                         </div>
                         <div>
-                          <label className="block text-xs text-gray-500 mb-2">Supervisor Model</label>
+                          <label className="block text-xs text-ink-subtle mb-2">Supervisor Model</label>
                           {supervisorOllamaStatus?.running &&
                           supervisorOllamaStatus.models.some((model) => !model.embeddingOnly) ? (
                             <select
@@ -1094,7 +1132,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 setSuperAgentConfig({ ...superAgentConfig, ollamaModel: e.target.value })
                                 setSuperAgentSaved(false)
                               }}
-                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
+                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm focus:outline-none focus:border-sand-500/50"
                             >
                               {!supervisorOllamaStatus.models.some((model) => model.name === superAgentConfig.ollamaModel) && (
                                 <option value={superAgentConfig.ollamaModel}>{superAgentConfig.ollamaModel} (not pulled)</option>
@@ -1115,7 +1153,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 setSuperAgentSaved(false)
                               }}
                               placeholder="qwen3-coder:30b"
-                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-sand-500/50 font-mono"
+                              className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm placeholder-ink-faint focus:outline-none focus:border-sand-500/50 font-mono"
                             />
                           )}
                         </div>
@@ -1123,9 +1161,9 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     </div>
 
                     {/* Groq Section */}
-                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                    <div className="p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                        <h4 className="text-sm font-medium text-ink-bright flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-green-500"></span>
                           Groq API (Fast)
                         </h4>
@@ -1143,7 +1181,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-xs text-gray-500 mb-2">API Key</label>
+                          <label className="block text-xs text-ink-subtle mb-2">API Key</label>
                           <div className="relative">
                             <input
                               type={showGroqKey ? 'text' : 'password'}
@@ -1153,11 +1191,11 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 setSuperAgentSaved(false)
                               }}
                               placeholder="gsk_..."
-                              className="w-full px-4 py-2.5 pr-12 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-sand-500/50 font-mono"
+                              className="w-full px-4 py-2.5 pr-12 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm placeholder-ink-faint focus:outline-none focus:border-sand-500/50 font-mono"
                             />
                             <button
                               onClick={() => setShowGroqKey(!showGroqKey)}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded text-gray-500 hover:text-gray-300"
+                              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded text-ink-subtle hover:text-ink"
                             >
                               {showGroqKey ? <EyeOff size={14} /> : <Eye size={14} />}
                             </button>
@@ -1165,14 +1203,14 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         </div>
 
                         <div>
-                          <label className="block text-xs text-gray-500 mb-2">Model</label>
+                          <label className="block text-xs text-ink-subtle mb-2">Model</label>
                           <select
                             value={superAgentConfig.groqModel}
                             onChange={(e) => {
                               setSuperAgentConfig({ ...superAgentConfig, groqModel: e.target.value })
                               setSuperAgentSaved(false)
                             }}
-                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
+                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm focus:outline-none focus:border-sand-500/50"
                           >
                             <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Recommended)</option>
                             <option value="llama-3.1-70b-versatile">Llama 3.1 70B</option>
@@ -1184,9 +1222,9 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     </div>
 
                     {/* OpenAI Section */}
-                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                    <div className="p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                        <h4 className="text-sm font-medium text-ink-bright flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                           OpenAI API
                         </h4>
@@ -1204,7 +1242,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-xs text-gray-500 mb-2">API Key</label>
+                          <label className="block text-xs text-ink-subtle mb-2">API Key</label>
                           <div className="relative">
                             <input
                               type={showOpenAIKey ? 'text' : 'password'}
@@ -1214,11 +1252,11 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                                 setSuperAgentSaved(false)
                               }}
                               placeholder="sk-..."
-                              className="w-full px-4 py-2.5 pr-12 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-sand-500/50 font-mono"
+                              className="w-full px-4 py-2.5 pr-12 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm placeholder-ink-faint focus:outline-none focus:border-sand-500/50 font-mono"
                             />
                             <button
                               onClick={() => setShowOpenAIKey(!showOpenAIKey)}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded text-gray-500 hover:text-gray-300"
+                              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded text-ink-subtle hover:text-ink"
                             >
                               {showOpenAIKey ? <EyeOff size={14} /> : <Eye size={14} />}
                             </button>
@@ -1226,14 +1264,14 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                         </div>
 
                         <div>
-                          <label className="block text-xs text-gray-500 mb-2">Model</label>
+                          <label className="block text-xs text-ink-subtle mb-2">Model</label>
                           <select
                             value={superAgentConfig.openaiModel}
                             onChange={(e) => {
                               setSuperAgentConfig({ ...superAgentConfig, openaiModel: e.target.value })
                               setSuperAgentSaved(false)
                             }}
-                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
+                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm focus:outline-none focus:border-sand-500/50"
                           >
                             <option value="gpt-4o-mini">GPT-4o Mini (Recommended)</option>
                             <option value="gpt-4o">GPT-4o</option>
@@ -1244,8 +1282,8 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     </div>
 
                     {/* Default Provider */}
-                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-                      <label className="block text-xs text-gray-500 mb-3">Default Provider</label>
+                    <div className="p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
+                      <label className="block text-xs text-ink-subtle mb-3">Default Provider</label>
                       <div className="flex gap-2">
                         {SUPERVISOR_PROVIDERS.map((provider: LLMProvider) => (
                           <button
@@ -1257,7 +1295,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                             className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-colors text-sm ${
                               superAgentConfig.defaultProvider === provider
                                 ? 'bg-gradient-to-r from-sand-500 to-pink-500 text-white'
-                                : 'bg-black/30 text-gray-400 hover:bg-black/50 hover:text-white'
+                                : 'bg-black/30 text-ink-muted hover:bg-black/50 hover:text-ink-bright'
                             }`}
                           >
                             {provider === 'ollama' ? 'Local' : provider === 'groq' ? 'Groq (Fast)' : supervisorProviderLabel(provider)}
@@ -1267,36 +1305,36 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     </div>
 
                     {/* Advanced Settings */}
-                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-                      <h4 className="text-sm font-medium text-white mb-4">Advanced Settings</h4>
+                    <div className="p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
+                      <h4 className="text-sm font-medium text-ink-bright mb-4">Advanced Settings</h4>
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-xs text-gray-500 mb-2">Idle Detection Timeout</label>
+                          <label className="block text-xs text-ink-subtle mb-2">Idle Detection Timeout</label>
                           <select
                             value={superAgentConfig.idleTimeout}
                             onChange={(e) => {
                               setSuperAgentConfig({ ...superAgentConfig, idleTimeout: parseInt(e.target.value) })
                               setSuperAgentSaved(false)
                             }}
-                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
+                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm focus:outline-none focus:border-sand-500/50"
                           >
                             <option value={3}>3 seconds</option>
                             <option value={5}>5 seconds (Recommended)</option>
                             <option value={8}>8 seconds</option>
                             <option value={10}>10 seconds</option>
                           </select>
-                          <p className="text-xs text-gray-600 mt-1">How long to wait before considering Claude idle</p>
+                          <p className="text-xs text-ink-faint mt-1">How long to wait before considering Claude idle</p>
                         </div>
 
                         <div>
-                          <label className="block text-xs text-gray-500 mb-2">Default Safety Level</label>
+                          <label className="block text-xs text-ink-subtle mb-2">Default Safety Level</label>
                           <select
                             value={superAgentConfig.defaultSafetyLevel}
                             onChange={(e) => {
                               setSuperAgentConfig({ ...superAgentConfig, defaultSafetyLevel: e.target.value as SafetyLevel })
                               setSuperAgentSaved(false)
                             }}
-                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-white/[0.06] text-white text-sm focus:outline-none focus:border-sand-500/50"
+                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm focus:outline-none focus:border-sand-500/50"
                           >
                             <option value="safe">Safe - Block dangerous commands</option>
                             <option value="moderate">Moderate - Allow with caution</option>
@@ -1344,7 +1382,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 )}
 
                 {!superAgentConfig && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-ink-subtle">
                     <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2" />
                     Loading settings...
                   </div>
@@ -1357,18 +1395,18 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <div className="space-y-6">
                 {/* Export/Import */}
                 <div>
-                  <h3 className="text-sm font-medium text-white mb-4">Settings Backup</h3>
+                  <h3 className="text-sm font-medium text-ink-bright mb-4">Settings Backup</h3>
                   <div className="flex gap-3">
                     <button
                       onClick={handleExportSettings}
-                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright transition-colors"
                     >
                       <Download size={16} />
                       <span>Export Settings</span>
                     </button>
                     <button
                       onClick={handleImportSettings}
-                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright transition-colors"
                     >
                       <Upload size={16} />
                       <span>Import Settings</span>
@@ -1378,20 +1416,20 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                 {/* Reset to Defaults */}
                 <div>
-                  <h3 className="text-sm font-medium text-white mb-4">Reset Settings</h3>
+                  <h3 className="text-sm font-medium text-ink-bright mb-4">Reset Settings</h3>
                   {showResetConfirm ? (
                     <div className="p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20">
                       <div className="flex items-center gap-2 text-yellow-400 mb-3">
                         <AlertTriangle size={16} />
                         <span className="font-medium">Confirm Reset</span>
                       </div>
-                      <p className="text-sm text-gray-400 mb-4">
+                      <p className="text-sm text-ink-muted mb-4">
                         This will reset all settings to their default values. Your custom themes will be preserved.
                       </p>
                       <div className="flex gap-3">
                         <button
                           onClick={() => setShowResetConfirm(false)}
-                          className="flex-1 py-2 rounded-lg bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+                          className="flex-1 py-2 rounded-lg bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright transition-colors"
                         >
                           Cancel
                         </button>
@@ -1406,7 +1444,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   ) : (
                     <button
                       onClick={() => setShowResetConfirm(true)}
-                      className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+                      className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright transition-colors"
                     >
                       <RefreshCw size={16} />
                       <span>Reset to Defaults</span>
@@ -1416,21 +1454,21 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
                 {/* Clear All Data */}
                 <div>
-                  <h3 className="text-sm font-medium text-white mb-4">Clear Data</h3>
+                  <h3 className="text-sm font-medium text-ink-bright mb-4">Clear Data</h3>
                   {showClearConfirm ? (
                     <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20">
                       <div className="flex items-center gap-2 text-red-400 mb-3">
                         <AlertTriangle size={16} />
                         <span className="font-medium">Danger Zone</span>
                       </div>
-                      <p className="text-sm text-gray-400 mb-4">
+                      <p className="text-sm text-ink-muted mb-4">
                         This will delete all app data including settings, themes, and cached data.
                         This action cannot be undone. You will need to restart the app.
                       </p>
                       <div className="flex gap-3">
                         <button
                           onClick={() => setShowClearConfirm(false)}
-                          className="flex-1 py-2 rounded-lg bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+                          className="flex-1 py-2 rounded-lg bg-overlay/5 text-ink-muted hover:bg-overlay/10 hover:text-ink-bright transition-colors"
                         >
                           Cancel
                         </button>
@@ -1458,7 +1496,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             {/* Shortcuts Section */}
             {activeSection === 'shortcuts' && (
               <div className="space-y-4">
-                <h3 className="text-sm font-medium text-white mb-4">Keyboard Shortcuts</h3>
+                <h3 className="text-sm font-medium text-ink-bright mb-4">Keyboard Shortcuts</h3>
                 <div className="space-y-2">
                   {[
                     { keys: ['Cmd', 'P'], action: 'Command Palette' },
@@ -1476,14 +1514,14 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   ].map((shortcut, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]"
+                      className="flex items-center justify-between p-3 rounded-lg bg-overlay/[0.02] border border-overlay/[0.04]"
                     >
-                      <span className="text-sm text-gray-400">{shortcut.action}</span>
+                      <span className="text-sm text-ink-muted">{shortcut.action}</span>
                       <div className="flex items-center gap-1">
                         {shortcut.keys.map((key, j) => (
                           <kbd
                             key={j}
-                            className="px-2 py-1 rounded bg-white/10 text-xs text-white font-medium"
+                            className="px-2 py-1 rounded bg-overlay/10 text-xs text-ink-bright font-medium"
                           >
                             {key}
                           </kbd>
@@ -1500,7 +1538,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <div className="space-y-6">
                 <div className="text-center py-8">
                   {/* Logo */}
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2d2d2d] to-[#0a0a0a] mb-4 shadow-lg">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-surface-7 to-surface-0 mb-4 shadow-lg">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
                       <defs>
                         <linearGradient id="aboutWave" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
@@ -1514,29 +1552,29 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                       <circle cx="13" cy="3" r="1" fill="#e8956e" opacity="0.6" />
                     </svg>
                   </div>
-                  <h2 className="text-2xl font-bold text-white mb-1">Crest</h2>
-                  <p className="text-gray-500 text-sm mb-4">The Premium Desktop Experience for AI Coding Agents</p>
-                  <span className="inline-block px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400">
+                  <h2 className="text-2xl font-bold text-ink-bright mb-1">Crest</h2>
+                  <p className="text-ink-subtle text-sm mb-4">The Premium Desktop Experience for AI Coding Agents</p>
+                  <span className="inline-block px-3 py-1 rounded-full bg-overlay/5 text-xs text-ink-muted">
                     Version {appVersion}
                   </span>
                 </div>
 
                 <div className="space-y-3">
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-                    <div className="text-xs text-gray-500 mb-1">Built with</div>
-                    <div className="text-sm text-white">Electron + React + TypeScript</div>
+                  <div className="p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
+                    <div className="text-xs text-ink-subtle mb-1">Built with</div>
+                    <div className="text-sm text-ink-bright">Electron + React + TypeScript</div>
                   </div>
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-                    <div className="text-xs text-gray-500 mb-1">License</div>
-                    <div className="text-sm text-white">MIT License</div>
+                  <div className="p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
+                    <div className="text-xs text-ink-subtle mb-1">License</div>
+                    <div className="text-sm text-ink-bright">MIT License</div>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/[0.06]">
+                <div className="pt-4 border-t border-overlay/[0.06]">
                   <button
                     onClick={handleCheckForUpdates}
                     disabled={isCheckingUpdate}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-white/5 text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-overlay/5 text-sm text-ink-muted hover:bg-overlay/10 hover:text-ink-bright transition-colors disabled:opacity-50"
                   >
                     {isCheckingUpdate ? (
                       <Loader2 size={16} className="animate-spin" />

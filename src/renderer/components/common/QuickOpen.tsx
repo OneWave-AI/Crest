@@ -473,10 +473,10 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
           />
 
           {/* Search Header */}
-          <div className="relative border-b border-white/[0.06]">
+          <div className="relative border-b border-overlay/[0.06]">
             <Search
               size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-subtle"
               aria-hidden="true"
             />
             <input
@@ -486,7 +486,7 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full pl-12 pr-32 py-4 bg-transparent text-white text-base placeholder-gray-500 focus:outline-none"
+              className="w-full pl-12 pr-32 py-4 bg-transparent text-ink-bright text-base placeholder-ink-subtle focus:outline-none"
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
@@ -498,13 +498,13 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
               aria-label="Search files"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-              <kbd className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] text-[10px] text-gray-500 font-medium" aria-hidden="true">
+              <kbd className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-md bg-overlay/[0.04] border border-overlay/[0.06] text-[10px] text-ink-subtle font-medium" aria-hidden="true">
                 <span className="text-[9px]">ESC</span>
-                <span className="text-gray-600">to close</span>
+                <span className="text-ink-faint">to close</span>
               </kbd>
               <button
                 onClick={onClose}
-                className="group p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/5 transition-all duration-200 focus-ring"
+                className="group p-1.5 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/5 transition-all duration-200 focus-ring"
                 aria-label="Close quick open"
               >
                 <X size={16} aria-hidden="true" className="transition-transform duration-300 group-hover:rotate-90" />
@@ -525,7 +525,7 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
           <div className="relative">
             {/* Top fade */}
             <div
-              className={`absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-[#121212] to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
+              className={`absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-surface-2 to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
                 showTopFade ? 'opacity-100' : 'opacity-0'
               }`}
               aria-hidden="true"
@@ -540,7 +540,7 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
               onScroll={handleScroll}
             >
               {loading ? (
-                <div className="flex items-center justify-center py-12 text-gray-500" role="status" aria-live="polite">
+                <div className="flex items-center justify-center py-12 text-ink-subtle" role="status" aria-live="polite">
                   <div className="flex items-center gap-3">
                     <div
                       className="w-4 h-4 border-2 border-accent/30 border-t-accent rounded-full animate-spin"
@@ -563,8 +563,8 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                       }}
                     >
                       <div className="px-4 py-2 flex items-center gap-2" id="recent-files-heading">
-                        <Clock size={12} className="text-gray-600" aria-hidden="true" />
-                        <span className="text-[10px] uppercase tracking-wider text-gray-600 font-medium">
+                        <Clock size={12} className="text-ink-faint" aria-hidden="true" />
+                        <span className="text-[10px] uppercase tracking-wider text-ink-faint font-medium">
                           Recent
                         </span>
                       </div>
@@ -584,29 +584,29 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                             className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-150 focus-ring ${
                               isSelected
                                 ? 'bg-accent/15'
-                                : 'hover:bg-white/[0.03]'
+                                : 'hover:bg-overlay/[0.03]'
                             }`}
                           >
                             <div
                               className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-200 ${
                                 isSelected
                                   ? 'bg-accent/20 scale-110'
-                                  : 'bg-white/[0.04]'
+                                  : 'bg-overlay/[0.04]'
                               }`}
                             >
                               <FileIcon
                                 size={16}
-                                className={isSelected ? 'text-accent' : 'text-gray-500'}
+                                className={isSelected ? 'text-accent' : 'text-ink-subtle'}
                                 aria-hidden="true"
                               />
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className={`text-sm truncate transition-colors duration-150 ${
-                                isSelected ? 'text-white' : 'text-gray-300'
+                                isSelected ? 'text-ink-bright' : 'text-ink'
                               }`}>
                                 {fileName}
                               </div>
-                              <div className="text-xs text-gray-600 truncate">
+                              <div className="text-xs text-ink-faint truncate">
                                 {getRelativePath(getDirectory(filePath))}
                               </div>
                             </div>
@@ -632,9 +632,9 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                       }}
                     >
                       {!query && recentFiles.length > 0 && (
-                        <div className="px-4 py-2 flex items-center gap-2 border-t border-white/[0.04] mt-1" id="all-files-heading">
-                          <Folder size={12} className="text-gray-600" aria-hidden="true" />
-                          <span className="text-[10px] uppercase tracking-wider text-gray-600 font-medium">
+                        <div className="px-4 py-2 flex items-center gap-2 border-t border-overlay/[0.04] mt-1" id="all-files-heading">
+                          <Folder size={12} className="text-ink-faint" aria-hidden="true" />
+                          <span className="text-[10px] uppercase tracking-wider text-ink-faint font-medium">
                             All Files
                           </span>
                         </div>
@@ -671,29 +671,29 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                             className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-150 focus-ring ${
                               isSelected
                                 ? 'bg-accent/15'
-                                : 'hover:bg-white/[0.03]'
+                                : 'hover:bg-overlay/[0.03]'
                             }`}
                           >
                             <div
                               className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-200 ${
                                 isSelected
                                   ? 'bg-accent/20 scale-110'
-                                  : 'bg-white/[0.04]'
+                                  : 'bg-overlay/[0.04]'
                               }`}
                             >
                               <FileIcon
                                 size={16}
-                                className={isSelected ? 'text-accent' : 'text-gray-500'}
+                                className={isSelected ? 'text-accent' : 'text-ink-subtle'}
                                 aria-hidden="true"
                               />
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className={`text-sm truncate transition-colors duration-150 ${
-                                isSelected ? 'text-white' : 'text-gray-300'
+                                isSelected ? 'text-ink-bright' : 'text-ink'
                               }`}>
                                 {renderHighlightedName()}
                               </div>
-                              <div className="text-xs text-gray-600 truncate">
+                              <div className="text-xs text-ink-faint truncate">
                                 {getRelativePath(getDirectory(file.path))}
                               </div>
                             </div>
@@ -724,11 +724,11 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
                       >
                         <Search size={20} className="text-accent/60" />
                       </div>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-ink-subtle">
                         {query ? 'No files match your search' : 'No files found in this project'}
                       </p>
                       {query && (
-                        <p className="text-xs text-gray-600 mt-1">
+                        <p className="text-xs text-ink-faint mt-1">
                           Try a different search term
                         </p>
                       )}
@@ -740,7 +740,7 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
 
             {/* Bottom fade */}
             <div
-              className={`absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-[#121212] to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
+              className={`absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-surface-2 to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
                 showBottomFade ? 'opacity-100' : 'opacity-0'
               }`}
               aria-hidden="true"
@@ -749,24 +749,24 @@ export default function QuickOpen({ isOpen, onClose, cwd, onSelectFile }: QuickO
 
           {/* Footer with keyboard hints */}
           <div
-            className="px-4 py-2.5 border-t border-white/[0.04] flex items-center justify-between"
+            className="px-4 py-2.5 border-t border-overlay/[0.04] flex items-center justify-between"
             style={{ background: 'rgba(0, 0, 0, 0.2)' }}
           >
-            <div className="flex items-center gap-4 text-xs text-gray-600">
+            <div className="flex items-center gap-4 text-xs text-ink-faint">
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06] text-gray-500 font-mono text-[10px]">
+                <kbd className="px-1.5 py-0.5 rounded-md bg-overlay/[0.04] border border-overlay/[0.06] text-ink-subtle font-mono text-[10px]">
                   {'\u2191\u2193'}
                 </kbd>
                 <span>navigate</span>
               </span>
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06] text-gray-500 font-mono text-[10px]">
+                <kbd className="px-1.5 py-0.5 rounded-md bg-overlay/[0.04] border border-overlay/[0.06] text-ink-subtle font-mono text-[10px]">
                   {'\u21B5'}
                 </kbd>
                 <span>open</span>
               </span>
             </div>
-            <span className="text-[10px] text-gray-600">
+            <span className="text-[10px] text-ink-faint">
               {filteredFiles.length} {filteredFiles.length === 1 ? 'file' : 'files'}
             </span>
           </div>

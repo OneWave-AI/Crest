@@ -51,35 +51,35 @@ export function SuperAgentSettings() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-4">
         <div className="p-2 bg-gradient-to-br from-sand-500 to-pink-500 rounded-lg">
-          <Zap className="w-5 h-5 text-white" />
+          <Zap className="w-5 h-5 text-ink-bright" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-white">Super Agent</h3>
-          <p className="text-xs text-gray-400">Configure autonomous AI settings</p>
+          <h3 className="text-lg font-semibold text-ink-bright">Super Agent</h3>
+          <p className="text-xs text-ink-muted">Configure autonomous AI settings</p>
         </div>
       </div>
 
       {/* Local Supervisor Model */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           Ollama Supervisor Model
         </label>
         <input
           value={config.ollamaModel}
           onChange={(e) => updateConfig({ ollamaModel: e.target.value })}
           placeholder="qwen3-coder:30b"
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-sand-500"
+          className="w-full bg-black/30 border border-ink-ghost rounded-lg px-3 py-2 text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-sand-500"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-ink-subtle mt-1">
           Runs the terminal-watching Super Agent locally with no API key.
         </p>
       </div>
 
-      <div className="border-t border-gray-700" />
+      <div className="border-t border-ink-ghost" />
 
       {/* Groq API Key */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           Groq API Key
         </label>
         <div className="relative">
@@ -88,16 +88,16 @@ export function SuperAgentSettings() {
             value={config.groqApiKey}
             onChange={(e) => updateConfig({ groqApiKey: e.target.value })}
             placeholder="gsk_..."
-            className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-sand-500"
+            className="w-full bg-black/30 border border-ink-ghost rounded-lg px-3 py-2 pr-10 text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-sand-500"
           />
           <button
             onClick={() => setShowGroqKey(!showGroqKey)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-gray-300"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-ink-subtle hover:text-ink"
           >
             {showGroqKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         </div>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-ink-subtle mt-1">
           Get your key at{' '}
           <a
             href="#"
@@ -114,13 +114,13 @@ export function SuperAgentSettings() {
 
       {/* Groq Model */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           Groq Model
         </label>
         <select
           value={config.groqModel}
           onChange={(e) => updateConfig({ groqModel: e.target.value })}
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sand-500"
+          className="w-full bg-black/30 border border-ink-ghost rounded-lg px-3 py-2 text-ink-bright focus:outline-none focus:border-sand-500"
         >
           <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Recommended)</option>
           <option value="llama-3.1-70b-versatile">Llama 3.1 70B</option>
@@ -130,11 +130,11 @@ export function SuperAgentSettings() {
       </div>
 
       {/* Divider */}
-      <div className="border-t border-gray-700" />
+      <div className="border-t border-ink-ghost" />
 
       {/* OpenAI API Key */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           OpenAI API Key (Optional)
         </label>
         <div className="relative">
@@ -143,29 +143,29 @@ export function SuperAgentSettings() {
             value={config.openaiApiKey}
             onChange={(e) => updateConfig({ openaiApiKey: e.target.value })}
             placeholder="sk-..."
-            className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-sand-500"
+            className="w-full bg-black/30 border border-ink-ghost rounded-lg px-3 py-2 pr-10 text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-sand-500"
           />
           <button
             onClick={() => setShowOpenAIKey(!showOpenAIKey)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-gray-300"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-ink-subtle hover:text-ink"
           >
             {showOpenAIKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         </div>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-ink-subtle mt-1">
           Alternative to Groq for GPT-4o models
         </p>
       </div>
 
       {/* OpenAI Model */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           OpenAI Model
         </label>
         <select
           value={config.openaiModel}
           onChange={(e) => updateConfig({ openaiModel: e.target.value })}
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sand-500"
+          className="w-full bg-black/30 border border-ink-ghost rounded-lg px-3 py-2 text-ink-bright focus:outline-none focus:border-sand-500"
         >
           <option value="gpt-4o-mini">GPT-4o Mini (Recommended)</option>
           <option value="gpt-4o">GPT-4o</option>
@@ -174,11 +174,11 @@ export function SuperAgentSettings() {
       </div>
 
       {/* Divider */}
-      <div className="border-t border-gray-700" />
+      <div className="border-t border-ink-ghost" />
 
       {/* Default Provider */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           Default Provider
         </label>
         <div className="flex gap-2">
@@ -189,7 +189,7 @@ export function SuperAgentSettings() {
               className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
                 config.defaultProvider === p
                   ? 'bg-sand-500 text-white'
-                  : 'bg-black/30 text-gray-400 hover:bg-black/50'
+                  : 'bg-black/30 text-ink-muted hover:bg-black/50'
               }`}
             >
               {p === 'ollama' ? 'Local' : supervisorProviderLabel(p)}
@@ -200,33 +200,33 @@ export function SuperAgentSettings() {
 
       {/* Idle Timeout */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           Idle Detection Timeout
         </label>
         <select
           value={config.idleTimeout}
           onChange={(e) => updateConfig({ idleTimeout: parseInt(e.target.value) })}
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sand-500"
+          className="w-full bg-black/30 border border-ink-ghost rounded-lg px-3 py-2 text-ink-bright focus:outline-none focus:border-sand-500"
         >
           <option value={3}>3 seconds</option>
           <option value={5}>5 seconds (Recommended)</option>
           <option value={8}>8 seconds</option>
           <option value={10}>10 seconds</option>
         </select>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-ink-subtle mt-1">
           How long to wait before considering Claude idle
         </p>
       </div>
 
       {/* Default Safety Level */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           Default Safety Level
         </label>
         <select
           value={config.defaultSafetyLevel}
           onChange={(e) => updateConfig({ defaultSafetyLevel: e.target.value as SafetyLevel })}
-          className="w-full bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sand-500"
+          className="w-full bg-black/30 border border-ink-ghost rounded-lg px-3 py-2 text-ink-bright focus:outline-none focus:border-sand-500"
         >
           <option value="safe">Safe - Block dangerous commands</option>
           <option value="moderate">Moderate - Allow with caution</option>

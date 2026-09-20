@@ -735,7 +735,7 @@ const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEn
             borderColor: 'rgba(255,255,255,0.1)'
           }}
         >
-          <Search size={14} className="text-gray-400" />
+          <Search size={14} className="text-ink-muted" />
           <input
             ref={searchInputRef}
             type="text"
@@ -751,32 +751,32 @@ const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEn
               }
             }}
             placeholder="Search..."
-            className="bg-transparent text-sm text-white outline-none w-48 placeholder-gray-500"
+            className="bg-transparent text-sm text-ink-bright outline-none w-48 placeholder-ink-subtle"
             style={{ color: themeConfig.foreground }}
           />
           {searchResults && (
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-ink-muted">
               {searchResults.current}/{searchResults.total}
             </span>
           )}
-          <div className="flex items-center gap-1 border-l border-white/10 pl-2 ml-1">
+          <div className="flex items-center gap-1 border-l border-overlay/10 pl-2 ml-1">
             <button
               onClick={() => handleSearch(searchQuery, 'prev')}
-              className="p-1 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+              className="p-1 rounded hover:bg-overlay/10 text-ink-muted hover:text-ink-bright transition-colors"
               title="Previous (Shift+Enter)"
             >
               <ChevronUp size={14} />
             </button>
             <button
               onClick={() => handleSearch(searchQuery, 'next')}
-              className="p-1 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+              className="p-1 rounded hover:bg-overlay/10 text-ink-muted hover:text-ink-bright transition-colors"
               title="Next (Enter)"
             >
               <ChevronDown size={14} />
             </button>
             <button
               onClick={closeSearch}
-              className="p-1 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+              className="p-1 rounded hover:bg-overlay/10 text-ink-muted hover:text-ink-bright transition-colors"
               title="Close (Escape)"
             >
               <X size={14} />
@@ -799,18 +799,18 @@ const Terminal = forwardRef<TerminalRef, TerminalProps>(({ onResize, scanLinesEn
           {contextMenuItems.map((item, index) => (
             <div key={index}>
               {item.divider && index > 0 && (
-                <div className="h-px bg-white/10 my-1" />
+                <div className="h-px bg-overlay/10 my-1" />
               )}
               <button
                 onClick={item.action}
-                className="w-full flex items-center justify-between px-3 py-1.5 text-sm text-gray-300 hover:bg-accent/20 hover:text-white transition-colors"
+                className="w-full flex items-center justify-between px-3 py-1.5 text-sm text-ink hover:bg-accent/20 hover:text-white transition-colors"
               >
                 <div className="flex items-center gap-2">
                   {item.icon}
                   <span>{item.label}</span>
                 </div>
                 {item.shortcut && (
-                  <span className="text-xs text-gray-500">{item.shortcut}</span>
+                  <span className="text-xs text-ink-subtle">{item.shortcut}</span>
                 )}
               </button>
             </div>

@@ -62,22 +62,22 @@ export default function NotFound({
           <div className="absolute inset-0 rounded-full bg-accent/20 blur-2xl scale-150" />
 
           {/* Icon circle */}
-          <div className="relative flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-b from-[#1a1a1a] to-[#141414] border border-white/10 shadow-lg">
-            <FileQuestion size={40} className="text-gray-500" />
+          <div className="relative flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-b from-surface-4 to-surface-3 border border-overlay/10 shadow-lg">
+            <FileQuestion size={40} className="text-ink-subtle" />
           </div>
         </div>
 
         {/* Text */}
-        <h2 className="text-2xl font-bold text-white mb-3">
+        <h2 className="text-2xl font-bold text-ink-bright mb-3">
           {displayTitle}
         </h2>
 
-        <p className="text-gray-400 mb-2">
+        <p className="text-ink-muted mb-2">
           {displayMessage}
         </p>
 
         {resourceId && (
-          <p className="text-xs text-gray-500 font-mono mb-6">
+          <p className="text-xs text-ink-subtle font-mono mb-6">
             ID: {resourceId}
           </p>
         )}
@@ -97,7 +97,7 @@ export default function NotFound({
           {onHome && (
             <button
               onClick={onHome}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white font-medium transition-all duration-200 border border-white/10"
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-overlay/5 hover:bg-overlay/10 text-ink hover:text-ink-bright font-medium transition-all duration-200 border border-overlay/10"
             >
               <Home size={18} />
               Home
@@ -107,7 +107,7 @@ export default function NotFound({
           {onSearch && (
             <button
               onClick={onSearch}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white font-medium transition-all duration-200 border border-white/10"
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-overlay/5 hover:bg-overlay/10 text-ink hover:text-ink-bright font-medium transition-all duration-200 border border-overlay/10"
             >
               <Search size={18} />
               Search

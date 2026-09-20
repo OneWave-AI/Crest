@@ -313,8 +313,8 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
           />
 
           {/* Search Input */}
-          <div className="relative flex items-center gap-3 px-4 py-4 border-b border-white/[0.06]">
-            <Search size={18} className="text-gray-500 flex-shrink-0" aria-hidden="true" />
+          <div className="relative flex items-center gap-3 px-4 py-4 border-b border-overlay/[0.06]">
+            <Search size={18} className="text-ink-subtle flex-shrink-0" aria-hidden="true" />
             <input
               ref={inputRef}
               type="text"
@@ -322,7 +322,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search commands..."
-              className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 outline-none"
+              className="flex-1 bg-transparent text-ink-bright text-sm placeholder-ink-subtle outline-none"
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
@@ -336,15 +336,15 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
             {query && (
               <button
                 onClick={() => setQuery('')}
-                className="group p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-all duration-200 focus-ring"
+                className="group p-1.5 rounded-lg text-ink-subtle hover:text-ink-bright hover:bg-overlay/10 transition-all duration-200 focus-ring"
                 aria-label="Clear search"
               >
                 <X size={14} aria-hidden="true" className="transition-transform duration-300 group-hover:rotate-90" />
               </button>
             )}
-            <kbd className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] text-[10px] text-gray-500 font-medium" aria-hidden="true">
+            <kbd className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-md bg-overlay/[0.04] border border-overlay/[0.06] text-[10px] text-ink-subtle font-medium" aria-hidden="true">
               <span className="text-[9px]">ESC</span>
-              <span className="text-gray-600">to close</span>
+              <span className="text-ink-faint">to close</span>
             </kbd>
           </div>
 
@@ -352,7 +352,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
           <div className="relative">
             {/* Top fade */}
             <div
-              className={`absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-[#121212] to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
+              className={`absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-surface-2 to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
                 showTopFade ? 'opacity-100' : 'opacity-0'
               }`}
               aria-hidden="true"
@@ -368,8 +368,8 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
             >
               {groupedCommands.length === 0 ? (
                 <div className="px-4 py-8 text-center" role="status" aria-live="polite">
-                  <div className="text-gray-500 text-sm">No commands found</div>
-                  <div className="text-gray-600 text-xs mt-1">Try a different search term</div>
+                  <div className="text-ink-subtle text-sm">No commands found</div>
+                  <div className="text-ink-faint text-xs mt-1">Try a different search term</div>
                 </div>
               ) : (
                 groupedCommands.map((group, groupIndex) => (
@@ -386,7 +386,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
                   >
                     {/* Category Header */}
                     <div className="px-4 py-2" id={`category-${group.category}`}>
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-subtle">
                         {CATEGORY_LABELS[group.category]}
                       </span>
                     </div>
@@ -409,7 +409,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
                           className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-150 focus-ring ${
                             isSelected
                               ? 'bg-accent/15'
-                              : 'hover:bg-white/[0.04]'
+                              : 'hover:bg-overlay/[0.04]'
                           }`}
                         >
                           {/* Icon */}
@@ -417,7 +417,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
                             className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-200 ${
                               isSelected
                                 ? 'bg-accent/20 text-accent scale-110'
-                                : 'bg-white/[0.04] text-gray-400'
+                                : 'bg-overlay/[0.04] text-ink-muted'
                             }`}
                             aria-hidden="true"
                           >
@@ -427,7 +427,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
                           {/* Label */}
                           <span
                             className={`flex-1 text-sm font-medium transition-colors duration-150 ${
-                              isSelected ? 'text-white' : 'text-gray-300'
+                              isSelected ? 'text-ink-bright' : 'text-ink'
                             }`}
                           >
                             {command.label}
@@ -442,7 +442,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
                                   className={`px-1.5 py-0.5 rounded-md text-[10px] font-medium transition-all duration-200 ${
                                     isSelected
                                       ? 'bg-accent/20 text-accent border border-accent/30'
-                                      : 'bg-white/[0.04] text-gray-500 border border-white/[0.06]'
+                                      : 'bg-overlay/[0.04] text-ink-subtle border border-overlay/[0.06]'
                                   }`}
                                   aria-hidden="true"
                                 >
@@ -461,7 +461,7 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
 
             {/* Bottom fade */}
             <div
-              className={`absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-[#121212] to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
+              className={`absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-surface-2 to-transparent z-10 pointer-events-none transition-opacity duration-200 ${
                 showBottomFade ? 'opacity-100' : 'opacity-0'
               }`}
               aria-hidden="true"
@@ -470,23 +470,23 @@ export default function CommandPalette({ isOpen, onClose, onCommand, commands }:
 
           {/* Footer */}
           <div
-            className="flex items-center justify-between px-4 py-3 border-t border-white/[0.06]"
+            className="flex items-center justify-between px-4 py-3 border-t border-overlay/[0.06]"
             style={{ background: 'rgba(0, 0, 0, 0.2)' }}
           >
-            <div className="flex items-center gap-4 text-[10px] text-gray-500">
+            <div className="flex items-center gap-4 text-[10px] text-ink-subtle">
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06] font-medium">{'\u2191'}</kbd>
-                <kbd className="px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06] font-medium">{'\u2193'}</kbd>
+                <kbd className="px-1.5 py-0.5 rounded-md bg-overlay/[0.04] border border-overlay/[0.06] font-medium">{'\u2191'}</kbd>
+                <kbd className="px-1.5 py-0.5 rounded-md bg-overlay/[0.04] border border-overlay/[0.06] font-medium">{'\u2193'}</kbd>
                 <span>navigate</span>
               </span>
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06] font-medium">{'\u21B5'}</kbd>
+                <kbd className="px-1.5 py-0.5 rounded-md bg-overlay/[0.04] border border-overlay/[0.06] font-medium">{'\u21B5'}</kbd>
                 <span>select</span>
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <Terminal size={12} className="text-accent" />
-              <span className="text-[10px] text-gray-500">Command Palette</span>
+              <span className="text-[10px] text-ink-subtle">Command Palette</span>
             </div>
           </div>
         </div>
