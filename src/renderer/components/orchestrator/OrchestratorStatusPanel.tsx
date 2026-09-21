@@ -173,6 +173,11 @@ function TerminalCard({ terminalId, state }: { terminalId: string; state: Termin
             {state.sessionStats.llmDecisions} LLM
           </span>
         )}
+        {state.sessionStats.jevDecisions > 0 && (
+          <span className="text-[8px] text-ink-faint bg-overlay/[0.03] px-1 py-0.5 rounded">
+            {state.sessionStats.jevDecisions} Jev
+          </span>
+        )}
         {state.sessionStats.fastPathDecisions > 0 && (
           <span className="text-[8px] text-ink-faint bg-overlay/[0.03] px-1 py-0.5 rounded">
             {state.sessionStats.fastPathDecisions} fast

@@ -21,6 +21,8 @@ import {
   isSemanticallyDuplicate,
   summarizeTerminalOutput,
   parseClaudeCodeState,
+  askJev,
+  jevIsConfigured,
 } from './agentUtils'
 
 // Per-terminal refs for timers and state
@@ -250,6 +252,56 @@ export function useOrchestrator() {
     return null
   }, [getTerminalRefs, providerFor])
 
+  // Same closed decision as the single-terminal supervisor, but the stakes differ:
+  // one terminal hitting a human-only prompt must not halt the whole swarm, so a
+  // human gate stops just this terminal and surfaces it at coordinator level.
+  const decideForTerminal = useCallback(
+    async (
+      terminalId: string,
+      cleanOutput: string
+    ): Promise<{ halted: boolean; decision: string | null }> => {
+      const store = getStore()
+      const cfg = store.config
+
+      if (!jevIsConfigured(cfg)) {
+        return { halted: false, decision: await callLLMForTerminal(terminalId, cleanOutput) }
+      }
+
+      const decision = await askJev(cfg, cleanOutput)
+      const termState = store.terminals.get(terminalId)
+      store.updateTerminalStats(terminalId, {
+        jevDecisions: (termState?.sessionStats.jevDecisions || 0) + 1
+      })
+
+      if (decision.kind === 'fallback') {
+        store.addTerminalLog(terminalId, 'decision', `Jev ${decision.reason}, asking LLM instead`)
+        return { halted: false, decision: await callLLMForTerminal(terminalId, cleanOutput) }
+      }
+
+      if (decision.kind === 'needs-human') {
+        const pct = (decision.score * 100).toFixed(0)
+        store.addTerminalLog(terminalId, 'permission', `Needs you: ${pct}% human-only. Stopped.`)
+        store.addCoordinatorLog(
+          'permission',
+          `Terminal ${termState?.tabId ?? terminalId} needs a human (${pct}%)`
+        )
+        store.updateTerminalState(terminalId, { status: 'idle', isIdle: true })
+        return { halted: true, decision: null }
+      }
+
+      store.addTerminalLog(
+        terminalId,
+        'decision',
+        `Jev: ${decision.action} (${decision.confidence.toFixed(2)}, ${decision.latencyMs ?? '?'}ms)`
+      )
+
+      if (decision.action === 'wait') return { halted: false, decision: 'WAIT' }
+      if (decision.action === 'done') return { halted: false, decision: 'DONE' }
+      return { halted: false, decision: await callLLMForTerminal(terminalId, cleanOutput) }
+    },
+    [callLLMForTerminal]
+  )
+
   // Handle idle for a specific terminal
   const handleIdleForTerminal = useCallback(async (terminalId: string) => {
     const store = getStore()
@@ -364,13 +416,17 @@ export function useOrchestrator() {
       }
 
       store.updateTerminalState(terminalId, { isIdle: true })
-      store.addTerminalLog(terminalId, 'decision', 'Terminal idle, consulting LLM...')
+      store.addTerminalLog(terminalId, 'decision', 'Terminal idle, consulting supervisor...')
 
       // Queue LLM call with rate limiting
       await new Promise<void>((resolve) => {
         enqueueLLMCall(async () => {
           try {
-            const decision = await callLLMForTerminal(terminalId, cleanBuffer)
+            const outcome = await decideForTerminal(terminalId, cleanBuffer)
+            // A human gate deliberately leaves no timer scheduled: this terminal
+            // waits for the operator while the rest of the swarm keeps running.
+            if (outcome.halted) return
+            const decision = outcome.decision
             if (!decision) {
               refs.errorCount++
               if (refs.errorCount >= 3 && refs.errorCount < 8) {
@@ -462,7 +518,7 @@ export function useOrchestrator() {
     } finally {
       refs.processing = false
     }
-  }, [getTerminalRefs, callLLMForTerminal, sendToTerminal])
+  }, [getTerminalRefs, decideForTerminal, callLLMForTerminal, sendToTerminal])
 
   // Process incoming terminal output - called for every terminal
   const processOutput = useCallback((data: string, terminalId: string) => {

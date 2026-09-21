@@ -35,6 +35,7 @@ interface SessionStats {
   errorsEncountered: number
   fastPathDecisions: number
   llmDecisions: number
+  jevDecisions: number
 }
 
 const DEFAULT_SESSION_STATS: SessionStats = {
@@ -44,7 +45,8 @@ const DEFAULT_SESSION_STATS: SessionStats = {
   testsFailed: 0,
   errorsEncountered: 0,
   fastPathDecisions: 0,
-  llmDecisions: 0
+  llmDecisions: 0,
+  jevDecisions: 0
 }
 
 export interface DecomposedTask {

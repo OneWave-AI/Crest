@@ -19,6 +19,8 @@ import {
   isSemanticallyDuplicate,
   summarizeTerminalOutput,
   parseClaudeCodeState,
+  askJev,
+  jevIsConfigured,
   DANGEROUS_PATTERNS,
   type ClaudeStatus
 } from './agentUtils'
@@ -205,66 +207,26 @@ You're taking control of an existing conversation that was already in progress.
   // then string-matching the prose. Jev writes no text, so a "send" still falls
   // through to callLLM to compose the actual input. Any failure, any low-confidence
   // answer, and any unconfigured key falls back to the old path unchanged.
-  const JEV_QUESTIONS = {
-    action: {
-      type: 'choice' as const,
-      instructions:
-        'You supervise an AI coding CLI running in a terminal. Based on the terminal output, what should the supervisor do right now?',
-      criteria: {
-        wait: 'The CLI is actively working, streaming output, or running a tool. Do nothing.',
-        send: 'The CLI is idle and waiting for human input, or is stuck and needs a nudge.',
-        done: 'The task is fully complete and nothing remains.'
-      }
-    },
-    needs_human: {
-      type: 'noul' as const,
-      instructions:
-        'Is the CLI blocked on a decision only a human can make -- credentials, a destructive or irreversible action, or an ambiguous requirement?',
-      criteria: {
-        true: 'Blocked on human judgment',
-        false: 'Can proceed autonomously'
-      }
-    }
-  }
-
   const decideAction = useCallback(async (cleanOutput: string): Promise<string | null> => {
     const store = getStore()
     const cfg = store.config
 
-    if (!cfg?.jevEnabled || !cfg.typesafeApiKey) return callLLM(cleanOutput)
+    if (!jevIsConfigured(cfg)) return callLLM(cleanOutput)
 
-    const res = await window.api.callJevApi({
-      apiKey: cfg.typesafeApiKey,
-      model: cfg.jevModel || 'jev-latest',
-      state: summarizeTerminalOutput(cleanOutput, 4000),
-      questions: JEV_QUESTIONS
-    })
-
-    if (!res.success || !res.answers?.action?.choice) {
-      store.addLog('error', `Jev unavailable (${res.error || 'no answer'}), falling back to LLM`)
-      return callLLM(cleanOutput)
-    }
-
-    const { action, needs_human: needsHuman } = res.answers
-    const confidence = action.confidence ?? 0
-    const minConfidence = cfg.jevMinConfidence ?? 0.7
-
+    const decision = await askJev(cfg!, cleanOutput)
     store.updateSessionStats({ jevDecisions: (store.sessionStats.jevDecisions || 0) + 1 })
 
-    if (confidence < minConfidence) {
-      store.addLog(
-        'decision',
-        `Jev unsure (${action.choice} @ ${confidence.toFixed(2)}), asking LLM instead`
-      )
+    if (decision.kind === 'fallback') {
+      store.addLog('decision', `Jev ${decision.reason}, asking LLM instead`)
       return callLLM(cleanOutput)
     }
 
     // A human-only decision is the one case where answering is worse than stopping.
     // Pausing beats guessing at a force-push confirmation or a credential prompt.
-    if ((needsHuman?.noul ?? 0) >= 0.9) {
+    if (decision.kind === 'needs-human') {
       store.addLog(
         'permission',
-        `Needs you: Jev scored this ${((needsHuman?.noul ?? 0) * 100).toFixed(0)}% human-only. Paused.`
+        `Needs you: Jev scored this ${(decision.score * 100).toFixed(0)}% human-only. Paused.`
       )
       if (!store.isPaused) store.togglePause()
       return null
@@ -272,11 +234,11 @@ You're taking control of an existing conversation that was already in progress.
 
     store.addLog(
       'decision',
-      `Jev: ${action.choice} (${confidence.toFixed(2)}, ${res.latencyMs ?? '?'}ms)`
+      `Jev: ${decision.action} (${decision.confidence.toFixed(2)}, ${decision.latencyMs ?? '?'}ms)`
     )
 
-    if (action.choice === 'wait') return 'WAIT'
-    if (action.choice === 'done') return 'DONE'
+    if (decision.action === 'wait') return 'WAIT'
+    if (decision.action === 'done') return 'DONE'
 
     // 'send' -- Jev decided, now the LLM writes the words.
     return callLLM(cleanOutput)

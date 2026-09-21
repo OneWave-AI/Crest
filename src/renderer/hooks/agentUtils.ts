@@ -1,5 +1,5 @@
 import { CLI_PROVIDERS, CLAUDE_PATTERNS } from '../../shared/providers'
-import type { SafetyLevel, CLIProvider } from '../../shared/types'
+import type { SafetyLevel, CLIProvider, SuperAgentConfig } from '../../shared/types'
 
 // Memoized ANSI stripping -- avoids re-processing the same output repeatedly
 const stripAnsiCache = new Map<string, string>()
@@ -454,4 +454,86 @@ export function isSemanticallyDuplicate(newResponse: string, recentSuggestions: 
     if (similarity > 0.7) return true
   }
   return false
+}
+
+
+// ---------------------------------------------------------------------------
+// Jev supervisor decision
+//
+// Both the single-terminal Super Agent and the multi-terminal Orchestrator ask
+// the same question of a terminal: wait, send, or done. Keeping the question
+// text in one place means the two supervisors cannot drift apart.
+// ---------------------------------------------------------------------------
+
+export const SUPERVISOR_JEV_QUESTIONS = {
+  action: {
+    type: 'choice' as const,
+    instructions:
+      'You supervise an AI coding CLI running in a terminal. Based on the terminal output, what should the supervisor do right now?',
+    criteria: {
+      wait: 'The CLI is actively working, streaming output, or running a tool. Do nothing.',
+      send: 'The CLI is idle and waiting for human input, or is stuck and needs a nudge.',
+      done: 'The task is fully complete and nothing remains.'
+    }
+  },
+  needs_human: {
+    type: 'noul' as const,
+    instructions:
+      'Is the CLI blocked on a decision only a human can make -- credentials, a destructive or irreversible action, or an ambiguous requirement?',
+    criteria: {
+      true: 'Blocked on human judgment',
+      false: 'Can proceed autonomously'
+    }
+  }
+}
+
+// Above this, answering on the operator's behalf is worse than stopping.
+export const NEEDS_HUMAN_THRESHOLD = 0.9
+
+export type JevDecision =
+  | { kind: 'action'; action: 'wait' | 'send' | 'done'; confidence: number; latencyMs?: number }
+  | { kind: 'needs-human'; score: number }
+  | { kind: 'fallback'; reason: string }
+
+export function jevIsConfigured(config: SuperAgentConfig | null | undefined): boolean {
+  return Boolean(config?.jevEnabled && config.typesafeApiKey?.trim())
+}
+
+/**
+ * Never throws and never decides on thin evidence -- every failure resolves to
+ * `fallback`, which callers answer by running the original LLM path unchanged.
+ */
+export async function askJev(
+  config: SuperAgentConfig,
+  cleanOutput: string
+): Promise<JevDecision> {
+  const res = await window.api.callJevApi({
+    apiKey: config.typesafeApiKey,
+    model: config.jevModel || 'jev-latest',
+    state: summarizeTerminalOutput(cleanOutput, 4000),
+    questions: SUPERVISOR_JEV_QUESTIONS
+  })
+
+  if (!res.success || !res.answers?.action?.choice) {
+    return { kind: 'fallback', reason: res.error || 'no answer' }
+  }
+
+  const { action, needs_human: needsHuman } = res.answers
+  const confidence = action.confidence ?? 0
+
+  if (confidence < (config.jevMinConfidence ?? 0.7)) {
+    return { kind: 'fallback', reason: `unsure (${action.choice} @ ${confidence.toFixed(2)})` }
+  }
+
+  const humanScore = needsHuman?.noul ?? 0
+  if (humanScore >= NEEDS_HUMAN_THRESHOLD) {
+    return { kind: 'needs-human', score: humanScore }
+  }
+
+  return {
+    kind: 'action',
+    action: action.choice as 'wait' | 'send' | 'done',
+    confidence,
+    latencyMs: res.latencyMs
+  }
 }
