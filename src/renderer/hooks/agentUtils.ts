@@ -528,14 +528,33 @@ export function jevIsConfigured(config: SuperAgentConfig | null | undefined): bo
  */
 export async function askJev(
   config: SuperAgentConfig,
-  cleanOutput: string
+  cleanOutput: string,
+  task: string
 ): Promise<JevDecision> {
-  const res = await window.api.callJevApi({
-    apiKey: config.typesafeApiKey,
-    model: config.jevModel || 'jev-latest',
-    state: summarizeTerminalOutput(cleanOutput, 4000),
-    questions: SUPERVISOR_JEV_QUESTIONS
-  })
+  // Every criterion is task-relative -- "done" means the ASSIGNED task is
+  // finished, not that the CLI stopped talking. Without the task in the state
+  // Jev is answering a different question than the one the criteria describe.
+  const state = [
+    `=== ASSIGNED TASK ===\n${task || '(no task recorded)'}`,
+    `=== TERMINAL OUTPUT ===\n${summarizeTerminalOutput(cleanOutput, 4000)}`
+  ].join('\n\n')
+
+  let res: Awaited<ReturnType<typeof window.api.callJevApi>>
+  try {
+    res = await window.api.callJevApi({
+      apiKey: config.typesafeApiKey,
+      model: config.jevModel || 'jev-latest',
+      state,
+      questions: SUPERVISOR_JEV_QUESTIONS
+    })
+  } catch (error) {
+    // ipcRenderer.invoke rejects on preload/main version skew. The supervisor
+    // loop has no catch of its own, so an escape here kills it silently.
+    return {
+      kind: 'fallback',
+      reason: error instanceof Error ? error.message : 'IPC failed'
+    }
+  }
 
   if (!res.success || !res.answers?.action?.choice) {
     return { kind: 'fallback', reason: res.error || 'no answer' }
@@ -544,13 +563,17 @@ export async function askJev(
   const { action, needs_human: needsHuman } = res.answers
   const confidence = action.confidence ?? 0
 
-  if (confidence < (config.jevMinConfidence ?? 0.7)) {
-    return { kind: 'fallback', reason: `unsure (${action.choice} @ ${confidence.toFixed(2)})` }
-  }
-
+  // Checked BEFORE the confidence floor and independently of it. A force-push
+  // confirmation is exactly the case where the action is ambiguous, so gating
+  // this behind action confidence disarms the gate in the situations it exists
+  // for -- the fallback would then hand the prompt to an LLM to answer.
   const humanScore = needsHuman?.noul ?? 0
   if (humanScore >= NEEDS_HUMAN_THRESHOLD) {
     return { kind: 'needs-human', score: humanScore }
+  }
+
+  if (confidence < (config.jevMinConfidence ?? 0.7)) {
+    return { kind: 'fallback', reason: `unsure (${action.choice} @ ${confidence.toFixed(2)})` }
   }
 
   return {

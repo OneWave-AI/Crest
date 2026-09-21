@@ -173,6 +173,9 @@ You're taking control of an existing conversation that was already in progress.
         })
 
         if (response.success) {
+          // Counted here, not at the decision site: with Jev on, most ticks
+          // resolve without ever reaching this call.
+          store.updateSessionStats({ llmDecisions: (store.sessionStats.llmDecisions || 0) + 1 })
           if (response.usage) {
             const { promptTokens, completionTokens, totalTokens } = response.usage
             console.log(`[SuperAgent] Tokens: ${promptTokens} prompt + ${completionTokens} completion = ${totalTokens} total`)
@@ -207,42 +210,49 @@ You're taking control of an existing conversation that was already in progress.
   // then string-matching the prose. Jev writes no text, so a "send" still falls
   // through to callLLM to compose the actual input. Any failure, any low-confidence
   // answer, and any unconfigured key falls back to the old path unchanged.
-  const decideAction = useCallback(async (cleanOutput: string): Promise<string | null> => {
-    const store = getStore()
-    const cfg = store.config
+  const decideAction = useCallback(
+    async (cleanOutput: string): Promise<{ halted: boolean; decision: string | null }> => {
+      const store = getStore()
+      const cfg = store.config
 
-    if (!jevIsConfigured(cfg)) return callLLM(cleanOutput)
+      if (!jevIsConfigured(cfg)) return { halted: false, decision: await callLLM(cleanOutput) }
 
-    const decision = await askJev(cfg!, cleanOutput)
-    store.updateSessionStats({ jevDecisions: (store.sessionStats.jevDecisions || 0) + 1 })
+      const decision = await askJev(cfg!, cleanOutput, store.task)
+      store.updateSessionStats({ jevDecisions: (store.sessionStats.jevDecisions || 0) + 1 })
 
-    if (decision.kind === 'fallback') {
-      store.addLog('decision', `Jev ${decision.reason}, asking LLM instead`)
-      return callLLM(cleanOutput)
-    }
+      if (decision.kind === 'fallback') {
+        store.addLog('decision', `Jev ${decision.reason}, asking LLM instead`)
+        return { halted: false, decision: await callLLM(cleanOutput) }
+      }
 
-    // A human-only decision is the one case where answering is worse than stopping.
-    // Pausing beats guessing at a force-push confirmation or a credential prompt.
-    if (decision.kind === 'needs-human') {
+      // A human-only decision is the one case where answering is worse than
+      // stopping. Pausing beats guessing at a force-push confirmation.
+      if (decision.kind === 'needs-human') {
+        // Re-read: `store` predates the awaited call, so its isPaused is stale.
+        // Acting on the snapshot could flip a operator-paused agent back to
+        // running -- the exact opposite of what this gate is for.
+        const live = getStore()
+        live.addLog(
+          'permission',
+          `Needs you: Jev scored this ${(decision.score * 100).toFixed(0)}% human-only. Paused.`
+        )
+        if (!live.isPaused) live.togglePause()
+        return { halted: true, decision: null }
+      }
+
       store.addLog(
-        'permission',
-        `Needs you: Jev scored this ${(decision.score * 100).toFixed(0)}% human-only. Paused.`
+        'decision',
+        `Jev: ${decision.action} (${decision.confidence.toFixed(2)}, ${decision.latencyMs ?? '?'}ms)`
       )
-      if (!store.isPaused) store.togglePause()
-      return null
-    }
 
-    store.addLog(
-      'decision',
-      `Jev: ${decision.action} (${decision.confidence.toFixed(2)}, ${decision.latencyMs ?? '?'}ms)`
-    )
+      if (decision.action === 'wait') return { halted: false, decision: 'WAIT' }
+      if (decision.action === 'done') return { halted: false, decision: 'DONE' }
 
-    if (decision.action === 'wait') return 'WAIT'
-    if (decision.action === 'done') return 'DONE'
-
-    // 'send' -- Jev decided, now the LLM writes the words.
-    return callLLM(cleanOutput)
-  }, [callLLM])
+      // 'send' -- Jev decided, now the LLM writes the words.
+      return { halted: false, decision: await callLLM(cleanOutput) }
+    },
+    [callLLM]
+  )
 
   // Send input to terminal
   const sendToTerminal = useCallback(async (input: string) => {
@@ -380,7 +390,14 @@ You're taking control of an existing conversation that was already in progress.
       store.setIdle(true)
       store.addLog('decision', 'Terminal idle, consulting supervisor...')
 
-      const decision = await decideAction(cleanBuffer)
+      const outcome = await decideAction(cleanBuffer)
+      // A human gate is not a failure: skip the error counter entirely, and
+      // schedule no timer -- the operator is the one who resumes from here.
+      if (outcome.halted) {
+        processingRef.current = false
+        return
+      }
+      const decision = outcome.decision
 
       if (!decision) {
         errorCountRef.current++
@@ -396,7 +413,6 @@ You're taking control of an existing conversation that was already in progress.
 
       // Increment decision counter
       decisionCountRef.current++
-      store.updateSessionStats({ llmDecisions: (store.sessionStats.llmDecisions || 0) + 1 })
 
       const trimmedDecision = parseLLMDecision(decision)
       const upperDecision = trimmedDecision.toUpperCase()

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Zap, Eye, EyeOff, Save, CheckCircle, Gauge } from 'lucide-react'
+import { Zap, Eye, EyeOff, Save, CheckCircle } from 'lucide-react'
 import type { SuperAgentConfig, LLMProvider, SafetyLevel } from '../../../shared/types'
 import { SUPERVISOR_PROVIDERS, supervisorProviderLabel } from '../../../shared/llmProviders'
 
@@ -24,7 +24,6 @@ export function SuperAgentSettings() {
   const [config, setConfig] = useState<SuperAgentConfig>(DEFAULT_CONFIG)
   const [showGroqKey, setShowGroqKey] = useState(false)
   const [showOpenAIKey, setShowOpenAIKey] = useState(false)
-  const [showTypeSafeKey, setShowTypeSafeKey] = useState(false)
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
 
@@ -201,90 +200,6 @@ export function SuperAgentSettings() {
             </button>
           ))}
         </div>
-      </div>
-
-      {/* Divider */}
-      <div className="border-t border-ink-ghost" />
-
-      {/* Jev decision layer */}
-      <div>
-        <div className="flex items-start justify-between gap-4 mb-2">
-          <div className="flex items-center gap-2">
-            <Gauge className="w-4 h-4 text-sand-400" />
-            <div>
-              <label className="block text-sm font-medium text-ink">Jev Decision Layer</label>
-              <p className="text-xs text-ink-subtle">
-                Decides wait / send / done in one typed call instead of parsing prose
-              </p>
-            </div>
-          </div>
-          <button
-            role="switch"
-            aria-checked={config.jevEnabled}
-            onClick={() => updateConfig({ jevEnabled: !config.jevEnabled })}
-            disabled={!config.typesafeApiKey.trim()}
-            className={`relative shrink-0 w-11 h-6 rounded-full transition-colors disabled:opacity-40 ${
-              config.jevEnabled ? 'bg-sand-500' : 'bg-black/40'
-            }`}
-          >
-            <span
-              className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
-                config.jevEnabled ? 'translate-x-6' : 'translate-x-1'
-              }`}
-            />
-          </button>
-        </div>
-
-        <div className="relative">
-          <input
-            type={showTypeSafeKey ? 'text' : 'password'}
-            value={config.typesafeApiKey}
-            onChange={(e) => updateConfig({ typesafeApiKey: e.target.value })}
-            placeholder="apikey_..."
-            className="w-full bg-black/30 border border-ink-ghost rounded-lg px-3 py-2 pr-10 text-ink-bright placeholder-ink-subtle focus:outline-none focus:border-sand-500"
-          />
-          <button
-            onClick={() => setShowTypeSafeKey(!showTypeSafeKey)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-ink-subtle hover:text-ink"
-          >
-            {showTypeSafeKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-          </button>
-        </div>
-        <p className="text-xs text-ink-subtle mt-1">
-          TypeSafe key from{' '}
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              window.api.openUrlExternal('https://docs.typesafe.ai')
-            }}
-            className="text-sand-400 hover:underline"
-          >
-            docs.typesafe.ai
-          </a>
-          . The provider above still writes anything typed into the terminal -- Jev only decides.
-        </p>
-      </div>
-
-      {/* Jev confidence floor */}
-      <div>
-        <label className="block text-sm font-medium text-ink mb-2">
-          Fall Back to LLM Below
-        </label>
-        <select
-          value={config.jevMinConfidence}
-          onChange={(e) => updateConfig({ jevMinConfidence: parseFloat(e.target.value) })}
-          disabled={!config.jevEnabled}
-          className="w-full bg-black/30 border border-ink-ghost rounded-lg px-3 py-2 text-ink-bright focus:outline-none focus:border-sand-500 disabled:opacity-40"
-        >
-          <option value={0.5}>50% - Trust Jev on most calls</option>
-          <option value={0.7}>70% - Recommended</option>
-          <option value={0.9}>90% - Only act on near-certainty</option>
-        </select>
-        <p className="text-xs text-ink-subtle mt-1">
-          Under this confidence the supervisor asks the LLM instead. Anything Jev scores 90%+
-          human-only pauses the agent rather than guessing.
-        </p>
       </div>
 
       {/* Idle Timeout */}

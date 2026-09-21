@@ -161,6 +161,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const [superAgentConfig, setSuperAgentConfig] = useState<SuperAgentConfig | null>(null)
   const [showGroqKey, setShowGroqKey] = useState(false)
   const [showOpenAIKey, setShowOpenAIKey] = useState(false)
+  const [showTypeSafeKey, setShowTypeSafeKey] = useState(false)
   const [savingSuperAgent, setSavingSuperAgent] = useState(false)
   const [superAgentSaved, setSuperAgentSaved] = useState(false)
   const [supervisorOllamaStatus, setSupervisorOllamaStatus] = useState<OllamaRuntimeStatus | null>(null)
@@ -1305,6 +1306,90 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                             {provider === 'ollama' ? 'Local' : provider === 'groq' ? 'Groq (Fast)' : supervisorProviderLabel(provider)}
                           </button>
                         ))}
+                      </div>
+                    </div>
+
+                    {/* Jev decision layer */}
+                    <div className="p-4 rounded-xl bg-overlay/[0.02] border border-overlay/[0.04]">
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <div>
+                          <h4 className="text-sm font-medium text-ink-bright">Jev Decision Layer</h4>
+                          <p className="text-xs text-ink-faint mt-0.5">
+                            Answers wait / send / done as a typed choice instead of parsing prose.
+                            The provider above still writes anything typed into the terminal.
+                          </p>
+                        </div>
+                        <button
+                          role="switch"
+                          aria-checked={superAgentConfig.jevEnabled}
+                          onClick={() => {
+                            setSuperAgentConfig({
+                              ...superAgentConfig,
+                              jevEnabled: !superAgentConfig.jevEnabled
+                            })
+                            setSuperAgentSaved(false)
+                          }}
+                          // Turning it ON needs a key; turning it OFF must always
+                          // work, or clearing the key strands jevEnabled: true.
+                          disabled={!superAgentConfig.typesafeApiKey.trim() && !superAgentConfig.jevEnabled}
+                          className={`relative shrink-0 w-11 h-6 rounded-full transition-colors disabled:opacity-40 ${
+                            superAgentConfig.jevEnabled ? 'bg-sand-500' : 'bg-black/40'
+                          }`}
+                        >
+                          <span
+                            className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
+                              superAgentConfig.jevEnabled ? 'translate-x-6' : 'translate-x-1'
+                            }`}
+                          />
+                        </button>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs text-ink-subtle mb-2">TypeSafe API Key</label>
+                          <div className="relative">
+                            <input
+                              type={showTypeSafeKey ? 'text' : 'password'}
+                              value={superAgentConfig.typesafeApiKey}
+                              onChange={(e) => {
+                                setSuperAgentConfig({ ...superAgentConfig, typesafeApiKey: e.target.value })
+                                setSuperAgentSaved(false)
+                              }}
+                              placeholder="apikey_..."
+                              className="w-full px-4 py-2.5 pr-10 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm focus:outline-none focus:border-sand-500/50"
+                            />
+                            <button
+                              onClick={() => setShowTypeSafeKey(!showTypeSafeKey)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-subtle hover:text-ink"
+                            >
+                              {showTypeSafeKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs text-ink-subtle mb-2">Fall Back to LLM Below</label>
+                          <select
+                            value={superAgentConfig.jevMinConfidence}
+                            onChange={(e) => {
+                              setSuperAgentConfig({
+                                ...superAgentConfig,
+                                jevMinConfidence: parseFloat(e.target.value)
+                              })
+                              setSuperAgentSaved(false)
+                            }}
+                            disabled={!superAgentConfig.jevEnabled}
+                            className="w-full px-4 py-2.5 rounded-lg bg-black/30 border border-overlay/[0.06] text-ink-bright text-sm focus:outline-none focus:border-sand-500/50 disabled:opacity-40"
+                          >
+                            <option value={0.5}>50% - Trust Jev on most calls</option>
+                            <option value={0.7}>70% - Recommended</option>
+                            <option value={0.9}>90% - Only act on near-certainty</option>
+                          </select>
+                          <p className="text-xs text-ink-faint mt-1">
+                            Below this the supervisor asks the LLM instead. Anything scored 90%+
+                            human-only pauses the agent rather than guessing.
+                          </p>
+                        </div>
                       </div>
                     </div>
 

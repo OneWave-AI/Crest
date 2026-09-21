@@ -41,6 +41,8 @@ interface TerminalRefs {
   decisionCount: number
   recentSuggestions: string[]
   errorCount: number
+  // Latched by the Jev human gate so a redrawing TUI cannot re-fire it.
+  humanGated: boolean
 }
 
 function createTerminalRefs(): TerminalRefs {
@@ -58,6 +60,7 @@ function createTerminalRefs(): TerminalRefs {
     waitingForReadyTimeout: null,
     decisionCount: 0,
     recentSuggestions: [],
+    humanGated: false,
     errorCount: 0
   }
 }
@@ -230,7 +233,15 @@ export function useOrchestrator() {
           temperature: 0.2
         })
 
-        if (response.success) return response.content || null
+        if (response.success) {
+          // Counted here, not at the decision site: with Jev on, most ticks
+          // resolve without ever reaching this call.
+          const t = store.terminals.get(terminalId)
+          store.updateTerminalStats(terminalId, {
+            llmDecisions: (t?.sessionStats.llmDecisions || 0) + 1
+          })
+          return response.content || null
+        }
 
         if (attempt < MAX_RETRIES) {
           const delay = attempt * 1000
@@ -267,8 +278,8 @@ export function useOrchestrator() {
         return { halted: false, decision: await callLLMForTerminal(terminalId, cleanOutput) }
       }
 
-      const decision = await askJev(cfg, cleanOutput)
       const termState = store.terminals.get(terminalId)
+      const decision = await askJev(cfg, cleanOutput, termState?.task ?? '')
       store.updateTerminalStats(terminalId, {
         jevDecisions: (termState?.sessionStats.jevDecisions || 0) + 1
       })
@@ -280,12 +291,20 @@ export function useOrchestrator() {
 
       if (decision.kind === 'needs-human') {
         const pct = (decision.score * 100).toFixed(0)
-        store.addTerminalLog(terminalId, 'permission', `Needs you: ${pct}% human-only. Stopped.`)
-        store.addCoordinatorLog(
-          'permission',
-          `Terminal ${termState?.tabId ?? terminalId} needs a human (${pct}%)`
-        )
-        store.updateTerminalState(terminalId, { status: 'idle', isIdle: true })
+        // Latch it. A Claude Code TUI parked at a permission prompt keeps
+        // redrawing, which re-arms the idle timer on every byte -- without this
+        // the terminal re-enters the idle path every couple of seconds, bills
+        // another Jev call, and appends the same line to both logs forever.
+        const refs = getTerminalRefs(terminalId)
+        if (!refs.humanGated) {
+          refs.humanGated = true
+          store.addTerminalLog(terminalId, 'permission', `Needs you: ${pct}% human-only. Stopped.`)
+          store.addCoordinatorLog(
+            'permission',
+            `Terminal ${termState?.tabId ?? terminalId} needs a human (${pct}%)`
+          )
+          store.updateTerminalState(terminalId, { status: 'idle', isIdle: true })
+        }
         return { halted: true, decision: null }
       }
 
@@ -299,7 +318,7 @@ export function useOrchestrator() {
       if (decision.action === 'done') return { halted: false, decision: 'DONE' }
       return { halted: false, decision: await callLLMForTerminal(terminalId, cleanOutput) }
     },
-    [callLLMForTerminal]
+    [callLLMForTerminal, getTerminalRefs]
   )
 
   // Handle idle for a specific terminal
@@ -444,7 +463,6 @@ export function useOrchestrator() {
 
             refs.errorCount = 0
             refs.decisionCount++
-            store.updateTerminalStats(terminalId, { llmDecisions: (termState.sessionStats.llmDecisions || 0) + 1 })
 
             const trimmedDecision = parseLLMDecision(decision)
             const upperDecision = trimmedDecision.toUpperCase()

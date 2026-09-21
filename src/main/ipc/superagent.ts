@@ -34,8 +34,12 @@ const DEFAULT_CONFIG: SuperAgentConfig = {
 const JEV_ENDPOINT = 'https://api.typesafe.ai/v1/systemone'
 // The supervisor calls this on every idle tick, so a slow call is worse than no
 // call -- Jev's own p99 is well under a second and the LLM path is the fallback.
-const JEV_TIMEOUT_MS = 5_000
-const JEV_MAX_ATTEMPTS = 3
+const JEV_TIMEOUT_MS = 3_000
+const JEV_MAX_ATTEMPTS = 2
+// Hard ceiling across all attempts. In the orchestrator one in-flight decision
+// occupies one of three queue slots, so an unreachable endpoint must not stall
+// every other terminal for the sum of every retry and backoff.
+const JEV_TOTAL_BUDGET_MS = 7_000
 
 async function ensureConfigDir(): Promise<void> {
   const configDir = join(homedir(), '.crest')
@@ -174,8 +178,11 @@ export function registerSuperAgentHandlers(): void {
     const started = Date.now()
 
     for (let attempt = 1; attempt <= JEV_MAX_ATTEMPTS; attempt++) {
+      const remaining = JEV_TOTAL_BUDGET_MS - (Date.now() - started)
+      if (remaining <= 0) return { success: false, error: 'Jev budget exhausted' }
+
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), JEV_TIMEOUT_MS)
+      const timeoutId = setTimeout(() => controller.abort(), Math.min(JEV_TIMEOUT_MS, remaining))
 
       try {
         const response = await fetch(JEV_ENDPOINT, {
@@ -192,7 +199,7 @@ export function registerSuperAgentHandlers(): void {
         // 429/529 are the documented backoff codes; everything else is terminal.
         if (response.status === 429 || response.status === 529) {
           if (attempt < JEV_MAX_ATTEMPTS) {
-            await new Promise((r) => setTimeout(r, attempt * 500))
+            await new Promise((r) => setTimeout(r, attempt * 250))
             continue
           }
           return { success: false, error: `Jev rate limited (${response.status})` }
@@ -220,13 +227,13 @@ export function registerSuperAgentHandlers(): void {
         clearTimeout(timeoutId)
         const aborted = error instanceof Error && error.name === 'AbortError'
         if (attempt < JEV_MAX_ATTEMPTS && !aborted) {
-          await new Promise((r) => setTimeout(r, attempt * 500))
+          await new Promise((r) => setTimeout(r, attempt * 250))
           continue
         }
         return {
           success: false,
           error: aborted
-            ? `Jev request timed out after ${JEV_TIMEOUT_MS / 1000}s`
+            ? 'Jev request timed out'
             : error instanceof Error
               ? error.message
               : 'Unknown error'
