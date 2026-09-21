@@ -11,6 +11,8 @@
     "start": "electron-vite preview",
     "preview": "electron-vite preview",
     "postinstall": "electron-builder install-app-deps",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "build:mac": "npm run build && electron-builder --mac",
     "build:win": "npm run build && electron-builder --win",
     "build:linux": "npm run build && electron-builder --linux"
@@ -52,7 +54,8 @@
     "react-dom": "^18.3.1",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.7.2",
-    "vite": "^5.4.21"
+    "vite": "^5.4.21",
+    "vitest": "^2.1.9"
   },
   "build": {
     "appId": "com.crest.app",
