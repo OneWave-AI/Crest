@@ -185,7 +185,11 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
         defaultProvider: 'groq',
         idleTimeout: 5,
         maxDuration: 30,
-        defaultSafetyLevel: 'safe'
+        defaultSafetyLevel: 'safe',
+        typesafeApiKey: '',
+        jevModel: 'jev-latest',
+        jevEnabled: false,
+        jevMinConfidence: 0.7
       }
 
       // Set default immediately to prevent stuck loading

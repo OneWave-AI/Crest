@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import type { IpcApi, ConversationExportOptions, LLMApiRequest, SuperAgentConfig, SuperAgentSession, Hive, CLIProvider, AcpEvent } from '../shared/types'
+import type { IpcApi, ConversationExportOptions, JevApiRequest, LLMApiRequest, SuperAgentConfig, SuperAgentSession, Hive, CLIProvider, AcpEvent } from '../shared/types'
 
 const api: IpcApi = {
   // Terminal
@@ -158,6 +158,7 @@ const api: IpcApi = {
 
   // Super Agent
   callLLMApi: (request: LLMApiRequest) => ipcRenderer.invoke('call-llm-api', request),
+  callJevApi: (request: JevApiRequest) => ipcRenderer.invoke('call-jev-api', request),
   loadSuperAgentConfig: () => ipcRenderer.invoke('load-superagent-config'),
   saveSuperAgentConfig: (config: Partial<SuperAgentConfig>) =>
     ipcRenderer.invoke('save-superagent-config', config),

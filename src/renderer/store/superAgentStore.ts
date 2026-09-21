@@ -9,6 +9,7 @@ interface SessionStats {
   errorsEncountered: number
   fastPathDecisions: number
   llmDecisions: number
+  jevDecisions: number
 }
 
 const DEFAULT_SESSION_STATS: SessionStats = {
@@ -18,7 +19,8 @@ const DEFAULT_SESSION_STATS: SessionStats = {
   testsFailed: 0,
   errorsEncountered: 0,
   fastPathDecisions: 0,
-  llmDecisions: 0
+  llmDecisions: 0,
+  jevDecisions: 0
 }
 
 interface SuperAgentState {
@@ -88,7 +90,11 @@ const DEFAULT_CONFIG: SuperAgentConfig = {
   defaultProvider: 'groq',
   idleTimeout: 5,
   maxDuration: 30,
-  defaultSafetyLevel: 'safe'
+  defaultSafetyLevel: 'safe',
+  typesafeApiKey: '',
+  jevModel: 'jev-latest',
+  jevEnabled: false,
+  jevMinConfidence: 0.7
 }
 
 export const useSuperAgentStore = create<SuperAgentState>((set, get) => ({

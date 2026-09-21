@@ -2,7 +2,14 @@ import { ipcMain } from 'electron'
 import { homedir } from 'os'
 import { join } from 'path'
 import * as fs from 'fs/promises'
-import type { LLMApiRequest, LLMApiResponse, SuperAgentConfig, SuperAgentSession } from '../../shared/types'
+import type {
+  JevApiRequest,
+  JevApiResponse,
+  LLMApiRequest,
+  LLMApiResponse,
+  SuperAgentConfig,
+  SuperAgentSession
+} from '../../shared/types'
 import { OLLAMA_HOST } from './ollama'
 
 const SUPER_AGENT_CONFIG_PATH = join(homedir(), '.crest', 'superagent-config.json')
@@ -17,8 +24,18 @@ const DEFAULT_CONFIG: SuperAgentConfig = {
   defaultProvider: 'groq',
   idleTimeout: 5,
   maxDuration: 30,
-  defaultSafetyLevel: 'safe'
+  defaultSafetyLevel: 'safe',
+  typesafeApiKey: '',
+  jevModel: 'jev-latest',
+  jevEnabled: false,
+  jevMinConfidence: 0.7
 }
+
+const JEV_ENDPOINT = 'https://api.typesafe.ai/v1/systemone'
+// The supervisor calls this on every idle tick, so a slow call is worse than no
+// call -- Jev's own p99 is well under a second and the LLM path is the fallback.
+const JEV_TIMEOUT_MS = 5_000
+const JEV_MAX_ATTEMPTS = 3
 
 async function ensureConfigDir(): Promise<void> {
   const configDir = join(homedir(), '.crest')
@@ -139,6 +156,82 @@ export function registerSuperAgentHandlers(): void {
         error: error instanceof Error ? error.message : 'Unknown error'
       }
     }
+  })
+
+  // Jev: one typed decision, no text. Separate from call-llm-api because the
+  // request and response shapes have nothing in common with chat completions.
+  ipcMain.handle('call-jev-api', async (_, request: JevApiRequest): Promise<JevApiResponse> => {
+    const { apiKey, model, state, questions } = request
+
+    if (!apiKey) return { success: false, error: 'TypeSafe API key is required' }
+    if (!questions || Object.keys(questions).length === 0) {
+      return { success: false, error: 'At least one question is required' }
+    }
+
+    const started = Date.now()
+
+    for (let attempt = 1; attempt <= JEV_MAX_ATTEMPTS; attempt++) {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), JEV_TIMEOUT_MS)
+
+      try {
+        const response = await fetch(JEV_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ state, model: model || 'jev-latest', questions }),
+          signal: controller.signal
+        })
+        clearTimeout(timeoutId)
+
+        // 429/529 are the documented backoff codes; everything else is terminal.
+        if (response.status === 429 || response.status === 529) {
+          if (attempt < JEV_MAX_ATTEMPTS) {
+            await new Promise((r) => setTimeout(r, attempt * 500))
+            continue
+          }
+          return { success: false, error: `Jev rate limited (${response.status})` }
+        }
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}))
+          return {
+            success: false,
+            error: errorData?.error?.message || `Jev API error: ${response.status}`
+          }
+        }
+
+        const data = await response.json()
+        return {
+          success: true,
+          model: data.model,
+          answers: data.answers,
+          latencyMs: Date.now() - started,
+          usage: data.usage
+            ? { inputTokens: data.usage.input_tokens, outputTokens: data.usage.output_tokens }
+            : undefined
+        }
+      } catch (error) {
+        clearTimeout(timeoutId)
+        const aborted = error instanceof Error && error.name === 'AbortError'
+        if (attempt < JEV_MAX_ATTEMPTS && !aborted) {
+          await new Promise((r) => setTimeout(r, attempt * 500))
+          continue
+        }
+        return {
+          success: false,
+          error: aborted
+            ? `Jev request timed out after ${JEV_TIMEOUT_MS / 1000}s`
+            : error instanceof Error
+              ? error.message
+              : 'Unknown error'
+        }
+      }
+    }
+
+    return { success: false, error: 'Jev request failed' }
   })
 
   // Load Super Agent config

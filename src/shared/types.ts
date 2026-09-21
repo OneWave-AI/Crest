@@ -570,6 +570,7 @@ export interface IpcApi {
 
   // Super Agent
   callLLMApi: (request: LLMApiRequest) => Promise<LLMApiResponse>
+  callJevApi: (request: JevApiRequest) => Promise<JevApiResponse>
   loadSuperAgentConfig: () => Promise<SuperAgentConfig>
   saveSuperAgentConfig: (config: Partial<SuperAgentConfig>) => Promise<{ success: boolean }>
   saveSuperAgentSession: (session: SuperAgentSession) => Promise<{ success: boolean }>
@@ -768,6 +769,50 @@ export interface LLMApiResponse {
   }
 }
 
+/**
+ * Jev (TypeSafe "System One") answers typed questions about a state in a single
+ * forward pass. It returns no text -- only a choice, a probability, or a score.
+ * That makes it the decision half of the supervisor; an LLMProvider still has to
+ * write anything the supervisor actually types into the terminal.
+ */
+export type JevQuestionType = 'noul' | 'choice' | 'score'
+
+export interface JevQuestion {
+  type: JevQuestionType
+  instructions: string
+  // noul/choice take a label->description map; score takes an ordered rung list.
+  criteria: Record<string, string> | string[]
+}
+
+export interface JevAnswer {
+  type: JevQuestionType
+  noul?: number
+  choice?: string
+  score?: number
+  confidence?: number
+  probabilities?: Record<string, number>
+  legend?: Record<string, string>
+}
+
+export interface JevApiRequest {
+  apiKey: string
+  model: string
+  state: string
+  questions: Record<string, JevQuestion>
+}
+
+export interface JevApiResponse {
+  success: boolean
+  model?: string
+  answers?: Record<string, JevAnswer>
+  error?: string
+  latencyMs?: number
+  usage?: {
+    inputTokens: number
+    outputTokens: number
+  }
+}
+
 export interface SuperAgentConfig {
   ollamaModel: string
   groqApiKey: string
@@ -778,6 +823,12 @@ export interface SuperAgentConfig {
   idleTimeout: number // seconds before considering Claude idle
   maxDuration: number // max minutes for autonomous operation
   defaultSafetyLevel: SafetyLevel
+  // Jev decision layer -- off unless a key is present, so existing setups are untouched.
+  typesafeApiKey: string
+  jevModel: string
+  jevEnabled: boolean
+  // Below this confidence the supervisor falls back to the LLM rather than acting.
+  jevMinConfidence: number
 }
 
 export interface ActivityLogEntry {
