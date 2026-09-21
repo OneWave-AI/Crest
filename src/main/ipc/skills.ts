@@ -1,6 +1,6 @@
 import { ipcMain, app, dialog } from 'electron'
 import * as fs from 'fs/promises'
-import { join, normalize, resolve } from 'path'
+import { join, normalize, resolve, sep } from 'path'
 import { homedir } from 'os'
 
 const CLAUDE_DIR = join(homedir(), '.claude')
@@ -9,10 +9,15 @@ const AGENTS_DIR = join(CLAUDE_DIR, 'agents')
 const COMMANDS_DIR = join(CLAUDE_DIR, 'commands')
 const METADATA_FILE = join(CLAUDE_DIR, 'skills-metadata.json')
 
-// Validate that a path is within allowed directories (skills, agents, or commands)
+// Validate that a path is within allowed directories (skills, agents, or commands).
+// The separator matters: a bare startsWith also accepts sibling directories that
+// merely share the prefix, so `~/.claude/skills-anything` passed this gate and the
+// handlers below read and write arbitrary files.
 function isPathAllowed(path: string): boolean {
   const normalizedPath = normalize(resolve(path))
-  return normalizedPath.startsWith(SKILLS_DIR) || normalizedPath.startsWith(AGENTS_DIR) || normalizedPath.startsWith(COMMANDS_DIR)
+  return [SKILLS_DIR, AGENTS_DIR, COMMANDS_DIR].some(
+    (dir) => normalizedPath === dir || normalizedPath.startsWith(dir + sep)
+  )
 }
 
 interface SkillMetadata {
