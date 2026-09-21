@@ -4,6 +4,7 @@ import { promisify } from 'util'
 import * as path from 'path'
 import * as fs from 'fs/promises'
 import { getCwd } from './terminal'
+import { unquoteGitPath } from '../../shared/gitPath'
 import type {
   GitFileStatusMap,
   GitFileStatusType,
@@ -70,21 +71,6 @@ async function runGitAllowDiffExit(args: string[], cwd: string): Promise<GitComm
     }
     throw new Error(parseGitError(execError.stderr || execError.message || 'Unknown git error'))
   }
-}
-
-// Unquote git path (git quotes paths with special characters)
-function unquoteGitPath(filePath: string): string {
-  // If the path starts and ends with quotes, unquote it
-  if (filePath.startsWith('"') && filePath.endsWith('"')) {
-    filePath = filePath.slice(1, -1)
-    // Unescape common escape sequences
-    filePath = filePath
-      .replace(/\\n/g, '\n')
-      .replace(/\\t/g, '\t')
-      .replace(/\\"/g, '"')
-      .replace(/\\\\/g, '\\')
-  }
-  return filePath
 }
 
 // Parse git error messages into user-friendly format

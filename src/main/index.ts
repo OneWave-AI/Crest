@@ -108,10 +108,17 @@ app.whenReady().then(() => {
           "default-src 'self' local-file:; " +
           "script-src 'self'; " +
           "style-src 'self' 'unsafe-inline'; " +
-          "img-src 'self' data: blob: https: local-file:; " +
-          "media-src 'self' data: blob: https: local-file:; " +
+          "img-src 'self' data: blob: https: http: local-file:; " +
+          "media-src 'self' data: blob: https: http: local-file:; " +
           "font-src 'self' data:; " +
-          "connect-src 'self' https: ws: wss:; " +
+          "connect-src 'self' https: http: ws: wss:; " +
+          // The preview <webview> is an OOPIF, so the embedder's policy governs
+          // what it may load. Without an explicit frame-src it inherits
+          // default-src ('self' local-file:), which permits no http(s) at all --
+          // and previewing a local dev server on http://localhost is the pane's
+          // whole purpose. http: is required for exactly that; plain http on the
+          // open internet is not something the pane offers a way to reach.
+          "frame-src 'self' local-file: https: http:; " +
           "object-src 'none'; " +
           "base-uri 'self'; " +
           "frame-ancestors 'none'"
@@ -125,8 +132,10 @@ app.whenReady().then(() => {
   const handleLocalFile = (request: Request): Response | Promise<Response> => {
     const filePath = decodeURIComponent(request.url.replace('local-file://', ''))
     const resolved = require('path').resolve(filePath)
+    // Same separator rule as the skills guard: a bare prefix compare also
+    // accepts siblings that merely share the leading characters.
     const home = homedir()
-    if (!resolved.startsWith(home)) {
+    if (resolved !== home && !resolved.startsWith(home + require('path').sep)) {
       return new Response('Forbidden: path outside home directory', { status: 403 })
     }
     // Block sensitive files
