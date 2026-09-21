@@ -59,7 +59,10 @@ async function saveConfig(config: Partial<SuperAgentConfig>): Promise<void> {
   await ensureConfigDir()
   const existing = await loadConfig()
   const merged = { ...existing, ...config }
-  await fs.writeFile(SUPER_AGENT_CONFIG_PATH, JSON.stringify(merged, null, 2))
+  // This file holds Groq, OpenAI and TypeSafe keys -- default 0644 leaves them
+  // readable by every account on the machine.
+  await fs.writeFile(SUPER_AGENT_CONFIG_PATH, JSON.stringify(merged, null, 2), { mode: 0o600 })
+  await fs.chmod(SUPER_AGENT_CONFIG_PATH, 0o600).catch(() => {})
 }
 
 // Session history functions

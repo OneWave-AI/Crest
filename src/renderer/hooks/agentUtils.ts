@@ -471,18 +471,41 @@ export const SUPERVISOR_JEV_QUESTIONS = {
     instructions:
       'You supervise an AI coding CLI running in a terminal. Based on the terminal output, what should the supervisor do right now?',
     criteria: {
-      wait: 'The CLI is actively working, streaming output, or running a tool. Do nothing.',
-      send: 'The CLI is idle and waiting for human input, or is stuck and needs a nudge.',
-      done: 'The task is fully complete and nothing remains.'
+      wait:
+        'The default. The CLI is still working: streaming text, running a tool, showing a ' +
+        'spinner or progress bar, or printing nothing yet because a long command is running. ' +
+        'A quiet gap is not the same as being finished -- a build or test run can print ' +
+        'nothing for a minute and is still working. Choose this unless there is clear ' +
+        'evidence the CLI has stopped and is waiting on someone.',
+      send:
+        'The CLI has stopped and is waiting for a person: it is sitting at an input prompt, ' +
+        'asking a direct question, showing an approval or permission prompt, or has repeated ' +
+        'the same output with no new progress. The distinguishing mark is that nothing will ' +
+        'happen until someone types. Do not choose this merely because output paused.',
+      done:
+        'The whole assigned task is finished and the CLI has said so -- tests passing, build ' +
+        'succeeded, work committed, or an explicit completion statement, with nothing left ' +
+        'outstanding. Finishing one step of a larger task is not done; that is wait. If any ' +
+        'part of the original request is still unaddressed, this is not done.'
     }
   },
   needs_human: {
     type: 'noul' as const,
     instructions:
-      'Is the CLI blocked on a decision only a human can make -- credentials, a destructive or irreversible action, or an ambiguous requirement?',
+      'Is the CLI blocked on a decision that only a person should make, where answering on ' +
+      'their behalf could cause real and irreversible harm?',
     criteria: {
-      true: 'Blocked on human judgment',
-      false: 'Can proceed autonomously'
+      true:
+        'Answering this wrongly cannot be undone or costs something real: a credential, API ' +
+        'key or password is being requested; a destructive or irreversible command is awaiting ' +
+        'confirmation (force push, history rewrite, dropping or migrating a database, deleting ' +
+        'files, deploying to production, spending money); or the requirement is ambiguous ' +
+        'enough that guessing sends the work down the wrong path.',
+      false:
+        'The default. A routine question a competent teammate would answer without checking ' +
+        'in -- which file to edit next, whether to also update tests, confirming an ordinary ' +
+        'tool call, picking an obvious name. Reversible and low-stakes, even if it is a ' +
+        'question rather than a statement.'
     }
   }
 }
