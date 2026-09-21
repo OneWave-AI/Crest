@@ -60,8 +60,11 @@ export const CLI_PROVIDERS: Record<CLIProvider, CLIProviderConfig> = {
       `${home}/.local/bin/claude`
     ],
     models: [
-      { id: 'opus', name: 'Opus 4.6', desc: 'Most intelligent', color: 'text-sand-400', bg: 'bg-sand-500/10' },
-      { id: 'sonnet', name: 'Sonnet 4.6', desc: 'Speed + intelligence', color: 'text-[#cc785c]', bg: 'bg-[#cc785c]/10' },
+      // These ids are aliases -- Claude Code resolves them to the CURRENT
+      // generation, so the label must track the model the alias actually opens.
+      // pricing.ts is the companion list; keep the two in step.
+      { id: 'opus', name: 'Opus 5', desc: 'Most intelligent', color: 'text-sand-400', bg: 'bg-sand-500/10' },
+      { id: 'sonnet', name: 'Sonnet 5', desc: 'Speed + intelligence', color: 'text-[#cc785c]', bg: 'bg-[#cc785c]/10' },
       { id: 'haiku', name: 'Haiku 4.5', desc: 'Fastest', color: 'text-emerald-400', bg: 'bg-emerald-500/10' }
     ],
     defaultModel: 'sonnet',
