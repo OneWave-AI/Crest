@@ -2,7 +2,7 @@
 
 **Code with Superpowers.**
 
-The premium native desktop experience for [Claude Code](https://github.com/anthropics/claude-code) and [OpenAI Codex](https://github.com/openai/codex). Multi-agent swarms, analytics, per-tab CLI provider selection, and a beautiful zero-config environment that lets you build faster—whether you're a developer or just getting started.
+The native desktop app for AI coding agents: [Claude Code](https://github.com/anthropics/claude-code), [OpenAI Codex](https://github.com/openai/codex), [Kimi Code](https://kimi.com/code), [Gemini CLI](https://github.com/google-gemini/gemini-cli) and [Qwen Code](https://github.com/QwenLM/qwen-code), on cloud models or on local models through [Ollama](https://ollama.com). Multi-agent swarms, analytics, per-tab agent selection, and a beautiful zero-config environment that lets you build faster—whether you're a developer or just getting started.
 
 [![Version](https://img.shields.io/badge/version-2.5.0-red)](https://github.com/OneWave-AI/Crest/releases)
 [![Made by OneWave AI](https://img.shields.io/badge/made%20by-OneWave--AI-orange)](https://onewave-ai.com)
@@ -65,6 +65,18 @@ You don't need to be a coding expert to build amazing things. Crest translates y
 - **Visual Feedback**: See your changes live as they happen in the built-in browser preview
 - **Automate Anything**: From organizing spreadsheets to scraping websites, let AI do the boring work
 
+## What's New in 2.5
+
+- **Five agents**: Claude Code, Codex, Kimi Code, Gemini CLI and Qwen Code, mixed freely across tabs and inside one Orchestrator swarm
+- **Local models**: point Claude Code, Codex, Kimi or Qwen at a model on your own machine through Ollama. Crest installs its own launchers, so there is no shell setup
+- **Jev supervisor (optional)**: Super Agent and the Orchestrator can hand their wait / send / done / needs-a-human decision to Jev (TypeSafe System One) as a typed call instead of parsing free text
+- **Four app themes**: Crest, Slate, Ember and Paper
+- **Self-update**: installs from 2.5 on update themselves from GitHub Releases
+- **Chat mode**: context rail, working permission gates, and failed tools now show as failed
+- **Fixes**: Opus sessions were costed at 3x; preview pane could not load `http://localhost`; accented git paths were mangled
+
+See [CHANGELOG.md](CHANGELOG.md) for the full list.
+
 ## What's New in V2
 
 - **Complete Rebuild**: Modern React + TypeScript architecture
@@ -126,14 +138,32 @@ Track Claude's multi-step tasks in real-time:
 - **Progress Bar**: Overall completion percentage at a glance
 - **Slide-In Animation**: Smooth panel appearance when toggled
 
-### Multi-Provider Terminal Tabs
-Run Claude Code and OpenAI Codex side by side in the same window:
-- **Per-Tab Provider**: Each terminal tab independently chooses its CLI (Claude Code or Codex)
+### Multi-Agent Terminal Tabs
+Run any mix of five coding agents side by side in the same window:
+- **Per-Tab Agent**: Each terminal tab independently chooses its CLI (Claude Code, Codex, Kimi Code, Gemini CLI or Qwen Code)
 - **Adaptive Status Bar**: Model menu, plan toggle, and status detection auto-switch based on the active tab
-- **Claude Code Models**: Opus 4.6, Sonnet 4.6, Haiku 4.5
+- **Claude Code Models**: Opus 5, Sonnet 5, Haiku 4.5
 - **Codex Models**: GPT-5.3 Codex, GPT-5.3 Spark, GPT-5.2 Codex, GPT-5.1 Max
+- **Kimi Models**: K3, K3 256k, K2.7 Coding, K2.7 Highspeed
+- **Gemini Models**: Gemini 3 Pro, Gemini 3 Flash, Gemini 2.5 Pro, Gemini 2.5 Flash
+- **Qwen Models**: Qwen3 Coder Plus, Qwen3 Coder Flash
 - **Default Provider Setting**: Choose which CLI new tabs open with (configurable in Settings)
-- **Install Detection**: HomeScreen shows install status and one-click install for both CLIs
+- **Install Detection**: HomeScreen shows install status and one-click install for the CLIs
+
+### Local Models (Ollama)
+Run an agent against a model on your own machine instead of a cloud API:
+- **Two-axis picker**: choose the agent, then flip its runtime from API to Local and pick a pulled model
+- **Supported agents**: Claude Code, Codex, Kimi Code and Qwen Code. Gemini CLI has no local option
+- **No shell setup**: Crest writes `claude-local`, `codex-local`, `kimi-local` and `qwen-local` to `~/.crest/bin` on launch and runs them by absolute path. Your cloud configs are left untouched
+- **Live status**: the picker shows whether Ollama is reachable and lists only chat-capable models
+- **Custom host**: honours `OLLAMA_HOST`
+- **Platforms**: macOS and Linux. Not available on Windows yet
+- **Tip**: Qwen Code is the fastest local harness. Claude Code's large system prompt can take over a minute of prompt eval per cold turn on a laptop
+
+```bash
+brew install ollama && brew services start ollama
+ollama pull qwen3-coder:30b
+```
 
 ### Split Terminal Panels
 Work with multiple terminals simultaneously:
@@ -218,6 +248,7 @@ View documents directly in the app:
 ### Premium UI
 - **Modern Home Screen**: Beautiful action grid with glass morphism
 - **Toast Notifications**: In-app alerts for success, error, and info
+- **4 App Themes**: Crest, Slate, Ember, Paper (Settings -> Appearance)
 - **14 Terminal Themes**:
   - Default, Pro, Homebrew, Ocean, Dracula, Solarized, Neon, Aurora
   - Midnight, Ember, Matrix, Frost, Synthwave, Tokyo Night
@@ -247,13 +278,15 @@ View documents directly in the app:
 
 ### System
 - **One-Click Setup**: Auto-install Claude Code CLI and/or Codex CLI if not present
+- **Self-Update**: Checks GitHub Releases and updates in place
 - **Nested Session Fix**: Strips `CLAUDECODE` env var so CLIs launch correctly from within the app
 - **Platform**: macOS (Apple Silicon). Windows and Linux builds are not yet shipped — the source builds for both, but no signed/tested release artifacts are available today.
 
 ## Prerequisites
 
 - macOS (Apple Silicon)
-- [Claude Code CLI](https://github.com/anthropics/claude-code) and/or [OpenAI Codex CLI](https://github.com/openai/codex) (auto-installs if missing)
+- At least one agent CLI: [Claude Code](https://github.com/anthropics/claude-code) or [Codex](https://github.com/openai/codex) (both auto-install if missing), or [Kimi Code](https://kimi.com/code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [Qwen Code](https://github.com/QwenLM/qwen-code)
+- Optional: [Ollama](https://ollama.com) for local models
 
 ## Installation
 
@@ -294,7 +327,7 @@ npm run build
 1. **Launch**: Open Crest - it checks for both Claude Code and Codex CLIs and offers to install
 2. **Select Project**: Click "Open Project" or drag a folder
 3. **Start Session**: Click "Start Session" or press Cmd+Enter (launches your default CLI)
-4. **Add Provider Tabs**: Click "+" to open a new Claude Code or Codex tab
+4. **Add Agent Tabs**: Click "+" to open a new tab with any of the five agents, on API or Local
 5. **Browse History**: Click "History" to view past conversations
 6. **Manage Skills**: Click "Skills & Agents" to browse and create extensions
 7. **Use Toolbelt**: Click the toolbelt icon to quickly insert agents/skills
@@ -385,7 +418,7 @@ Crest/
 │   │
 │   └── shared/
 │       ├── types.ts       # Shared types
-│       └── providers.ts   # CLI provider configs (Claude Code, Codex)
+│       └── providers.ts   # CLI provider configs (Claude Code, Codex, Kimi, Gemini, Qwen)
 │
 ├── assets/
 │   ├── starter-skills/
