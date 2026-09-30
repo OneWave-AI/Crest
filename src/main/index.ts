@@ -8,6 +8,7 @@ import { stopAllAcpSessions } from './ipc/acp'
 import { autoInstallStarterKit } from './ipc/skills'
 import { initAutoUpdater } from './services/updater'
 import { PREVIEW_PARTITION } from '../shared/preview'
+import { installLocalAgentLaunchers } from './services/localAgents'
 
 // Register custom protocol as privileged (must be before app ready)
 protocol.registerSchemesAsPrivileged([
@@ -95,6 +96,8 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
+  installLocalAgentLaunchers()
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.crest.app')
 

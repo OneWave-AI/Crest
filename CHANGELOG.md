@@ -7,6 +7,13 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- **Local mode works on a fresh install.** The `<agent>-local` launchers were
+  shell functions in one developer's `~/.zshrc`, so everywhere else picking
+  Local was "command not found". Crest now writes them to `~/.crest/bin` on
+  every launch (plain POSIX sh, no python), calls them by absolute path, quotes
+  the model name, and honours `OLLAMA_HOST`. Local is disabled on Windows.
+
 ### Added
 - **Themes.** Four: Crest (the existing black), Slate (cool dark), Ember
   (warm dark) and Paper (light). Pick one under Settings -> Appearance; it is

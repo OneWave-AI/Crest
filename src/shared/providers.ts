@@ -340,13 +340,31 @@ export function getProviderConfig(provider: CLIProvider): CLIProviderConfig {
 /** True when this agent can actually be run against a local ollama model. */
 export function supportsLocalRuntime(provider: CLIProvider): boolean {
   const config = CLI_PROVIDERS[provider]
-  return config.supportsLocal && Boolean(config.localCommand)
+  return config.supportsLocal && Boolean(config.localCommand) && !isWindowsHost()
+}
+
+/**
+ * Where the main process installs the `<agent>-local` launchers, relative to
+ * the home directory (see src/main/services/localAgents.ts).
+ */
+export const LOCAL_BIN_DIR = '.crest/bin'
+
+/** The launchers are POSIX sh, so Local mode is unavailable on Windows. */
+function isWindowsHost(): boolean {
+  const g = globalThis as { process?: { platform?: string }; navigator?: { userAgent?: string } }
+  if (g.process?.platform) return g.process.platform === 'win32'
+  return /Windows/i.test(g.navigator?.userAgent ?? '')
+}
+
+/** Single-quote for a POSIX shell. */
+function shellQuote(value: string): string {
+  return `'${value.replace(/'/g, `'\\''`)}'`
 }
 
 /**
  * The single place the agent axis and the runtime axis combine into one shell
- * command. Terminals type this into a login shell, so `localCommand` may be a
- * shell function and the model is passed as a leading env assignment.
+ * command. Terminals type this into a login shell; `localCommand` names a
+ * launcher in ~/.crest/bin and the model is passed as a leading env assignment.
  *
  * Falls back to the API binary whenever local is requested but unsupported, so
  * a stale persisted setting can never launch a broken command.
@@ -358,6 +376,8 @@ export function resolveLaunchCommand(
 ): string {
   const config = CLI_PROVIDERS[provider]
   if (runtime !== 'local' || !supportsLocalRuntime(provider)) return config.binaryName
-  const command = config.localCommand as string
-  return localModel ? `CREST_LOCAL_MODEL=${localModel} ${command}` : command
+  // Absolute path to the launcher Crest installed, so it works without any
+  // shell setup and a user's own same-named function cannot shadow it.
+  const command = `"$HOME/${LOCAL_BIN_DIR}/${config.localCommand}"`
+  return localModel ? `CREST_LOCAL_MODEL=${shellQuote(localModel)} ${command}` : command
 }

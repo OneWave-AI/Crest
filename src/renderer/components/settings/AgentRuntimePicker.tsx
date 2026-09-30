@@ -118,13 +118,13 @@ export function AgentRuntimePicker({
             sub="ollama"
             active={runtime === 'local'}
             disabled={!canGoLocal}
-            title={canGoLocal ? 'Run this agent against a local ollama model' : activeConfig.localUnavailableReason}
+            title={canGoLocal ? 'Run this agent against a local ollama model' : activeConfig.localUnavailableReason ?? 'Local models are not supported on Windows yet.'}
             onClick={() => onRuntimeChange('local')}
           />
         </div>
         {!canGoLocal && (
           <div className="mt-1 text-[10px] text-ink-faint leading-snug">
-            {activeConfig.localUnavailableReason}
+            {activeConfig.localUnavailableReason ?? 'Local models are not supported on Windows yet.'}
           </div>
         )}
       </div>
