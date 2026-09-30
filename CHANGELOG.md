@@ -7,6 +7,8 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.5.0] - 2026-09-30
+
 ### Fixed
 - **Local mode works on a fresh install.** The `<agent>-local` launchers were
   shell functions in one developer's `~/.zshrc`, so everywhere else picking
