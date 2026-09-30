@@ -292,15 +292,19 @@
               <ol class="space-y-4 text-sm text-zinc-300">
                 <li class="flex gap-3">
                   <span class="text-primary font-bold">1.</span>
-                  <span>Download the <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">.exe</code> installer</span>
+                  <span>There is no Windows installer yet. Build from source:</span>
                 </li>
                 <li class="flex gap-3">
                   <span class="text-primary font-bold">2.</span>
-                  <span>Run the installer and follow the prompts</span>
+                  <span>Clone the repo: <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">git clone https://github.com/OneWave-AI/Crest.git</code></span>
                 </li>
                 <li class="flex gap-3">
                   <span class="text-primary font-bold">3.</span>
-                  <span>Launch from Start Menu or Desktop shortcut</span>
+                  <span>Install and build: <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">npm ci</code> then <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">npm run build:win</code></span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="text-primary font-bold">4.</span>
+                  <span>Local models (Ollama) are not available on Windows yet</span>
                 </li>
               </ol>
             </div>
@@ -315,15 +319,19 @@
               <ol class="space-y-4 text-sm text-zinc-300">
                 <li class="flex gap-3">
                   <span class="text-primary font-bold">1.</span>
-                  <span>Download the <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">.AppImage</code> or <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">.deb</code> file</span>
+                  <span>There is no prebuilt Linux download yet. Build from source:</span>
                 </li>
                 <li class="flex gap-3">
                   <span class="text-primary font-bold">2.</span>
-                  <span>For AppImage: Make executable with <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">chmod +x</code> and run</span>
+                  <span>Clone the repo: <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">git clone https://github.com/OneWave-AI/Crest.git</code></span>
                 </li>
                 <li class="flex gap-3">
                   <span class="text-primary font-bold">3.</span>
-                  <span>For .deb: Install with <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">sudo dpkg -i filename.deb</code></span>
+                  <span>Install and build: <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">npm ci</code> then <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">npm run build:linux</code></span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="text-primary font-bold">4.</span>
+                  <span>Run the AppImage from <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">dist/</code> (make it executable with <code class="px-1.5 py-0.5 bg-white/5 rounded text-xs">chmod +x</code> first)</span>
                 </li>
               </ol>
             </div>
@@ -647,7 +655,7 @@
                 <h4 class="font-semibold mb-4">Settings Panel</h4>
                 <p class="text-sm text-zinc-400 mb-4">Access settings via the gear icon in the header or <kbd class="kbd text-xs">Cmd</kbd> + <kbd class="kbd text-xs">,</kbd></p>
                 <ul class="text-sm text-zinc-300 space-y-2">
-                  <li><strong>Terminal Theme:</strong> Choose from 8 themes (Default, Pro, Homebrew, Ocean, Dracula, Solarized, Neon, Aurora)</li>
+                  <li><strong>Terminal Theme:</strong> Choose from 14 themes, including Default, Pro, Homebrew, Ocean, Dracula, Solarized, Tokyo Night and Synthwave</li>
                   <li><strong>Font Size:</strong> Adjust terminal and editor font size</li>
                   <li><strong>Auto-detect Localhost:</strong> Toggle automatic dev server detection</li>
                 </ul>
