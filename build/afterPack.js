@@ -11,6 +11,11 @@ exports.default = async function afterPack(context) {
   const appName = context.packager.appInfo.productFilename
   const appPath = path.join(context.appOutDir, `${appName}.app`)
   console.log(`[afterPack] deep ad-hoc signing ${appPath}`)
+  // Finder/iCloud metadata copied into a build under Documents prevents sealing.
+  // Strip only signing-incompatible metadata from the generated bundle.
+  for (const attribute of ['com.apple.FinderInfo', 'com.apple.ResourceFork']) {
+    execFileSync('xattr', ['-r', '-d', attribute, appPath], { stdio: 'ignore' })
+  }
   execFileSync('codesign', ['--force', '--deep', '-s', '-', appPath], { stdio: 'inherit' })
   execFileSync('codesign', ['--verify', '--deep', '--strict', appPath], { stdio: 'inherit' })
   console.log('[afterPack] ad-hoc signature applied and verified')

@@ -672,6 +672,7 @@ export interface IpcApi {
   acpListAgents: () => Promise<AcpAgentSpec[]>
   onAcpEvent: (callback: (event: AcpEvent) => void) => () => void
   ollamaStatus: () => Promise<OllamaRuntimeStatus>
+  integrationStatus: () => Promise<{ running: boolean; url: string; mcpUrl: string; tokenPath: string; error?: string }>
 }
 
 // Local ollama runtime (mirrors src/main/ipc/ollama.ts)

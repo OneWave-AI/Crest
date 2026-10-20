@@ -4,8 +4,17 @@
 
 The native desktop app for AI coding agents: [Claude Code](https://github.com/anthropics/claude-code), [OpenAI Codex](https://github.com/openai/codex), [Kimi Code](https://kimi.com/code), [Gemini CLI](https://github.com/google-gemini/gemini-cli) and [Qwen Code](https://github.com/QwenLM/qwen-code), on cloud models or on local models through [Ollama](https://ollama.com). Multi-agent swarms, analytics, per-tab agent selection, and a beautiful zero-config environment that lets you build faster—whether you're a developer or just getting started.
 
-[![Version](https://img.shields.io/badge/version-2.5.0-red)](https://github.com/OneWave-AI/Crest/releases)
+[![Version](https://img.shields.io/badge/version-2.5.1-red)](https://github.com/OneWave-AI/Crest/releases)
 [![Made by OneWave AI](https://img.shields.io/badge/made%20by-OneWave--AI-orange)](https://onewave-ai.com)
+
+## Local API and MCP
+
+Claude Code, Codex, and HTTP clients can delegate focused coding tasks to local
+Qwen models through Crest. The authenticated loopback API includes an OpenAPI
+3.1 contract and stateless MCP 2026-07-28 support, with older-client compatibility.
+Open **Settings → API & MCP** for connection status, or see the
+[setup and API reference](docs/local-api.md). Local edits have explicit file
+scope and original-content backups; the calling agent reviews and tests changes.
 
 ## Screenshots
 

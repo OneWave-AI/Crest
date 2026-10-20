@@ -280,6 +280,7 @@ const api: IpcApi = {
   acpGetState: (sessionId) => ipcRenderer.invoke('acp:get-state', sessionId),
   acpListAgents: () => ipcRenderer.invoke('acp:list-agents'),
   ollamaStatus: () => ipcRenderer.invoke('ollama:status'),
+  integrationStatus: () => ipcRenderer.invoke('integrations:status'),
   onAcpEvent: (callback) => {
     const handler = (_: Electron.IpcRendererEvent, event: AcpEvent) => callback(event)
     ipcRenderer.on('acp:event', handler)

@@ -7,6 +7,21 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.5.1] - 2026-10-20
+
+### Added
+- Authenticated laptop-only REST API, OpenAPI 3.1 contract, and an MCP server
+  using the official SDK v2 for published protocol 2026-07-28. Requests are
+  stateless, with compatibility for older 2025 MCP clients.
+- Local Ollama coding jobs with explicit file scope, review and edit modes,
+  cancellation, original-content backups, durable task handles and retry keys.
+- Settings → API & MCP connection status and setup documentation in
+  `docs/local-api.md`, plus a live MCP-to-Qwen code-edit smoke test.
+
+### Fixed
+- Mac packaging strips Finder/resource-fork metadata from the generated bundle
+  before ad-hoc signing. Use a non-synced output folder when iCloud reattaches it.
+
 ## [2.5.0] - 2026-09-30
 
 ### Fixed

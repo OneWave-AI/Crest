@@ -9,6 +9,7 @@ import type { CustomTheme, UpdateInfo, SuperAgentConfig, LLMProvider, SafetyLeve
 import { APP_THEMES } from '../../../shared/types'
 import { CLI_PROVIDERS } from '../../../shared/providers'
 import { SUPERVISOR_PROVIDERS, supervisorProviderLabel } from '../../../shared/llmProviders'
+import IntegrationsSettings from './IntegrationsSettings'
 
 interface SettingsPanelProps {
   isOpen: boolean
@@ -103,7 +104,7 @@ const FONT_SIZES = [12, 13, 14, 15, 16, 18, 20]
 const LINE_HEIGHTS = [1.0, 1.2, 1.4, 1.6, 1.8, 2.0]
 const SCROLLBACK_SIZES = [1000, 5000, 10000, 25000, 50000, 100000]
 
-type SectionType = 'appearance' | 'terminal' | 'behavior' | 'api' | 'superagent' | 'data' | 'shortcuts' | 'about'
+type SectionType = 'appearance' | 'terminal' | 'behavior' | 'api' | 'integrations' | 'superagent' | 'data' | 'shortcuts' | 'about'
 
 export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const {
@@ -476,6 +477,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 { id: 'terminal', icon: Monitor, label: 'Terminal' },
                 { id: 'behavior', icon: Settings, label: 'Behavior' },
                 { id: 'api', icon: Key, label: 'API' },
+                { id: 'integrations', icon: ExternalLink, label: 'API & MCP' },
                 { id: 'superagent', icon: Zap, label: 'Super Agent' },
                 { id: 'data', icon: FolderOpen, label: 'Data' },
                 { id: 'shortcuts', icon: Keyboard, label: 'Shortcuts' },
@@ -1039,6 +1041,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             )}
 
             {/* API Section */}
+            {activeSection === 'integrations' && <IntegrationsSettings />}
             {activeSection === 'api' && (
               <div className="space-y-6">
                 <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">

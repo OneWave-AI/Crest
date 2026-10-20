@@ -9,6 +9,8 @@ import { autoInstallStarterKit } from './ipc/skills'
 import { initAutoUpdater } from './services/updater'
 import { PREVIEW_PARTITION } from '../shared/preview'
 import { installLocalAgentLaunchers } from './services/localAgents'
+import { startLocalApi, type IntegrationInfo } from './services/localApi'
+import { getOllamaStatus } from './ipc/ollama'
 
 // Register custom protocol as privileged (must be before app ready)
 protocol.registerSchemesAsPrivileged([
@@ -28,6 +30,9 @@ protocol.registerSchemesAsPrivileged([
 let mainWindow: BrowserWindow | null = null
 let hasActiveTerminal = false
 let forceQuit = false
+let localApi: Awaited<ReturnType<typeof startLocalApi>> | undefined
+let integrationInfo: IntegrationInfo = { running: false, url: '', mcpUrl: '', tokenPath: '' }
+ipcMain.handle('integrations:status', () => localApi?.info ?? integrationInfo)
 
 // Track terminal session state from renderer
 ipcMain.on('terminal-session-active', (_, active: boolean) => {
@@ -173,6 +178,15 @@ app.whenReady().then(() => {
 
   createWindow()
 
+  startLocalApi({
+    configDir: join(homedir(), '.crest'),
+    version: app.getVersion(),
+    getModels: getOllamaStatus
+  }).then(api => { localApi = api }).catch(error => {
+    integrationInfo = { ...integrationInfo, error: error instanceof Error ? error.message : String(error) }
+    console.error('[localApi] Could not start:', error)
+  })
+
   initAutoUpdater(() => mainWindow)
 
   app.on('activate', () => {
@@ -191,6 +205,7 @@ app.on('window-all-closed', () => {
 // Don't orphan ACP agent processes when Crest exits.
 app.on('will-quit', () => {
   stopAllAcpSessions()
+  void localApi?.stop()
 })
 
 export { mainWindow }
