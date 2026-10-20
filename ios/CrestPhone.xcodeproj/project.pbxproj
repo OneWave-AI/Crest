@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		018282F2F533B6E3B15F1929 /* WorkspaceSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09FE5256CDF022174DB48 /* WorkspaceSidebar.swift */; };
+		1669349972D8B477DFD8AE72 /* IPadWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A19E2AF543DC161DC2237C0 /* IPadWorkspace.swift */; };
 		1A6AC19E8055A85DA614281A /* CrestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487E429B6049349BE8A257E /* CrestApp.swift */; };
 		1E622AC7060E2DAC6BC84726 /* PairingKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B527A7B434D582E11A334C /* PairingKeychain.swift */; };
 		33A7C73A755175B44507D8E0 /* LiveHarnessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545C944E332826C5DA4CADF /* LiveHarnessTests.swift */; };
@@ -36,6 +37,7 @@
 		2487E429B6049349BE8A257E /* CrestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrestApp.swift; sourceTree = "<group>"; };
 		2545C944E332826C5DA4CADF /* LiveHarnessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveHarnessTests.swift; sourceTree = "<group>"; };
 		272F1B9688DE4E90FC445F90 /* ChatStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStore.swift; sourceTree = "<group>"; };
+		4A19E2AF543DC161DC2237C0 /* IPadWorkspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPadWorkspace.swift; sourceTree = "<group>"; };
 		5B39DE8860128F109526AE9C /* FilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesView.swift; sourceTree = "<group>"; };
 		77B0F93645C75884D1872684 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7F0D521FE5D0CD8879903948 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				2487E429B6049349BE8A257E /* CrestApp.swift */,
 				5B39DE8860128F109526AE9C /* FilesView.swift */,
 				77B0F93645C75884D1872684 /* Info.plist */,
+				4A19E2AF543DC161DC2237C0 /* IPadWorkspace.swift */,
 				12B527A7B434D582E11A334C /* PairingKeychain.swift */,
 				AED09FE5256CDF022174DB48 /* WorkspaceSidebar.swift */,
 			);
@@ -226,6 +229,7 @@
 				D03A6C66668F46B0A71768AF /* ContentView.swift in Sources */,
 				1A6AC19E8055A85DA614281A /* CrestApp.swift in Sources */,
 				D9F1833E75BCC8FC4F154C54 /* FilesView.swift in Sources */,
+				1669349972D8B477DFD8AE72 /* IPadWorkspace.swift in Sources */,
 				1E622AC7060E2DAC6BC84726 /* PairingKeychain.swift in Sources */,
 				018282F2F533B6E3B15F1929 /* WorkspaceSidebar.swift in Sources */,
 			);

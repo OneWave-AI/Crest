@@ -53,6 +53,12 @@ describe('phone HTTPS bridge', () => {
     await writeFile(join(project.path, '.env'), 'secret')
     const files = await call(`/v1/projects/${project.id}/files`, phone.token)
     expect(files.data.files).toEqual(['hello.py'])
+    const preview = await call(`/v1/projects/${project.id}/file`, phone.token, { path: 'hello.py' })
+    expect(preview.status).toBe(200)
+    expect(preview.data.content).toBe('print("hello")')
+    for (const path of ['.env', '../outside', 'missing.py']) {
+      expect((await call(`/v1/projects/${project.id}/file`, phone.token, { path })).status).toBe(403)
+    }
     expect((await call('/v1/projects', phone.token, undefined, { Origin: 'https://evil.example' })).status).toBe(403)
     expect((await call('/mcp', phone.token)).status).toBe(404)
     const input = { projectId: randomUUID(), prompt: 'Review', requestKey: randomUUID() }

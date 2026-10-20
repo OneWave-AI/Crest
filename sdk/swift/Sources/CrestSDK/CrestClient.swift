@@ -48,6 +48,7 @@ public struct LaptopStatus: Decodable { public let app: String; public let lapto
 public struct LaptopProject: Codable, Identifiable, Hashable { public let id: String; public let name: String; public let path: String }
 public struct LaptopModels: Decodable { public let running: Bool; public let models: [LaptopModel] }
 public struct LaptopModel: Decodable, Identifiable { public let name: String; public let embeddingOnly: Bool; public var id: String { name } }
+public struct SourcePreview: Decodable { public let path: String; public let content: String }
 public struct FileList: Decodable { public let files: [String] }
 private struct APIProblem: Decodable { public let detail: String }
 public struct CodingJob: Codable, Identifiable {
@@ -110,6 +111,10 @@ final class PinnedConnection: NSObject, URLSessionDelegate, URLSessionTaskDelega
 }
 
 public final class CrestClient: @unchecked Sendable {
+    public func preview(projectID: String, path: String) async throws -> SourcePreview {
+        guard UUID(uuidString: projectID) != nil else { throw HarnessError.message("Invalid project ID.") }
+        return try await request("v1/projects/\(projectID)/file", method: "POST", body: JSONEncoder().encode(["path": path]))
+    }
     public func status() async throws -> LaptopStatus { try await request("v1/status") }
     public func projects() async throws -> [LaptopProject] { try await request("v1/projects") }
     public func models() async throws -> LaptopModels { try await request("v1/models") }

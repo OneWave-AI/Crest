@@ -114,3 +114,20 @@ device credentials in commits, logs, or chat messages.
 
 Apple references: [manual trust validation](https://developer.apple.com/documentation/foundation/performing-manual-server-trust-authentication)
 and [local-network privacy](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy).
+
+## iPad workspace and source preview
+
+On iPad, the workspace has a project/file explorer and a centered conversation.
+Tap a filename to preview its source with line numbers; use the separate circle
+control to add or remove that file from Qwen's context. The preview is a side
+pane in wide windows and a sheet in narrower windows. Previewing never enables
+edits. The composer explicitly selects Chat or Edit files, shows attached files,
+and supports Command-Return to send and Command-N for a new conversation.
+
+Paired clients can read a listed source file with
+`POST /v1/projects/{projectId}/file` and JSON `{ "path": "src/example.ts" }`.
+The response is `{ "path": "src/example.ts", "content": "..." }`. This read-only
+operation requires the paired-device bearer token and an approved project. It
+shares the source-list exclusions and the coding engine's 100 KB text-file limit;
+secret files, symlinks, traversal, binary content and removed projects are rejected.
+The Swift SDK exposes this as `preview(projectID:path:)`.

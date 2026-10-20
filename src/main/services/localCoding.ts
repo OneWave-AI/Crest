@@ -65,7 +65,7 @@ export async function codingFile(root: string, name: string): Promise<string> {
   return target
 }
 
-async function readSource(path: string): Promise<string | null> {
+export async function readSource(path: string): Promise<string | null> {
   try {
     const stat = await lstat(path)
     if (!stat.isFile() || stat.size > 100000) throw new Error('Only text files up to 100 KB are supported')

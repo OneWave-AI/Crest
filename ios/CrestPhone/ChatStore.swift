@@ -104,6 +104,10 @@ final class ChatStore {
             persist()
         } catch is CancellationError {} catch { online = false; self.error = "Can't reach your laptop. Keep Crest open and use the same Wi-Fi. \(error.localizedDescription)" }
     }
+    func preview(_ path: String) async throws -> SourcePreview {
+        guard let client, !projectId.isEmpty else { throw HarnessError.message("Connect to a project first.") }
+        return try await client.preview(projectID: projectId, path: path)
+    }
     func files() async throws -> [String] {
         guard let client, !projectId.isEmpty else { return [] }
         return try await client.files(projectID: projectId)

@@ -8,7 +8,7 @@ import { promisify } from 'util'
 import type { IncomingMessage, ServerResponse } from 'http'
 import QRCode from 'qrcode'
 import { z } from 'zod'
-import { LocalCoding, codingFile } from './localCoding'
+import { LocalCoding, codingFile, readSource } from './localCoding'
 import { IntegrationError } from './integrationErrors'
 import type { MobileStatus, MobileProject, MobilePairing } from '../../shared/mobile'
 
@@ -219,6 +219,17 @@ export class MobileBridge {
         if (!project) throw new IntegrationError(404, 'project_not_found', 'Project access was removed on the laptop')
         if (await realpath(project.path) !== project.path) throw new IntegrationError(403, 'project_moved', 'Reapprove this project on the laptop')
         return send(200, { files: await this.files(project) })
+      }
+      const previewMatch = url.pathname.match(/^\/v1\/projects\/([a-f0-9-]{36})\/file$/)
+      if (req.method === 'POST' && previewMatch) {
+        const project = this.config.projects.find(p => p.id === previewMatch[1])
+        if (!project) throw new IntegrationError(404, 'project_not_found', 'Project access was removed on the laptop')
+        if (await realpath(project.path) !== project.path) throw new IntegrationError(403, 'project_moved', 'Reapprove this project on the laptop')
+        const { path } = z.object({ path: z.string().min(1).max(1000) }).strict().parse(await body(req))
+        if (!(await this.files(project)).includes(path)) throw new IntegrationError(403, 'file_not_allowed', 'Choose a listed project source file')
+        const content = await readSource(await codingFile(project.path, path))
+        if (content === null) throw new IntegrationError(404, 'file_not_found', 'File no longer exists')
+        return send(200, { path, content })
       }
       if (req.method === 'POST' && url.pathname === '/v1/tasks') {
         const input = taskInput.parse(await body(req))

@@ -10,11 +10,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             if sizeClass == .regular {
-                NavigationSplitView {
-                    WorkspaceSidebar(store: store)
-                        .navigationSplitViewColumnWidth(min: 240, ideal: 280, max: 340)
-                } detail: { chat }
-                .navigationSplitViewStyle(.balanced)
+                IPadWorkspace(store: store)
             } else { chat }
         }
     }
@@ -160,7 +156,7 @@ struct ContentView: View {
     }
 }
 
-private struct MessageRow: View {
+struct MessageRow: View {
     let message: ChatMessage
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
