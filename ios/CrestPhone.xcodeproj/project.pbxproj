@@ -7,15 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		018282F2F533B6E3B15F1929 /* WorkspaceSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09FE5256CDF022174DB48 /* WorkspaceSidebar.swift */; };
 		1A6AC19E8055A85DA614281A /* CrestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487E429B6049349BE8A257E /* CrestApp.swift */; };
+		1E622AC7060E2DAC6BC84726 /* PairingKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B527A7B434D582E11A334C /* PairingKeychain.swift */; };
 		33A7C73A755175B44507D8E0 /* LiveHarnessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545C944E332826C5DA4CADF /* LiveHarnessTests.swift */; };
 		A7A64690A0E9ACE9E8978569 /* PairingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE7DB3F6FD5B5D49968CD73 /* PairingTests.swift */; };
 		AD8669555509A30E494A399D /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93354926BF238ABFBE8AFC4E /* ConnectionView.swift */; };
 		B94B96925F50757B877D7D11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3F14CBB9993524003E5793B /* Assets.xcassets */; };
+		C61B2350145D5C535D258B72 /* CrestSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 6A1AF22965A0E2DE94CBE69D /* CrestSDK */; };
 		D0399B989E51E67A9588D865 /* ChatStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272F1B9688DE4E90FC445F90 /* ChatStore.swift */; };
 		D03A6C66668F46B0A71768AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0D521FE5D0CD8879903948 /* ContentView.swift */; };
 		D9F1833E75BCC8FC4F154C54 /* FilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DE8860128F109526AE9C /* FilesView.swift */; };
-		F1173431571ACBE50758E77E /* LaptopClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB1B8F860366BFEC360A64 /* LaptopClient.swift */; };
+		E840D9055BBC4D0979E39FDE /* CrestSDK in Frameworks */ = {isa = PBXBuildFile; productRef = B4CDEE278E78DA9B511783F2 /* CrestSDK */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,19 +32,40 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		12B527A7B434D582E11A334C /* PairingKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingKeychain.swift; sourceTree = "<group>"; };
 		2487E429B6049349BE8A257E /* CrestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrestApp.swift; sourceTree = "<group>"; };
 		2545C944E332826C5DA4CADF /* LiveHarnessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveHarnessTests.swift; sourceTree = "<group>"; };
 		272F1B9688DE4E90FC445F90 /* ChatStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStore.swift; sourceTree = "<group>"; };
 		5B39DE8860128F109526AE9C /* FilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesView.swift; sourceTree = "<group>"; };
-		72DB1B8F860366BFEC360A64 /* LaptopClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaptopClient.swift; sourceTree = "<group>"; };
 		77B0F93645C75884D1872684 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7F0D521FE5D0CD8879903948 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		93354926BF238ABFBE8AFC4E /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
 		9EE7DB3F6FD5B5D49968CD73 /* PairingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingTests.swift; sourceTree = "<group>"; };
+		AED09FE5256CDF022174DB48 /* WorkspaceSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceSidebar.swift; sourceTree = "<group>"; };
 		B3F14CBB9993524003E5793B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D9DFF8ED7A444DA8C1DB2ABA /* CrestPhone.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CrestPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD76B29482A69674902E7D88 /* swift */ = {isa = PBXFileReference; lastKnownFileType = folder; name = swift; path = ../sdk/swift; sourceTree = SOURCE_ROOT; };
 		E7F2C0E8507E22F776BAD2B7 /* CrestPhoneTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CrestPhoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AE53F5910159324904267C48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C61B2350145D5C535D258B72 /* CrestSDK in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC3B7BAAFAA73CD4D7CAD160 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E840D9055BBC4D0979E39FDE /* CrestSDK in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		291332202ECB334A45673A00 /* CrestPhone */ = {
@@ -54,7 +78,8 @@
 				2487E429B6049349BE8A257E /* CrestApp.swift */,
 				5B39DE8860128F109526AE9C /* FilesView.swift */,
 				77B0F93645C75884D1872684 /* Info.plist */,
-				72DB1B8F860366BFEC360A64 /* LaptopClient.swift */,
+				12B527A7B434D582E11A334C /* PairingKeychain.swift */,
+				AED09FE5256CDF022174DB48 /* WorkspaceSidebar.swift */,
 			);
 			path = CrestPhone;
 			sourceTree = "<group>";
@@ -66,6 +91,14 @@
 				9EE7DB3F6FD5B5D49968CD73 /* PairingTests.swift */,
 			);
 			path = CrestPhoneTests;
+			sourceTree = "<group>";
+		};
+		7B70C5AEA7248EB1CB6F62B6 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				DD76B29482A69674902E7D88 /* swift */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		9EB959AFAE5189E79A06168A /* Products */ = {
@@ -82,6 +115,7 @@
 			children = (
 				291332202ECB334A45673A00 /* CrestPhone */,
 				60B47BB107044A7BB0694D3E /* CrestPhoneTests */,
+				7B70C5AEA7248EB1CB6F62B6 /* Packages */,
 				9EB959AFAE5189E79A06168A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -95,6 +129,7 @@
 			buildPhases = (
 				1C7DCA2D8AAD03867D73DFDF /* Sources */,
 				2208732F596EA194754FE606 /* Resources */,
+				FC3B7BAAFAA73CD4D7CAD160 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -102,6 +137,7 @@
 			);
 			name = CrestPhone;
 			packageProductDependencies = (
+				B4CDEE278E78DA9B511783F2 /* CrestSDK */,
 			);
 			productName = CrestPhone;
 			productReference = D9DFF8ED7A444DA8C1DB2ABA /* CrestPhone.app */;
@@ -112,6 +148,7 @@
 			buildConfigurationList = 76A79D53DC2EF254E4B54734 /* Build configuration list for PBXNativeTarget "CrestPhoneTests" */;
 			buildPhases = (
 				A7A7BE4431CA9FDBE0ED7DD3 /* Sources */,
+				AE53F5910159324904267C48 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -120,6 +157,7 @@
 			);
 			name = CrestPhoneTests;
 			packageProductDependencies = (
+				6A1AF22965A0E2DE94CBE69D /* CrestSDK */,
 			);
 			productName = CrestPhoneTests;
 			productReference = E7F2C0E8507E22F776BAD2B7 /* CrestPhoneTests.xctest */;
@@ -153,6 +191,9 @@
 			);
 			mainGroup = B2A0FCFC134B53330B47D584;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5DC5296493F6389C49529C5A /* XCLocalSwiftPackageReference "../sdk/swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9EB959AFAE5189E79A06168A /* Products */;
 			projectDirPath = "";
@@ -185,7 +226,8 @@
 				D03A6C66668F46B0A71768AF /* ContentView.swift in Sources */,
 				1A6AC19E8055A85DA614281A /* CrestApp.swift in Sources */,
 				D9F1833E75BCC8FC4F154C54 /* FilesView.swift in Sources */,
-				F1173431571ACBE50758E77E /* LaptopClient.swift in Sources */,
+				1E622AC7060E2DAC6BC84726 /* PairingKeychain.swift in Sources */,
+				018282F2F533B6E3B15F1929 /* WorkspaceSidebar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,6 +280,7 @@
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect securely to Crest on your laptop to chat with local Qwen and work on your selected projects.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -285,7 +328,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -299,7 +342,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -322,6 +365,7 @@
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect securely to Crest on your laptop to chat with local Qwen and work on your selected projects.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -369,7 +413,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -389,7 +433,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -449,6 +493,24 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		5DC5296493F6389C49529C5A /* XCLocalSwiftPackageReference "../sdk/swift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../sdk/swift;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6A1AF22965A0E2DE94CBE69D /* CrestSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CrestSDK;
+		};
+		B4CDEE278E78DA9B511783F2 /* CrestSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CrestSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 242FE06D0FFF5C417C2689CB /* Project object */;
 }

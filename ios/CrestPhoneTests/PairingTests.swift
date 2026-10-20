@@ -1,3 +1,4 @@
+import CrestSDK
 import XCTest
 @testable import Crest
 

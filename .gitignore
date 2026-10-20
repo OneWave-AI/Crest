@@ -59,3 +59,7 @@ ios/**/xcuserdata/
 ios/**/DerivedData/
 ios/**/*.xcuserstate
 ios/**/*.xcresult/
+
+# Swift package build state
+sdk/**/.build/
+sdk/**/.swiftpm/

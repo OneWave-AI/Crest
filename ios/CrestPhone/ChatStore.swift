@@ -1,3 +1,4 @@
+import CrestSDK
 import Foundation
 import Observation
 
@@ -40,7 +41,7 @@ final class ChatStore {
     var pairing = false
     private(set) var pending: CodingRequest?
     private(set) var jobId: String?
-    @ObservationIgnored private var client: LaptopClient?
+    @ObservationIgnored private var client: CrestClient?
     @ObservationIgnored private var poller: Task<Void, Never>?
     @ObservationIgnored private var pollerGeneration: UUID?
     @ObservationIgnored private var refreshing = false
@@ -50,7 +51,7 @@ final class ChatStore {
         historyURL = URL.applicationSupportDirectory.appendingPathComponent("conversation.json")
         laptop = PairingKeychain.load()
         if let laptop {
-            client = LaptopClient(laptop)
+            client = CrestClient(laptop)
             if let data = try? Data(contentsOf: historyURL), let history = try? JSONDecoder().decode(Conversation.self, from: data), history.deviceId == laptop.deviceId {
                 messages = history.messages; pending = history.pending; jobId = history.jobId
                 projectId = history.projectId; model = history.model; selectedFiles = Set(history.files); mode = history.mode
@@ -73,10 +74,10 @@ final class ChatStore {
         defer { pairing = false }
         do {
             let link = try PairingLink(raw)
-            let response = try await LaptopClient(url: link.url, fingerprint: link.fingerprint).pair(code: link.code)
+            let response = try await CrestClient(url: link.url, fingerprint: link.fingerprint).pair(code: link.code)
             let paired = PairedLaptop(url: link.url, fingerprint: link.fingerprint, token: response.token, deviceId: response.deviceId, laptopName: response.laptopName)
             try PairingKeychain.save(paired)
-            pausePolling(); laptop = paired; client = LaptopClient(paired)
+            pausePolling(); laptop = paired; client = CrestClient(paired)
             messages = []; pending = nil; jobId = nil; working = false; selectedFiles = []; projectId = ""
             mode = "review"; model = "qwen3.5:4b"
             pairingLink = ""; sheet = nil; persist()
@@ -92,9 +93,9 @@ final class ChatStore {
         guard let client, !refreshing else { return }; refreshing = true
         defer { refreshing = false }
         do {
-            let _: LaptopStatus = try await client.request("v1/status")
-            async let availableProjects: [LaptopProject] = client.request("v1/projects")
-            async let availableModels: LaptopModels = client.request("v1/models")
+            let _: LaptopStatus = try await client.status()
+            async let availableProjects: [LaptopProject] = client.projects()
+            async let availableModels: LaptopModels = client.models()
             let (p, m) = try await (availableProjects, availableModels)
             projects = p; models = m.models.filter { !$0.embeddingOnly }; online = true; error = nil
             if !projects.contains(where: { $0.id == projectId }) { projectId = projects.first?.id ?? ""; selectedFiles = [] }
@@ -105,8 +106,7 @@ final class ChatStore {
     }
     func files() async throws -> [String] {
         guard let client, !projectId.isEmpty else { return [] }
-        let list: FileList = try await client.request("v1/projects/\(projectId)/files")
-        return list.files
+        return try await client.files(projectID: projectId)
     }
     func saveChoices() { persist() }
     func send() {

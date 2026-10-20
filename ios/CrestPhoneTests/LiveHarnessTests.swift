@@ -1,3 +1,4 @@
+import CrestSDK
 import XCTest
 @testable import Crest
 
@@ -8,7 +9,7 @@ final class LiveHarnessTests: XCTestCase {
         guard let raw = ProcessInfo.processInfo.environment["CREST_LIVE_PAIRING_URL"] else { throw XCTSkip("Requires a fresh local one-time pairing URL.") }
         let link = try PairingLink(raw)
         do {
-            _ = try await LaptopClient(url: link.url, fingerprint: String(repeating: "0", count: 64)).pair(code: link.code)
+            _ = try await CrestClient(url: link.url, fingerprint: String(repeating: "0", count: 64)).pair(code: link.code)
             XCTFail("An incorrect certificate pin must not be accepted")
         } catch { /* Expected: do not send a pairing secret to an untrusted certificate. */ }
         let store = ChatStore()

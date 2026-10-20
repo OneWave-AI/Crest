@@ -6,7 +6,19 @@ private let surface = Color(red: 0.07, green: 0.095, blue: 0.12)
 struct ContentView: View {
     @Bindable var store: ChatStore
     @FocusState private var composing: Bool
+    @Environment(\.horizontalSizeClass) private var sizeClass
     var body: some View {
+        Group {
+            if sizeClass == .regular {
+                NavigationSplitView {
+                    WorkspaceSidebar(store: store)
+                        .navigationSplitViewColumnWidth(min: 240, ideal: 280, max: 340)
+                } detail: { chat }
+                .navigationSplitViewStyle(.balanced)
+            } else { chat }
+        }
+    }
+    private var chat: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 if store.laptop == nil { welcome }
@@ -47,7 +59,7 @@ struct ContentView: View {
                 .font(.system(size: 52, weight: .light)).foregroundStyle(.mint)
             VStack(alignment: .leading, spacing: 12) {
                 Text("Your laptop.\nYour coding agent.").font(.system(size: 38, weight: .semibold, design: .rounded)).tracking(-1)
-                Text("Chat with Qwen, build ideas, and edit your projects from your phone.")
+                Text("Chat with Qwen, build ideas, and edit your projects from your iPhone or iPad.")
                     .font(.title3).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
             }
             Label("Runs on your Mac · No inference bill", systemImage: "bolt.shield")
@@ -58,7 +70,7 @@ struct ContentView: View {
             Button { store.sheet = .connection } label: {
                 Label("Connect your laptop", systemImage: "qrcode.viewfinder").font(.headline).frame(maxWidth: .infinity).padding(10)
             }.buttonStyle(.borderedProminent).foregroundStyle(canvas)
-            Text("Open Crest on your Mac → Settings → API & MCP → Pair an iPhone.")
+            Text("Open Crest on your Mac → Settings → API & MCP → Pair a device.")
                 .font(.footnote).foregroundStyle(.secondary).padding(.bottom, 20)
         }.padding(28)
     }
@@ -107,7 +119,7 @@ struct ContentView: View {
                         HStack(spacing: 10) { ProgressView().controlSize(.small); Text("Qwen is working on your laptop…").font(.subheadline).foregroundStyle(.secondary) }.id("working")
                     }
                     Color.clear.frame(height: 1).id("bottom")
-                }.padding(20)
+                }.padding(20).frame(maxWidth: 900).frame(maxWidth: .infinity)
             }
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: store.messages.count) { _, _ in withAnimation { proxy.scrollTo("bottom", anchor: .bottom) } }
