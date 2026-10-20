@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import MobileSettings from './MobileSettings'
 
 export default function IntegrationsSettings() {
   const [info, setInfo] = useState<Awaited<ReturnType<typeof window.api.integrationStatus>> | null>(null)
@@ -10,6 +11,7 @@ export default function IntegrationsSettings() {
   }, [])
   return (
     <section className="space-y-5">
+      <MobileSettings />
       <div>
         <h2 className="text-lg font-semibold text-ink">Local API &amp; MCP</h2>
         <p className="text-sm text-ink-muted mt-2">Let Claude Code, Codex, and other tools send coding tasks to local models on this laptop. Keep Crest open while connected.</p>

@@ -53,3 +53,9 @@ video/**/.thumbnails/
 
 # Stray esbuild output at repo root
 /index.js
+
+# Xcode user and build state
+ios/**/xcuserdata/
+ios/**/DerivedData/
+ios/**/*.xcuserstate
+ios/**/*.xcresult/

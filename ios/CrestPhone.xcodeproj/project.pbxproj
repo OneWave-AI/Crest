@@ -1,0 +1,454 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A6AC19E8055A85DA614281A /* CrestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487E429B6049349BE8A257E /* CrestApp.swift */; };
+		33A7C73A755175B44507D8E0 /* LiveHarnessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2545C944E332826C5DA4CADF /* LiveHarnessTests.swift */; };
+		A7A64690A0E9ACE9E8978569 /* PairingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE7DB3F6FD5B5D49968CD73 /* PairingTests.swift */; };
+		AD8669555509A30E494A399D /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93354926BF238ABFBE8AFC4E /* ConnectionView.swift */; };
+		B94B96925F50757B877D7D11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3F14CBB9993524003E5793B /* Assets.xcassets */; };
+		D0399B989E51E67A9588D865 /* ChatStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272F1B9688DE4E90FC445F90 /* ChatStore.swift */; };
+		D03A6C66668F46B0A71768AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0D521FE5D0CD8879903948 /* ContentView.swift */; };
+		D9F1833E75BCC8FC4F154C54 /* FilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DE8860128F109526AE9C /* FilesView.swift */; };
+		F1173431571ACBE50758E77E /* LaptopClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB1B8F860366BFEC360A64 /* LaptopClient.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5A12D1FF06D9F87BBADE43B8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 242FE06D0FFF5C417C2689CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A6EB4D4198C82F52D6AA27F;
+			remoteInfo = CrestPhone;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2487E429B6049349BE8A257E /* CrestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrestApp.swift; sourceTree = "<group>"; };
+		2545C944E332826C5DA4CADF /* LiveHarnessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveHarnessTests.swift; sourceTree = "<group>"; };
+		272F1B9688DE4E90FC445F90 /* ChatStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStore.swift; sourceTree = "<group>"; };
+		5B39DE8860128F109526AE9C /* FilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesView.swift; sourceTree = "<group>"; };
+		72DB1B8F860366BFEC360A64 /* LaptopClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaptopClient.swift; sourceTree = "<group>"; };
+		77B0F93645C75884D1872684 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7F0D521FE5D0CD8879903948 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		93354926BF238ABFBE8AFC4E /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
+		9EE7DB3F6FD5B5D49968CD73 /* PairingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingTests.swift; sourceTree = "<group>"; };
+		B3F14CBB9993524003E5793B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D9DFF8ED7A444DA8C1DB2ABA /* CrestPhone.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CrestPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7F2C0E8507E22F776BAD2B7 /* CrestPhoneTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CrestPhoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		291332202ECB334A45673A00 /* CrestPhone */ = {
+			isa = PBXGroup;
+			children = (
+				B3F14CBB9993524003E5793B /* Assets.xcassets */,
+				272F1B9688DE4E90FC445F90 /* ChatStore.swift */,
+				93354926BF238ABFBE8AFC4E /* ConnectionView.swift */,
+				7F0D521FE5D0CD8879903948 /* ContentView.swift */,
+				2487E429B6049349BE8A257E /* CrestApp.swift */,
+				5B39DE8860128F109526AE9C /* FilesView.swift */,
+				77B0F93645C75884D1872684 /* Info.plist */,
+				72DB1B8F860366BFEC360A64 /* LaptopClient.swift */,
+			);
+			path = CrestPhone;
+			sourceTree = "<group>";
+		};
+		60B47BB107044A7BB0694D3E /* CrestPhoneTests */ = {
+			isa = PBXGroup;
+			children = (
+				2545C944E332826C5DA4CADF /* LiveHarnessTests.swift */,
+				9EE7DB3F6FD5B5D49968CD73 /* PairingTests.swift */,
+			);
+			path = CrestPhoneTests;
+			sourceTree = "<group>";
+		};
+		9EB959AFAE5189E79A06168A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D9DFF8ED7A444DA8C1DB2ABA /* CrestPhone.app */,
+				E7F2C0E8507E22F776BAD2B7 /* CrestPhoneTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B2A0FCFC134B53330B47D584 = {
+			isa = PBXGroup;
+			children = (
+				291332202ECB334A45673A00 /* CrestPhone */,
+				60B47BB107044A7BB0694D3E /* CrestPhoneTests */,
+				9EB959AFAE5189E79A06168A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A6EB4D4198C82F52D6AA27F /* CrestPhone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B69F41B2C390EC934417A89A /* Build configuration list for PBXNativeTarget "CrestPhone" */;
+			buildPhases = (
+				1C7DCA2D8AAD03867D73DFDF /* Sources */,
+				2208732F596EA194754FE606 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CrestPhone;
+			packageProductDependencies = (
+			);
+			productName = CrestPhone;
+			productReference = D9DFF8ED7A444DA8C1DB2ABA /* CrestPhone.app */;
+			productType = "com.apple.product-type.application";
+		};
+		21A477737F982FA2D50B737E /* CrestPhoneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76A79D53DC2EF254E4B54734 /* Build configuration list for PBXNativeTarget "CrestPhoneTests" */;
+			buildPhases = (
+				A7A7BE4431CA9FDBE0ED7DD3 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				54DB182D15602F218414C7A3 /* PBXTargetDependency */,
+			);
+			name = CrestPhoneTests;
+			packageProductDependencies = (
+			);
+			productName = CrestPhoneTests;
+			productReference = E7F2C0E8507E22F776BAD2B7 /* CrestPhoneTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		242FE06D0FFF5C417C2689CB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					1A6EB4D4198C82F52D6AA27F = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					21A477737F982FA2D50B737E = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = A06A3CE2D93B6F956BD13622 /* Build configuration list for PBXProject "CrestPhone" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B2A0FCFC134B53330B47D584;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9EB959AFAE5189E79A06168A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1A6EB4D4198C82F52D6AA27F /* CrestPhone */,
+				21A477737F982FA2D50B737E /* CrestPhoneTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2208732F596EA194754FE606 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B94B96925F50757B877D7D11 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1C7DCA2D8AAD03867D73DFDF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0399B989E51E67A9588D865 /* ChatStore.swift in Sources */,
+				AD8669555509A30E494A399D /* ConnectionView.swift in Sources */,
+				D03A6C66668F46B0A71768AF /* ContentView.swift in Sources */,
+				1A6AC19E8055A85DA614281A /* CrestApp.swift in Sources */,
+				D9F1833E75BCC8FC4F154C54 /* FilesView.swift in Sources */,
+				F1173431571ACBE50758E77E /* LaptopClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7A7BE4431CA9FDBE0ED7DD3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33A7C73A755175B44507D8E0 /* LiveHarnessTests.swift in Sources */,
+				A7A64690A0E9ACE9E8978569 /* PairingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		54DB182D15602F218414C7A3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A6EB4D4198C82F52D6AA27F /* CrestPhone */;
+			targetProxy = 5A12D1FF06D9F87BBADE43B8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0C51981E978DD354E96E0696 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.onewave.CrestPhoneTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Crest.app/Crest";
+			};
+			name = Release;
+		};
+		8F06F3D5A9A1EAF5F03F3CFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CrestPhone/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Crest;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan the one-time pairing QR code shown by Crest on your laptop.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect securely to Crest on your laptop to chat with local Qwen and work on your selected projects.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.onewave.crest.phone;
+				PRODUCT_NAME = Crest;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE5748CF4973DF83FF7EB04A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B327CD70C1EA0C458323D004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CrestPhone/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Crest;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan the one-time pairing QR code shown by Crest on your laptop.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect securely to Crest on your laptop to chat with local Qwen and work on your selected projects.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.onewave.crest.phone;
+				PRODUCT_NAME = Crest;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B4761A2E9270FE55A221F42A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C71DBBE75E3CBAD30C44E6CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.onewave.CrestPhoneTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Crest.app/Crest";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		76A79D53DC2EF254E4B54734 /* Build configuration list for PBXNativeTarget "CrestPhoneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C71DBBE75E3CBAD30C44E6CA /* Debug */,
+				0C51981E978DD354E96E0696 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A06A3CE2D93B6F956BD13622 /* Build configuration list for PBXProject "CrestPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B4761A2E9270FE55A221F42A /* Debug */,
+				AE5748CF4973DF83FF7EB04A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B69F41B2C390EC934417A89A /* Build configuration list for PBXNativeTarget "CrestPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F06F3D5A9A1EAF5F03F3CFD /* Debug */,
+				B327CD70C1EA0C458323D004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 242FE06D0FFF5C417C2689CB /* Project object */;
+}

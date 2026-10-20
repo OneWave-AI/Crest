@@ -673,6 +673,12 @@ export interface IpcApi {
   onAcpEvent: (callback: (event: AcpEvent) => void) => () => void
   ollamaStatus: () => Promise<OllamaRuntimeStatus>
   integrationStatus: () => Promise<{ running: boolean; url: string; mcpUrl: string; tokenPath: string; error?: string }>
+  mobileStatus: () => Promise<import('./mobile').MobileStatus>
+  mobileEnable: (enabled: boolean) => Promise<import('./mobile').MobileStatus>
+  mobilePair: () => Promise<import('./mobile').MobilePairing>
+  mobileAddProject: () => Promise<import('./mobile').MobileStatus>
+  mobileRemoveProject: (id: string) => Promise<import('./mobile').MobileStatus>
+  mobileRevoke: (id: string) => Promise<import('./mobile').MobileStatus>
 }
 
 // Local ollama runtime (mirrors src/main/ipc/ollama.ts)

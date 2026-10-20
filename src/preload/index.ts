@@ -281,6 +281,12 @@ const api: IpcApi = {
   acpListAgents: () => ipcRenderer.invoke('acp:list-agents'),
   ollamaStatus: () => ipcRenderer.invoke('ollama:status'),
   integrationStatus: () => ipcRenderer.invoke('integrations:status'),
+  mobileStatus: () => ipcRenderer.invoke('mobile:status'),
+  mobileEnable: (enabled) => ipcRenderer.invoke('mobile:enable', enabled),
+  mobilePair: () => ipcRenderer.invoke('mobile:pair'),
+  mobileAddProject: () => ipcRenderer.invoke('mobile:add-project'),
+  mobileRemoveProject: (id) => ipcRenderer.invoke('mobile:remove-project', id),
+  mobileRevoke: (id) => ipcRenderer.invoke('mobile:revoke', id),
   onAcpEvent: (callback) => {
     const handler = (_: Electron.IpcRendererEvent, event: AcpEvent) => callback(event)
     ipcRenderer.on('acp:event', handler)

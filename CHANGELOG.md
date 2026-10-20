@@ -7,6 +7,19 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-10-20
+
+### Added
+- Native iPhone/iPad SwiftUI companion with local Qwen chat, project/model and
+  file selection, scoped edits, protected conversation storage, Keychain pairing,
+  cancellation and task reconnection. Source and Xcode project are in `ios/`.
+- Opt-in HTTPS phone bridge with single-use QR pairing, certificate pinning,
+  revocable device credentials, approved projects and device-owned task handles.
+- Mac phone controls in Settings → API & MCP, loopback administration endpoints,
+  and an opt-in iOS integration test against the real local model.
+- Structured conversation history for local coding jobs and explicit current
+  request boundaries for small local models.
+
 ## [2.5.1] - 2026-10-20
 
 ### Added

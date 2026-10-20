@@ -11,6 +11,7 @@ import { PREVIEW_PARTITION } from '../shared/preview'
 import { installLocalAgentLaunchers } from './services/localAgents'
 import { startLocalApi, type IntegrationInfo } from './services/localApi'
 import { getOllamaStatus } from './ipc/ollama'
+import { MobileBridge } from './services/mobileBridge'
 
 // Register custom protocol as privileged (must be before app ready)
 protocol.registerSchemesAsPrivileged([
@@ -31,8 +32,19 @@ let mainWindow: BrowserWindow | null = null
 let hasActiveTerminal = false
 let forceQuit = false
 let localApi: Awaited<ReturnType<typeof startLocalApi>> | undefined
+let mobileBridge: MobileBridge | undefined
 let integrationInfo: IntegrationInfo = { running: false, url: '', mcpUrl: '', tokenPath: '' }
 ipcMain.handle('integrations:status', () => localApi?.info ?? integrationInfo)
+ipcMain.handle('mobile:status', () => mobileBridge?.status() ?? { enabled: false, running: false, url: '', projects: [], devices: [] })
+ipcMain.handle('mobile:enable', (_, enabled: boolean) => mobileBridge?.setEnabled(enabled === true))
+ipcMain.handle('mobile:pair', () => mobileBridge?.createPairing())
+ipcMain.handle('mobile:revoke', (_, id: string) => mobileBridge?.revoke(id))
+ipcMain.handle('mobile:remove-project', (_, id: string) => mobileBridge?.removeProject(id))
+ipcMain.handle('mobile:add-project', async () => {
+  const result = await dialog.showOpenDialog({ title: 'Allow this project on paired iPhones', properties: ['openDirectory'] })
+  if (!result.canceled && result.filePaths[0]) return mobileBridge?.addProject(result.filePaths[0])
+  return mobileBridge?.status()
+})
 
 // Track terminal session state from renderer
 ipcMain.on('terminal-session-active', (_, active: boolean) => {
@@ -181,8 +193,13 @@ app.whenReady().then(() => {
   startLocalApi({
     configDir: join(homedir(), '.crest'),
     version: app.getVersion(),
-    getModels: getOllamaStatus
-  }).then(api => { localApi = api }).catch(error => {
+    getModels: getOllamaStatus,
+    mobile: () => mobileBridge
+  }).then(async api => {
+    localApi = api
+    mobileBridge = new MobileBridge(join(homedir(), '.crest'), api.coding, getOllamaStatus)
+    await mobileBridge.initialize()
+  }).catch(error => {
     integrationInfo = { ...integrationInfo, error: error instanceof Error ? error.message : String(error) }
     console.error('[localApi] Could not start:', error)
   })
@@ -206,6 +223,7 @@ app.on('window-all-closed', () => {
 app.on('will-quit', () => {
   stopAllAcpSessions()
   void localApi?.stop()
+  void mobileBridge?.stop()
 })
 
 export { mainWindow }

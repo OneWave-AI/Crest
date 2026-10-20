@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { LocalCoding, codingInput } from './localCoding'
 import { IntegrationError } from './integrationErrors'
 import { integrationOpenApi } from './integrationOpenApi'
+import type { MobileBridge } from './mobileBridge'
 
 export interface IntegrationInfo {
   running: boolean
@@ -22,6 +23,7 @@ interface Options {
   getModels: () => Promise<unknown>
   port?: number
   coding?: LocalCoding
+  mobile?: () => MobileBridge | undefined
 }
 function send(res: ServerResponse, status: number, value: unknown): void {
   res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' })
@@ -43,6 +45,7 @@ async function jsonBody(req: IncomingMessage): Promise<unknown> {
 /** Authenticated loopback API, shared by HTTP callers and MCP clients. */
 export async function startLocalApi(options: Options): Promise<{
   info: IntegrationInfo
+  coding: LocalCoding
   stop: () => Promise<void>
 }> {
   const tokenPath = join(options.configDir, 'api-token')
@@ -119,6 +122,22 @@ export async function startLocalApi(options: Options): Promise<{
       if (req.method === 'GET' && path === '/openapi.json') return send(res, 200, integrationOpenApi(options.version, info.url))
       if (req.method === 'GET' && path === '/v1/models') return send(res, 200, await options.getModels())
       if (req.method === 'GET' && path === '/v1/tasks') return send(res, 200, coding.list())
+      // Phone administration stays behind the laptop-only API credential.
+      if (path.startsWith('/v1/mobile/')) {
+        const mobile = options.mobile?.()
+        if (!mobile) return problem(503, 'mobile_unavailable', 'The phone bridge is not ready')
+        if (req.method === 'GET' && path === '/v1/mobile/status') return send(res, 200, mobile.status())
+        if (req.method === 'POST' && path === '/v1/mobile/enable') {
+          const input = z.object({ enabled: z.boolean() }).strict().parse(await jsonBody(req))
+          return send(res, 200, await mobile.setEnabled(input.enabled))
+        }
+        if (req.method === 'POST' && path === '/v1/mobile/pair') return send(res, 201, await mobile.createPairing())
+        if (req.method === 'POST' && path === '/v1/mobile/projects') {
+          const input = z.object({ path: z.string().min(1) }).strict().parse(await jsonBody(req))
+          return send(res, 200, await mobile.addProject(input.path))
+        }
+        return problem(404, 'not_found', 'Unknown phone administration endpoint')
+      }
       if (req.method === 'POST' && path === '/v1/tasks') {
         if (req.headers['content-type']?.split(';')[0].trim() !== 'application/json') return problem(415, 'unsupported_media_type', 'Use Content-Type: application/json')
         const input = codingInput.parse(await jsonBody(req))
@@ -163,6 +182,7 @@ export async function startLocalApi(options: Options): Promise<{
   } catch (error) { server.close(); throw error }
   return {
     info,
+    coding,
     stop: async () => {
       stopping = true
       info.running = false
